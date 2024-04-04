@@ -585,8 +585,6 @@
                     <th >USER TYPE</th>
                     <th class="thlast">ACTION</th>
                 </tr>
-                <tr class="trheadergap"></tr>
-        
                 <tr>
                     <td class="tdfirst">03-24-24</td>
                     <td>08:20</td>
@@ -681,18 +679,6 @@
                 document.body.classList.remove('fade-out');
                 document.body.classList.add('fade-in');
             });
-
-            // Get the table element
-            var table = document.getElementById('Results');
-
-            // Get the number of rows in the table
-            var rowCount = table.rows.length;
-
-            // Get the <h2> element where you want to display the row count
-            var rowNumberElement = document.getElementById('rowNumbershow');
-
-            // Replace the content of the <h2> element with the row count
-            rowNumberElement.textContent = rowCount-1;
 
             // JavaScript code for navigation
             var currentPage = 0;
