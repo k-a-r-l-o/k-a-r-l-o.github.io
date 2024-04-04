@@ -578,7 +578,7 @@
                         <h2>Users</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="rowNumber">0</h2>
+                        <h2 id="rowNumbershow">0</h2>
                     </div>  
                 </div>
                 <div class="dropdown">
@@ -657,10 +657,54 @@
         var rowCount = table.rows.length;
 
         // Get the <h2> element where you want to display the row count
-        var rowNumberElement = document.getElementById('rowNumber');
+        var rowNumberElement = document.getElementById('rowNumbershow');
 
         // Replace the content of the <h2> element with the row count
-        rowNumberElement.textContent = rowCount-2;
+        rowNumberElement.textContent = rowCount-1;
+
+        // JavaScript code for navigation
+        var currentPage = 0;
+        var rowsPerPage = 5; // Change this value as needed
+
+        function showPage(page) {
+            var table = document.getElementById('Results');
+            var rows = table.rows;
+
+            // Calculate the start and end indices of the rows to display
+            var startIndex = page * rowsPerPage + 1; // Skip header row
+            var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+            // Hide all rows
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = 'none';
+            }
+
+            // Show rows for the current page
+            for (var i = startIndex; i < endIndex; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        function navigateRows(direction) {
+            currentPage += direction;
+            var table = document.getElementById('Results');
+            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+            // Check if currentPage is within bounds
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= maxPage) {
+                currentPage = maxPage - 1;
+            }
+
+            showPage(currentPage);
+
+            // Update the row number display
+            document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
+        }
+
+        // Show the initial page
+        showPage(currentPage);
 
     </script>
 </body>
