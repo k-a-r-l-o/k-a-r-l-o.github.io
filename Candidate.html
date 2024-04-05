@@ -337,7 +337,7 @@
     .content {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 1fr 5fr 1fr; 
+      grid-template-rows: 1fr 5fr; 
       background-color: #222E50;
       width: auto;
       color: white;
@@ -358,19 +358,6 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
-    }
-
-    .navTable {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 100%;
-      height: auto;
-      color: white;
-      justify-content: center;
-      align-items: center;
-      align-self: flex-end;
-      gap: 20px;
-      margin: 10px 0px;
     }
 
     .titlecontainer {
@@ -401,14 +388,45 @@
       align-items: center;
     }
 
-    .bottomcontent{
+    .tableandnav{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .navTable {
       display: flex;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 10px 0px;
+    }
+
+    .prevcontainer{
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: center;
+    }
+
+    .nextcontainer{
+      display: flex;
+      width: 100%;
       justify-content: right;
       align-items: center;
     }
 
+    .tablecontainer {
+      width: 100%;
+      height: auto;
+      overflow-x: auto;
+    }
+
     table {
       width: 100%;
+      min-width: 1000px;
       height: auto;
       border-spacing: 0 7px;
     }
@@ -742,40 +760,107 @@
                     <button id="addcandidate"><img src="plus.png" alt="plus icon">Add new</button>
                 </div>
             </div>
-            <div>
-              <table id="Results">
-                <tr class="trheader">
-                  <th class="thfirst">USEP ID</th>
-                  <th>NAME</th>
-                  <th>POSITION</th>
-                  <th>COUNCIL</th>
-                  <th class="thlast"></th>
-                </tr>
-                <tr class="trheadergap"></tr>
-        
-                <tr>
-                    <td class="tdfirst">2022-00123</td>
-                    <td>Maya Cartel</td>
-                    <td>President</td>
-                    <td>SITS</td>
-                    <td class="tdlast">
-                        <img src="view.png" alt="view icon">
-                        <img src="edit.png" alt="edit icon">
-                        <img src="delete.png" alt="delete icon">
-                    </td>
-                </tr>
-                
-              </table>
+            <div class="tableandnav">
+                <div class="tablecontainer">
+                  <table id="Results">
+                    <tr class="trheader">
+                      <th class="thfirst">USEP ID</th>
+                      <th>NAME</th>
+                      <th>POSITION</th>
+                      <th>COUNCIL</th>
+                      <th class="thlast"></th>
+                    </tr>
+            
+                    <tr>
+                      <td class="tdfirst">2022-00123</td>
+                      <td>Maya Cartel</td>
+                      <td>President</td>
+                      <td>SITS</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="tdfirst">2022-00124</td>
+                      <td>John Doe</td>
+                      <td>Vice President</td>
+                      <td>BSBA</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="tdfirst">2022-00125</td>
+                      <td>Jane Smith</td>
+                      <td>Secretary</td>
+                      <td>BSCS</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="tdfirst">2022-00126</td>
+                      <td>Michael Johnson</td>
+                      <td>Treasurer</td>
+                      <td>BSIT</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="tdfirst">2022-00127</td>
+                      <td>Sarah Brown</td>
+                      <td>Auditor</td>
+                      <td>BSEd</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="tdfirst">2022-00128</td>
+                      <td>Chris Anderson</td>
+                      <td>Public Information Officer</td>
+                      <td>BSHRM</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="tdfirst">2022-00129</td>
+                      <td>Mark Taylor</td>
+                      <td>Business Manager</td>
+                      <td>BSA</td>
+                      <td class="tdlast">
+                          <img src="view.png" alt="view icon">
+                          <img src="edit.png" alt="edit icon">
+                          <img src="delete.png" alt="delete icon">
+                      </td>
+                  </tr>                  
+                    
+                  </table>
+                </div>
+                  <div class="navTable">
+                    <div class="prevcontainer">
+                        <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
+                    </div>
+                    <div class="nextcontainer">
+                        <button id="nextButton" onclick="navigateRows(1)">Next</button>
+                    </div>
+                </div>
             </div>
-            <div class="navTable">
-              <div>
-                <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
-              </div>
-              <div class="bottomcontent">
-                <button id="nextButton" onclick="navigateRows(1)">Next</button>
-              </div>
-            </div>
-          </div>
+        </div>
     </div>
     <div class="popup" id="popup">
         <div class="head">
@@ -882,7 +967,51 @@
         var rowNumberElement = document.getElementById('rowNumbershow');
 
         // Replace the content of the <h2> element with the row count
-        rowNumberElement.textContent = rowCount-2;
+        rowNumberElement.textContent = rowCount-1;
+
+        // JavaScript code for navigation
+        var currentPage = 0;
+        var rowsPerPage = 5; // Change this value as needed
+
+        function showPage(page) {
+            var table = document.getElementById('Results');
+            var rows = table.rows;
+
+            // Calculate the start and end indices of the rows to display
+            var startIndex = page * rowsPerPage + 1; // Skip header row
+            var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+            // Hide all rows
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = 'none';
+            }
+
+            // Show rows for the current page
+            for (var i = startIndex; i < endIndex; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        function navigateRows(direction) {
+            currentPage += direction;
+            var table = document.getElementById('Results');
+            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+            // Check if currentPage is within bounds
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= maxPage) {
+                currentPage = maxPage - 1;
+            }
+
+            showPage(currentPage);
+
+            // Update the row number display
+            document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
+        }
+
+        // Show the initial page
+        showPage(currentPage);
 
     </script>
 </body>
