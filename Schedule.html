@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>U-Vote Admin</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   <style>
 
     body {
@@ -352,7 +353,7 @@
 
     .contenthead {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       width: 100%;
       height: auto;
       color: white;
@@ -370,49 +371,122 @@
       gap: 20px;
     }
 
-    .yellowBG {
+    .schedulecontainer{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+
+    }
+
+    .realTime-container{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 98%;
+        height: 264px;
+        border-radius: 12px;
+        padding: 2%;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        background-image: linear-gradient(#28579E,#222E50);
+    }
+
+    .playpausecontainer{
+        display: flex;
+        width: 100%;
+        height: 15%;
+        justify-items: left;
+    }
+
+    #playpause {
         display: flex;
         height: 40px;
+        font-size: 20px;
+        font-weight: bold;
         background-color: #F6C90E; /* Same background color as the select */
         color: #222E50;
         border: none;
+        gap: 10px;
         border-radius: 5px;
-        align-items: center;
-        padding: 0 10px;
-        width: auto;
-        max-width: 200px;
-    }
-
-    .pie-chart {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        position: relative;
-    }
-
-    .slice {
-        position: absolute;
+        padding: 0 20px; /* Adjust padding as needed */
+        cursor: pointer;
         width: 100%;
+        max-width: 120px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #playpause:hover{
+        background-color:#fccb06bb;
+    }
+
+    .timeclockcontainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
         height: 100%;
-        clip: rect(0, 100px, 200px, 100px);
-        border-radius: 50%;
     }
 
-    .slice:nth-child(1) {
-        background-color: #ff6384; /* Red */
-        transform: rotate(0deg);
+    .realTime-container h1{
+        font-size: 60px;
+        color: white;
+        letter-spacing: 4px;
+        white-space: nowrap;
+        margin: 0;
     }
 
-    .slice:nth-child(2) {
-        background-color: #36a2eb; /* Blue */
-        transform: rotate(108deg);
+    .realTime-container h5{
+        font-size: 24px;
+        color: white;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        margin: 0;
     }
 
-    .slice:nth-child(3) {
-        background-color: #ffce56; /* Yellow */
-        transform: rotate(252deg);
+
+    @media (max-width: 1000px) {
+        .realTime-container h1{
+            font-size: 50px;
+        }
+
+        .realTime-container h5{
+            font-size: 20px;
+        }
+
     }
 
+    @media (max-width: 700px) {
+        .schedulecontainer{
+            scale: 0.95;
+        }
+
+        .realTime-container h1{
+            font-size: 40px;
+        }
+
+        .realTime-container h5{
+            font-size: 16px;
+        }
+
+    }
+
+    @media (max-width: 500px) {
+        .schedulecontainer{
+            scale: 0.9;
+        }
+
+        .realTime-container h1{
+            font-size: 30px;
+        }
+
+        .realTime-container h5{
+            font-size: 12px;
+        }
+
+    }
+    
 
     </style>
 
@@ -475,7 +549,19 @@
                     </div>                 
                 </div>
             </div>
-            <div>
+            <div class="schedulecontainer">
+                <div class="realTime-container">
+                    <div class="playpausecontainer">
+                        <button id="playpause">Ongoing</button>
+                    </div>
+                    <div class="timeclockcontainer">
+                        <h1 id="current-time"></h1>
+                        <h5 id ="current-date"></h5>
+                    </div>
+                    <div class="playpausecontainer">
+                        
+                    </div>
+                </div>
                 
             </div>
         </div>
@@ -484,20 +570,80 @@
 
       // JavaScript code to switch HTML files with animation
       function switchHTML(file) {
-                // Add fade-out animation to the body
-                document.body.classList.add('fade-out');
+            // Add fade-out animation to the body
+            document.body.classList.add('fade-out');
                 
-                // Wait for the animation to finish, then switch to the new HTML file
-                setTimeout(function() {
-                    window.location.href = file;
-                }, 500); // Delay should match the animation duration
-            }
+            // Wait for the animation to finish, then switch to the new HTML file
+            setTimeout(function() {
+                window.location.href = file;
+            }, 500); // Delay should match the animation duration
+        }
 
-            // Add a listener for animation end to remove the fade-out class and add the fade-in class
-            document.body.addEventListener('animationend', function() {
-                document.body.classList.remove('fade-out');
-                document.body.classList.add('fade-in');
-            }); 
+        // Add a listener for animation end to remove the fade-out class and add the fade-in class
+        document.body.addEventListener('animationend', function() {
+            document.body.classList.remove('fade-out');
+            document.body.classList.add('fade-in');
+        }); 
+
+        let time = document.getElementById("current-time");
+
+        setInterval(()=>{
+            let d = new Date();
+            time.innerHTML = d.toLocaleTimeString();
+
+            var monthNames=["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+            var today = new Date();
+
+            document.getElementById("current-date").innerHTML = (monthNames[today.getMonth()] + " "+ today.getDate() + "," + today.getFullYear());
+        },1000)
+    
+    
+        //start button
+        function showDateTimePicker() {
+        document.getElementById('datetimePicker').style.display = 'block';
+        }
+        function hideDateTimePicker() {
+        document.getElementById('datetimePicker').style.display = 'none';
+        }
+
+        function pickDateTime() {
+        const datetimeInput = document.getElementById('datetimeInput').value;
+        if (datetimeInput) {
+            const datetime = new Date(datetimeInput);
+
+            const timeDisplay = document.getElementById('timeDisplay');
+            timeDisplay.textContent = ` ${datetime.toLocaleTimeString()}`;
+
+            const dateDisplay = document.getElementById('dateDisplay');
+            dateDisplay.textContent = `${datetime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+            document.getElementById('datetimePicker').style.display = 'none';
+        }
+        }
+
+//end button
+function EndshowDateTimePicker() {
+  document.getElementById('EndDatetimePicker').style.display = 'block';
+}
+function EndhideDateTimePicker() {
+  document.getElementById('EndDatetimePicker').style.display = 'none';
+}
+
+function EndpickDateTime() {
+  const EndDatetimeInput = document.getElementById('EndDatetimeInput').value;
+  if (EndDatetimeInput) {
+    const datetime = new Date(EndDatetimeInput);
+
+    const timeDisplay = document.getElementById('EndtimeDisplay');
+    timeDisplay.textContent = ` ${datetime.toLocaleTimeString()}`;
+
+    const dateDisplay = document.getElementById('EnddateDisplay');
+    dateDisplay.textContent = `${datetime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+    document.getElementById('EndDatetimePicker').style.display = 'none';
+  }
+}
+
 
 
     </script>
