@@ -335,7 +335,7 @@
     .content {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 1fr 5fr 1fr; 
+      grid-template-rows: 1fr 5fr; 
       background-color: #222E50;
       width: auto;
       color: white;
@@ -356,19 +356,6 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
-    }
-
-    .navTable {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 100%;
-      height: auto;
-      color: white;
-      justify-content: center;
-      align-items: center;
-      align-self: flex-end;
-      gap: 20px;
-      margin: 10px 0px;
     }
 
     .titlecontainer {
@@ -399,14 +386,45 @@
       align-items: center;
     }
 
-    .bottomcontent{
+    .tableandnav{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .navTable {
       display: flex;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 10px 0px;
+    }
+
+    .prevcontainer{
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: center;
+    }
+
+    .nextcontainer{
+      display: flex;
+      width: 100%;
       justify-content: right;
       align-items: center;
     }
 
+    .tablecontainer {
+      width: 100%;
+      height: auto;
+      overflow-x: auto;
+    }
+
     table {
       width: 100%;
+      min-width: 400px;
       height: auto;
       border-spacing: 0 7px;
     }
@@ -582,41 +600,42 @@
                         <h2 class="banner">YANO</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="rowNumber">0</h2>
+                        <h2 id="rowNumbershow">0</h2>
                     </div>  
                 </div>
                 <div class="dropdown">
                     
                 </div>
             </div>
-            <div>
-              <table id="Results">
-                <tr class="trheader">
-                    <th class="thfirst">NAME</th>
-                    <th class="thlast">POSITION</th>
-                </tr>
-                <tr class="trheadergap"></tr>
-        
-                <tr data-table="table1">
-                    <td class="tdfirst">Rachel Davis</td>
-                    <td class="tdlast">President</td>
-                </tr>
-                <tr data-table="table2">
-                    <td class="tdfirst">Jonathan Carter</td>
-                    <td class="tdlast">Vice President</td>
-                </tr>
+            <div class="tableandnav">
+                <div class="tablecontainer">
+                    <table id="Results">
+                        <tr class="trheader">
+                            <th class="thfirst">NAME</th>
+                            <th class="thlast">POSITION</th>
+                        </tr>
                 
-              </table>
+                        <tr data-table="table1">
+                            <td class="tdfirst">Rachel Davis</td>
+                            <td class="tdlast">President</td>
+                        </tr>
+                        <tr data-table="table2">
+                            <td class="tdfirst">Jonathan Carter</td>
+                            <td class="tdlast">Vice President</td>
+                        </tr>
+                        
+                    </table>
+                </div>
+                <div class="navTable">
+                    <div class="prevcontainer">
+                        <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
+                    </div>
+                    <div class="nextcontainer">
+                        <button id="nextButton" onclick="navigateRows(1)">Next</button>
+                    </div>
+                </div>
             </div>
-            <div class="navTable">
-              <div>
-                <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
-              </div>
-              <div class="bottomcontent">
-                <button id="nextButton" onclick="navigateRows(1)">Next</button>
-              </div>
-            </div>
-          </div>
+        </div>
     </div>
     <script>
       // JavaScript code to switch HTML files with animation
@@ -643,10 +662,54 @@
         var rowCount = table.rows.length;
 
         // Get the <h2> element where you want to display the row count
-        var rowNumberElement = document.getElementById('rowNumber');
+        var rowNumberElement = document.getElementById('rowNumbershow');
 
         // Replace the content of the <h2> element with the row count
-        rowNumberElement.textContent = rowCount-2;
+        rowNumberElement.textContent = rowCount-1;
+
+        // JavaScript code for navigation
+        var currentPage = 0;
+        var rowsPerPage = 5; // Change this value as needed
+
+        function showPage(page) {
+            var table = document.getElementById('Results');
+            var rows = table.rows;
+
+            // Calculate the start and end indices of the rows to display
+            var startIndex = page * rowsPerPage + 1; // Skip header row
+            var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+            // Hide all rows
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = 'none';
+            }
+
+            // Show rows for the current page
+            for (var i = startIndex; i < endIndex; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        function navigateRows(direction) {
+            currentPage += direction;
+            var table = document.getElementById('Results');
+            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+            // Check if currentPage is within bounds
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= maxPage) {
+                currentPage = maxPage - 1;
+            }
+
+            showPage(currentPage);
+
+            // Update the row number display
+            document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
+        }
+
+        // Show the initial page
+        showPage(currentPage);
             
     </script>
 </body>
