@@ -353,7 +353,7 @@
 
     .contenthead {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       width: 100%;
       height: auto;
       color: white;
@@ -371,53 +371,69 @@
       gap: 20px;
     }
 
+    .dropdown{
+      display: flex;
+      justify-content: right;
+      align-items: center;
+    }
+
+    .titlecontainer button, .dropdown button {
+        display: flex;
+        height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #F6C90E; 
+        
+        border: none;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 0 20px; 
+        cursor: pointer;
+        width: auto;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dropdown button {
+        background-color: #F6C90E; 
+        color: #222E50;
+    }
+
+    .titlecontainer button{
+        background-color: #048621;
+        color: #ffffff;
+    }
+
     .schedulecontainer{
         display: flex;
         flex-direction: column;
         width: 100%;
         height: auto;
-
     }
 
-    .realTime-container{
+    .realTime-container, .startcontainer, .endcontainer{
         display: flex;
         justify-content: center;
         flex-direction: column;
-        width: 98%;
+        width: 100%;
         height: 264px;
         border-radius: 12px;
-        padding: 2%;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        background-image: linear-gradient(#28579E,#222E50);
+        background-color: rgb(150, 191, 245, 0.5);
+        margin-bottom: 3%;
     }
 
-    .playpausecontainer{
-        display: flex;
+    .startcontainer{
         width: 100%;
-        height: 15%;
-        justify-items: left;
+        height: 264px;
+        margin-right: 1.5%;
+        margin-bottom: 3%;
     }
 
-    #playpause {
-        display: flex;
-        height: 40px;
-        font-size: 20px;
-        font-weight: bold;
-        background-color: #F6C90E; /* Same background color as the select */
-        color: #222E50;
-        border: none;
-        gap: 10px;
-        border-radius: 5px;
-        padding: 0 20px; /* Adjust padding as needed */
-        cursor: pointer;
+    .endcontainer{
         width: 100%;
-        max-width: 120px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #playpause:hover{
-        background-color:#fccb06bb;
+        height: 264px;
+        margin-left: 1.5%;
+        margin-bottom: 3%;
     }
 
     .timeclockcontainer {
@@ -427,6 +443,29 @@
         align-items: center;
         height: 100%;
     }
+
+    .clocktitle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        height: 20%;
+        background-image: linear-gradient(#28579E,#222E50);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+
+
+    .clockfoot {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        height: 20%;
+    }
+
 
     .realTime-container h1{
         font-size: 60px;
@@ -445,6 +484,23 @@
         margin: 0;
     }
 
+    .startendcontainer{
+        display: flex;
+    }
+
+    @media (max-width: 1200px) {
+        .titlecontainer{
+            flex-direction: column;
+            align-items: baseline;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .titlecontainer h2{
+            margin: 0;
+        }
+    }
+
 
     @media (max-width: 1000px) {
         .realTime-container h1{
@@ -453,6 +509,19 @@
 
         .realTime-container h5{
             font-size: 20px;
+        }
+
+        .startendcontainer{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .startcontainer{
+            margin-right: 0;
+        }
+
+        .endcontainer{
+            margin-left: 0;
         }
 
     }
@@ -483,6 +552,19 @@
 
         .realTime-container h5{
             font-size: 12px;
+        }
+
+        .dropdown button {
+            font-size: 0;
+            padding: 10px;
+            width: auto;
+            gap: 0;
+        }
+
+        .titlecontainer{    
+            margin-top: 20px;
+            margin-bottom: 0;
+            width: 200%;
         }
 
     }
@@ -546,23 +628,66 @@
                 <div class="titlecontainer">
                     <div>
                         <h2>Voting Schedule</h2>
-                    </div>                 
+                    </div>
+                    <div>
+                        <button id="playpause">Not Started</button>
+                  </div>  
+                </div>
+                <div class="dropdown">
+                    <button id="addschedule"><img src="plus.png" alt="plus icon">Add schedule</button>
                 </div>
             </div>
             <div class="schedulecontainer">
                 <div class="realTime-container">
-                    <div class="playpausecontainer">
-                        <button id="playpause">Ongoing</button>
+                    <div class="clocktitle">
+                        <h3>Current Time and Date</h3>
                     </div>
                     <div class="timeclockcontainer">
                         <h1 id="current-time"></h1>
                         <h5 id ="current-date"></h5>
                     </div>
-                    <div class="playpausecontainer">
+                    <div class="clockfoot">
                         
                     </div>
                 </div>
-                
+                <div class="startendcontainer">
+                    <div class="startcontainer">
+                        <div class="clocktitle">
+                            <h3>Voting Starts:</h3>
+                        </div>
+                        <div class="timeclockcontainer">
+                            <h1 id="start-time"></h1>
+                            <h5 id ="start-date"></h5>
+                        </div>
+                        <div class="clockfoot">
+                            
+                        </div>
+                    </div>
+                    <div class="endcontainer">
+                        <div class="clocktitle">
+                            <h3>Voting Closes:</h3>
+                        </div>
+                        <div class="timeclockcontainer">
+                            <h1 id="end-time"></h1>
+                            <h5 id ="end-date"></h5>
+                        </div>
+                        <div class="clockfoot">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="realTime-container">
+                    <div class="clocktitle">
+                        <h3>Time left:</h3>
+                    </div>
+                    <div class="timeclockcontainer">
+                        <h1 id="left-time"></h1>
+                        <h5 id ="left-date"></h5>
+                    </div>
+                    <div class="clockfoot">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -596,54 +721,6 @@
 
             document.getElementById("current-date").innerHTML = (monthNames[today.getMonth()] + " "+ today.getDate() + "," + today.getFullYear());
         },1000)
-    
-    
-        //start button
-        function showDateTimePicker() {
-        document.getElementById('datetimePicker').style.display = 'block';
-        }
-        function hideDateTimePicker() {
-        document.getElementById('datetimePicker').style.display = 'none';
-        }
-
-        function pickDateTime() {
-        const datetimeInput = document.getElementById('datetimeInput').value;
-        if (datetimeInput) {
-            const datetime = new Date(datetimeInput);
-
-            const timeDisplay = document.getElementById('timeDisplay');
-            timeDisplay.textContent = ` ${datetime.toLocaleTimeString()}`;
-
-            const dateDisplay = document.getElementById('dateDisplay');
-            dateDisplay.textContent = `${datetime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-
-            document.getElementById('datetimePicker').style.display = 'none';
-        }
-        }
-
-//end button
-function EndshowDateTimePicker() {
-  document.getElementById('EndDatetimePicker').style.display = 'block';
-}
-function EndhideDateTimePicker() {
-  document.getElementById('EndDatetimePicker').style.display = 'none';
-}
-
-function EndpickDateTime() {
-  const EndDatetimeInput = document.getElementById('EndDatetimeInput').value;
-  if (EndDatetimeInput) {
-    const datetime = new Date(EndDatetimeInput);
-
-    const timeDisplay = document.getElementById('EndtimeDisplay');
-    timeDisplay.textContent = ` ${datetime.toLocaleTimeString()}`;
-
-    const dateDisplay = document.getElementById('EnddateDisplay');
-    dateDisplay.textContent = `${datetime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-
-    document.getElementById('EndDatetimePicker').style.display = 'none';
-  }
-}
-
 
 
     </script>
