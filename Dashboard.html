@@ -240,6 +240,7 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
+      margin-bottom: 20px;
     }
 
     .titlecontainer {
@@ -264,6 +265,53 @@
         max-width: 230px;
     }
 
+    .dashboards{
+        display: flex;
+        width: 100%;
+        height: auto;
+    }
+
+    .perprogramcontainer, .allvoterscontainer{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        height: 650px;
+        border-radius: 12px;
+        background-color: rgb(150, 191, 245, 0.5);
+        margin-bottom: 3%;
+    }
+
+    .perprogramcontainer{
+        margin-right: 1.5%;
+        margin-bottom: 3%;
+    }
+
+    .allvoterscontainer{
+        margin-left: 1.5%;
+        margin-bottom: 3%;
+    }
+
+    .piecontainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        height: 100%;
+    }
+
+    .resulttitle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        height: 63px;
+        background-image: linear-gradient(#28579E,#222E50);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
     @media (max-width: 1200px) {
         .titlecontainer{
             flex-direction: column;
@@ -277,66 +325,90 @@
         }
     }
 
+    @media (max-width: 1400px) {
+        .realTime-container h1{
+            font-size: 50px;
+        }
+
+        .realTime-container h5{
+            font-size: 20px;
+        }
+
+        .dashboards{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .perprogramcontainer{
+            margin-right: 0;
+        }
+
+        .allvoterscontainer{
+            margin-left: 0;
+        }
+
+    }
+
     @media (max-width: 1000px) {
 
-    .logoName, .searchspace, .searchspace img, .logoName img{
-        scale: 0.9;
-    }
+        .logoName, .searchspace, .searchspace img, .logoName img{
+            scale: 0.9;
+        }
 
-    table, .content button, h2{
-        scale: 0.9;
-    }
+        table, .content button, h2{
+            scale: 0.9;
+        }
 
-    header{
-        padding-left: 3%;
-    }
+        header{
+            padding-left: 3%;
+        }
 
-    .buttonContainer button div:nth-child(2) {
-        display: none;
-    }
+        .buttonContainer button div:nth-child(2) {
+            display: none;
+        }
 
-    .menu{
-        width: auto;
-        padding: 1% 1%;
-        justify-items: center;
-        grid-template-columns: 1fr;
-    }
+        .menu{
+            width: auto;
+            padding: 1% 1%;
+            justify-items: center;
+            grid-template-columns: 1fr;
+        }
 
-    .buttonContainer{
-        width: auto;
-        justify-items: center;
-        grid-template-columns: 1fr;
-    }
+        .buttonContainer{
+            width: auto;
+            justify-items: center;
+            grid-template-columns: 1fr;
+        }
 
-    .menu button{
-        grid-template-columns: 1fr;
-        width: 60px;
-        height: 60px;
-        justify-content: center;
-        align-items: center;
-        gap: 0;
-        padding: 0;
-    }
+        .menu button{
+            grid-template-columns: 1fr;
+            width: 60px;
+            height: 60px;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            padding: 0;
+        }
 
-    .buttonContainer button div:nth-child(1){
-        display: flex;
-        width: auto;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-    }
+        .buttonContainer button div:nth-child(1){
+            display: flex;
+            width: auto;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
 
-    .buttonContainer .Logoutbutton {
-        padding: 0;
-        gap: 0;
-        width: 60px;
-        height: 60px;
-    }
+        .buttonContainer .Logoutbutton {
+            padding: 0;
+            gap: 0;
+            width: 60px;
+            height: 60px;
+        }
 
-    button div img{
-        scale: 0.8;
-        background-size: contain;
-    }
+        button div img{
+            scale: 0.8;
+            background-size: contain;
+        }
 
     }
 
@@ -474,13 +546,25 @@
                     </div>                    
                 </div>
             </div>
-            <div>
-                <div class="pie-chart">
-                    <div class="slice" data-value="30"></div>
-                    <div class="slice" data-value="20"></div>
-                    <div class="slice" data-value="50"></div>
-                </div> 
-            </div>
+            <div class="dashboards">
+                <div class="perprogramcontainer">
+                    <div class="resulttitle">
+                        <h3>PER PROGRAM</h3>
+                    </div>
+                    <div class="piecontainer">
+                        <h1 id="start-time"></h1>
+                        <h5 id ="start-date"></h5>
+                    </div>
+                </div>
+                <div class="allvoterscontainer">
+                    <div class="resulttitle">
+                        <h3>ALL VOTERS</h3>
+                    </div>
+                    <div class="piecontainer">
+                        <h1 id="end-time"></h1>
+                        <h5 id ="end-date"></h5>
+                    </div>
+                </div>
         </div>
     </div>
     <script>
