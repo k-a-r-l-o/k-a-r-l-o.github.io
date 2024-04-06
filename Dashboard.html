@@ -214,66 +214,129 @@
         border-radius: 5px;
     }
     
+
+    /*Content*/
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 5fr; 
+      background-color: #222E50;
+      width: auto;
+      color: white;
+      justify-content: center;
+      align-items: baseline;
+      padding: 2%;
+      flex: 1;
+      z-index: 2; 
+      overflow: scroll;
+    }
+
+    .contenthead {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .titlecontainer {
+      display: flex;
+      width: auto;
+      height: auto;
+      color: white;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .yellowBG {
+        display: flex;
+        height: 40px;
+        background-color: #F6C90E; /* Same background color as the select */
+        color: #222E50;
+        border: none;
+        border-radius: 5px;
+        align-items: center;
+        padding: 0 10px;
+        width: auto;
+        max-width: 230px;
+    }
+
+    @media (max-width: 1200px) {
+        .titlecontainer{
+            flex-direction: column;
+            align-items: baseline;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .titlecontainer h2{
+            margin: 0;
+        }
+    }
+
     @media (max-width: 1000px) {
 
-        .logoName, .searchspace, .searchspace img, .logoName img{
-            scale: 0.9;
-        }
+    .logoName, .searchspace, .searchspace img, .logoName img{
+        scale: 0.9;
+    }
 
-        table, .content button, h2{
-            scale: 0.9;
-        }
+    table, .content button, h2{
+        scale: 0.9;
+    }
 
-        header{
-            padding-left: 3%;
-        }
+    header{
+        padding-left: 3%;
+    }
 
-        .buttonContainer button div:nth-child(2) {
-            display: none;
-        }
+    .buttonContainer button div:nth-child(2) {
+        display: none;
+    }
 
-        .menu{
-            width: auto;
-            padding: 1% 1%;
-            justify-items: center;
-            grid-template-columns: 1fr;
-        }
+    .menu{
+        width: auto;
+        padding: 1% 1%;
+        justify-items: center;
+        grid-template-columns: 1fr;
+    }
 
-        .buttonContainer{
-            width: auto;
-            justify-items: center;
-            grid-template-columns: 1fr;
-        }
+    .buttonContainer{
+        width: auto;
+        justify-items: center;
+        grid-template-columns: 1fr;
+    }
 
-        .menu button{
-            grid-template-columns: 1fr;
-            width: 60px;
-            height: 60px;
-            justify-content: center;
-            align-items: center;
-            gap: 0;
-            padding: 0;
-        }
+    .menu button{
+        grid-template-columns: 1fr;
+        width: 60px;
+        height: 60px;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        padding: 0;
+    }
 
-        .buttonContainer button div:nth-child(1){
-            display: flex;
-            width: auto;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
+    .buttonContainer button div:nth-child(1){
+        display: flex;
+        width: auto;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
 
-        .buttonContainer .Logoutbutton {
-            padding: 0;
-            gap: 0;
-            width: 60px;
-            height: 60px;
-        }
+    .buttonContainer .Logoutbutton {
+        padding: 0;
+        gap: 0;
+        width: 60px;
+        height: 60px;
+    }
 
-        button div img{
-            scale: 0.8;
-            background-size: contain;
-        }
+    button div img{
+        scale: 0.8;
+        background-size: contain;
+    }
 
     }
 
@@ -281,10 +344,10 @@
     @media (max-width: 700px) {
 
         header{
-          grid-template-columns: 1fr;
+            grid-template-columns: 1fr;
         }
 
-        .logoName, .searchspace{
+    .logoName, .searchspace{
             width: 100%;
             padding: 1.5% 5%;
         }
@@ -314,105 +377,38 @@
             scale: 0.6;
         }
 
-        .content button, h2, .yellowBG{
-          scale: 0.8;
+        .content button, h2{
+        scale: 0.8;
+        }
+
+        .yellowBG{
+            scale: 0.9;
+            padding: 0 0;
         }
 
     }
 
     @media (max-width: 500px) {
-      .dropdown button {
+        .dropdown button {
         font-size: 0;
         padding: 10px;
         width: auto;
-       gap: 0;
-      }
-        
-      .dropdown button img {
-        justify-content: center;
-      }
+        gap: 0;
+        }
+
+        .dropdown button img {
+            justify-content: center;
+        }
 
     }
 
-    /*Content*/
-    .content {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr 5fr; 
-      background-color: #222E50;
-      width: auto;
-      color: white;
-      justify-content: center;
-      align-items: baseline;
-      padding: 2%;
-      flex: 1;
-      z-index: 2; 
-      overflow: scroll;
+    @media (max-width: 500px) {
+        .titlecontainer{    
+            margin-top: 20px;
+            margin-bottom: 0;
+            width: 200%;
+        }
     }
-
-    .contenthead {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 100%;
-      height: auto;
-      color: white;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .titlecontainer {
-      display: flex;
-      width: auto;
-      height: auto;
-      color: white;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .yellowBG {
-        display: flex;
-        height: 40px;
-        background-color: #F6C90E; /* Same background color as the select */
-        color: #222E50;
-        border: none;
-        border-radius: 5px;
-        align-items: center;
-        padding: 0 10px;
-        width: auto;
-        max-width: 200px;
-    }
-
-    .pie-chart {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        position: relative;
-    }
-
-    .slice {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        clip: rect(0, 100px, 200px, 100px);
-        border-radius: 50%;
-    }
-
-    .slice:nth-child(1) {
-        background-color: #ff6384; /* Red */
-        transform: rotate(0deg);
-    }
-
-    .slice:nth-child(2) {
-        background-color: #36a2eb; /* Blue */
-        transform: rotate(108deg);
-    }
-
-    .slice:nth-child(3) {
-        background-color: #ffce56; /* Yellow */
-        transform: rotate(252deg);
-    }
-
 
     </style>
 
