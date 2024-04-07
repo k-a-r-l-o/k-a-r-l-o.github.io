@@ -705,19 +705,26 @@
             document.body.classList.add('fade-in');
         }); 
 
-        let time = document.getElementById("current-time");
+        setInterval(() => {
+            updateTime();
+        }, 1000);
 
-        setInterval(()=>{
-            let d = new Date();
-            time.innerHTML = d.toLocaleTimeString();
+        function updateTime() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById("current-time").innerHTML = response.time;
+                    document.getElementById("current-date").innerHTML = response.date;
+                }
+            };
+            xhr.open("GET", "get_time.php", true);
+            xhr.send();
+        }
 
-            var monthNames=["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
-            var today = new Date();
-
-            document.getElementById("current-date").innerHTML = (monthNames[today.getMonth()] + " "+ today.getDate() + "," + today.getFullYear());
-        },1000)
 
 
     </script>
+    
 </body>
 </html>
