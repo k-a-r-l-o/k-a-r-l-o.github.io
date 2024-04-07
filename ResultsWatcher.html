@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U-Vote Watcher|Login</title>
+  <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: white;
+        background-image: url('backgroundwatcher.svg');
+        background-size: 76.5vh;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* CSS animation for fading in */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background-color: #090088;
+        background-image: url('backgroundwatcher.svg');
+        background-size: 76.5vh;
+        background-repeat: no-repeat;
+        height: auto;
+        width: 100vw;
+        text-align: center;
+        padding: 0.8% 3%;
+        position: fixed;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        background-blend-mode: multiply;
+        z-index: 10;
+    }
+
+    .logoName {
+        display: flex;
+        align-items: center;
+        width: 45vw;
+        gap: 10px;
+    }
+
+    .bodycontainer{
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        background-color: #090088;
+        overflow: hidden;
+        position: fixed;
+        z-index: 1;
+        animation: fadeIn 0.3s forwards;
+    }
+
+    /*Content*/
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 5fr; 
+      background-color: #090088;
+      width: auto;
+      color: white;
+      justify-content: center;
+      align-items: baseline;
+      padding: 2% 20%;
+      flex: 1;
+      z-index: 2; 
+      overflow: scroll;
+    }
+
+    .contenthead {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .titlecontainer {
+      display: flex;
+      width: auto;
+      height: auto;
+      color: white;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .yellowBG {
+        display: flex;
+        height: 40px;
+        background-color: #F6C90E; /* Same background color as the select */
+        color: #222E50;
+        border: none;
+        border-radius: 5px;
+        align-items: center;
+        padding: 0 10px;
+        width: auto;
+        max-width: 200px;
+    }
+
+    .dropdown{
+      display: flex;
+      justify-content: right;
+      align-items: center;
+    }
+
+    .tableandnav{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .navTable {
+      display: flex;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 10px 0px;
+    }
+
+    .prevcontainer{
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: center;
+    }
+
+    .nextcontainer{
+      display: flex;
+      width: 100%;
+      justify-content: right;
+      align-items: center;
+    }
+
+    .bottomcontent {
+        display: flex;
+        width: 100%;
+        height: auto;
+        color: white;
+        justify-content: right;
+        align-items: center;
+        gap: 20px;
+        margin: 10px 0px;
+    }
+
+    .tablecontainer {
+      width: 100%;
+      height: auto;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 600px;
+      height: auto;
+      border-spacing: 0 7px;
+    }
+
+    th {
+      background: linear-gradient(to bottom, #2F80ED, #090088);
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+      height: 63px;
+    }
+
+    .thfirst {
+      border-top-left-radius: 12px;
+    }
+
+    .thlast {
+      border-top-right-radius: 12px;
+    }
+
+    td {
+      background-color: rgba(150, 191, 245, 0.5);
+      height: 63px;
+      text-align: center;
+      align-items: center;
+    }
+
+    .tdfirst {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+    .tdlast {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .tdlast img {
+        margin: 10px 10px;
+    }
+
+    /* Adjust column widths */
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 20%; /* Adjust width of the first column */
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 20%; /* Adjust width of the second column */
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 20%; /* Adjust width of the third column */
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 20%; /* Adjust width of the third column */
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 20%; /* Adjust width of the third column */
+    }
+
+    .trheadergap {
+      height: 8px;
+    }
+
+    button {
+        display: flex;
+        height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #F6C90E; /* Same background color as the select */
+        color: #222E50;
+        border: none;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 0 20px; /* Adjust padding as needed */
+        cursor: pointer;
+        width: 100%;
+        max-width: 200px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /*all scrollbar design*/
+        /* Width and Height of scrollbar */
+        ::-webkit-scrollbar {
+        background: transparent;
+        width: 10px;
+        height: 0px;
+        border-radius: 10px;
+    }
+
+    /* Track (background of the scrollbar) */
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* Handle (thumb) of the scrollbar */
+    ::-webkit-scrollbar-thumb {
+        background: #28579E;
+        border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #2F80ED;
+        border-radius: 5px;
+    }
+
+    @media (max-width: 1500px) {
+        .titlecontainer{
+            flex-direction: column;
+            align-items: baseline;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .titlecontainer h2{
+            margin: 0;
+            scale: 0.9;
+        }
+
+    }
+
+    @media (max-width: 1000px) {
+
+        .logoName, .logoName img{
+            scale: 0.9;
+        }
+
+        table, .content button, h2{
+            scale: 0.9;
+        }
+
+        header{
+            padding-left: 3%;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        header{
+        grid-template-columns: 1fr;
+        }
+
+        .logoName, .searchspace{
+            width: 100%;
+            padding: 1.5% 5%;
+        }
+
+        .content button, h2, .yellowBG{
+        scale: 0.8;
+        }
+
+        .yellowBG{
+            height: auto;
+        }
+
+    }
+
+   </style>
+
+</head>
+<body>
+    <header>
+        <div class="logoName">
+            <img id="Logo" src="U-Vote Logo.svg" alt="Logo">
+            <img id="Name" src="U-Vote Name.svg" alt="Name">
+        </div>
+    </header>
+
+    <div class="bodycontainer" >
+        <div class="content" >
+            <div class="contenthead">
+                <div class="titlecontainer">
+                    <div>
+                        <h2>TSC Partial/Unofficial Result</h2>
+                    </div>
+                    <div class="yellowBG">
+                        <h2 id="votes">1349/1690 votes</h2>
+                    </div>                    
+                </div>
+                <div class="dropdown">
+                    <button type="button">Logout</button>
+                </div>
+            </div>
+            <div class="tableandnav">
+                <div class="tablecontainer">
+                <table id="Results">
+                    <tr class="trheader">
+                    <th class="thfirst">NAME</th>
+                    <th>POSITION</th>
+                    <th class="thlast">NO. OF VOTES</th>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Maya Cartel</td>
+                    <td>President</td>
+                    <td class="tdlast">524</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Jonathan Carter</td>
+                    <td>President</td>
+                    <td class="tdlast">537</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Michael Brown</td>
+                    <td>Vice President</td>
+                    <td class="tdlast">110</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Sophia Garcia</td>
+                    <td>Secretary</td>
+                    <td class="tdlast">95</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">William Wilson</td>
+                    <td>Treasurer</td>
+                    <td class="tdlast">80</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Emma Anderson</td>
+                    <td>Senators</td>
+                    <td class="tdlast">75</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">James Taylor</td>
+                    <td>Senators</td>
+                    <td class="tdlast">70</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Olivia Martinez</td>
+                    <td>PIO</td>
+                    <td class="tdlast">65</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Daniel Nelson</td>
+                    <td>Treasurer</td>
+                    <td class="tdlast">50</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Emily White</td>
+                    <td>Senators</td>
+                    <td class="tdlast">45</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Alexander Thomas</td>
+                    <td>Vice President</td>
+                    <td class="tdlast">60</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Sophia Hernandez</td>
+                    <td>Secretary</td>
+                    <td class="tdlast">55</td>
+                    </tr>
+                    <tr>
+                    <td class="tdfirst">Karl Cornejo</td>
+                    <td>Secretary</td>
+                    <td class="tdlast">97</td>
+                    </tr>
+                </table>
+            </div>
+                <div class="navTable">
+                    <div class="prevcontainer">
+                        <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
+                    </div>
+                    <div class="nextcontainer">
+                        <button id="nextButton" onclick="navigateRows(1)">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var headerHeight;
+
+        function setHeight() {
+            var headerHeight = document.querySelector('header').offsetHeight;
+            document.querySelector('.content').style.height = `calc(100vh - ${headerHeight}px - 10%)`;
+        }
+
+        window.addEventListener('load', setHeight);
+        window.addEventListener('resize', setHeight);
+
+        function setPaddingTop() {
+            headerHeight = document.querySelector('header').offsetHeight;
+            document.querySelector('.bodycontainer').style.paddingTop = headerHeight + 'px';
+        }
+
+        window.addEventListener('load', setPaddingTop);
+        window.addEventListener('resize', setPaddingTop);
+
+        // JavaScript code to switch HTML files with animation
+        function switchHTML(file) {
+                // Add fade-out animation to the body
+                document.body.classList.add('fade-out');
+                
+                // Wait for the animation to finish, then switch to the new HTML file
+                setTimeout(function() {
+                    window.location.href = file;
+                }, 500); // Delay should match the animation duration
+        }
+
+        // Add a listener for animation end to remove the fade-out class and add the fade-in class
+        document.body.addEventListener('animationend', function() {
+                document.body.classList.remove('fade-out');
+                document.body.classList.add('fade-in');
+        });
+        
+        // JavaScript code for navigation
+        var currentPage = 0;
+        var rowsPerPage = 5; // Change this value as needed
+
+            function showPage(page) {
+                var table = document.getElementById('Results');
+                var rows = table.rows;
+
+                // Calculate the start and end indices of the rows to display
+                var startIndex = page * rowsPerPage + 1; // Skip header row
+                var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+                // Hide all rows
+                for (var i = 1; i < rows.length; i++) {
+                    rows[i].style.display = 'none';
+                }
+
+                // Show rows for the current page
+                for (var i = startIndex; i < endIndex; i++) {
+                    rows[i].style.display = '';
+                }
+            }
+
+            function navigateRows(direction) {
+                currentPage += direction;
+                var table = document.getElementById('Results');
+                var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+                // Check if currentPage is within bounds
+                if (currentPage < 0) {
+                    currentPage = 0;
+                } else if (currentPage >= maxPage) {
+                    currentPage = maxPage - 1;
+                }
+
+                showPage(currentPage);
+
+                // Update the row number display
+                document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
+            }
+
+            // Show the initial page
+            showPage(currentPage);
+
+    </script>
+      
+
+</body>
+</html>
