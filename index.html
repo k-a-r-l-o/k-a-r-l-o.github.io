@@ -230,25 +230,25 @@
                 <div>
                     <h1>Login</h1>
                 </div>
-                <form>
+                <form method = "get" action = "validateUser.php">
                     <div class="forgap">
-                        <input type="email" id="username" placeholder="Username">
+                        <input type="email" id="username" name="username" placeholder="Username" required>
                     </div>
                     <div>
-                        <input type="password" id="password" name="password" placeholder="Password">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
                     </div>
                     <div class="showpasscon">
                         <input class="showpass" type="checkbox" id="showPassword"> <p>Show Password</p> 
                     </div>
                     <div class="forgap">
-                    <select name="user" id="usertype">
+                    <select name="user" id="usertype" required>
                         <option value="" disabled selected hidden>User Type</option>
                         <option value="Admin-Front">Admin-Front</option>
                         <option value="Admin-Technical">Admin-Technical</option>
                         <option value="Chairperson">Chairperson</option>
                     </select>
                     </div>
-                    <button type="submit" onclick="switchHTML('Dashboard.html')" class="loginbutton">Login</button>
+                    <button type="submit" class="loginbutton">Login</button>
                 </form>
             </div>
         </div>
@@ -319,10 +319,8 @@
         window.addEventListener('load', setContainerVisibility);
         window.addEventListener('resize', setContainerVisibility);
 
-
-
-
     </script>
+      
 
 </body>
 </html>
