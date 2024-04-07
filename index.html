@@ -254,12 +254,24 @@
         </div>
     </div>
     <script>
+
+        document.addEventListener('keydown', function(event) {
+            // Check if Ctrl (or Cmd on Mac), Y, and U keys are pressed
+            if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
+                // Prevent default browser behavior
+                event.preventDefault();
+
+                // Your custom action here
+                window.open('indexWatcher.html', '_self');
+            }
+        });
+
         var headerHeight;
 
         function setHeight() {
             var headerHeight = document.querySelector('header').offsetHeight;
-            document.querySelector('.imagecontainer').style.height = `calc(100vh - ${headerHeight}px)`;
-            document.querySelector('.logincontainer').style.height = `calc(100vh - ${headerHeight}px)`;
+            document.querySelector('.imagecontainer').style.height = `calc(100vh - ${headerHeight}px`;
+            document.querySelector('.logincontainer').style.height = `calc(100vh - ${headerHeight}px`;
         }
 
         window.addEventListener('load', setHeight);
