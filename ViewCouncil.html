@@ -101,7 +101,7 @@
         grid-template-columns: 1fr;
         width: auto;
         max-width: 390px;
-        padding: 1% 1%;  
+        padding: 2% 1%;  
         gap: 10px;
         background-color: #222E50;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
@@ -552,8 +552,8 @@
 
         function setHeight() {
             var headerHeight = document.querySelector('header').offsetHeight;
-            document.querySelector('.menu').style.height = `calc(100vh - ${headerHeight}px - 18px)`;
-            document.querySelector('.content').style.height = `calc(100vh - ${headerHeight}px - 5%)`;
+            document.querySelector('.menu').style.height = `calc(100vh - ${headerHeight}px - 10%)`;
+            document.querySelector('.content').style.height = `calc(100vh - ${headerHeight}px - 10%)`;
         }
 
         window.addEventListener('load', setHeight);
