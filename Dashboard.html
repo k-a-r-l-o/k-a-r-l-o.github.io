@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>U-Vote Admin | Dashboard</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
 
     body {
@@ -101,7 +102,7 @@
         grid-template-columns: 1fr;
         width: auto;
         max-width: 390px;
-        padding: 1% 1%;  
+        padding: 2% 1%;  
         gap: 10px;
         background-color: #222E50;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
@@ -276,10 +277,11 @@
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        height: 650px;
+        height: 500px;
         border-radius: 12px;
         background-color: rgb(150, 191, 245, 0.5);
         margin-bottom: 3%;
+        color: white;
     }
 
     .perprogramcontainer{
@@ -489,8 +491,8 @@
 
         function setHeight() {
             var headerHeight = document.querySelector('header').offsetHeight;
-            document.querySelector('.menu').style.height = `calc(100vh - ${headerHeight}px - 18px)`;
-            document.querySelector('.content').style.height = `calc(100vh - ${headerHeight}px - 5%)`;
+            document.querySelector('.menu').style.height = `calc(100vh - ${headerHeight}px - 10%)`;
+            document.querySelector('.content').style.height = `calc(100vh - ${headerHeight}px - 10%)`;
         }
 
         window.addEventListener('load', setHeight);
@@ -549,8 +551,7 @@
                         <h3>PER PROGRAM</h3>
                     </div>
                     <div class="piecontainer">
-                        <h1 id="start-time"></h1>
-                        <h5 id ="start-date"></h5>
+                        <canvas id="myPieChart"></canvas>
                     </div>
                 </div>
                 <div class="allvoterscontainer">
@@ -558,32 +559,117 @@
                         <h3>ALL VOTERS</h3>
                     </div>
                     <div class="piecontainer">
-                        <h1 id="end-time"></h1>
-                        <h5 id ="end-date"></h5>
+                        <canvas id="myPieChart2"></canvas>
                     </div>
                 </div>
         </div>
     </div>
     <script>
-
-      // JavaScript code to switch HTML files with animation
-      function switchHTML(file) {
-                // Add fade-out animation to the body
-                document.body.classList.add('fade-out');
-                
-                // Wait for the animation to finish, then switch to the new HTML file
-                setTimeout(function() {
-                    window.location.href = file;
-                }, 500); // Delay should match the animation duration
+        // Function to create or update a pie chart
+        function createOrUpdatePieChart(chartId, chartData, chartOptions) {
+          var ctx = document.getElementById(chartId).getContext('2d');
+          var chart = new Chart(ctx, {
+            type: 'pie',
+            data: chartData,
+            options: chartOptions
+          });
+          return chart;
+        }
+      
+        // JavaScript code to switch HTML files with animation
+        function switchHTML(file) {
+          document.body.classList.add('fade-out');
+          setTimeout(function() {
+            window.location.href = file;
+          }, 500);
+        }
+      
+        document.body.addEventListener('animationend', function() {
+          document.body.classList.remove('fade-out');
+          document.body.classList.add('fade-in');
+        });
+      
+        // Sample data for the first pie chart
+        var data = {
+          labels: ['SITS', 'SABES', 'AECES'],
+          datasets: [{
+            data: [25, 40, 35],
+            backgroundColor: [
+              '#D8031C',
+              '#F6C90E',
+              '#090088'
+            ],
+            hoverOffset: 4,
+            borderWidth: 0,
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 8,
+            shadowColor: 'rgba(0, 0, 0, 0.75)'
+          }]
+        };
+      
+        // Configuration options for the first pie chart
+        var options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                left: 40,
+                right: 40,
+                top: 40,
+                bottom: 40
+                }
             }
-
-            // Add a listener for animation end to remove the fade-out class and add the fade-in class
-            document.body.addEventListener('animationend', function() {
-                document.body.classList.remove('fade-out');
-                document.body.classList.add('fade-in');
-            }); 
-
-
-    </script>
+        };
+      
+        // Sample data for the second pie chart
+        var data2 = {
+          labels: ['Students Who Voted', 'Students Who Did Not Vote'],
+          datasets: [{
+            data: [30, 70],
+            backgroundColor: [
+              '#D8031C',
+              '#090088'
+            ],
+            hoverOffset: 4,
+            borderWidth: 0,
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 8,
+            shadowColor: 'rgba(0, 0, 0, 0.75)'
+          }]
+        };
+      
+        // Configuration options for the second pie chart
+        // Configuration options for the second pie chart
+        var options2 = {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                left: 40,
+                right: 40,
+                top: 40,
+                bottom: 40
+                }
+            }
+        };
+      
+        // Initial creation of the pie charts
+        var myPieChart = createOrUpdatePieChart('myPieChart', data, options);
+        var myPieChart2 = createOrUpdatePieChart('myPieChart2', data2, options2);
+      
+        // Event listener for window resize
+        window.addEventListener('resize', function() {
+          // Destroy the existing charts
+          myPieChart.destroy();
+          myPieChart2.destroy();
+          // Recreate the charts with updated data and options
+          myPieChart = createOrUpdatePieChart('myPieChart', data, options);
+          myPieChart2 = createOrUpdatePieChart('myPieChart2', data2, options2);
+        });
+      </script>
+      
+      
 </body>
 </html>
