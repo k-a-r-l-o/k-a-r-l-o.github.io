@@ -311,7 +311,6 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script>
 
         document.addEventListener('keydown', function(event) {
@@ -323,16 +322,6 @@
                 // Your custom action here
                 window.open('index.html', '_self');
             }
-        });
-
-        // Initialize Hammer.js
-        var myButton = document.getElementById('Logo');
-        var hammer = new Hammer(myButton);
-
-        // Add event listener for triple tap
-        hammer.on('tripletap', function(event) {
-            // Your triple tap action here
-            window.open('index.html', '_self');
         });
 
         var headerHeight;
