@@ -324,6 +324,16 @@
             }
         });
 
+        // Initialize Hammer.js
+        var myButton = document.getElementById('Logo');
+        var hammer = new Hammer(myButton);
+
+        // Add event listener for triple tap
+        hammer.on('tripletap', function(event) {
+            // Your triple tap action here
+            window.open('index.html', '_self');
+        });
+
         var headerHeight;
 
         function setHeight() {
