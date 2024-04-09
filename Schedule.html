@@ -399,7 +399,7 @@
     }
 
     .titlecontainer button{
-        background-color: #048621;
+        background-color: transparent;
         color: #ffffff;
     }
 
@@ -789,7 +789,7 @@
                         <h2>Voting Schedule</h2>
                     </div>
                     <div>
-                        <button id="playpause">Not Started</button>
+                        <button id="playpause"></button>
                   </div>  
                 </div>
                 <div class="dropdown">
@@ -930,6 +930,7 @@
             const startsTimeInput = document.getElementById('StartsTime');
             const closesDateInput = document.getElementById('ClosesDate');
             const closesTimeInput = document.getElementById('ClosesTime');
+            const playPauseButton = document.getElementById('playpause');
 
             const startTimeContainer = document.getElementById('start-time');
             const startDateContainer = document.getElementById('start-date');
@@ -984,14 +985,19 @@
                         const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                         const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
                         timeLeftContainer.textContent = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+                        playPauseButton.textContent = "Ongoing";
+                        playPauseButton.style.backgroundColor = "green";
                     } else {
-                        timeLeftContainer.textContent = "Voting closed.";
+                        timeLeftContainer.textContent = "Voting Closed";
+                        playPauseButton.textContent = "Closed";
+                        playPauseButton.style.backgroundColor = "red";
                     }
                 } else {
                     timeLeftContainer.textContent = "Voting not started yet.";
+                    playPauseButton.textContent = "Not Started";
+                    playPauseButton.style.backgroundColor = "gray";
                 }
             }
-
 
             function updateStartEnd() {
                 const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
@@ -1007,13 +1013,16 @@
                     updateStartEnd();
                     updateTimeLeft();
                 } else {
+                    startsDateInput.value = '';
+                    startsTimeInput.value = '';
+                    closesDateInput.value = '';
+                    closesTimeInput.value = '';
                     alert("Voting Closes date and time should be after Voting Starts date and time.");
                 }
             }
 
             const saveButton = document.querySelector('.save-button');
-            saveButton.addEventListener('click', onSaveButtonClick);
-
+            saveButton.addEventListener('click', onSaveButtonClick)
             // Update time left every second
             setInterval(updateTimeLeft, 1000);
 
