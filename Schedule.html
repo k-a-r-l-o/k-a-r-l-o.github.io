@@ -439,6 +439,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center; 
+        text-align: center;
         align-items: center;
         height: 100%;
     }
@@ -465,15 +466,14 @@
     }
 
 
-    .realTime-container h1{
+    .timeclockcontainer h1{
         font-size: 60px;
         color: white;
         letter-spacing: 4px;
-        white-space: nowrap;
         margin: 0;
     }
 
-    .realTime-container h5{
+    .timeclockcontainer h5{
         font-size: 24px;
         color: white;
         letter-spacing: 3px;
@@ -500,11 +500,11 @@
 
 
     @media (max-width: 1000px) {
-        .realTime-container h1{
+        .timeclockcontainer h1{
             font-size: 50px;
         }
 
-        .realTime-container h5{
+        .timeclockcontainer h5{
             font-size: 20px;
         }
 
@@ -528,11 +528,11 @@
             scale: 0.95;
         }
 
-        .realTime-container h1{
+        .timeclockcontainer h1{
             font-size: 40px;
         }
 
-        .realTime-container h5{
+        .timeclockcontainer h5{
             font-size: 16px;
         }
 
@@ -543,11 +543,11 @@
             scale: 0.9;
         }
 
-        .realTime-container h1{
+        .timeclockcontainer h1{
             font-size: 30px;
         }
 
-        .realTime-container h5{
+        .timeclockcontainer h5{
             font-size: 12px;
         }
 
@@ -577,7 +577,163 @@
         }
 
     }
-    
+
+    /*add candidate pop up*/
+    .popup {
+        color: white;
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #222E50;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        height: auto;
+        width: 60vh;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+
+
+
+    .head {
+        background: linear-gradient(to bottom, #28579E, #222E50);
+        width: 100%;
+        height: 6vh;
+        border-radius: 5px 5px 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup-content {
+        flex: 1;
+        overflow: hidden;
+        padding: 5%;
+        box-sizing: border-box;
+    }
+
+    .popup-content-inner {
+        display: grid;
+        height: auto;
+        gap: 2%;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        height: auto;
+    }
+
+    .form-group label {
+        text-align: left;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    .input-form {
+        width: 100%;
+        height: 40px;
+        padding: 1% 1%;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        color: white;
+        background-color: rgba(150, 191, 245, 0.5); 
+        outline: none;
+        box-sizing: border-box; 
+    }
+
+    /* Hide the up and down arrows */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .upload-btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .input-file {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        }
+
+    .upload-btn span {
+        display: inline-block;
+        cursor: pointer;
+        background-color: rgba(150, 191, 245, 0.5); /* Set the background color */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        height: 40px; 
+        line-height: 40px; 
+        box-sizing: border-box; 
+        width: 100%; 
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .popup-content .cancel-button, .popup-content .save-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40PX;
+        width: 100%;
+        font-size: large;
+        font-weight: lighter;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .popup-content .cancel-button {
+        background-color: #ffffff;
+        color: #090074;
+    }
+
+    .popup-content .save-button {
+        background-color: #4361EE;
+        color: white;
+    }
+
+    .cancel-button:hover {
+        color: white;
+        background-color: #F34235;
+    }
+
+    .save-button:hover {
+        background-color: #7790ff;
+    }
+
+    @media (max-width: 1000px) {
+      .popup{
+          height: auto;
+      }
+
+    }
+
+    @media (max-width: 500px) {
+      .popup{
+            height: auto;
+            width: 100vw;
+        }
+
+    }
 
     </style>
 
@@ -685,12 +841,38 @@
                     </div>
                     <div class="timeclockcontainer">
                         <h1 id="left-time"></h1>
-                        <h5 id ="left-date"></h5>
                     </div>
                     <div class="clockfoot">
                         
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup" id="popup">
+        <div class="head">
+          <h3>ADDING SCHEDULE</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                    <div class="form-group">
+                        <label for="Starts">Voting Starts:</label>
+                        <input type="date" id="StartsDate" class="input-form">
+                        <br>
+                        <input type="time" id="StartsTime" class="input-form">
+                    </div>
+                    <div class="form-group">
+                        <label for="Closes">Voting Closes:</label>
+                        <input type="date" id="ClosesDate" class="input-form">
+                        <br>
+                        <input type="time" id="ClosesTime" class="input-form">
+                    </div>                    
+                </form>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Save</button>
+                <br>
             </div>
         </div>
     </div>
@@ -730,9 +912,117 @@
             xhr.send();
         }
 
+        /*po up*/
+        document.getElementById("addschedule").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "flex";
+        });
+        
+        document.querySelector(".cancel-button").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "none";
+        });
 
+        document.querySelector(".save-button").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "none";
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const startsDateInput = document.getElementById('StartsDate');
+            const startsTimeInput = document.getElementById('StartsTime');
+            const closesDateInput = document.getElementById('ClosesDate');
+            const closesTimeInput = document.getElementById('ClosesTime');
+
+            const startTimeContainer = document.getElementById('start-time');
+            const startDateContainer = document.getElementById('start-date');
+            const endTimeContainer = document.getElementById('end-time');
+            const endDateContainer = document.getElementById('end-date');
+            const timeLeftContainer = document.getElementById('left-time');
+            const dateLeftContainer = document.getElementById('left-date');
+
+            function formatTime(date) {
+                if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+                    return "";
+                }
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+                const formattedMinutes = minutes.toString().padStart(2, '0');
+                return `${formattedHours}:${formattedMinutes} ${ampm}`;
+            }
+
+            function formatDate(date) {
+                if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+                    return "";
+                }
+                const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+                    "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+                ];
+                const month = monthNames[date.getMonth()];
+                const day = date.getDate();
+                const year = date.getFullYear();
+                return `${month} ${day}, ${year}`;
+            }
+
+            function validateClosesDateTime() {
+                const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
+                const endDate = new Date(closesDateInput.value + 'T' + closesTimeInput.value);
+                
+                return endDate > startDate;
+            }
+
+            function updateTimeLeft() {
+                const currentDate = new Date();
+                const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
+                const endDate = new Date(closesDateInput.value + 'T' + closesTimeInput.value);
+                
+                // Check if current time is after start time
+                if (currentDate >= startDate) {
+                    const timeLeft = endDate - currentDate;
+                    if (timeLeft > 0) {
+                        const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                        timeLeftContainer.textContent = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+                    } else {
+                        timeLeftContainer.textContent = "Voting closed.";
+                    }
+                } else {
+                    timeLeftContainer.textContent = "Voting not started yet.";
+                }
+            }
+
+
+            function updateStartEnd() {
+                const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
+                const endDate = new Date(closesDateInput.value + 'T' + closesTimeInput.value);
+                startTimeContainer.textContent = formatTime(startDate);
+                startDateContainer.textContent = formatDate(startDate);
+                endTimeContainer.textContent = formatTime(endDate);
+                endDateContainer.textContent = formatDate(endDate);
+            }
+
+            function onSaveButtonClick() {
+                if (validateClosesDateTime()) {
+                    updateStartEnd();
+                    updateTimeLeft();
+                } else {
+                    alert("Voting Closes date and time should be after Voting Starts date and time.");
+                }
+            }
+
+            const saveButton = document.querySelector('.save-button');
+            saveButton.addEventListener('click', onSaveButtonClick);
+
+            // Update time left every second
+            setInterval(updateTimeLeft, 1000);
+
+            // Initial update
+            updateStartEnd();
+        });
 
     </script>
+
     
 </body>
 </html>
