@@ -550,66 +550,74 @@
 
     /*add candidate pop up*/
     .popup {
-    color: white;
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #222E50;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-    height: 90vh;
-    width: 60vh;
-    border-radius: 5px;
-    z-index: 9999;
+        color: white;
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #222E50;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        height: 90vh;
+        width: 60vh;
+        border-radius: 5px;
+        z-index: 9999;
     }
 
 
 
     .head {
-    background: linear-gradient(to bottom, #28579E, #222E50);
-    width: 100%;
-    height: 6vh;
-    border-radius: 5px 5px 0 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(to bottom, #28579E, #222E50);
+        width: 100%;
+        height: 6vh;
+        border-radius: 5px 5px 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     }
 
     .popup-content {
-    display: grid;
-    height: 81vh;
-    padding: 2% 5%;
-    gap: 2%;
-    overflow: scroll;
+        flex: 1;
+        overflow: scroll;
+        padding: 5%;
+        box-sizing: border-box;
+    }
+
+    .popup-content-inner {
+        display: grid;
+        height: auto;
+        gap: 2%;
     }
 
     .form-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        height: auto;
     }
 
     .form-group label {
-    text-align: left;
-    width: 100%;
-    margin-bottom: 10px;
+        text-align: left;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 15px;
     }
 
     .input-form {
-    width: 100%;
-    height: 40px;
-    padding: 1% 1%;
-    border: none;
-    border-radius: 10px;
-    font-size: 20px;
-    color: white;
-    background-color: rgba(150, 191, 245, 0.5); 
-    outline: none;
+        width: 100%;
+        height: 40px;
+        padding: 1% 1%;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        color: white;
+        background-color: rgba(150, 191, 245, 0.5); 
+        outline: none;
+        box-sizing: border-box; 
     }
 
     /* Hide the up and down arrows */
@@ -620,89 +628,84 @@
     }
 
     .upload-btn {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
     }
 
     .input-file {
-    position: absolute;
-    font-size: 100px;
-    opacity: 0;
-    right: 0;
-    top: 0;
-    }
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        }
 
     .upload-btn span {
-    display: inline-block;
-    padding: 8px 20px;
-    cursor: pointer;
-    background-color: rgba(150, 191, 245, 0.5); /* Set the background color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    height: 48px; 
-    line-height: 32px; 
-    box-sizing: border-box; 
-    width: 100%; 
+        display: inline-block;
+        cursor: pointer;
+        background-color: rgba(150, 191, 245, 0.5); /* Set the background color */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        height: 40px; 
+        line-height: 40px; 
+        box-sizing: border-box; 
+        width: 100%; 
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .popup-content .cancel-button, .popup-content .save-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40PX;
+        width: 100%;
+        font-size: large;
+        font-weight: lighter;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
 
     .popup-content .cancel-button {
-    height: auto;
-    width: 100%;
-    padding: 3%;
-    font-size: large;
-    font-weight: lighter;
-    background-color: #ffffff;
-    color: #090074;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        background-color: #ffffff;
+        color: #090074;
     }
 
     .popup-content .save-button {
-    height: auto;
-    width: 100%;
-    padding: 3%;
-    font-size: large;
-    font-weight: lighter;
-    background-color: #4361EE;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        background-color: #4361EE;
+        color: white;
     }
 
     .cancel-button:hover {
-    color: white;
-    background-color: #F34235;
+        color: white;
+        background-color: #F34235;
     }
 
     .save-button:hover {
-    background-color: #7790ff;
+        background-color: #7790ff;
     }
 
     @media (max-width: 1000px) {
       .popup{
-          width: 50vh;
-          height: 70vh;
+          height: 80vh;
       }
 
-      .popup-content{
-          height: 61vh;
-      }
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 500px) {
       .popup{
-          width: 50vh;
-          height: 50vh;
-      }
+            height: 95vh;
+            width: 100vw;
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+        }
 
-      .popup-content{
-          height: 41vh;
-      }
     }
 
     </style>
@@ -879,52 +882,55 @@
           <h3>ADDING CANDIDATE</h3>
         </div>
         <div class="popup-content">
-        <form>
-          <div class="form-group">
-              <label for="profile">Profile Photo:</label>
-              <div class="upload-btn">
-                  <input type="file" id="profile-photo" accept="image/*" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file">
-                  <span>Upload Photo</span>
-              </div>
-              <img id="preview" src="#" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
-          </div>
-          <div class="form-group">
-            <label for="usepID">USeP ID:</label>
-            <input type="number" id="usepID" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="gender">Gender:</label>
-            <input type="text" id="gender" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="yearLevel">Year Level:</label>
-            <input type="text" id="yearLevel" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="program">Program:</label>
-            <input type="text" id="program" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="position">Position:</label>
-            <input type="text" id="position" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="localCouncil">Local Council:</label>
-            <input type="text" id="localCouncil" class="input-form">
-          </div>
-          <div class="form-group">
-            <label for="partyList">Party List:</label>
-            <input type="text" id="partyList" class="input-form">
-          </div>
-        </form>
-        <br>
-        <button class="cancel-button">Cancel</button>
-        <button class="save-button">Save</button>
-        </div>
+            <div class="popup-content-inner">
+                <form>
+                <div class="form-group">
+                    <label for="profile">Profile Photo:</label>
+                    <div class="upload-btn">
+                        <input type="file" id="profile-photo" accept="image/*" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file">
+                        <span>Upload Photo</span>
+                    </div>
+                    <img id="preview" src="#" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
+                </div>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input type="number" id="usepID" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input type="text" id="gender" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="yearLevel">Year Level:</label>
+                    <input type="text" id="yearLevel" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="program">Program:</label>
+                    <input type="text" id="program" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <input type="text" id="position" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="localCouncil">Local Council:</label>
+                    <input type="text" id="localCouncil" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="partyList">Party List:</label>
+                    <input type="text" id="partyList" class="input-form">
+                </div>
+                </form>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Save</button>
+                <br>
+            </div>
+        </div>    
     </div>
 
     <script>
@@ -948,7 +954,7 @@
             
         /*po up*/
         document.getElementById("addcandidate").addEventListener("click", function() {
-            document.getElementById("popup").style.display = "block";
+            document.getElementById("popup").style.display = "flex";
         });
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
