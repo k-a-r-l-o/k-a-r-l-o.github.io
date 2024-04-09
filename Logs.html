@@ -184,6 +184,9 @@
         justify-content: center;
     }
 
+    .buttonContainer .Logoutbutton:hover{
+        background-color: #ffe682;
+    }
 
     /*all scrollbar design*/
         /* Width and Height of scrollbar */
@@ -526,7 +529,7 @@
       appearance: none; /* All other browsers */
     }
 
-    button {
+    .content button {
         display: flex;
         height: 40px;
         font-size: 20px;
@@ -542,6 +545,163 @@
         max-width: 200px;
         align-items: center;
         justify-content: center;
+    }
+
+    /*add candidate pop up*/
+    .popup {
+        color: white;
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #222E50;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+        height: auto;
+        width: 60vh;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+
+
+
+    .head {
+        background: linear-gradient(to bottom, #28579E, #222E50);
+        width: 100%;
+        height: 6vh;
+        border-radius: 5px 5px 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup-content {
+        flex: 1;
+        overflow: hidden;
+        padding: 5%;
+        box-sizing: border-box;
+    }
+
+    .popup-content-inner {
+        display: grid;
+        height: auto;
+        gap: 10px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        height: auto;
+    }
+
+    .form-group label {
+        text-align: left;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    .input-form {
+        width: 100%;
+        height: 40px;
+        padding: 1% 1%;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        color: white;
+        background-color: rgba(150, 191, 245, 0.5); 
+        outline: none;
+        box-sizing: border-box; 
+    }
+
+    /* Hide the up and down arrows */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .upload-btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .input-file {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        }
+
+    .upload-btn span {
+        display: inline-block;
+        cursor: pointer;
+        background-color: rgba(150, 191, 245, 0.5); /* Set the background color */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        height: 40px; 
+        line-height: 40px; 
+        box-sizing: border-box; 
+        width: 100%; 
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .popup-content .cancel-button, .popup-content .save-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40PX;
+        width: 100%;
+        font-size: large;
+        font-weight: lighter;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .popup-content .cancel-button {
+        background-color: #ffffff;
+        color: #090074;
+    }
+
+    .popup-content .save-button {
+        background-color: #4361EE;
+        color: white;
+    }
+
+    .cancel-button:hover {
+        color: white;
+        background-color: #F34235;
+    }
+
+    .save-button:hover {
+        background-color: #7790ff;
+    }
+
+    @media (max-width: 1000px) {
+      .popup{
+          height: auto;
+      }
+
+    }
+
+    @media (max-width: 500px) {
+      .popup{
+            height: auto;
+            width: 100vw;
+        }
+
     }
 
     </style>
@@ -594,7 +754,7 @@
                 <button title="Voting Schedule" onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
                 <button title="Logs" id="selected"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
-                <button class="Logoutbutton" title="Logout"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>                
+                <button id="logout" class="Logoutbutton" title="Logout"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>                
             </div>
         </div>
         <div class="content">
@@ -692,6 +852,21 @@
             </div>
         </div>
     </div>
+    <div id="logoutpop" class="popup">
+        <div class="head">
+          <h3>LOGOUT</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <div style="text-align: center;">
+                    <p>Are you sure you want to Logout?</p>
+                </div>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Confirm</button>
+            </div>
+        </div>
+    </div>
     <script>
       // JavaScript code to switch HTML files with animation
       function switchHTML(file) {
@@ -753,7 +928,20 @@
 
             // Show the initial page
             showPage(currentPage);
-            
+
+            /*log out*/
+            document.getElementById("logout").addEventListener("click", function() {
+                document.getElementById("logoutpop").style.display = "flex";
+            });
+
+            document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
+                switchHTML('index.html');
+            });
+
+            document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
+                document.getElementById("logoutpop").style.display = "none";
+            });
+                
     </script>
 </body>
 </html>
