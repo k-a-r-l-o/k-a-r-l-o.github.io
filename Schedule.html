@@ -588,7 +588,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         background-color: #222E50;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         height: auto;
         width: 60vh;
         border-radius: 5px;
@@ -619,7 +619,7 @@
     .popup-content-inner {
         display: grid;
         height: auto;
-        gap: 2%;
+        gap: 10px;
     }
 
     .form-group {
@@ -779,7 +779,7 @@
                 <button id="selected"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
                 <button onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
-                <button class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
+                <button id="logout" class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
             </div>
         </div>
         <div class="content">
@@ -872,7 +872,21 @@
                 <br>
                 <button class="cancel-button">Cancel</button>
                 <button class="save-button">Save</button>
+            </div>
+        </div>
+    </div>
+    <div id="logoutpop" class="popup">
+        <div class="head">
+          <h3>LOGOUT</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <div style="text-align: center;">
+                    <p>Are you sure you want to Logout?</p>
+                </div>
                 <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Confirm</button>
             </div>
         </div>
     </div>
@@ -912,16 +926,29 @@
             xhr.send();
         }
 
-        /*po up*/
+        /*log out*/
+        document.getElementById("logout").addEventListener("click", function() {
+            document.getElementById("logoutpop").style.display = "flex";
+        });
+
+        document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
+            switchHTML('index.html');
+        });
+
+        document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
+            document.getElementById("logoutpop").style.display = "none";
+        });
+
+        /*pop up*/
         document.getElementById("addschedule").addEventListener("click", function() {
             document.getElementById("popup").style.display = "flex";
         });
-        
-        document.querySelector(".cancel-button").addEventListener("click", function() {
+
+        document.querySelector(".save-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
         });
 
-        document.querySelector(".save-button").addEventListener("click", function() {
+        document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
         });
 
