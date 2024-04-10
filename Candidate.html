@@ -511,9 +511,7 @@
     select {
       height: 40px;
       width: 100%;
-      max-width: 200px;
       font-size: 20px;
-      font-weight: bold;
       background-color: #F6C90E;
       color: #222E50;
       border-radius: 5px;
@@ -548,7 +546,7 @@
     }
     
 
-    /*m pop up*/
+    /*pop up*/
     .popup {
         color: white;
         display: none;
@@ -565,7 +563,7 @@
         z-index: 9999;
     }
 
-    #logoutpop{
+    #logoutpop, #deletepop{
         height: auto;
     }
 
@@ -590,7 +588,7 @@
         box-sizing: border-box;
     }
 
-    #logoutpop .popup-content{
+    #logoutpop .popup-content, #deletepop .popup-content{
         overflow: hidden;
     }
 
@@ -615,7 +613,7 @@
         font-size: 15px;
     }
 
-    .input-form {
+    .input-form{
         width: 100%;
         height: 40px;
         padding: 1% 1%;
@@ -623,6 +621,18 @@
         border-radius: 10px;
         font-size: 15px;
         color: white;
+        background-color: rgba(150, 191, 245, 0.5); 
+        outline: none;
+        box-sizing: border-box; 
+    }
+
+    select option {
+        width: 100%;
+        padding: 1% 1%;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        color: black;
         background-color: rgba(150, 191, 245, 0.5); 
         outline: none;
         box-sizing: border-box; 
@@ -696,6 +706,16 @@
 
     .save-button:hover {
         background-color: #7790ff;
+    }
+
+    #deletepop .popup-content .save-button {
+        color: white;
+        background-color: #F34235;
+    }
+
+    #deletepop .popup-content .save-button:hover {
+        color: white;
+        background-color: #ff746a;
     }
 
     @media (max-width: 1000px) {
@@ -802,7 +822,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>
                   <tr>
@@ -813,7 +833,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>
                   <tr>
@@ -824,7 +844,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>
                   <tr>
@@ -835,7 +855,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>
                   <tr>
@@ -846,7 +866,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>
                   <tr>
@@ -857,7 +877,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>
                   <tr>
@@ -868,7 +888,7 @@
                       <td class="tdlast">
                           <img src="view.png" alt="view icon">
                           <img src="edit.png" alt="edit icon">
-                          <img src="delete.png" alt="delete icon">
+                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
                   </tr>                  
                     
@@ -887,7 +907,7 @@
     </div>
     <div class="popup" id="popup">
         <div class="head">
-          <h3>ADDING CANDIDATE</h3>
+          <h3>ADD CANDIDATE</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
@@ -910,27 +930,59 @@
                 </div>
                 <div class="form-group">
                     <label for="gender">Gender:</label>
-                    <input type="text" id="gender" class="input-form">
+                    <select id="gender" class="input-form">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="yearLevel">Year Level:</label>
-                    <input type="text" id="yearLevel" class="input-form">
+                    <select id="yearlevel" class="input-form">
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="program">Program:</label>
-                    <input type="text" id="program" class="input-form">
+                    <select id="program" class="input-form">
+                        <option value="BSABE">BSABE</option>
+                        <option value="BEED">BEED</option>
+                        <option value="BECED">BECED</option>
+                        <option value="BSNED">BSNED</option>
+                        <option value="BSED">BSED</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BTVTED">BTVTED</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Council">Council:</label>
+                    <select id="Council" class="input-form">
+                        <option value="TSC">TSC</option>
+                        <option value="SABES">SABES</option>
+                        <option value="OFEE">OFEE</option>
+                        <option value="AECES">AECES</option>
+                        <option value="OFSET">OFSET</option>
+                        <option value="AFSET">AFSET</option>
+                        <option value="SITS">SITS</option>
+                        <option value="FTVETTS">FTVETTS</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="position">Position:</label>
-                    <input type="text" id="position" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="localCouncil">Local Council:</label>
-                    <input type="text" id="localCouncil" class="input-form">
+                    <select id="position" class="input-form">
+                        <option value="president">President</option>
+                        <option value="vice-president">Vice President</option>
+                        <option value="secretary">Secretary</option>
+                        <option value="treasurer">Treasurer</option>
+                      </select>
                 </div>
                 <div class="form-group">
                     <label for="partyList">Party List:</label>
-                    <input type="text" id="partyList" class="input-form">
+                    <select id="partyList" class="input-form">
+                        <option value="YANO">YANO</option>
+                        <option value="AGIla">AGIla</option>
+                      </select>
                 </div>
                 </form>
                 <br>
@@ -939,6 +991,22 @@
                 <br>
             </div>
         </div>    
+    </div>
+    <div id="deletepop" class="popup">
+        <div class="head">
+          <h3>DELETE CANDIDATE</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <div style="text-align: center;">
+                    <p>Are you sure you want to delete this candidate?
+                        This action cannot be undone.</p>
+                </div>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Delete</button>
+            </div>
+        </div>
     </div>
     <div id="logoutpop" class="popup">
         <div class="head">
@@ -975,13 +1043,22 @@
                 document.body.classList.add('fade-in');
         });
             
-        /*po up*/
+        /*add pop up*/
         document.getElementById("addcandidate").addEventListener("click", function() {
             document.getElementById("popup").style.display = "flex";
         });
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
+        });
+
+         /*delete pop up*/
+         function deletepop() {
+            document.getElementById("deletepop").style.display = "flex";
+        };
+        
+        document.querySelector("#deletepop .cancel-button").addEventListener("click", function() {
+            document.getElementById("deletepop").style.display = "none";
         });
 
         function previewImage(event) {
