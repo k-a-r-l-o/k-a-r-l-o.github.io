@@ -727,11 +727,7 @@
 
     @media (max-width: 500px) {
       .popup{
-            height: 95vh;
             width: 100vw;
-            top: 0;
-            left: 0;
-            transform: translate(0, 0);
         }
 
     }
@@ -858,9 +854,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdfirst">Admin111</td>
+                            <td class="tdfirst">Watcher1</td>
                             <td>Jacob Anderson</td>
-                            <td>Admin-Technical</td>
+                            <td>Watcher</td>
                             <td>Online</td>
                             <td class="tdlast">
                                 <img src="view.png" alt="view icon">
@@ -869,9 +865,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="tdfirst">Admin112</td>
+                            <td class="tdfirst">Watcher2</td>
                             <td>Samantha Lewis</td>
-                            <td>Admin-Technical</td>
+                            <td>Watcher</td>
                             <td>Online</td>
                             <td class="tdlast">
                                 <img src="view.png" alt="view icon">
@@ -891,6 +887,48 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="popup" id="popup">
+        <div class="head">
+          <h3>ADD USER</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                <div class="form-group">
+                    <label for="UName">Username:</label>
+                    <input type="text" id="UName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password:</label>
+                    <input type="password" id="Password" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="cPassword">Confirm Password:</label>
+                    <input type="password" id="cPassword" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input type="number" id="usepID" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="User">User Type:</label>
+                    <select id="User" class="input-form">
+                        <option value="Admin-Front">Admin-Front</option>
+                        <option value="Admin-Technical">Admin-Technical</option>
+                        <option value="Chairperson">Watcher</option>
+                      </select>
+                </div>
+                </form>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Save</button>
+            </div>
+        </div>    
     </div>
     <div id="deletepop" class="popup">
         <div class="head">
@@ -997,6 +1035,15 @@
 
         // Show the initial page
         showPage(currentPage);
+
+        /*add pop up*/
+        document.getElementById("add").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "flex";
+        });
+        
+        document.querySelector(".cancel-button").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "none";
+        });
 
         /*delete pop up*/
         function deletepop() {
