@@ -718,6 +718,16 @@
         background-color: #ff746a;
     }
 
+    #editpop .popup-content .save-button {
+        color: black;
+        background-color: #F6C90E;
+    }
+
+    #editpop .popup-content .save-button:hover {
+        color: black;
+        background-color: #ffe47a;
+    }
+
     @media (max-width: 1000px) {
       .popup{
           height: auto;
@@ -814,7 +824,7 @@
                             <td>1</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -824,7 +834,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -834,7 +844,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -844,7 +854,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -854,7 +864,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -864,7 +874,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -874,7 +884,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -884,7 +894,7 @@
                             <td>2</td>
                             <td class="tdlast">
                                 <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -906,6 +916,28 @@
     <div class="popup" id="popup">
         <div class="head">
           <h3>ADD COUNCIL</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                <div class="form-group">
+                    <label for="councilName">Council Name:</label>
+                    <input type="text" id="councilName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="level">Level:</label>
+                    <input type="number" id="level" class="input-form">
+                </div>
+                </form>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Save</button>
+            </div>
+        </div>    
+    </div>
+    <div class="popup" id="editpop">
+        <div class="head">
+          <h3>EDIT COUNCIL</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
@@ -1038,6 +1070,15 @@
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
+        });
+
+        /*edit pop up*/
+        function editpop() {
+            document.getElementById("editpop").style.display = "flex";
+        };
+        
+        document.querySelector("#editpop .cancel-button").addEventListener("click", function() {
+            document.getElementById("editpop").style.display = "none";
         });
 
         /*delete pop up*/

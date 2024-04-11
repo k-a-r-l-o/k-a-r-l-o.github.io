@@ -735,6 +735,16 @@
         background-color: #ff746a;
     }
 
+    #editpop .popup-content .save-button {
+        color: black;
+        background-color: #F6C90E;
+    }
+
+    #editpop .popup-content .save-button:hover {
+        color: black;
+        background-color: #ffe47a;
+    }
+
     @media (max-width: 1000px) {
       .popup{
           height: 80vh;
@@ -834,8 +844,8 @@
                             <td>2nd Year</td>
                             <td>BSIT</td>
                             <td class="tdlast">
-                                <img src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="viewpop()" src="view.png" alt="view icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -845,8 +855,8 @@
                             <td>2nd Year</td>
                             <td>BSIT</td>
                             <td class="tdlast">
-                                <img src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="viewpop()" src="view.png" alt="view icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -856,8 +866,8 @@
                             <td>1st Year</td>
                             <td>BEED</td>
                             <td class="tdlast">
-                                <img src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="viewpop()" src="view.png" alt="view icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -867,8 +877,8 @@
                             <td>3rd Year</td>
                             <td>BECED</td>
                             <td class="tdlast">
-                                <img src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="viewpop()" src="view.png" alt="view icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -878,8 +888,8 @@
                             <td>3rd Year</td>
                             <td>BSABE</td>
                             <td class="tdlast">
-                                <img src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="viewpop()" src="view.png" alt="view icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>
@@ -889,8 +899,8 @@
                             <td>4th Year</td>
                             <td>BSED</td>
                             <td class="tdlast">
-                                <img src="view.png" alt="view icon">
-                                <img src="edit.png" alt="edit icon">
+                                <img onclick="viewpop()" src="view.png" alt="view icon">
+                                <img onclick="editpop()" src="edit.png" alt="edit icon">
                                 <img onclick="deletepop()" src="delete.png" alt="delete icon">
                             </td>
                         </tr>                
@@ -910,6 +920,55 @@
     <div class="popup" id="popup">
         <div class="head">
           <h3>ADD VOTER</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input type="number" id="usepID" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" class="input-form">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="yearLevel">Year Level:</label>
+                    <select id="yearlevel" class="input-form">
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program:</label>
+                    <select id="program" class="input-form">
+                        <option value="BSABE">BSABE</option>
+                        <option value="BEED">BEED</option>
+                        <option value="BECED">BECED</option>
+                        <option value="BSNED">BSNED</option>
+                        <option value="BSED">BSED</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BTVTED">BTVTED</option>
+                    </select>
+                </div>
+                </form>
+                <br>
+                <button class="cancel-button">Cancel</button>
+                <button class="save-button">Save</button>
+            </div>
+        </div>    
+    </div>
+    <div class="popup" id="editpop">
+        <div class="head">
+          <h3>EDIT VOTER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
@@ -1069,6 +1128,15 @@
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
+        });
+
+        /*edit pop up*/
+        function editpop() {
+            document.getElementById("editpop").style.display = "flex";
+        };
+        
+        document.querySelector("#editpop .cancel-button").addEventListener("click", function() {
+            document.getElementById("editpop").style.display = "none";
         });
 
         /*delete pop up*/
