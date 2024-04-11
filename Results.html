@@ -699,6 +699,16 @@
         background-color: #7790ff;
     }
 
+    #exportpop .popup-content .save-button {
+        color: black;
+        background-color: #F6C90E;
+    }
+
+    #exportpop .popup-content .save-button:hover {
+        color: black;
+        background-color: #ffe270;
+    }
+
     @media (max-width: 1000px) {
       .popup{
           height: auto;
@@ -873,12 +883,26 @@
 
               </div>
               <div class="nextcontainer">
-                <button type="button">Export</button>
+                <button id="export" type="button">Export</button>
               </div>
             </div>
         </div>
     </div>
   </div>
+  <div id="exportpop" class="popup">
+    <div class="head">
+      <h3>EXPORTED SUCCESSFULLY</h3>
+    </div>
+    <div class="popup-content">
+        <div class="popup-content-inner">
+            <div style="text-align: center;">
+                <p>The result successfully exported!</p>
+            </div>
+            <br>
+            <button class="save-button">Okay</button>
+        </div>
+    </div>
+</div>
   <div id="logoutpop" class="popup">
     <div class="head">
       <h3>LOGOUT</h3>
@@ -955,6 +979,15 @@
 
             // Show the initial page
             showPage(currentPage);
+
+            /*export pop up*/
+            document.getElementById("export").addEventListener("click", function() {
+                document.getElementById("exportpop").style.display = "flex";
+            });
+            
+            document.querySelector("#exportpop .save-button").addEventListener("click", function() {
+                document.getElementById("exportpop").style.display = "none";
+            });
 
             /*log out*/
             document.getElementById("logout").addEventListener("click", function() {
