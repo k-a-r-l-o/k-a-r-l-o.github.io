@@ -626,6 +626,10 @@
         box-sizing: border-box; 
     }
 
+    .input-form::placeholder {
+        color: inherit; 
+    }
+
     select option {
         width: 100%;
         padding: 1% 1%;
@@ -1001,6 +1005,55 @@
             </div>
         </div>    
     </div>
+    <div class="popup" id="viewpop">
+        <div class="head">
+          <h3>CANDIDATE INFORMATION</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                <div class="form-group">
+                    <label for="profile">Profile Photo:</label>
+                    <img id="preview" src="DefaultProfile.png" alt="Preview" style="display: flex; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
+                </div>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input type="number" id="usepID" class="input-form" placeholder="2022-00294" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" class="input-form" placeholder="Karl Cornejo" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input id="gender" class="input-form" placeholder="Male" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="yearLevel">Year Level:</label>
+                    <input id="yearlevel" class="input-form" placeholder="2nd Year" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program:</label>
+                    <input id="program" class="input-form" placeholder="BSIT" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="Council">Council:</label>
+                    <input id="Council" class="input-form" placeholder="SITS" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <input id="position" class="input-form" placeholder="Vice-President" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="partyList">Party List:</label>
+                    <input id="partyList" class="input-form" placeholder="YANO" readonly>
+                </div>
+                </form>
+                <br>
+                <button class="save-button">Back</button>
+            </div>
+        </div>    
+    </div>
     <div class="popup" id="editpop">
         <div class="head">
           <h3>EDIT CANDIDATE</h3>
@@ -1145,6 +1198,15 @@
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
+        });
+
+        /*view pop up*/
+        function viewpop() {
+            document.getElementById("viewpop").style.display = "flex";
+        };
+        
+        document.querySelector("#viewpop .save-button").addEventListener("click", function() {
+            document.getElementById("viewpop").style.display = "none";
         });
 
         /*edit pop up*/

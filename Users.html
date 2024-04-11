@@ -563,7 +563,7 @@
         z-index: 9999;
     }
 
-    #logoutpop, #deletepop{
+    #logoutpop, #deletepop, #viewpop{
         height: auto;
     }
 
@@ -624,6 +624,10 @@
         background-color: rgba(150, 191, 245, 0.5); 
         outline: none;
         box-sizing: border-box; 
+    }
+
+    .input-form::placeholder {
+        color: inherit; 
     }
 
     select option {
@@ -940,6 +944,39 @@
             </div>
         </div>    
     </div>
+    <div class="popup" id="viewpop">
+        <div class="head">
+          <h3>USER INFORMATION</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                <div class="form-group">
+                    <label for="UName">Username:</label>
+                    <input type="text" id="UName" class="input-form" placeholder="Central1" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password:</label>
+                    <input type="password" id="Password" class="input-form" placeholder="Central1" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input type="number" id="usepID" class="input-form" placeholder="2022-00294" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" class="input-form" placeholder="Kathy Jane Ihalas" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="User">User Type:</label>
+                    <input id="User" class="input-form" placeholder="Chairperson" readonly>
+                </div>
+                </form>
+                <br>
+                <button class="save-button">Back</button>
+            </div>
+        </div>    
+    </div>
     <div class="popup" id="editpop">
         <div class="head">
           <h3>EDIT USER</h3>
@@ -1095,6 +1132,15 @@
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
+        });
+
+        /*view pop up*/
+        function viewpop() {
+            document.getElementById("viewpop").style.display = "flex";
+        };
+        
+        document.querySelector("#viewpop .save-button").addEventListener("click", function() {
+            document.getElementById("viewpop").style.display = "none";
         });
 
         /*edit pop up*/
