@@ -321,14 +321,14 @@
     }
 
     @media (max-width: 500px) {
-      .dropdown button {
+      #add {
         font-size: 0;
         padding: 10px;
         width: auto;
-       gap: 0;
+        gap: 0;
       }
         
-      .dropdown button img {
+      #add img {
         justify-content: center;
       }
 
@@ -514,6 +514,24 @@
         font-weight: bold;
         background-color: #F6C90E; /* Same background color as the select */
         color: #222E50;
+        border: none;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 0 20px; /* Adjust padding as needed */
+        cursor: pointer;
+        width: 100%;
+        max-width: 200px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #backbutton {
+        display: flex;
+        height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #42A5F5; /* Same background color as the select */
+        color: #fff;
         border: none;
         gap: 10px;
         border-radius: 5px;
@@ -782,7 +800,7 @@
                     </div>                    
                 </div>
                 <div class="dropdown">
-                    <button><img src="plus.png" alt="plus icon">Add new</button>
+                    <button id="add"><img src="plus.png" alt="plus icon">Add new</button>
                 </div>
             </div>
             <div class="tableandnav">

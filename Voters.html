@@ -327,6 +327,20 @@
 
     }
 
+    @media (max-width: 500px) {
+      #add, #importbutton {
+        font-size: 0;
+        padding: 10px;
+        width: auto;
+        gap: 0;
+      }
+        
+      #add img, #importbutton img {
+        justify-content: center;
+      }
+
+    }
+
     @media (max-height: 800px) {
 
         .logoName, .logoName img, .searchspace{
@@ -378,7 +392,7 @@
       gap: 20px;
     }
 
-    .importbutton{
+    #importbutton{
         background-color: white;
     }
 
@@ -803,8 +817,8 @@
                     </div>  
                 </div>
                 <div class="dropdown">
-                    <button class="importbutton"><img src="plus.png" alt="plus icon">Import</button>
-                    <button><img src="plus.png" alt="plus icon">Add new</button>
+                    <button id="importbutton"><img src="plus.png" alt="plus icon">Import</button>
+                    <button id="add"><img src="plus.png" alt="plus icon">Add new</button>
                 </div>
             </div>
             <div class="tableandnav">
