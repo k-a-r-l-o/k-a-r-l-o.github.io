@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote Watcher|Login</title>
+  <title>U-Vote Voter|Login</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,8 @@
 
     body {
         font-family: 'Inter', sans-serif;
-        background-color: #E2EAFF;
-        background-image: url('backgroundwatcher.svg');
+        background-color: #ffffff;
+        background-image: url('backgroundVoter.svg');
         background-size: 76.5vh;
         background-repeat: no-repeat;
         margin: 0;
@@ -28,9 +28,9 @@
 
     header {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        background-color: #090088;
-        background-image: url('backgroundwatcher.svg');
+        grid-template-columns: 1fr 2fr;
+        background-color: #2F80ED;
+        background-image: url('backgroundVoter.svg');
         background-size: 76.5vh;
         background-repeat: no-repeat;
         height: auto;
@@ -202,7 +202,7 @@
         padding: 3%;
         font-size: larger;
         font-weight: lighter;
-        background-color: #090074;
+        background-color: #4361EE;
         color: #ffffff;
         border: none;
         border-radius: 16px;
@@ -320,7 +320,7 @@
                 event.preventDefault();
 
                 // Your custom action here
-                window.open('indexVoter.html', '_self');
+                window.open('index.html', '_self');
             }
         });
 
