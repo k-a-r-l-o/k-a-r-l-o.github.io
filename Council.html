@@ -452,12 +452,13 @@
 
     th {
       background: linear-gradient(to bottom, #28579E, #222E50);
-      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
       height: 63px;
     }
 
-    #Results tr:nth-child(2) {
-        margin-top: 8px;
+    .trheader {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
+        border-top-right-radius: 12px;
+        border-top-left-radius: 12px;
     }
 
     .thfirst {
@@ -823,7 +824,7 @@
             <div class="tableandnav">
                 <div class="tablecontainer">
                     <table id="Results">
-                        <tr>
+                        <tr class="trheader">
                         <th class="thfirst">NAME</th>
                         <th>PROGRAM</th>
                         <th>LEVEL</th>
