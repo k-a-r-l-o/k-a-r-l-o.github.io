@@ -192,6 +192,7 @@
 
         h2{
             font-weight: 400;
+            text-transform: uppercase;
         }
 
         .card{
@@ -228,6 +229,7 @@
             font-size: 25px;
             font-weight: 400;
             margin: 0;
+            text-transform: uppercase;
         }
 
         .cardcontent{
@@ -324,8 +326,10 @@
         .candidateinfocontent label {
             display: flex;
             align-items: center;
-            color: #333; /* Color of the candidate name */
+            color: #000000; /* Color of the candidate name */
             margin-bottom: 5px;
+            font-weight: 500;
+            text-transform: uppercase;
         }
 
         .candidateinfocontent input[type="radio"] {
@@ -539,7 +543,7 @@
             <div class="cardcontainer">
                 <div class="title">
                     <div class="tname">
-                        <h2>Student Council</h2>
+                        <h2>STUDENT COUNCIL</h2>
                     </div>
                 </div>
 
@@ -550,15 +554,17 @@
 
                     <div class="cardcontent">
                         <div class="candidateinfocontent">
-                            <label for="Abstain">
-                                <input type="radio" id="Abstain" name="candidate" value="Abstain">Abstain
-                            </label>
-                            <label for="1">
-                                <input type="radio" id="1" name="candidate" value="1">Maya Cartel
-                            </label>
-                            <label for="2">
-                                <input type="radio" id="2" name="candidate" value="2">John Doe
-                            </label>
+                            <form>
+                                <label for="pAbstain">
+                                    <input type="radio" id="pAbstain" name="candidate" value="Abstain">Abstain
+                                </label>
+                                <label for="p1">
+                                    <input type="radio" id="p1" name="candidate" value="1">Maya Cartel
+                                </label>
+                                <label for="p2">
+                                    <input type="radio" id="p2" name="candidate" value="2">John Doe
+                                </label>
+                            </form>
                         </div>
                         <div class="candidateimage">
                             <img src="DefaultProfile.png" alt="sub">
@@ -568,20 +574,22 @@
 
                 <div class="card">
                     <div class="positiontitle">
-                        <h3>President</h3>
+                        <h3>Vice President</h3>
                     </div>
 
                     <div class="cardcontent">
                         <div class="candidateinfocontent">
-                            <label for="Abstain">
-                                <input type="radio" id="Abstain" name="candidate" value="Abstain">Abstain
-                            </label>
-                            <label for="1">
-                                <input type="radio" id="1" name="candidate" value="1">Maya Cartel
-                            </label>
-                            <label for="2">
-                                <input type="radio" id="2" name="candidate" value="2">John Doe
-                            </label>
+                            <form>
+                                <label for="vAbstain">
+                                    <input type="radio" id="vAbstain" name="candidate" value="Abstain">Abstain
+                                </label>
+                                <label for="v1">
+                                    <input type="radio" id="v1" name="candidate" value="1">Maya Cartel
+                                </label>
+                                <label for="v2">
+                                    <input type="radio" id="v2" name="candidate" value="2">John Doe
+                                </label>
+                            </form>
                         </div>
                         <div class="candidateimage">
                             <img src="DefaultProfile.png" alt="sub">
