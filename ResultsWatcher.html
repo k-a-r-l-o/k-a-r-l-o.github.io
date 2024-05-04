@@ -59,7 +59,6 @@
         position: fixed;
         z-index: 1;
         animation: fadeIn 0.3s forwards;
-        justify-content: center;
     }
 
     /*Content*/
@@ -72,23 +71,25 @@
       color: black;
       justify-content: center;
       align-items: baseline;
+      align-content: center;
       width: 100%;
-      max-width: 1000px;
       padding: 2%;
       flex: 1;
       z-index: 2; 
-      overflow: scroll;
+      overflow: auto;
     }
 
     .contenthead {
       display: grid;
       grid-template-columns: 2fr 1fr;
       width: 100%;
+      max-width: 1000px;
       height: auto;
       color: black;
       justify-content: center;
       align-items: center;
       gap: 20px;
+      justify-self: center;
     }
 
     .titlecontainer {
@@ -121,6 +122,8 @@
 
     .tableandnav{
         width: 100%;
+        max-width: 1000px;
+        justify-self: center;
         overflow: hidden;
     }
 
@@ -703,7 +706,7 @@
         
         // JavaScript code for navigation
         var currentPage = 0;
-        var rowsPerPage = 5; // Change this value as needed
+        var rowsPerPage = 8; // Change this value as needed
 
             function showPage(page) {
                 var table = document.getElementById('Results');
