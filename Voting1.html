@@ -187,6 +187,7 @@
             min-width: 250px;
             border-radius:12px;
             background-color: #001AFF; 
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
 
         h2{
@@ -195,14 +196,15 @@
 
         .card{
             height: auto;
-            width: 60%;
-            min-width: 350px;
+            width: 100%;
+            max-width: 1285px;
             display: flex;
             flex-direction: column;
             justify-self: center;
             border-radius: 12px;
             margin-bottom: 1%;
             background-color: transparent;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
 
         form{
@@ -219,6 +221,7 @@
             border-radius: 12px 12px 0 0;
             padding: 10px 10%;
             box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
         
         .positiontitle h3{
@@ -353,18 +356,18 @@
             left: 50%;
             transform: translate(-50%, -50%);
             /* Define the size and appearance of the dot */
-            width: 18px;
-            height: 18px;
+            width: 20.5px;
+            height: 20.5px;
             border-radius: 50%;
             background-color: #FCCB06; /* Color of the dot when checked */
         }
 
 
         .button{
-            width: 60%;
+            width: 100%;
             display: flex;
             justify-content: end;
-            min-width: 350px;
+            max-width: 1285px;
             margin-bottom: 3%;
         }
 
@@ -385,6 +388,7 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
 
         .button button:hover {
@@ -445,6 +449,10 @@
         @media (max-width: 900px) {
             .cardcontent{
                 flex-direction: column;
+            }
+
+            .candidateimage { 
+                justify-content: center;
             }
 
             .title{
