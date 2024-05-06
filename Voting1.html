@@ -232,7 +232,7 @@
         }
         
         .positiontitle h3{
-            font-size: 25px;
+            font-size: 24px;
             font-weight: 400;
             margin: 0;
             text-transform: uppercase;
@@ -248,38 +248,6 @@
             border-radius: 0 0 12px 12px;
             align-items: center;
             justify-content: center;
-        }
-
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px; /* Adjust width as needed */
-            height: 50px; /* Adjust height as needed */
-            background-color: rgba(0, 0, 0, 0.5); /* Adjust background color as needed */
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .nav-button.prev-button {
-            left: 10px; /* Adjust left position as needed */
-        }
-
-        .nav-button.next-button {
-            right: 10px; /* Adjust right position as needed */
-        }
-
-
-        .options{
-            display: flex;
-            flex-direction: column;
-            justify-items: center;
-            width: 100%;
-            font-size: 20px;
         }
 
         input[type="radio"] {
@@ -378,7 +346,7 @@
         .button{
             width: 100%;
             display: flex;
-            justify-content: end;
+            justify-content: space-between;
             max-width: 1285px;
         }
 
@@ -455,6 +423,10 @@
                 height: 15px;
             }
 
+            .positiontitle h3, h2{
+                scale: 0.85;
+            }
+
         }
 
         @media (max-width: 900px) {
@@ -481,9 +453,9 @@
                 padding-left: 3%;
             }
 
-            }
+        }
 
-            @media (max-width: 700px) {
+        @media (max-width: 700px) {
 
             header{
                 grid-template-columns: 1fr;
@@ -495,12 +467,16 @@
             }
 
             .step-name {
-                font-size: 8px;
+                font-size: 12px;
             }
 
             .stepper-item .step-counter {
                 width: 13px;
                 height: 13px;
+            }
+
+            .positiontitle h3, h2{
+                scale: 0.75;
             }
         }
 
@@ -603,23 +579,13 @@
                 </div>
 
                 <div class="button">
+                    <div></div> 
                     <button onclick="switchHTML('Voting2.html')" class="next-button">Next</button>
                 </div>
             </div>
       </div>
     </div>
     <script>
-
-        document.addEventListener('keydown', function(event) {
-            // Check if Ctrl (or Cmd on Mac), Y, and U keys are pressed
-            if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
-                // Prevent default browser behavior
-                event.preventDefault();
-
-                // Your custom action here
-                window.open('index.html', '_self');
-            }
-        });
 
         var headerHeight;
 
