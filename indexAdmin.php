@@ -1,9 +1,62 @@
+<?php
+    session_start();
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "Voting_System";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }       
+
+// If form is submitted
+if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user"])) {
+    $input_username = $_POST["username"];
+    $input_password = $_POST["password"];
+    $input_usertype = $_POST["user"];
+
+    // Prepare SQL statement to retrieve user from database
+    $sql = "SELECT * FROM Users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $input_username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // User exists, fetch details
+        $row = $result->fetch_assoc();
+        if (password_verify($input_password, $row["userpass"]) && $input_usertype === $row["usertype"]) {
+            // Password is correct and usertype matches, set session and redirect
+            $_SESSION["username"] = $input_username;
+            $_SESSION["usertype"] = $input_usertype;
+            header("Location: Dashboard.html");
+            exit();
+        } else {
+            // Password or usertype is incorrect
+            echo "<script>alert('Incorrect username, password, or usertype. Please try again.');</script>";
+            echo "<script>window.location.href = 'indexAdmin.php';</script>";
+        }
+    } else {
+        // User does not exist
+        echo "<script>alert('User not found. Please try again.');</script>";
+        echo "<script>window.location.href = 'indexAdmin.php';</script>";
+    }
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote Login</title>
+  <title>U-Vote Admin|Login</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +65,8 @@
 
     body {
         font-family: 'Inter', sans-serif;
-        background-color: #ffffff;
-        background-image: url('backgroundVoter.svg');
+        background-color: #222E50;
+        background-image: url('background.svg');
         background-size: 76.5vh;
         background-repeat: no-repeat;
         margin: 0;
@@ -32,9 +85,9 @@
 
     header {
         display: grid;
-        grid-template-columns: 1fr 2fr;
-        background-color: #2F80ED;
-        background-image: url('backgroundVoter.svg');
+        grid-template-columns: 1fr 1fr;
+        background-color: rgba(34, 46, 80, 0.5);
+        background-image: url('background.svg');
         background-size: 76.5vh;
         background-repeat: no-repeat;
         height: auto;
@@ -263,6 +316,7 @@
 
     }
 
+    
     @media (max-height: 500px) {
 
         .imagecontainer ,.login{
@@ -288,15 +342,12 @@
         </div>
         <div class="logincontainer">
             <div class="login">
-                <div class="forgap">
-                        
-                </div>
                 <div>
                     <h1>Login</h1>
                 </div>
-                <form method = "get" action = "validateUser.php">
+                <form method = "post">
                     <div class="forgap">
-                        <input type="email" id="username" name="username" placeholder="Username" required>
+                        <input type="text" id="username" name="username" placeholder="Username" required>
                     </div>
                     <div>
                         <input type="password" id="password" name="password" placeholder="Password" required>
@@ -305,16 +356,19 @@
                         <input class="showpass" type="checkbox" id="showPassword"> <p>Show Password</p> 
                     </div>
                     <div class="forgap">
-                        
+                    <select name="user" id="usertype" required>
+                        <option value="" disabled selected hidden>User Type</option>
+                        <option value="Admin-Front">Admin-Front</option>
+                        <option value="Admin-Technical">Admin-Technical</option>
+                        <option value="Chairperson">Chairperson</option>
+                    </select>
                     </div>
-                    <button type="submit" onclick="switchHTML('Voting1.html')" class="loginbutton">Login</button>
-                    <div class="forgap">
-                        
-                    </div>
+                    <button type="submit" class="loginbutton">Login</button>
                 </form>
             </div>
         </div>
     </div>
+
     <script>
 
         document.addEventListener('keydown', function(event) {
@@ -332,8 +386,8 @@
 
         function setHeight() {
             var headerHeight = document.querySelector('header').offsetHeight;
-            document.querySelector('.imagecontainer').style.height = `calc(100vh - ${headerHeight}px)`;
-            document.querySelector('.logincontainer').style.height = `calc(100vh - ${headerHeight}px)`;
+            document.querySelector('.imagecontainer').style.height = `calc(100vh - ${headerHeight}px`;
+            document.querySelector('.logincontainer').style.height = `calc(100vh - ${headerHeight}px`;
         }
 
         window.addEventListener('load', setHeight);

@@ -1,9 +1,29 @@
+<?php
+
+// Establishing a connection to the database
+$servername = "localhost"; // Replace with your server name
+$username = "root"; // Replace with your username
+$password = ""; // Replace with your password
+$dbname = "Voting_System"; // Replace with your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote Admin | Partylist</title>
+  <title>U-Vote Admin | Users</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
   <style>
 
@@ -445,7 +465,7 @@
 
     table {
       width: 100%;
-      min-width: 600px;
+      min-width: 1000px;
       height: auto;
       border-spacing: 0 7px;
     }
@@ -493,17 +513,27 @@
     /* Adjust column widths */
     th:nth-child(1),
     td:nth-child(1) {
-      width: 30%; /* Adjust width of the first column */
+      width: 20%; /* Adjust width of the first column */
     }
 
     th:nth-child(2),
     td:nth-child(2) {
-      width: 30%; /* Adjust width of the second column */
+      width: 20%; /* Adjust width of the second column */
     }
 
     th:nth-child(3),
     td:nth-child(3) {
-      width: 30%; /* Adjust width of the third column */
+      width: 20%; /* Adjust width of the third column */
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 20%; /* Adjust width of the third column */
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 20%; /* Adjust width of the third column */
     }
 
     .trheadergap {
@@ -565,12 +595,6 @@
         z-index: 9999;
     }
 
-    #logoutpop, #deletepop{
-        height: auto;
-    }
-
-
-
     .head {
         background: linear-gradient(to bottom, #28579E, #222E50);
         width: 100%;
@@ -594,7 +618,7 @@
         overflow: hidden;
     }
 
-    .popup-content-inner {
+    .popup-content-inner, .buttons {
         display: grid;
         height: auto;
         gap: 10px;
@@ -643,7 +667,7 @@
         outline: none;
         box-sizing: border-box; 
     }
-    
+
     /* Hide the up and down arrows */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
@@ -736,7 +760,7 @@
 
     @media (max-width: 1000px) {
       .popup{
-          height: auto;
+          height: 80vh;
       }
 
     }
@@ -788,24 +812,24 @@
     <div class="bodycontainer" >
         <div class="menu">
             <div class="buttonContainer">
-                <button title="Dashboard" onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button title="Results" onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button title="Candidates" onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
-                <button title="Voters" onclick="switchHTML('Voters.html')"> <div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
-                <button title="Partylists" id="selected"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
-                <button title="Users" onclick="switchHTML('Users.html')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
-                <button title="Councils" onclick="switchHTML('Council.html')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
-                <button title="Voting Schedule" onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
-                <button title="Logs" onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
+                <button onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
+                <button onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
+                <button onclick="switchHTML('Voters.html')"><div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
+                <button onclick="switchHTML('Partylist.html')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button id="selected"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
+                <button onclick="switchHTML('Council.html')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
+                <button onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
+                <button onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
-                <button id="logout" class="Logoutbutton" title="Logout"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>                
+                <button id="logout" class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
             </div>
         </div>
         <div class="content">
             <div class="contenthead">
                 <div class="titlecontainer">
                     <div>
-                        <h2 class="banner">Partylist</h2>
+                        <h2>Users</h2>
                     </div>
                     <div class="yellowBG">
                         <h2 id="rowNumbershow">0</h2>
@@ -819,29 +843,48 @@
                 <div class="tablecontainer">
                     <table id="Results">
                         <tr class="trheader">
-                            <th class="thfirst">NAME</th>
-                            <th >NO. OF MEMBERS   </th>
+                            <th class="thfirst">USEP ID</th>
+                            <th>NAME</th>
+                            <th>USER TYPE</th>
+                            <th>STATUS</th>
                             <th class="thlast"></th>
                         </tr>
-                        <tr data-table="table1">
-                            <td class="tdfirst">YANO</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewPartyList.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr data-table="table2">
-                            <td class="tdfirst">AGIla</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewPartyList.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        
+                       <?php
+                       // Query to retrieve all data from the Users table
+                        $sql = "SELECT * FROM Users";
+                        $result = $conn->query($sql);
+
+                       // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                               ?>
+                                <tr>
+                                    <td class="tdfirst"><?php echo $row["usep_ID"]?></td>
+                                    <td><?php echo $row["FName"]. " " . $row["LName"]?></td>
+                                    <td><?php echo $row["usertype"]?></td>
+                                    <td><?php echo $row["User_status"]?></td>
+                                    <td class="tdlast">
+                                        <!-- Pass row data to viewpop() function -->
+                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
+                                        <img onclick="editpop()" src="edit.png" alt="edit icon">
+                                        <?php
+                                        if ($row["usep_ID"] == 1) {
+                                            // Do nothing
+                                        } else {
+                                            echo '<img onclick="deletepop()" src="delete.png" alt="delete icon">';
+                                        }
+                                    ?>
+
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        } 
+
+                        // Close connection
+                        $conn->close();
+                        ?>
                     </table>
                 </div>
                 <div class="navTable">
@@ -857,48 +900,172 @@
     </div>
     <div class="popup" id="popup">
         <div class="head">
-          <h3>ADD PARTYLIST</h3>
+          <h3>ADD USER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
+                <form method="post">
                 <div class="form-group">
-                    <label for="pName">Partylist Name:</label>
-                    <input type="text" id="pName" class="input-form">
+                    <label for="UName">Username:</label>
+                    <input name="UName" type="text" id="UName" class="input-form" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password:</label>
+                    <input name="Password" type="password" id="Password" class="input-form" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="cPassword">Confirm Password:</label>
+                    <input name="cPassword" type="password" id="cPassword" class="input-form" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input name="usepID" type="number" id="usepID" class="input-form" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="FName">First Name:</label>
+                    <input name="FName" type="text" id="FName" class="input-form" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="LName">Last Name:</label>
+                    <input name="LName" type="text" id="LName" class="input-form" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="User">User Type:</label>
+                    <select name="User" id="User" class="input-form" required>
+                        <option value="Admin-Front">Admin-Front</option>
+                        <option value="Admin-Technical">Admin-Technical</option>
+                        <option value="Chairperson">Watcher</option>
+                      </select>
+                </div>
+                <br>
+                <div class="buttons">
+                    <button type="reset" class="cancel-button">Cancel</button>
+                    <button type="submit" class="save-button">Save</button>
                 </div>
                 </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
             </div>
         </div>    
     </div>
+    <?php
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Retrieve data from form
+        $usepID = $_POST['usepID'];
+        $username = $_POST['UName'];
+        $input_password = $_POST['Password'];
+        $hashed_password = password_hash($input_password, PASSWORD_DEFAULT); // Hash the password
+        $lname = $_POST['LName'];
+        $fname = $_POST['FName'];
+        $usertype = $_POST['User'];
+        $userstatus = 'Offline'; // Default status
+
+        // Insert data into Users table
+        $sqlUserInsert = "INSERT INTO Users (usep_ID, username, userpass, LName, FName, usertype, User_status) 
+                        VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
+        if ($conn->query($sqlUserInsert) === TRUE) {
+            echo "<script>alert('New record created successfully');</script>";
+            echo "<script>window.location.href = 'Users.php';</script>";
+        } else {
+            echo "<script>alert('Error: " . $sqlUserInsert . "<br>" . $conn->error . "');</script>";
+            echo "<script>window.location.href = 'Users.php';</script>";
+        }
+
+        // Close connection
+        $conn->close();
+    }
+    ?>
+
+    <div class="popup" id="viewpop">
+        <div class="head">
+            <h3>USER INFORMATION</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form>
+                    <div class="form-group">
+                        <label for="usepID">USeP ID:</label>
+                        <input type="text" id="usepID" class="input-form" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="UName">Username:</label>
+                        <input type="text" id="UName" class="input-form" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullName">Full Name:</label>
+                        <input type="text" id="fullName" class="input-form" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="User">User Type:</label>
+                        <input type="text" id="User" class="input-form" readonly>
+                    </div>
+                </form>
+                <br>
+                <button class="save-button">Back</button>
+            </div>
+        </div>    
+    </div>
+
     <div class="popup" id="editpop">
         <div class="head">
-          <h3>EDIT PARTYLIST</h3>
+          <h3>EDIT USER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
                 <form>
                 <div class="form-group">
-                    <label for="pName">Partylist Name:</label>
-                    <input type="text" id="pName" class="input-form">
+                    <label for="UName">Username:</label>
+                    <input type="text" id="UName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password:</label>
+                    <input type="password" id="Password" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="cPassword">Confirm Password:</label>
+                    <input type="password" id="cPassword" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="usepID">USeP ID:</label>
+                    <input type="number" id="usepID" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="User">User Type:</label>
+                    <select id="User" class="input-form">
+                        <option value="Admin-Front">Admin-Front</option>
+                        <option value="Admin-Technical">Admin-Technical</option>
+                        <option value="Chairperson">Watcher</option>
+                      </select>
+                </div>
+                <br>
+                <div class="buttons">
+                    <button class="cancel-button">Cancel</button>
+                    <button class="save-button">Save</button>
                 </div>
                 </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
             </div>
         </div>    
     </div>
     <div id="deletepop" class="popup">
         <div class="head">
-          <h3>DELETE PARTYLIST</h3>
+          <h3>DELETE USER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
                 <div style="text-align: center;">
-                    <p>Are you sure you want to delete this partylist?
+                    <p>Are you sure you want to delete this user?
                         This action cannot be undone.</p>
                 </div>
                 <br>
@@ -923,6 +1090,7 @@
         </div>
     </div>
     <script>
+
       // JavaScript code to switch HTML files with animation
       function switchHTML(file) {
                 // Add fade-out animation to the body
@@ -936,9 +1104,9 @@
 
         // Add a listener for animation end to remove the fade-out class and add the fade-in class
         document.body.addEventListener('animationend', function() {
-            document.body.classList.remove('fade-out');
-            document.body.classList.add('fade-in');
-        });
+                document.body.classList.remove('fade-out');
+                document.body.classList.add('fade-in');
+        }); 
 
         // Get the table element
         var table = document.getElementById('Results');
@@ -1003,6 +1171,38 @@
         
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
+        });
+
+        /*view pop up*/
+        function viewpop(usepID) {
+            // AJAX request to PHP script to retrieve data based on usepID
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var rowData = JSON.parse(this.responseText);
+                    // Fill input fields with row data
+                    document.getElementById("usepID").value = rowData.usep_ID;
+                    document.getElementById("UName").value = rowData.username;
+                    document.getElementById("fullName").value = rowData.FName + " " + rowData.LName;
+                    document.getElementById("User").value = rowData.usertype;
+
+                    // Show the popup
+                    var popup = document.getElementById("viewpop");
+                    popup.style.display = "flex";
+                }
+            };
+            xhttp.open("GET", "get_user_data.php?usepID=" + usepID, true);
+            xhttp.send();
+        }
+
+        
+        document.querySelector("#viewpop .save-button").addEventListener("click", function() {
+            document.getElementById("UName").value = '';
+            document.getElementById("usepID").value = '';
+            document.getElementById("fullName").value = '';
+            document.getElementById("User").value = '';
+
+            document.getElementById("viewpop").style.display = "none";
         });
 
         /*edit pop up*/

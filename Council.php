@@ -1,3 +1,21 @@
+<?php
+
+// Establishing a connection to the database
+$servername = "localhost"; // Replace with your server name
+$username = "root"; // Replace with your username
+$password = ""; // Replace with your password
+$dbname = "Voting_System"; // Replace with your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -445,7 +463,7 @@
 
     table {
       width: 100%;
-      min-width: 800px;
+      min-width: 600px;
       height: auto;
       border-spacing: 0 7px;
     }
@@ -600,7 +618,7 @@
         overflow: hidden;
     }
 
-    .popup-content-inner {
+    .popup-content-inner, .buttons {
         display: grid;
         height: auto;
         gap: 10px;
@@ -797,9 +815,9 @@
                 <button onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
                 <button onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
                 <button onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
-                <button onclick="switchHTML('Voters.html')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
-                <button onclick="switchHTML('Partylist.html')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
-                <button onclick="switchHTML('Users.html')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
+                <button onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
+                <button onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button id="selected"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
                 <button onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
                 <button onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
@@ -818,7 +836,7 @@
                     </div>  
                 </div>
                 <div class="dropdown">
-                    <button id="add"><img src="plus.png" alt="plus icon">Add new</button>
+                
                 </div>
             </div>
             <div class="tableandnav">
@@ -827,89 +845,34 @@
                         <tr class="trheader">
                         <th class="thfirst">NAME</th>
                         <th>PROGRAM</th>
-                        <th>LEVEL</th>
+                        <th >LEVEL</th>
                         <th class="thlast"></th>
                         </tr>
-                        <tr>
-                            <td class="tdfirst">TSC</td>
-                            <td>All Program</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">SITS</td>
-                            <td>BSIT</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">AFSET</td>
-                            <td>BSED</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">SABES</td>
-                            <td>BSABE</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">AECES</td>
-                            <td>BECED</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">FTVETTS</td>
-                            <td>BTVTED</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">OFSET</td>
-                            <td>BSNED</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">OFEE</td>
-                            <td>BEED</td>
-                            <td>2</td>
-                            <td class="tdlast">
-                                <img onclick="switchHTML('ViewCouncil.html')" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
+                        <?php
+                       // Query to retrieve all data from the Users table
+                        $sql = "SELECT * FROM List_Councils ";
+                        $result = $conn->query($sql);
+
+                       // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                               ?>
+                                <tr>
+                                    <td class="tdfirst"><?php echo $row["council_name"]?></td>
+                                    <td><?php echo $row["program"]?></td>
+                                    <td><?php echo $row["Cnl_level"]?></td>
+                                    <td class="tdlast">
+                                        <img onclick="viewpop()" src="view.png" alt="view icon">
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        } 
+
+                        // Close connection
+                        $conn->close();
+                        ?>
 
                         
                     </table>
@@ -922,66 +885,6 @@
                         <button id="nextButton" onclick="navigateRows(1)">Next</button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="popup" id="popup">
-        <div class="head">
-          <h3>ADD COUNCIL</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <form>
-                <div class="form-group">
-                    <label for="councilName">Council Name:</label>
-                    <input type="text" id="councilName" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="level">Level:</label>
-                    <input type="number" id="level" class="input-form">
-                </div>
-                </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
-            </div>
-        </div>    
-    </div>
-    <div class="popup" id="editpop">
-        <div class="head">
-          <h3>EDIT COUNCIL</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <form>
-                <div class="form-group">
-                    <label for="councilName">Council Name:</label>
-                    <input type="text" id="councilName" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="level">Level:</label>
-                    <input type="number" id="level" class="input-form">
-                </div>
-                </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
-            </div>
-        </div>    
-    </div>
-    <div id="deletepop" class="popup">
-        <div class="head">
-          <h3>DELETE COUNCIL</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <div style="text-align: center;">
-                    <p>Are you sure you want to delete this council?
-                        This action cannot be undone.</p>
-                </div>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Delete</button>
             </div>
         </div>
     </div>
@@ -1011,7 +914,7 @@
                 setTimeout(function() {
                     window.location.href = file;
                 }, 500); // Delay should match the animation duration
-            }
+        }
 
             // Add a listener for animation end to remove the fade-out class and add the fade-in class
             document.body.addEventListener('animationend', function() {
@@ -1074,33 +977,6 @@
 
         // Show the initial page
         showPage(currentPage);
-
-        /*add pop up*/
-        document.getElementById("add").addEventListener("click", function() {
-            document.getElementById("popup").style.display = "flex";
-        });
-        
-        document.querySelector(".cancel-button").addEventListener("click", function() {
-            document.getElementById("popup").style.display = "none";
-        });
-
-        /*edit pop up*/
-        function editpop() {
-            document.getElementById("editpop").style.display = "flex";
-        };
-        
-        document.querySelector("#editpop .cancel-button").addEventListener("click", function() {
-            document.getElementById("editpop").style.display = "none";
-        });
-
-        /*delete pop up*/
-        function deletepop() {
-            document.getElementById("deletepop").style.display = "flex";
-        };
-        
-        document.querySelector("#deletepop .cancel-button").addEventListener("click", function() {
-            document.getElementById("deletepop").style.display = "none";
-        });
 
         /*log out*/
         document.getElementById("logout").addEventListener("click", function() {

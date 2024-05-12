@@ -1,9 +1,27 @@
+<?php
+
+// Establishing a connection to the database
+$servername = "localhost"; // Replace with your server name
+$username = "root"; // Replace with your username
+$password = ""; // Replace with your password
+$dbname = "Voting_System"; // Replace with your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote Admin | Users</title>
+  <title>U-Vote Admin | Voters</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
   <style>
 
@@ -215,6 +233,14 @@
         background: #2F80ED;
         border-radius: 5px;
     }
+
+    @media (max-width: 1000px) {
+        .dropdown{
+            flex-direction: column;
+            justify-self: right;
+        }
+
+    }
     
     @media (max-width: 1000px) {
 
@@ -322,14 +348,14 @@
     }
 
     @media (max-width: 500px) {
-      #add {
+      #add, #importbutton {
         font-size: 0;
         padding: 10px;
         width: auto;
         gap: 0;
       }
         
-      #add img {
+      #add img, #importbutton img {
         justify-content: center;
       }
 
@@ -351,6 +377,9 @@
         }
 
     }
+
+    
+    
 
     /*Content*/
     .content {
@@ -388,6 +417,10 @@
       gap: 20px;
     }
 
+    #importbutton{
+        background-color: white;
+    }
+
     .yellowBG {
         display: flex;
         height: 40px;
@@ -405,6 +438,8 @@
       display: flex;
       justify-content: right;
       align-items: center;
+      gap: 5%;
+
     }
 
     .tableandnav{
@@ -569,13 +604,13 @@
         transform: translate(-50%, -50%);
         background-color: #222E50;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-        height: 90vh;
+        height: auto;
         width: 60vh;
         border-radius: 5px;
         z-index: 9999;
     }
 
-    #logoutpop, #deletepop, #viewpop{
+    #logoutpop, #deletepop{
         height: auto;
     }
 
@@ -602,6 +637,12 @@
 
     #logoutpop .popup-content, #deletepop .popup-content{
         overflow: hidden;
+    }
+
+    .popup-content-inner, .buttons {
+        display: grid;
+        height: auto;
+        gap: 10px;  
     }
 
     .popup-content-inner {
@@ -801,9 +842,9 @@
                 <button onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
                 <button onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
                 <button onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
-                <button onclick="switchHTML('Voters.html')"><div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
+                <button id="selected"><div><img src="voters.svg" alt="dashboard icon"></div><div>Voters</div></button>
                 <button onclick="switchHTML('Partylist.html')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
-                <button id="selected"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
+                <button onclick="switchHTML('Users.html')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button onclick="switchHTML('Council.html')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
                 <button onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
                 <button onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
@@ -815,13 +856,14 @@
             <div class="contenthead">
                 <div class="titlecontainer">
                     <div>
-                        <h2>Users</h2>
+                        <h2>Total Voters</h2>
                     </div>
                     <div class="yellowBG">
                         <h2 id="rowNumbershow">0</h2>
                     </div>  
                 </div>
                 <div class="dropdown">
+                    <button id="importbutton"><img src="plus.png" alt="plus icon">Import</button>
                     <button id="add"><img src="plus.png" alt="plus icon">Add new</button>
                 </div>
             </div>
@@ -829,78 +871,43 @@
                 <div class="tablecontainer">
                     <table id="Results">
                         <tr class="trheader">
-                            <th class="thfirst">USERNAME</th>
+                            <th class="thfirst">USEP ID</th>
                             <th>NAME</th>
-                            <th>USER TYPE</th>
-                            <th>STATUS</th>
+                            <th>YEAR LEVEL</th>
+                            <th>PROGRAM</th>
                             <th class="thlast"></th>
                         </tr>
-                        <tr>
-                            <td class="tdfirst">Central1</td>
-                            <td>Kathy Jane Ihalas</td>
-                            <td>Chairperson</td>
-                            <td>Online</td>
-                            <td class="tdlast">
-                                <img onclick="viewpop()" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">Admin 012</td>
-                            <td>John Paul Osorio</td>
-                            <td>Admin-Front</td>
-                            <td>Online</td>
-                            <td class="tdlast">
-                                <img onclick="viewpop()" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">Admin014</td>
-                            <td>David Nguyen</td>
-                            <td>Admin-Front</td>
-                            <td>Online</td>
-                            <td class="tdlast">
-                                <img onclick="viewpop()" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">Admin111</td>
-                            <td>Jacob Anderson</td>
-                            <td>Admin-Technical</td>
-                            <td>Online</td>
-                            <td class="tdlast">
-                                <img onclick="viewpop()" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">Watcher1</td>
-                            <td>Jacob Anderson</td>
-                            <td>Watcher</td>
-                            <td>Online</td>
-                            <td class="tdlast">
-                                <img onclick="viewpop()" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdfirst">Watcher2</td>
-                            <td>Samantha Lewis</td>
-                            <td>Watcher</td>
-                            <td>Online</td>
-                            <td class="tdlast">
-                                <img onclick="viewpop()" src="view.png" alt="view icon">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
+                        <?php
+                       // Query to retrieve all data from the Users table
+                        $sql = "SELECT * FROM Voters";
+                        $result = $conn->query($sql);
+
+                       // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                               ?>
+                                <tr>
+                                    <td class="tdfirst"><?php echo $row["usep_ID"]?></td>
+                                    <td><?php echo $row["FName"]. " " . $row["LName"]?></td>
+                                    <td><?php echo $row["yearLvl"]?></td>
+                                    <td><?php echo $row["program"]?></td>
+                                    <td class="tdlast">
+                                        <!-- Pass row data to viewpop() function -->
+                                        <img onclick="viewpop()" src="view.png" alt="view icon">
+                                        <img onclick="editpop()" src="edit.png" alt="edit icon">
+                                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
+                        
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        } 
+
+                        // Close connection
+                        $conn->close();
+                        ?>
+                                      
                     </table>
                 </div>
                 <div class="navTable">
@@ -916,72 +923,88 @@
     </div>
     <div class="popup" id="popup">
         <div class="head">
-          <h3>ADD USER</h3>
+          <h3>ADD VOTER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
-                <div class="form-group">
-                    <label for="UName">Username:</label>
-                    <input type="text" id="UName" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="Password">Password:</label>
-                    <input type="password" id="Password" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="cPassword">Confirm Password:</label>
-                    <input type="password" id="cPassword" class="input-form">
-                </div>
+                <form method="post">
                 <div class="form-group">
                     <label for="usepID">USeP ID:</label>
                     <input type="number" id="usepID" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" class="input-form">
+                    <label for="FName">First Name:</label>
+                    <input type="text" id="FName" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="User">User Type:</label>
-                    <select id="User" class="input-form">
-                        <option value="Admin-Front">Admin-Front</option>
-                        <option value="Admin-Technical">Admin-Technical</option>
-                        <option value="Chairperson">Watcher</option>
-                      </select>
+                    <label for="LName">Last Name:</label>
+                    <input type="text" id="LName" class="input-form">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" class="input-form">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="yearLevel">Year Level:</label>
+                    <select id="yearlevel" class="input-form">
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program:</label>
+                    <select id="program" class="input-form">
+                        <option value="BSABE">BSABE</option>
+                        <option value="BEED">BEED</option>
+                        <option value="BECED">BECED</option>
+                        <option value="BSNED">BSNED</option>
+                        <option value="BSED">BSED</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BTVTED">BTVTED</option>
+                    </select>
+                </div>
+                <br>
+                <div class="buttons">
+                    <button class="cancel-button">Cancel</button>
+                    <button class="save-button">Save</button>
                 </div>
                 </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
             </div>
         </div>    
     </div>
+    
+    
+
     <div class="popup" id="viewpop">
         <div class="head">
-          <h3>USER INFORMATION</h3>
+          <h3>VOTER INFORMATION</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
                 <form>
-                <div class="form-group">
-                    <label for="UName">Username:</label>
-                    <input type="text" id="UName" class="input-form" placeholder="Central1" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="Password">Password:</label>
-                    <input type="password" id="Password" class="input-form" placeholder="Central1" readonly>
-                </div>
                 <div class="form-group">
                     <label for="usepID">USeP ID:</label>
                     <input type="number" id="usepID" class="input-form" placeholder="2022-00294" readonly>
                 </div>
                 <div class="form-group">
                     <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" class="input-form" placeholder="Kathy Jane Ihalas" readonly>
+                    <input type="text" id="fullName" class="input-form" placeholder="Karl Cornejo" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="User">User Type:</label>
-                    <input id="User" class="input-form" placeholder="Chairperson" readonly>
+                    <label for="gender">Gender:</label>
+                    <input id="gender" class="input-form" placeholder="Male" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="yearLevel">Year Level:</label>
+                    <input id="yearlevel" class="input-form" placeholder="2nd Year" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program:</label>
+                    <input id="program" class="input-form" placeholder="BSIT" readonly>
                 </div>
                 </form>
                 <br>
@@ -991,23 +1014,11 @@
     </div>
     <div class="popup" id="editpop">
         <div class="head">
-          <h3>EDIT USER</h3>
+          <h3>EDIT VOTER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
                 <form>
-                <div class="form-group">
-                    <label for="UName">Username:</label>
-                    <input type="text" id="UName" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="Password">Password:</label>
-                    <input type="password" id="Password" class="input-form">
-                </div>
-                <div class="form-group">
-                    <label for="cPassword">Confirm Password:</label>
-                    <input type="password" id="cPassword" class="input-form">
-                </div>
                 <div class="form-group">
                     <label for="usepID">USeP ID:</label>
                     <input type="number" id="usepID" class="input-form">
@@ -1017,12 +1028,31 @@
                     <input type="text" id="fullName" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="User">User Type:</label>
-                    <select id="User" class="input-form">
-                        <option value="Admin-Front">Admin-Front</option>
-                        <option value="Admin-Technical">Admin-Technical</option>
-                        <option value="Chairperson">Watcher</option>
-                      </select>
+                    <label for="gender">Gender:</label>
+                    <select id="gender" class="input-form">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="yearLevel">Year Level:</label>
+                    <select id="yearlevel" class="input-form">
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program:</label>
+                    <select id="program" class="input-form">
+                        <option value="BSABE">BSABE</option>
+                        <option value="BEED">BEED</option>
+                        <option value="BECED">BECED</option>
+                        <option value="BSNED">BSNED</option>
+                        <option value="BSED">BSED</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BTVTED">BTVTED</option>
+                    </select>
                 </div>
                 </form>
                 <br>
@@ -1033,12 +1063,12 @@
     </div>
     <div id="deletepop" class="popup">
         <div class="head">
-          <h3>DELETE USER</h3>
+          <h3>DELETE VOTER</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
                 <div style="text-align: center;">
-                    <p>Are you sure you want to delete this user?
+                    <p>Are you sure you want to delete this voter?
                         This action cannot be undone.</p>
                 </div>
                 <br>
@@ -1073,13 +1103,13 @@
                 setTimeout(function() {
                     window.location.href = file;
                 }, 500); // Delay should match the animation duration
-        }
+            }
 
-        // Add a listener for animation end to remove the fade-out class and add the fade-in class
-        document.body.addEventListener('animationend', function() {
+            // Add a listener for animation end to remove the fade-out class and add the fade-in class
+            document.body.addEventListener('animationend', function() {
                 document.body.classList.remove('fade-out');
                 document.body.classList.add('fade-in');
-        }); 
+            }); 
             
         // Get the table element
         var table = document.getElementById('Results');
