@@ -814,7 +814,7 @@ if ($conn->connect_error) {
             <div class="buttonContainer">
                 <button title="Dashboard" onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
                 <button title="Results" onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button title="Candidates" onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
+                <button title="Candidates" onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
                 <button title="Voters" onclick="switchHTML('Voters.php')"> <div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
                 <button title="Partylists" id="selected"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
                 <button title="Users" onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
