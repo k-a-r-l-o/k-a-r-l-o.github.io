@@ -40,15 +40,15 @@ $sqlUser = "CREATE TABLE IF NOT EXISTS Users (
 $input_password = 'Central1234'; // Define the password
 $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
 
-//$sqlUserInsert = "INSERT INTO Users (usep_id, username, userpass, LName, FName, usertype, User_status) VALUES
-//('1', 'Central', ?, 'Cornejo', 'Karl', 'Chairperson', 'Active')";
+$sqlUserInsert = "INSERT INTO Users (usep_id, username, userpass, LName, FName, usertype, User_status) VALUES
+('1', 'Central', ?, 'Cornejo', 'Karl', 'Chairperson', 'Active')";
 
 if ($conn->query($sqlUser) === TRUE) {
     echo "Table 'User' created successfully<br>";
 } else {
     echo "Error creating table 'User': " . $conn->error . "<br>";
 }
-/*
+
 // Prepare the insert statement
 $stmtInsert = $conn->prepare($sqlUserInsert);
 
@@ -62,7 +62,7 @@ if ($stmtInsert->execute()) {
 } else {
     echo "Error inserting data into 'User' table: " . $conn->error . "<br>";
 }
-*/
+
 $sqlListP = "CREATE TABLE IF NOT EXISTS List_Partylist (
     prty_ID INT UNIQUE KEY AUTO_INCREMENT,
     name_partylist VARCHAR(55) NOT NULL,
