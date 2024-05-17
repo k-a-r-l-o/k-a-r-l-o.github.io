@@ -24,18 +24,19 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
     exit();
 }
 
-    // Check if the logout button is clicked
-    if(isset($_POST['logout'])) {
-        // Unset all session variables
-        session_unset();
+// Check if the logout button is clicked
+if(isset($_POST['logout'])) {
+    // Unset all session variables
+    session_unset();
         
-        // Destroy the session
-        session_destroy();
+    // Destroy the session
+    session_destroy();
         
-        // Redirect the user to the login page
-        header("Location: index.php");
-        exit(); // Make sure to exit after redirecting
-    }
+    // Redirect the user to the login page
+    header("Location: indexAdmin.php");
+    exit(); // Make sure to exit after redirecting
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -772,7 +773,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
           <h3>LOGOUT</h3>
         </div>
         <div class="popup-content">
-            <form>
+            <form method="post">
             <div class="popup-content-inner">
                 <div style="text-align: center;">
                     <p>Are you sure you want to logout?</p>
