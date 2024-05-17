@@ -1098,7 +1098,7 @@ if ($conn->connect_error) {
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-                switchHTML('index.html');
+                switchHTML('indexAdmin.html');
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
