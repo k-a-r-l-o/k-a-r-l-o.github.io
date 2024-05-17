@@ -1103,14 +1103,16 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
           <h3>LOGOUT</h3>
         </div>
         <div class="popup-content">
+            <form>
             <div class="popup-content-inner">
                 <div style="text-align: center;">
                     <p>Are you sure you want to logout?</p>
                 </div>
                 <br>
                 <button class="cancel-button">Cancel</button>
-                <button class="save-button">Confirm</button>
+                <button type="submit" class="save-button" name="logout">Confirm</button>
             </div>
+            </form>
         </div>
     </div>
     <script>
@@ -1256,17 +1258,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
         document.getElementById("logout").addEventListener("click", function() {
                 document.getElementById("logoutpop").style.display = "flex";
             });
-
-            document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-              <?php
-                  session_start();
-                  session_unset();
-                  session_destroy();
-                  header("Location: indexAdmin.php");
-                  exit();
-              ?>
-            });
-
+            
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
                 switchHTML('indexAdmin.php');
             });
