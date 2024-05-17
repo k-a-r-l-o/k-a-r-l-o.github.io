@@ -1262,11 +1262,7 @@ if ($conn->connect_error) {
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-<<<<<<< HEAD
                 switchHTML('indexAdmin.php');
-=======
-                switchHTML('index.php');
->>>>>>> 942723fb0263414d6a80865ea57c4bae7bd7be75
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
