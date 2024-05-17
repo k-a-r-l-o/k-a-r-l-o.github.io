@@ -988,7 +988,7 @@ if (isset($_POST['logout'])) {
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
                                         <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop()" src="edit.png" alt="edit icon">
+                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
                                         <img onclick="deletepop()" src="delete.png" alt="delete icon">
                                     </td>
                                 </tr>
@@ -1154,25 +1154,29 @@ if (isset($_POST['logout'])) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
+                <form method="post">
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID3" class="input-form">
+                        <input type="number" id="usepID3" name="usepID3" class="input-form">
                     </div>
                     <div class="form-group">
-                        <label for="fullName">Full Name:</label>
-                        <input type="text" id="fullName3" class="input-form">
+                        <label for="FName">First Name:</label>
+                        <input type="text" id="FName3" name="FName3" class="input-form">
+                    </div>
+                    <div class="form-group">
+                        <label for="LName">Last Name:</label>
+                        <input type="text" id="LName3" name="LName3" class="input-form">
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select id="gender3" class="input-form">
+                        <select id="gender3" class="input-form" name="gender3">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <select id="yearlevel3" class="input-form">
+                        <select id="yearlevel3" class="input-form" name="yearlevel3">
                             <option value="2nd">2nd Year</option>
                             <option value="3rd">3rd Year</option>
                             <option value="4th">4th Year</option>
@@ -1180,7 +1184,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <select id="program3" class="input-form">
+                        <select id="program3" class="input-form" name="program3">
                             <option value="BSABE">BSABE</option>
                             <option value="BEED">BEED</option>
                             <option value="BECED">BECED</option>
@@ -1190,13 +1194,53 @@ if (isset($_POST['logout'])) {
                             <option value="BTVTED">BTVTED</option>
                         </select>
                     </div>
-                </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
+                    <br>
+                    <button class="cancel-button">Cancel</button>
+                    <button type="submit" class="save-button" name="edit">Save</button>
             </div>
+            </form>
         </div>
     </div>
+    <?php
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        if (isset($_POST['edit'])) {
+            $usepID = $_POST['usepID3'];
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Retrieve data from form
+            $usepID = $_POST['usepID3'];
+            $lname = $_POST['LName3'];
+            $fname = $_POST['FName3'];
+            $gender = $_POST['gender3'];
+            $yearlvl = $_POST['yearlevel3'];
+            $Program = $_POST['program3'];
+
+            // Insert data into Users table
+            $sqlVoterEdit = "UPDATE Voters SET LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
+
+            if ($conn->query($sqlVoterEdit) === TRUE) {
+                echo "<script>alert('Record updated successfully');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+            } else {
+                echo "<script>alert('Error: " .   $sqlVoterEdit . "<br>" . $conn->error . "');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+            }
+        }
+    }
+    ?>
+
+
+
+
     <div id="deletepop" class="popup">
         <div class="head">
             <h3>DELETE VOTER</h3>
@@ -1348,7 +1392,7 @@ if (isset($_POST['logout'])) {
             xhttp.send();
         }
 
-        
+
         function closeViewpop() {
             document.getElementById("usepID2").value = '';
             document.getElementById("fullName2").value = '';
@@ -1361,8 +1405,42 @@ if (isset($_POST['logout'])) {
 
 
         /*edit pop up*/
-        function editpop() {
-            document.getElementById("editpop").style.display = "flex";
+        function editpop(usepID) {
+            // AJAX request to PHP script to retrieve voter data based on usepID
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        try {
+                            var rowData = JSON.parse(this.responseText);
+                            console.log(rowData); // Log the response for debugging\
+
+                            // Fill input fields with voter data
+                            var usepIDField = document.getElementById("usepID3");
+                            usepIDField.value = rowData.usep_ID;
+                            usepIDField.readOnly = true; // Make the field read-only
+
+                            // Fill input fields with voter data
+
+                            document.getElementById("FName3").value = rowData.FName;
+                            document.getElementById("LName3").value = rowData.LName;
+                            document.getElementById("gender3").value = rowData.gender;
+                            document.getElementById("yearlevel3").value = rowData.yearLvl;
+                            document.getElementById("program3").value = rowData.program;
+
+                            // Show the popup
+                            var popup = document.getElementById("editpop");
+                            popup.style.display = "flex";
+                        } catch (e) {
+                            console.error("Error parsing JSON response: " + e.message);
+                        }
+                    } else {
+                        console.error("AJAX request failed with status: " + this.status);
+                    }
+                }
+            };
+            xhttp.open("GET", "get_voter_data.php?usepID=" + usepID, true);
+            xhttp.send();
         };
 
         document.querySelector("#editpop .cancel-button").addEventListener("click", function() {
