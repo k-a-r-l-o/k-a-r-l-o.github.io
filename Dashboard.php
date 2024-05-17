@@ -685,14 +685,14 @@
         <div class="menu">
             <div class="buttonContainer">
                 <button id="selected"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
+                <button onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
                 <button onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
                 <button onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
                 <button onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
-                <button onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
-                <button onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
+                <button onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
+                <button onclick="switchHTML('Logs.php')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
                 <button id="logout" class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
             </div>

@@ -591,7 +591,7 @@
 
                 <div class="button">
                     <div></div> 
-                    <button onclick="switchHTML('Voting2.html')" >Next</button>
+                    <button onclick="switchHTML('Voting2.php')" >Next</button>
                 </div>
             </div>
       </div>

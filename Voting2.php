@@ -590,8 +590,8 @@
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.html')" >Back</button>
-                    <button onclick="switchHTML('Voting3.html')" >Next</button>
+                    <button onclick="switchHTML('Voting1.php')" >Back</button>
+                    <button onclick="switchHTML('Voting3.php')" >Next</button>
                 </div>
             </div>
       </div>

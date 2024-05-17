@@ -327,7 +327,7 @@
             <h2>Congratulations!</h2>   
             <p class="rec">Vote Recorded.</p>
             <img src="finishVote_icon.png" alt="finish" class="center">
-            <button onclick="switchHTML('indexVoter.html')">Done</button>
+            <button onclick="switchHTML('indexVoter.php')">Done</button>
         </div>
     </div>
 </div> 
