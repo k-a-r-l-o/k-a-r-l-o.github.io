@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote Admin | Dashboard</title>
+  <title>U-Vote Admin | Partylist</title>
   <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
 
     body {
@@ -190,9 +189,9 @@
     .buttonContainer .Logoutbutton:hover{
         background-color: #ffe682;
     }
-
+    
     /*all scrollbar design*/
-    /* Width and Height of scrollbar */
+        /* Width and Height of scrollbar */
     ::-webkit-scrollbar {
         background: transparent;
         width: 7px;
@@ -217,146 +216,13 @@
         border-radius: 5px;
     }
     
-
-    /*Content*/
-    .content {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr 5fr; 
-      background-color: #222E50;
-      width: auto;
-      color: white;
-      justify-content: center;
-      align-items: baseline;
-      padding: 2%;
-      flex: 1;
-      z-index: 2; 
-      overflow: scroll;
-    }
-
-    .contenthead {
-      display: grid;
-      grid-template-columns: 1fr;
-      width: 100%;
-      height: auto;
-      color: white;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .titlecontainer {
-        width: auto;
-        display: flex;
-        width: auto;
-        height: auto;
-        color: white;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .yellowBG {
-        display: flex;
-        height: 40px;
-        background-color: #F6C90E; /* Same background color as the select */
-        color: #222E50;
-        border: none;
-        border-radius: 5px;
-        align-items: center;
-        padding: 0 10px;
-        width: auto;
-        max-width: 230px;
-    }
-
-    .dashboards{
-        display: flex;
-        width: 100%;
-        height: auto;
-    }
-
-    .perprogramcontainer, .allvoterscontainer{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
-        height: 500px;
-        border-radius: 12px;
-        background-color: rgb(150, 191, 245, 0.5);
-        margin-bottom: 3%;
-        color: white;
-    }
-
-    .perprogramcontainer{
-        margin-right: 1.5%;
-        margin-bottom: 3%;
-    }
-
-    .allvoterscontainer{
-        margin-left: 1.5%;
-        margin-bottom: 3%;
-    }
-
-    .piecontainer {
-        display: flex;
-        flex-direction: column;
-        justify-content: center; 
-        align-items: center;
-        width: 90%;
-        flex: 1;
-    }
-
-    .resulttitle {
-        display: flex;
-        flex-direction: column;
-        justify-content: center; 
-        align-items: center;
-        width: 100%;
-        height: 63px;
-        background-image: linear-gradient(#28579E,#222E50);
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-    }
-
-    @media (max-width: 1200px) {
-        .titlecontainer{
-            flex-direction: column;
-            align-items: baseline;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-
-        .titlecontainer h2{
-            margin: 0;
-        }
-    }
-
-    @media (max-width: 1400px) {
-
-        .dashboards{
-            display: flex;
-            flex-direction: column;
-        }
-
-        .perprogramcontainer{
-            margin-right: 0%;
-        }
-
-        .allvoterscontainer{
-            margin-left: 0%;
-        }
-
-    }
-
     @media (max-width: 1000px) {
 
         .logoName, .searchspace, .searchspace img, .logoName img{
             scale: 0.9;
         }
 
-        table, .content button, h2, h3{
+        table, .content button, h2{
             scale: 0.9;
         }
 
@@ -370,6 +236,7 @@
 
         .menu{
             width: auto;
+            padding: 1% 1%;
             justify-items: center;
             grid-template-columns: 1fr;
         }
@@ -416,7 +283,7 @@
     @media (max-width: 700px) {
 
         header{
-            grid-template-columns: 1fr;
+          grid-template-columns: 1fr;
         }
 
         .logoName, .searchspace{
@@ -449,41 +316,34 @@
             scale: 0.6;
         }
 
-        .content button, h2, h3{
-        scale: 0.8;
-        }
-
-        .yellowBG{
-            scale: 0.9;
-            padding: 0 0;
+        .content button, h2, .yellowBG{
+          scale: 0.8;
         }
 
     }
 
     @media (max-width: 500px) {
+      .dropdown button {
+        font-size: 0;
+        padding: 10px;
+        width: auto;
+       gap: 0;
+      }
+        
+      .dropdown button img {
+        justify-content: center;
+      }
 
-        .dropdown button {
-            font-size: 0;
-            padding: 10px;
-            width: auto;
-            gap: 0;
-        }
+      /* Width and Height of scrollbar */
+      ::-webkit-scrollbar {
+          width: 4px;
+      }
 
-
-        .titlecontainer{    
-            margin-top: 20px;
-            margin-bottom: 0;
-        }
-
-        /* Width and Height of scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
     }
 
     @media (max-height: 800px) {
 
-        .logoName, .logoName img{
+        .logoName, .logoName img, .searchspace{
             scale: 0.9;
         }
 
@@ -493,7 +353,218 @@
 
     }
 
-    /*pop ups*/
+    /*Content*/
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 5fr; 
+      background-color: #222E50;
+      width: auto;
+      color: white;
+      justify-content: center;
+      align-items: baseline;
+      padding: 2%;
+      flex: 1;
+      z-index: 2; 
+      overflow: scroll;
+    }
+
+    .contenthead {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .titlecontainer {
+      display: flex;
+      width: auto;
+      height: auto;
+      color: white;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .yellowBG {
+        display: flex;
+        height: 40px;
+        background-color: #F6C90E; /* Same background color as the select */
+        color: #222E50;
+        border: none;
+        border-radius: 5px;
+        align-items: center;
+        padding: 0 10px;
+        width: auto;
+        max-width: 200px;
+    }
+
+    .dropdown{
+      display: flex;
+      justify-content: right;
+      align-items: center;
+    }
+
+    .tableandnav{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .navTable {
+      display: flex;
+      width: 100%;
+      height: auto;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 10px 0px;
+    }
+
+    .prevcontainer{
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: center;
+    }
+
+    .nextcontainer{
+      display: flex;
+      width: 100%;
+      justify-content: right;
+      align-items: center;
+    }
+
+    .tablecontainer {
+      width: 100%;
+      height: auto;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 400px;
+      height: auto;
+      border-spacing: 0 7px;
+    }
+
+    th {
+      background: linear-gradient(to bottom, #28579E, #222E50);
+      height: 63px;
+    }
+
+    .trheader {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
+        border-top-right-radius: 12px;
+        border-top-left-radius: 12px;
+    }
+
+    .thfirst {
+      border-top-left-radius: 12px;
+    }
+
+    .thlast {
+      border-top-right-radius: 12px;
+    }
+
+    td {
+      background-color: rgba(150, 191, 245, 0.5);
+      height: 63px;
+      text-align: center;
+      align-items: center;
+    }
+
+    .tdfirst {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+    .tdlast {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .tdlast img {
+        margin: 10px 10px;
+    }
+
+    /* Adjust column widths */
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 50%; /* Adjust width of the first column */
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 50%; /* Adjust width of the second column */
+    }
+
+
+    .trheadergap {
+      height: 8px;
+    }
+
+    select {
+      height: 40px;
+      width: 100%;
+      max-width: 200px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #F6C90E;
+      color: #222E50;
+      border-radius: 5px;
+      border: none;
+      padding: 5px 40px 5px 20px; /* Increased padding to accommodate the larger dropdown symbol */
+      cursor: pointer;
+      background-image: url('arrow-down.png'); /* Replace 'path_to_your_arrow_image.png' with the path to your custom dropdown symbol */
+      background-repeat: no-repeat;
+      background-position: right 10px center; /* Adjusted position of the dropdown symbol */
+      /* Hide the default dropdown arrow */
+      -webkit-appearance: none; /* Safari and Chrome */
+      -moz-appearance: none; /* Firefox */
+      appearance: none; /* All other browsers */
+    }
+
+    .content button {
+        display: flex;
+        height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #F6C90E; /* Same background color as the select */
+        color: #222E50;
+        border: none;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 0 20px; /* Adjust padding as needed */
+        cursor: pointer;
+        width: 100%;
+        max-width: 200px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #backbutton {
+        display: flex;
+        height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #42A5F5; /* Same background color as the select */
+        color: #fff;
+        border: none;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 0 20px; /* Adjust padding as needed */
+        cursor: pointer;
+        width: 100%;
+        max-width: 200px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /*m pop up*/
     .popup {
         color: white;
         display: none;
@@ -503,11 +574,15 @@
         left: 50%;
         transform: translate(-50%, -50%);
         background-color: #222E50;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-        height: auto;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        height: 90vh;
         width: 60vh;
         border-radius: 5px;
         z-index: 9999;
+    }
+
+    #logoutpop{
+        height: auto;
     }
 
 
@@ -526,9 +601,13 @@
 
     .popup-content {
         flex: 1;
-        overflow: hidden;
+        overflow: scroll;
         padding: 5%;
         box-sizing: border-box;
+    }
+
+    #logoutpop .popup-content{
+        overflow: hidden;
     }
 
     .popup-content-inner {
@@ -637,15 +716,18 @@
 
     @media (max-width: 1000px) {
       .popup{
-          height: auto;
+          height: 80vh;
       }
 
     }
 
     @media (max-width: 500px) {
       .popup{
-            height: auto;
+            height: 95vh;
             width: 100vw;
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
         }
 
     }
@@ -680,51 +762,74 @@
             <img id="Logo" src="U-Vote Logo.svg" alt="Logo">
             <img id="Name" src="U-Vote Name.svg" alt="Name">
         </div>
+        <div class="searchspace">
+            <div class="searchicon">
+                <img src="search.png" alt="search icon">
+                <input placeholder="Search" alt="Search">
+            </div>
+        </div>
     </header>
     <div class="bodycontainer" >
         <div class="menu">
             <div class="buttonContainer">
-                <button id="selected"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
-                <button onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
-                <button onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
-                <button onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
-                <button onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
-                <button onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
-                <button onclick="switchHTML('Logs.php')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
+                <button title="Dashboard" onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
+                <button title="Results" onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button title="Candidates" onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
+                <button title="Voters" onclick="switchHTML('Voters.html')"> <div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
+                <button title="Partylists" id="selected"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button title="Users" onclick="switchHTML('Users.html')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
+                <button title="Councils" onclick="switchHTML('Council.html')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
+                <button title="Voting Schedule" onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
+                <button title="Logs" onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
-                <button id="logout" class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
+                <button id="logout" class="Logoutbutton" title="Logout"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>                
             </div>
         </div>
         <div class="content">
             <div class="contenthead">
                 <div class="titlecontainer">
                     <div>
-                        <h2>Dashboard</h2>
+                        <button onclick="switchHTML('Partylist.html')" id="backbutton"><img src="backIcon.svg" alt="plus icon">Back</button>
+                    </div>
+                    <div>
+                        <h2 class="banner">YANO</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="votes">1349/1690 votes</h2>
-                    </div>                    
+                        <h2 id="rowNumbershow">0</h2>
+                    </div>  
+                </div>
+                <div class="dropdown">
+                    
                 </div>
             </div>
-            <div class="dashboards">
-                <div class="perprogramcontainer">
-                    <div class="resulttitle">
-                        <h3>PER PROGRAM</h3>
+            <div class="tableandnav">
+                <div class="tablecontainer">
+                    <table id="Results">
+                        <tr class="trheader">
+                            <th class="thfirst">NAME</th>
+                            <th class="thlast">POSITION</th>
+                        </tr>
+                
+                        <tr data-table="table1">
+                            <td class="tdfirst">Rachel Davis</td>
+                            <td class="tdlast">President</td>
+                        </tr>
+                        <tr data-table="table2">
+                            <td class="tdfirst">Jonathan Carter</td>
+                            <td class="tdlast">Vice President</td>
+                        </tr>
+                        
+                    </table>
+                </div>
+                <div class="navTable">
+                    <div class="prevcontainer">
+                        <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
                     </div>
-                    <div class="piecontainer">
-                        <canvas id="myPieChart"></canvas>
+                    <div class="nextcontainer">
+                        <button id="nextButton" onclick="navigateRows(1)">Next</button>
                     </div>
                 </div>
-                <div class="allvoterscontainer">
-                    <div class="resulttitle">
-                        <h3>ALL VOTERS</h3>
-                    </div>
-                    <div class="piecontainer">
-                        <canvas id="myPieChart2"></canvas>
-                    </div>
-                </div>
+            </div>
         </div>
     </div>
     <div id="logoutpop" class="popup">
@@ -743,126 +848,92 @@
         </div>
     </div>
     <script>
-        // Function to create or update a pie chart
-        function createOrUpdatePieChart(chartId, chartData, chartOptions) {
-          var ctx = document.getElementById(chartId).getContext('2d');
-          var chart = new Chart(ctx, {
-            type: 'pie',
-            data: chartData,
-            options: chartOptions
-          });
-          return chart;
+      // JavaScript code to switch HTML files with animation
+      function switchHTML(file) {
+                // Add fade-out animation to the body
+                document.body.classList.add('fade-out');
+                
+                // Wait for the animation to finish, then switch to the new HTML file
+                setTimeout(function() {
+                    window.location.href = file;
+                }, 500); // Delay should match the animation duration
         }
-      
-        // JavaScript code to switch HTML files with animation
-        function switchHTML(file) {
-          document.body.classList.add('fade-out');
-          setTimeout(function() {
-            window.location.href = file;
-          }, 500);
-        }
-      
+
+        // Add a listener for animation end to remove the fade-out class and add the fade-in class
         document.body.addEventListener('animationend', function() {
-          document.body.classList.remove('fade-out');
-          document.body.classList.add('fade-in');
+            document.body.classList.remove('fade-out');
+            document.body.classList.add('fade-in');
         });
-      
-        // Sample data for the first pie chart
-        var data = {
-          labels: ['SITS', 'SABES', 'AECES'],
-          datasets: [{
-            data: [25, 40, 35],
-            backgroundColor: [
-              '#D8031C',
-              '#F6C90E',
-              '#090088'
-            ],
-            hoverOffset: 4,
-            borderWidth: 0,
-            shadowOffsetX: 0,
-            shadowOffsetY: 4,
-            shadowBlur: 8,
-            shadowColor: 'rgba(0, 0, 0, 0.75)'
-          }]
-        };
-      
-        // Configuration options for the first pie chart
-        var options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: {
-                left: 40,
-                right: 40,
-                top: 40,
-                bottom: 40
-                }
-            },
-            color: 'white'
-        };
-      
-        // Sample data for the second pie chart
-        var data2 = {
-          labels: ['Voted Students', 'Students Not Yet Voted'],
-          datasets: [{
-            data: [30, 70],
-            backgroundColor: [
-              '#D8031C',
-              '#090088'
-            ],
-            hoverOffset: 4,
-            borderWidth: 0,
-            shadowOffsetX: 0,
-            shadowOffsetY: 4,
-            shadowBlur: 8,
-            shadowColor: 'rgba(0, 0, 0, 0.75)'
-          }]
-        };
-      
-        // Configuration options for the second pie chart
-        // Configuration options for the second pie chart
-        var options2 = {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: {
-                left: 40,
-                right: 40,
-                top: 40,
-                bottom: 40
-                }
-            },
-            color: 'white'
-        };
-      
-        // Initial creation of the pie charts
-        var myPieChart = createOrUpdatePieChart('myPieChart', data, options);
-        var myPieChart2 = createOrUpdatePieChart('myPieChart2', data2, options2);
-      
-        // Event listener for window resize
-        window.addEventListener('resize', function() {
-          // Destroy the existing charts
-          myPieChart.destroy();
-          myPieChart2.destroy();
-          // Recreate the charts with updated data and options
-          myPieChart = createOrUpdatePieChart('myPieChart', data, options);
-          myPieChart2 = createOrUpdatePieChart('myPieChart2', data2, options2);
-        });
+
+        // Get the table element
+        var table = document.getElementById('Results');
+
+        // Get the number of rows in the table
+        var rowCount = table.rows.length;
+
+        // Get the <h2> element where you want to display the row count
+        var rowNumberElement = document.getElementById('rowNumbershow');
+
+        // Replace the content of the <h2> element with the row count
+        rowNumberElement.textContent = rowCount-1;
+
+        // JavaScript code for navigation
+        var currentPage = 0;
+        var rowsPerPage = 5; // Change this value as needed
+
+        function showPage(page) {
+            var table = document.getElementById('Results');
+            var rows = table.rows;
+
+            // Calculate the start and end indices of the rows to display
+            var startIndex = page * rowsPerPage + 1; // Skip header row
+            var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+            // Hide all rows
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = 'none';
+            }
+
+            // Show rows for the current page
+            for (var i = startIndex; i < endIndex; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        function navigateRows(direction) {
+            currentPage += direction;
+            var table = document.getElementById('Results');
+            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+            // Check if currentPage is within bounds
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= maxPage) {
+                currentPage = maxPage - 1;
+            }
+
+            showPage(currentPage);
+
+            // Update the row number display
+            document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
+        }
+
+        // Show the initial page
+        showPage(currentPage);
 
         /*log out*/
         document.getElementById("logout").addEventListener("click", function() {
-            document.getElementById("logoutpop").style.display = "flex";
-        });
+                document.getElementById("logoutpop").style.display = "flex";
+            });
 
-        document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-            switchHTML('indexAdmin.php');
-        });
+            document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
+                switchHTML('indexAdmin.php');
+            });
 
-        document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
-            document.getElementById("logoutpop").style.display = "none";
-        });
-
+            document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
+                document.getElementById("logoutpop").style.display = "none";
+            });
+            
     </script>
-      
 </body>
 </html>
