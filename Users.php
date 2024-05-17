@@ -940,7 +940,7 @@ if ($conn->connect_error) {
                 <br>
                 <div class="buttons">
                     <button type="reset" class="cancel-button">Cancel</button>
-                    <button type="submit" class="save-button">Save</button>
+                    <button type="submit" class="save-button" name="save">Save</button>
                 </div>
                 </form>
             </div>
@@ -950,33 +950,46 @@ if ($conn->connect_error) {
     // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
+        if (isset($_POST['save'])) {
 
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
+            $usepID = $_POST['usepID'];
 
-        // Retrieve data from form
-        $usepID = $_POST['usepID'];
-        $username = $_POST['UName'];
-        $input_password = $_POST['Password'];
-        $hashed_password = password_hash($input_password, PASSWORD_DEFAULT); // Hash the password
-        $lname = $_POST['LName'];
-        $fname = $_POST['FName'];
-        $usertype = $_POST['User'];
-        $userstatus = 'Offline'; // Default status
+            $sqlsearch = "SELECT * FROM Users WHERE usep_ID = '$usepID'";
+            $result = $conn->query($sqlsearch);
+    
+            if ($result->num_rows > 0) {
+                echo "<script>alert('User already exists!');</script>";
+            } else {
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
 
-        // Insert data into Users table
-        $sqlUserInsert = "INSERT INTO Users (usep_ID, username, userpass, LName, FName, usertype, User_status) 
-                        VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
-        if ($conn->query($sqlUserInsert) === TRUE) {
-            echo "<script>alert('New record created successfully');</script>";
-            echo "<script>window.location.href = 'Users.php';</script>";
-        } else {
-            echo "<script>alert('Error: " . $sqlUserInsert . "<br>" . $conn->error . "');</script>";
-            echo "<script>window.location.href = 'Users.php';</script>";
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                // Retrieve data from form
+                $usepID = $_POST['usepID'];
+                $username = $_POST['UName'];
+                $input_password = $_POST['Password'];
+                $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
+                $lname = $_POST['LName'];
+                $fname = $_POST['FName'];
+                $usertype = $_POST['User'];
+                $userstatus = 'Offline';
+
+                // Insert data into Users table
+                $sqlUserInsert = "INSERT INTO Users (usep_ID, username, userpass, LName, FName, usertype, User_status) 
+                                VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
+                if ($conn->query($sqlUserInsert) === TRUE) {
+                    echo "<script>alert('New record created successfully');</script>";
+                    echo "<script>window.location.href = 'Users.php';</script>";
+                } else {
+                    echo "<script>alert('Error: " . $sqlUserInsert . "<br>" . $conn->error . "');</script>";
+                    echo "<script>window.location.href = 'Users.php';</script>";
+                }
+            }
+            
         }
 
         // Close connection
@@ -990,26 +1003,26 @@ if ($conn->connect_error) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
+                <formn name="viewing">
                     <div class="form-group">
-                        <label for="usepID">USeP ID:</label>
-                        <input type="text" id="usepID" class="input-form" readonly>
+                        <label for="usepID2">USeP ID:</label>
+                        <input type="text" id="usepID2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="UName">Username:</label>
-                        <input type="text" id="UName" class="input-form" readonly>
+                        <label for="UName2">Username:</label>
+                        <input type="text" id="UName2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="fullName">Full Name:</label>
-                        <input type="text" id="fullName" class="input-form" readonly>
+                        <label for="fullName2">Full Name:</label>
+                        <input type="text" id="fullName2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="User">User Type:</label>
-                        <input type="text" id="User" class="input-form" readonly>
+                        <label for="User2">User Type:</label>
+                        <input type="text" id="User2" class="input-form" readonly>
                     </div>
                 </form>
                 <br>
-                <button class="save-button">Back</button>
+                <button type="button" class="save-button" onclick="closeViewpop()">Back</button>
             </div>
         </div>    
     </div>
@@ -1020,36 +1033,36 @@ if ($conn->connect_error) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
+                <form name="editing">
                 <div class="form-group">
-                    <label for="UName">Username:</label>
-                    <input type="text" id="UName" class="input-form">
+                    <label for="UName3">Username:</label>
+                    <input type="text" id="UName3" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="Password">Password:</label>
-                    <input type="password" id="Password" class="input-form">
+                    <label for="Password3">Password:</label>
+                    <input type="password" id="Password3" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="cPassword">Confirm Password:</label>
-                    <input type="password" id="cPassword" class="input-form">
+                    <label for="cPassword3">Confirm Password:</label>
+                    <input type="password" id="cPassword3" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="usepID">USeP ID:</label>
-                    <input type="number" id="usepID" class="input-form">
+                    <label for="usepID3">USeP ID:</label>
+                    <input type="number" id="usepID3" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" class="input-form">
+                    <label for="fullName3">Full Name:</label>
+                    <input type="text" id="fullName3" class="input-form">
                 </div>
                 <div class="form-group">
-                    <label for="User">User Type:</label>
-                    <select id="User" class="input-form">
+                    <label for="User3">User Type:</label>
+                    <select id="User3" class="input-form">
                         <option value="Admin-Front">Admin-Front</option>
                         <option value="Admin-Technical">Admin-Technical</option>
                         <option value="Chairperson">Watcher</option>
                       </select>
                 </div>
-                <br>
+                <br> 
                 <div class="buttons">
                     <button class="cancel-button">Cancel</button>
                     <button class="save-button">Save</button>
@@ -1173,22 +1186,27 @@ if ($conn->connect_error) {
             document.getElementById("popup").style.display = "none";
         });
 
-        /*view pop up*/
         function viewpop(usepID) {
             // AJAX request to PHP script to retrieve data based on usepID
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    var rowData = JSON.parse(this.responseText);
-                    // Fill input fields with row data
-                    document.getElementById("usepID").value = rowData.usep_ID;
-                    document.getElementById("UName").value = rowData.username;
-                    document.getElementById("fullName").value = rowData.FName + " " + rowData.LName;
-                    document.getElementById("User").value = rowData.usertype;
+                    try {
+                        var rowData = JSON.parse(this.responseText);
+                        console.log(rowData); // Log the response for debugging
 
-                    // Show the popup
-                    var popup = document.getElementById("viewpop");
-                    popup.style.display = "flex";
+                        // Fill input fields with row data
+                        document.getElementById("usepID2").value = rowData.usep_ID;
+                        document.getElementById("UName2").value = rowData.username;
+                        document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
+                        document.getElementById("User2").value = rowData.usertype;
+
+                        // Show the popup
+                        var popup = document.getElementById("viewpop");
+                        popup.style.display = "flex";
+                    } catch (e) {
+                        console.error("Error parsing JSON response: " + e.message);
+                    }
                 }
             };
             xhttp.open("GET", "get_user_data.php?usepID=" + usepID, true);
@@ -1196,14 +1214,14 @@ if ($conn->connect_error) {
         }
 
         
-        document.querySelector("#viewpop .save-button").addEventListener("click", function() {
-            document.getElementById("UName").value = '';
-            document.getElementById("usepID").value = '';
-            document.getElementById("fullName").value = '';
-            document.getElementById("User").value = '';
+        function closeViewpop() {
+            document.getElementById("UName2").value = '';
+            document.getElementById("usepID2").value = '';
+            document.getElementById("fullName2").value = '';
+            document.getElementById("User2").value = '';
 
             document.getElementById("viewpop").style.display = "none";
-        });
+        }
 
         /*edit pop up*/
         function editpop() {
