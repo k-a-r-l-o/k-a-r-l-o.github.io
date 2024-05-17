@@ -942,11 +942,7 @@
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-<<<<<<< Updated upstream:Logs.html
-                switchHTML('index.html');
-=======
                 switchHTML('indexAdmin.php');
->>>>>>> Stashed changes:Logs.php
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
