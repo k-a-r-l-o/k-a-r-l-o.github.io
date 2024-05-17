@@ -36,6 +36,12 @@ $sqlUser = "CREATE TABLE IF NOT EXISTS Users (
     User_status VARCHAR(50) NOT NULL
 )";
 
+if ($conn->query($sqlUser) === TRUE) {
+    echo "Table 'User' created successfully<br>";
+} else {
+    echo "Error creating table 'User': " . $conn->error . "<br>";
+}
+
 // Hash the password before inserting into the database
 $input_password = 'Central1234'; // Define the password
 $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
@@ -133,11 +139,7 @@ $sqlProgramInsert = "INSERT INTO Programs(Program) VALUES
 
 
 
-if ($conn->query($sqlUser) === TRUE) {
-    echo "Table 'User' created successfully<br>";
-} else {
-    echo "Error creating table 'User': " . $conn->error . "<br>";
-}
+
 
 if ($conn->query($sqlListP) === TRUE) {
     echo "Table 'ListP' created successfully<br>";
