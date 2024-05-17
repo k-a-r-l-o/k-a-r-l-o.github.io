@@ -1066,7 +1066,7 @@
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-                switchHTML('index.php');
+                switchHTML('indexAdmin.php');
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
