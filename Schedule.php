@@ -1,3 +1,32 @@
+<?php
+
+// Establishing a connection to the database
+$servername = "localhost"; // Replace with your server name
+$username = "root"; // Replace with your username
+$password = ""; // Replace with your password
+$dbname = "Voting_System"; // Replace with your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+session_start();
+
+// Check if session variables are set
+if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
+    // If session variables are not set, redirect to the login page
+    header("Location: indexAdmin.php");
+    exit();
+}
+
+// If session variables are set, proceed with the protected content
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -945,6 +974,16 @@
         document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
             document.getElementById("logoutpop").style.display = "none";
         });
+
+        document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
+              <?php
+                  session_start();
+                  session_unset();
+                  session_destroy();
+                  header("Location: indexAdmin.php");
+                  exit();
+              ?>
+            });
 
         /*pop up*/
         document.getElementById("addschedule").addEventListener("click", function() {

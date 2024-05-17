@@ -14,6 +14,17 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
+session_start();
+
+// Check if session variables are set
+if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
+    // If session variables are not set, redirect to the login page
+    header("Location: indexAdmin.php");
+    exit();
+}
+
+// If session variables are set, proceed with the protected content
 ?>
 
 <!DOCTYPE html>
@@ -981,6 +992,16 @@ if ($conn->connect_error) {
         /*log out*/
         document.getElementById("logout").addEventListener("click", function() {
                 document.getElementById("logoutpop").style.display = "flex";
+            });
+
+            document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
+              <?php
+                  session_start();
+                  session_unset();
+                  session_destroy();
+                  header("Location: indexAdmin.php");
+                  exit();
+              ?>
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
