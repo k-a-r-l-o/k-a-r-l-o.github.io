@@ -987,17 +987,18 @@ if (isset($_POST['logout'])) {
                                     <td><?php echo $row["program"] ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop()" src="view.png" alt="view icon">
+                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
                                         <img onclick="editpop()" src="edit.png" alt="edit icon">
                                         <img onclick="deletepop()" src="delete.png" alt="delete icon">
-
                                     </td>
                                 </tr>
                         <?php
                             }
+                        } else {
+                            echo "0 results";
                         }
-
                         ?>
+
 
                     </table>
                 </div>
@@ -1021,26 +1022,26 @@ if (isset($_POST['logout'])) {
                 <form method="post">
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID" name="usepID" class="input-form">
+                        <input type="number" id="usepID1" name="usepID" class="input-form">
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
-                        <input type="text" id="FName" name="FName" class="input-form">
+                        <input type="text" id="FName1" name="FName" class="input-form">
                     </div>
                     <div class="form-group">
                         <label for="LName">Last Name:</label>
-                        <input type="text" id="LName" name="LName" class="input-form">
+                        <input type="text" id="LName1" name="LName" class="input-form">
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select id="gender" class="input-form" name="gender">
+                        <select id="gender1" class="input-form" name="gender">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <select id="yearlevel" class="input-form" name="YearLvl">
+                        <select id="yearlevel1" class="input-form" name="YearLvl">
                             <option value="2nd">2nd Year</option>
                             <option value="3rd">3rd Year</option>
                             <option value="4th">4th Year</option>
@@ -1048,7 +1049,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <select id="program" class="input-form" name="program">
+                        <select id="program1" class="input-form" name="program">
                             <option value="BSABE">BSABE</option>
                             <option value="BEED">BEED</option>
                             <option value="BECED">BECED</option>
@@ -1123,27 +1124,27 @@ if (isset($_POST['logout'])) {
                 <form>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID" class="input-form" placeholder="2022-00294" readonly>
+                        <input type="number" id="usepID2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
                         <label for="fullName">Full Name:</label>
-                        <input type="text" id="fullName" class="input-form" placeholder="Karl Cornejo" readonly>
+                        <input type="text" id="fullName2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <input id="gender" class="input-form" placeholder="Male" readonly>
+                        <input id="gender2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <input id="yearlevel" class="input-form" placeholder="2nd Year" readonly>
+                        <input id="yearlevel2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <input id="program" class="input-form" placeholder="BSIT" readonly>
+                        <input id="program2" class="input-form" readonly>
                     </div>
                 </form>
                 <br>
-                <button class="save-button">Back</button>
+                <button type="button" class="save-button" onclick="closeViewpop()">Back</button>
             </div>
         </div>
     </div>
@@ -1156,22 +1157,22 @@ if (isset($_POST['logout'])) {
                 <form>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID" class="input-form">
+                        <input type="number" id="usepID3" class="input-form">
                     </div>
                     <div class="form-group">
                         <label for="fullName">Full Name:</label>
-                        <input type="text" id="fullName" class="input-form">
+                        <input type="text" id="fullName3" class="input-form">
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select id="gender" class="input-form">
+                        <select id="gender3" class="input-form">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <select id="yearlevel" class="input-form">
+                        <select id="yearlevel3" class="input-form">
                             <option value="2nd">2nd Year</option>
                             <option value="3rd">3rd Year</option>
                             <option value="4th">4th Year</option>
@@ -1179,7 +1180,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <select id="program" class="input-form">
+                        <select id="program3" class="input-form">
                             <option value="BSABE">BSABE</option>
                             <option value="BEED">BEED</option>
                             <option value="BECED">BECED</option>
@@ -1313,27 +1314,33 @@ if (isset($_POST['logout'])) {
         });
 
         /*view pop up*/
+
+
         function viewpop(usepID) {
             // AJAX request to PHP script to retrieve voter data based on usepID
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    try {
-                        var voterData = JSON.parse(this.responseText);
-                        console.log(voterData); // Log the response for debugging
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        try {
+                            var rowData = JSON.parse(this.responseText);
+                            console.log(rowData); // Log the response for debugging
 
-                        // Fill input fields with voter data
-                        document.getElementById("usepID").value = voterData.usep_ID;
-                        document.getElementById("fullName").value = voterData.FName + " " + voterData.LName;
-                        document.getElementById("gender").value = voterData.gender;
-                        document.getElementById("yearlevel").value = voterData.yearLvl;
-                        document.getElementById("program").value = voterData.program;
+                            // Fill input fields with voter data
+                            document.getElementById("usepID2").value = rowData.usep_ID;
+                            document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
+                            document.getElementById("gender2").value = rowData.gender;
+                            document.getElementById("yearlevel2").value = rowData.yearLvl;
+                            document.getElementById("program2").value = rowData.program;
 
-                        // Show the popup
-                        var popup = document.getElementById("viewpop");
-                        popup.style.display = "flex";
-                    } catch (e) {
-                        console.error("Error parsing JSON response: " + e.message);
+                            // Show the popup
+                            var popup = document.getElementById("viewpop");
+                            popup.style.display = "flex";
+                        } catch (e) {
+                            console.error("Error parsing JSON response: " + e.message);
+                        }
+                    } else {
+                        console.error("AJAX request failed with status: " + this.status);
                     }
                 }
             };
@@ -1341,21 +1348,17 @@ if (isset($_POST['logout'])) {
             xhttp.send();
         }
 
-
-
+        
         function closeViewpop() {
-            document.getElementById("UName2").value = '';
             document.getElementById("usepID2").value = '';
             document.getElementById("fullName2").value = '';
-            document.getElementById("User2").value = '';
+            document.getElementById("gender2").value = '';
+            document.getElementById("yearlevel2").value = '';
+            document.getElementById("program2").value = '';
 
             document.getElementById("viewpop").style.display = "none";
         }
 
-
-        document.querySelector("#viewpop .save-button").addEventListener("click", function() {
-            document.getElementById("viewpop").style.display = "none";
-        });
 
         /*edit pop up*/
         function editpop() {
