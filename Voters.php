@@ -928,8 +928,6 @@ if(isset($_POST['logout'])) {
                             }
                         } 
 
-                        // Close connection
-                        $conn->close();
                         ?>
                                       
                     </table>
@@ -954,26 +952,26 @@ if(isset($_POST['logout'])) {
                 <form method="post">
                 <div class="form-group">
                     <label for="usepID">USeP ID:</label>
-                    <input type="number" id="usepID" class="input-form">
+                    <input type="number" id="usepID" name="usepID" class="input-form">
                 </div>
                 <div class="form-group">
                     <label for="FName">First Name:</label>
-                    <input type="text" id="FName" class="input-form">
+                    <input type="text" id="FName" name="FName" class="input-form">
                 </div>
                 <div class="form-group">
                     <label for="LName">Last Name:</label>
-                    <input type="text" id="LName" class="input-form">
+                    <input type="text" id="LName" name="LName" class="input-form">
                 </div>
                 <div class="form-group">
                     <label for="gender">Gender:</label>
-                    <select id="gender" class="input-form">
+                    <select id="gender" class="input-form" name="gender">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="yearLevel">Year Level:</label>
-                    <select id="yearlevel" class="input-form">
+                    <select id="yearlevel" class="input-form" name="YearLvl">
                         <option value="2nd">2nd Year</option>
                         <option value="3rd">3rd Year</option>
                         <option value="4th">4th Year</option>
@@ -981,7 +979,7 @@ if(isset($_POST['logout'])) {
                 </div>
                 <div class="form-group">
                     <label for="program">Program:</label>
-                    <select id="program" class="input-form">
+                    <select id="program" class="input-form" name="program">
                         <option value="BSABE">BSABE</option>
                         <option value="BEED">BEED</option>
                         <option value="BECED">BECED</option>
@@ -994,13 +992,61 @@ if(isset($_POST['logout'])) {
                 <br>
                 <div class="buttons">
                     <button class="cancel-button">Cancel</button>
-                    <button class="save-button">Save</button>
+                    <button type="submit" class="save-button" name="save">Save</button>
                 </div>
                 </form>
             </div>
         </div>    
     </div>
+    <?php
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        if (isset($_POST['save'])) {
+
+            $usepID = $_POST['usepID'];
+
+            $sqlsearch = "SELECT * FROM Voters WHERE usep_ID = '$usepID'";
+            $result = $conn->query($sqlsearch);
     
+            if ($result->num_rows > 0) {
+                echo "<script>alert('Voter already exists!');</script>";
+            } else {
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                // Retrieve data from form
+                $usepID = $_POST['usepID'];
+                $lname = $_POST['LName'];
+                $fname = $_POST['FName'];
+                $gender = $_POST['gender'];
+                $yearlvl = $_POST['YearLvl'];
+                $Program = $_POST['program'];
+
+                // Insert data into Users table
+                $sqlVoterInsert = "INSERT INTO Voters (usep_ID, LName, FName, gender, yearLvl, program ) 
+                                VALUES ('$usepID', '$lname', '$fname', '$gender', '$yearlvl','$Program' )";
+                                
+                if ($conn->query(  $sqlVoterInsert) === TRUE) {
+                    echo "<script>alert('New record created successfully');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                } else {
+                    echo "<script>alert('Error: " .   $sqlVoterInsert . "<br>" . $conn->error . "');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                }
+            }
+            
+        }
+
+        // Close connection
+        $conn->close();
+    }
+    ?>
     
 
     <div class="popup" id="viewpop">

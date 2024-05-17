@@ -147,7 +147,7 @@ $sqlVoters = "CREATE TABLE IF NOT EXISTS Voters (
     LName VARCHAR(255) NOT NULL,
     FName VARCHAR(255) NOT NULL,
     gender VARCHAR(50) NOT NULL,
-    yearLvl INT,
+    yearLvl VARCHAR(50) NOT NULL,
     program VARCHAR(55) NOT NULL,
     PRIMARY KEY(usep_ID)
 )";
