@@ -378,7 +378,7 @@ $conn->close();
                 event.preventDefault();
 
                 // Your custom action here
-                window.open('index.html', '_self');
+                window.open('index.php', '_self');
             }
         });
 

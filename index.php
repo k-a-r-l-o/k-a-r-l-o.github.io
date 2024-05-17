@@ -489,7 +489,7 @@
         // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
         if (passkey === 'adminni') {
             // Open the new page in the same window
-            window.open('indexWatcher.html', '_self');
+            window.open('indexWatcher.php', '_self');
         } else {
             // Notify the user about incorrect passkey
             alert('Incorrect passkey. Please try again.');
