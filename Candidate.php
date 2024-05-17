@@ -1,3 +1,21 @@
+<?php
+
+// Establishing a connection to the database
+$servername = "localhost"; // Replace with your server name
+$username = "root"; // Replace with your username
+$password = ""; // Replace with your password
+$dbname = "Voting_System"; // Replace with your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -845,72 +863,6 @@
                           <img onclick="editpop()" src="edit.png" alt="edit icon">
                           <img onclick="deletepop()" src="delete.png" alt="delete icon">
                       </td>
-                  </tr>
-                  <tr>
-                      <td class="tdfirst">2022-00124</td>
-                      <td>John Doe</td>
-                      <td>Vice President</td>
-                      <td>BSBA</td>
-                      <td class="tdlast">
-                        <img onclick="viewpop()" src="view.png" alt="view icon">
-                        <img onclick="editpop()" src="edit.png" alt="edit icon">
-                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="tdfirst">2022-00125</td>
-                      <td>Jane Smith</td>
-                      <td>Secretary</td>
-                      <td>BSCS</td>
-                      <td class="tdlast">   
-                        <img onclick="viewpop()" src="view.png" alt="view icon">
-                        <img onclick="editpop()" src="edit.png" alt="edit icon">
-                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="tdfirst">2022-00126</td>
-                      <td>Michael Johnson</td>
-                      <td>Treasurer</td>
-                      <td>BSIT</td>
-                      <td class="tdlast">
-                        <img onclick="viewpop()" src="view.png" alt="view icon">
-                        <img onclick="editpop()" src="edit.png" alt="edit icon">
-                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="tdfirst">2022-00127</td>
-                      <td>Sarah Brown</td>
-                      <td>Auditor</td>
-                      <td>BSEd</td>
-                      <td class="tdlast">
-                        <img onclick="viewpop()" src="view.png" alt="view icon">
-                        <img onclick="editpop()" src="edit.png" alt="edit icon">
-                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="tdfirst">2022-00128</td>
-                      <td>Chris Anderson</td>
-                      <td>Public Information Officer</td>
-                      <td>BSHRM</td>
-                      <td class="tdlast">
-                        <img onclick="viewpop()" src="view.png" alt="view icon">
-                        <img onclick="editpop()" src="edit.png" alt="edit icon">
-                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="tdfirst">2022-00129</td>
-                      <td>Mark Taylor</td>
-                      <td>Business Manager</td>
-                      <td>BSA</td>
-                      <td class="tdlast">
-                        <img onclick="viewpop()" src="view.png" alt="view icon">
-                        <img onclick="editpop()" src="edit.png" alt="edit icon">
-                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
                   </tr>                  
                     
                   </table>
@@ -1012,6 +964,7 @@
             </div>
         </div>    
     </div>
+    
     <div class="popup" id="viewpop">
         <div class="head">
           <h3>CANDIDATE INFORMATION</h3>
@@ -1309,7 +1262,7 @@
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-                switchHTML('index.html');
+                switchHTML('indexAdmin.php');
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
