@@ -34,7 +34,7 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
             // Password is correct and usertype matches, set session and redirect
             $_SESSION["username"] = $input_username;
             $_SESSION["usertype"] = $input_usertype;
-            header("Location: Dashboard.html");
+            header("Location: Dashboard.php");
             exit();
         } else {
             // Password or usertype is incorrect
@@ -378,7 +378,7 @@ $conn->close();
                 event.preventDefault();
 
                 // Your custom action here
-                window.open('index.html', '_self');
+                window.open('index.php', '_self');
             }
         });
 

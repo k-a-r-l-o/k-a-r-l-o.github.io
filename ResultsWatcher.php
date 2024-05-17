@@ -756,7 +756,7 @@
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-                switchHTML('indexWatcher.html');
+                switchHTML('indexWatcher.php');
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {

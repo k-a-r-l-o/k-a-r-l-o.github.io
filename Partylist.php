@@ -812,14 +812,14 @@ if ($conn->connect_error) {
     <div class="bodycontainer" >
         <div class="menu">
             <div class="buttonContainer">
-                <button title="Dashboard" onclick="switchHTML('Dashboard.html')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button title="Results" onclick="switchHTML('Results.html')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button title="Candidates" onclick="switchHTML('Candidate.html')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
+                <button title="Dashboard" onclick="switchHTML('Dashboard.php')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
+                <button title="Results" onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button title="Candidates" onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
                 <button title="Voters" onclick="switchHTML('Voters.php')"> <div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
                 <button title="Partylists" id="selected"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
                 <button title="Users" onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button title="Councils" onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
-                <button title="Voting Schedule" onclick="switchHTML('Schedule.html')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
+                <button title="Voting Schedule" onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
                 <button title="Logs" onclick="switchHTML('Logs.html')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
                 <button id="logout" class="Logoutbutton" title="Logout"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>                
@@ -1098,7 +1098,7 @@ if ($conn->connect_error) {
             });
 
             document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-                switchHTML('index.html');
+                switchHTML('index.php');
             });
 
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {

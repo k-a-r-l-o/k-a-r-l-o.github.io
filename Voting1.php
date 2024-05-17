@@ -206,7 +206,7 @@
         .card{
             height: auto;
             width: 100%;
-            max-width: 715px;
+            max-width: 1285px;
             display: flex;
             flex-direction: column;
             justify-self: center;
@@ -229,7 +229,6 @@
             height: auto;
             border-radius: 12px 12px 0 0;
             padding: 12px 10%;
-            justify-content: center;
             box-sizing: border-box;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
@@ -251,7 +250,6 @@
             border-radius: 0 0 12px 12px;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
         }
 
         input[type="radio"] {
@@ -351,7 +349,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            max-width: 715px;
+            max-width: 1285px;
         }
 
         .button button {
@@ -404,18 +402,6 @@
             border-radius: 5px;
         }
 
-        .pos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            width: 100%;
-        }
-
-        .pos p{
-            font-size: 20px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
         @media (max-width: 1000px) {
 
             header{
@@ -439,7 +425,7 @@
                 height: 15px;
             }
 
-            .positiontitle h3, h2, button, p{
+            .positiontitle h3, h2, label, button{
                 scale: 0.9;
             }
 
@@ -450,6 +436,9 @@
         }
 
         @media (max-width: 900px) {
+            .cardcontent{
+                flex-direction: column;
+            }
 
             .candidateimage { 
                 justify-content: center;
@@ -492,7 +481,7 @@
                 height: 13px;
             }
 
-            .positiontitle h3, h2, button, p{
+            .positiontitle h3, h2, label, button{
                 scale: 0.8;
             }
 
@@ -513,12 +502,12 @@
         </div>
         <div class="tracker">
             <div class="stepper-wrapper">
-                <div class="stepper-item completed">
+                <div class="stepper-item active">
                     <div class="step-counter"></div>
                     <div class="step-name">Student Council</div>
                 </div>
 
-                <div class="stepper-item active">
+                <div class="stepper-item">
                     <div class="step-counter"></div>
                     <div class="step-name">SC Summary</div>
                 </div>
@@ -544,54 +533,65 @@
     <div class="bodycontainer" >
       <div class="content">
             <div class="cardcontainer">
+                <div class="title">
+                    <div class="tname">
+                        <h2>STUDENT COUNCIL</h2>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="positiontitle">
-                        <h3>SC SUMMARY</h3>
+                        <h3>President</h3>
                     </div>
 
                     <div class="cardcontent">
-                        <div class="pos">
-                            <p>President:</p>
-                            <p class="c">Candidate</p>
+                        <div class="candidateinfocontent">
+                            <form>
+                                <label for="pAbstain">
+                                    <input type="radio" id="pAbstain" name="candidate" value="Abstain">Abstain
+                                </label>
+                                <label for="p1">
+                                    <input type="radio" id="p1" name="candidate" value="1">Maya Cartel
+                                </label>
+                                <label for="p2">
+                                    <input type="radio" id="p2" name="candidate" value="2">John Doe
+                                </label>
+                            </form>
                         </div>
-                        <div class="pos">
-                            <p>Vice President:</p>
-                            <p class="c">Candidate</p>
+                        <div class="candidateimage">
+                            <img src="DefaultProfile.png" alt="sub">
                         </div>
-                        <div class="pos">
-                            <p>Secretary:</p>
-                            <p class="c">Candidate</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="positiontitle">
+                        <h3>Vice President</h3>
+                    </div>
+
+                    <div class="cardcontent">
+                        <div class="candidateinfocontent">
+                            <form>
+                                <label for="vAbstain">
+                                    <input type="radio" id="vAbstain" name="candidate" value="Abstain">Abstain
+                                </label>
+                                <label for="v1">
+                                    <input type="radio" id="v1" name="candidate" value="1">Maya Cartel
+                                </label>
+                                <label for="v2">
+                                    <input type="radio" id="v2" name="candidate" value="2">John Doe
+                                </label>
+                            </form>
                         </div>
-                        <div class="pos">
-                            <p>Position:</p>
-                            <p class="c">Candidate</p>
-                        </div>
-                        <div class="pos">
-                            <p>Position:</p>
-                            <p class="c">Candidate</p>
-                        </div>
-                        <div class="pos">
-                            <p>Position:</p>
-                            <p class="c">Candidate</p>
-                        </div>
-                        <div class="pos">
-                            <p>Position:</p>
-                            <p class="c">Candidate</p>
-                        </div>
-                        <div class="pos">
-                            <p>Position:</p>
-                            <p class="c">Candidate</p>
-                        </div>
-                        <div class="pos">
-                            <p>Position:</p>
-                            <p class="c">Candidate</p>
+                        <div class="candidateimage">
+                            <img src="DefaultProfile.png" alt="sub">
                         </div>
                     </div>
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.html')" >Back</button>
-                    <button onclick="switchHTML('Voting3.html')" >Next</button>
+                    <div></div> 
+                    <button onclick="switchHTML('Voting2.php')" >Next</button>
                 </div>
             </div>
       </div>
