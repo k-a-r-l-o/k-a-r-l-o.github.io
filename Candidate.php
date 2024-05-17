@@ -97,8 +97,6 @@
         animation: fadeIn 0.3s forwards;
     }
 
-    /*menu*/
-
     .menu{
         display: grid;
         grid-template-columns: 1fr;
@@ -203,13 +201,11 @@
         background: transparent;
     }
 
-    /* Handle (thumb) of the scrollbar */
     ::-webkit-scrollbar-thumb {
         background: #28579E;
         border-radius: 5px;
     }
 
-    /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
         background: #2F80ED;
         border-radius: 5px;
