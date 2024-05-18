@@ -86,7 +86,7 @@ if ($conn->query($sqlPrtyInsert) === TRUE) {
 }
 
 $sqlListC = "CREATE TABLE IF NOT EXISTS List_Councils (
-    council_ID INT UNIQUE KEY AUTO_INCREMENT,
+    council_ID INT UNIQUE KEY,
     council_name VARCHAR(55) NOT NULL,
     program VARCHAR(55) NOT NULL,
     Cnl_level INT
@@ -98,13 +98,20 @@ if ($conn->query($sqlListC) === TRUE) {
     echo "Error creating table 'ListC': " . $conn->error . "<br>";
 }
 
-$sqlCnlInsert = "INSERT IGNORE INTO List_Councils (council_name, program, Cnl_level) VALUES
-('SITS','BSIT', '2')";
+$sqlCnlInsert = "INSERT IGNORE INTO List_Councils (council_ID, council_name, program, Cnl_level) VALUES
+    ('1', 'SABES', 'BSABE', '0'),
+    ('2', 'OFEE', 'BEED', '0'),
+    ('3', 'AECES', 'BECED', '0'),
+    ('4', 'OFSET', 'BSNED', '0'),
+    ('5', 'AFSET', 'BSED', '0'),
+    ('6', 'SITS', 'BSIT', '0'),
+    ('7', 'FTVETTS', 'BTVTED', '0'),
+    ('8', 'TSC', 'ALL PROGRAMS', '0');";
 
 if ($conn->query($sqlCnlInsert) === TRUE) {
-    echo "Data inserted into 'Program' table successfully<br>";
+    echo "Data inserted into 'List_Councils' table successfully<br>";
 } else {
-    echo "Error inserting data into 'Program' table: " . $conn->error . "<br>";
+    echo "Error inserting data into 'List_Councils' table: " . $conn->error . "<br>";
 }
 
 
