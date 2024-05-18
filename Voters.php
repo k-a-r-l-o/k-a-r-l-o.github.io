@@ -1131,7 +1131,7 @@ if (isset($_POST['logout'])) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="file">Choose CSV file:</label>
                         <input type="file" id="file" name="file" accept=".csv" class="input-form" required>
@@ -1139,12 +1139,82 @@ if (isset($_POST['logout'])) {
                     <br>
                     <div class="buttons">
                         <button type="button" class="cancel-button">Cancel</button>
-                        <button type="submit" class="save-button" name="import">Save</button>
+                        <button type="submit" class="save-button" name="import">Import</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <?php
+
+    if (isset($_POST["import"])) {
+        if (isset($_FILES["file"]) && $_FILES["file"]["error"] == 0) {
+            $fileName = $_FILES["file"]["tmp_name"];
+
+            // Check file MIME type
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $fileName);
+            finfo_close($finfo);
+
+            if ($mime !== 'text/csv' && $mime !== 'text/plain') {
+                echo "<script>alert('Invalid File: Please upload a CSV file.');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+                exit();
+            }
+
+            if ($_FILES["file"]["size"] > 0) {
+                $file = fopen($fileName, "r");
+
+                // Skip the first row if it contains headers
+                fgetcsv($file);
+
+                while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+                    $usepID = mysqli_real_escape_string($conn, $column[0]);
+                    $email = mysqli_real_escape_string($conn, $column[1]);
+                    $lname = mysqli_real_escape_string($conn, $column[2]);
+                    $fname = mysqli_real_escape_string($conn, $column[3]);
+                    $gender = mysqli_real_escape_string($conn, $column[4]);
+                    $yearlvl = mysqli_real_escape_string($conn, $column[5]);
+                    $program = mysqli_real_escape_string($conn, $column[6]);
+                    $voted = 'Not Voted';
+
+                    // Check if voter already exists
+                    $sqlsearch = "SELECT * FROM Voters WHERE usep_ID = '$usepID'";
+                    $result = $conn->query($sqlsearch);
+
+                    if ($result->num_rows == 0) {
+                        // Insert data into Voters table
+                        $sqlVoterInsert = "INSERT INTO Voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted) 
+                                        VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$voted')";
+
+                        if ($conn->query($sqlVoterInsert) === TRUE) {
+                            echo "New record created successfully for $usepID<br>";
+                        } else {
+                            echo "Error: " . $sqlVoterInsert . "<br>" . $conn->error . "<br>";
+                        }
+                    } else {
+                        echo "Voter with USeP ID $usepID already exists!<br>";
+                    }
+                }
+
+                fclose($file);
+                echo "<script>alert('CSV File has been successfully imported.');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+            } else {
+                echo "<script>alert('Invalid File: Please upload a CSV file.');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+            }
+        } else {
+            echo "<script>alert('File upload failed. Please try again.');</script>";
+            echo "<script>window.location.href = 'Voters.php';</script>";
+        }
+    }
+
+    ?>
+
+
+
 
     <div class="popup" id="viewpop">
         <div class="head">
