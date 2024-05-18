@@ -144,11 +144,13 @@ if ($conn->query($sqlCand) === TRUE) {
 
 $sqlVoters = "CREATE TABLE IF NOT EXISTS Voters (
     usep_ID INT,
+    Email VARCHAR(255) NOT NULL,
     LName VARCHAR(255) NOT NULL,
     FName VARCHAR(255) NOT NULL,
     gender VARCHAR(50) NOT NULL,
     yearLvl VARCHAR(50) NOT NULL,
     program VARCHAR(55) NOT NULL,
+    voted VARCHAR(55) NOT NULL,
     PRIMARY KEY(usep_ID)
 )";
 
@@ -158,8 +160,8 @@ if ($conn->query($sqlVoters) === TRUE) {
     echo "Error creating table 'Voters': " . $conn->error . "<br>";
 }
 
-$sqlVtrInsert = "INSERT IGNORE INTO Voters (usep_ID, LName, FName, gender, yearLvl, program) VALUES
-('2022002', 'Cornejo', 'Karl', 'Male', '2nd Year', 'BSIT')";
+$sqlVtrInsert = "INSERT IGNORE INTO Voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted) VALUES
+('202200294','kocornejo00294@usep.edu.ph', 'Cornejo', 'Karl', 'Male', '2nd Year', 'BSIT', 'Not Voted')";
 
 if ($conn->query($sqlVtrInsert) === TRUE) {
     echo "Data inserted into 'Program' table successfully<br>";

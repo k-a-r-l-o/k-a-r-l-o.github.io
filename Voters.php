@@ -695,6 +695,7 @@ if (isset($_POST['logout'])) {
             box-sizing: border-box;
         }
 
+        #importpop .popup-content,
         #logoutpop .popup-content,
         #deletepop .popup-content {
             overflow: hidden;
@@ -1022,26 +1023,32 @@ if (isset($_POST['logout'])) {
                 <form method="post">
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID1" name="usepID" class="input-form">
+                        <input type="number" id="usepID1" name="usepID" class="input-form" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email:</label>
+                        <input type="email" id="Email1" name="Email" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
-                        <input type="text" id="FName1" name="FName" class="input-form">
+                        <input type="text" id="FName1" name="FName" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="LName">Last Name:</label>
-                        <input type="text" id="LName1" name="LName" class="input-form">
+                        <input type="text" id="LName1" name="LName" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select id="gender1" class="input-form" name="gender">
+                        <select id="gender1" class="input-form" name="gender" required>
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <select id="yearlevel1" class="input-form" name="YearLvl">
+                        <select id="yearlevel1" class="input-form" name="YearLvl" required>
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="1st Year">1st Year</option>
                             <option value="2nd Year">2nd Year</option>
                             <option value="3rd Year">3rd Year</option>
@@ -1051,7 +1058,8 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <select id="program1" class="input-form" name="program">
+                        <select id="program1" class="input-form" name="program" required>
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="BSABE">BSABE</option>
                             <option value="BEED">BEED</option>
                             <option value="BECED">BECED</option>
@@ -1063,7 +1071,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <br>
                     <div class="buttons">
-                        <button class="cancel-button">Cancel</button>
+                        <button type="button" class="cancel-button">Cancel</button>
                         <button type="submit" class="save-button" name="save">Save</button>
                     </div>
                 </form>
@@ -1094,15 +1102,17 @@ if (isset($_POST['logout'])) {
 
                 // Retrieve data from form
                 $usepID = $_POST['usepID'];
+                $email = $_POST['Email'];
                 $lname = $_POST['LName'];
                 $fname = $_POST['FName'];
                 $gender = $_POST['gender'];
                 $yearlvl = $_POST['YearLvl'];
                 $Program = $_POST['program'];
+                $voted = 'Not Voted';
 
                 // Insert data into Users table
-                $sqlVoterInsert = "INSERT INTO Voters (usep_ID, LName, FName, gender, yearLvl, program ) 
-                                VALUES ('$usepID', '$lname', '$fname', '$gender', '$yearlvl','$Program' )";
+                $sqlVoterInsert = "INSERT INTO Voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted ) 
+                                VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl','$Program' ,'$voted')";
 
                 if ($conn->query($sqlVoterInsert) === TRUE) {
                     echo "<script>alert('New record created successfully');</script>";
@@ -1115,7 +1125,26 @@ if (isset($_POST['logout'])) {
         }
     }
     ?>
-
+    <div class="popup" id="importpop">
+        <div class="head">
+            <h3>IMPORT VOTERS</h3>
+        </div>
+        <div class="popup-content">
+            <div class="popup-content-inner">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="file">Choose CSV file:</label>
+                        <input type="file" id="file" name="file" accept=".csv" class="input-form" required>
+                    </div>
+                    <br>
+                    <div class="buttons">
+                        <button type="button" class="cancel-button">Cancel</button>
+                        <button type="submit" class="save-button" name="import">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="popup" id="viewpop">
         <div class="head">
@@ -1127,6 +1156,10 @@ if (isset($_POST['logout'])) {
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
                         <input type="number" id="usepID2" class="input-form" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email:</label>
+                        <input type="email" id="Email2" name="Email2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
                         <label for="fullName">Full Name:</label>
@@ -1144,6 +1177,10 @@ if (isset($_POST['logout'])) {
                         <label for="program">Program:</label>
                         <input id="program2" class="input-form" readonly>
                     </div>
+                    <div class="form-group">
+                        <label for="voted">Vote Status:</label>
+                        <input type="text" id="voted2" class="input-form" readonly>
+                    </div>
                 </form>
                 <br>
                 <button type="button" class="save-button" onclick="closeViewpop()">Back</button>
@@ -1159,26 +1196,30 @@ if (isset($_POST['logout'])) {
                 <form method="post">
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID3" name="usepID3" class="input-form">
+                        <input type="number" id="usepID3" name="usepID3" class="input-form" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email:</label>
+                        <input type="email" id="Email3" name="Email3" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
-                        <input type="text" id="FName3" name="FName3" class="input-form">
+                        <input type="text" id="FName3" name="FName3" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="LName">Last Name:</label>
-                        <input type="text" id="LName3" name="LName3" class="input-form">
+                        <input type="text" id="LName3" name="LName3" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select id="gender3" class="input-form" name="gender3">
+                        <select id="gender3" class="input-form" name="gender3" required>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <select id="yearlevel3" class="input-form" name="yearlevel3">
+                        <select id="yearlevel3" class="input-form" name="yearlevel3" required>
                             <option value="1st Year">1st Year</option>
                             <option value="2nd Year">2nd Year</option>
                             <option value="3rd Year">3rd Year</option>
@@ -1188,7 +1229,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <select id="program3" class="input-form" name="program3">
+                        <select id="program3" class="input-form" name="program3" required>
                             <option value="BSABE">BSABE</option>
                             <option value="BEED">BEED</option>
                             <option value="BECED">BECED</option>
@@ -1198,11 +1239,18 @@ if (isset($_POST['logout'])) {
                             <option value="BTVTED">BTVTED</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="voted">Vote Status:</label>
+                        <select id="voted3" class="input-form" class="input-form" name="voted3" required>
+                            <option value="Voted">Voted</option>
+                            <option value="Not Voted">Not Voted</option>
+                        </select>
+                    </div>
 
             </div>
             <br>
             <div class="buttons">
-                <button class="cancel-button">Cancel</button>
+                <button type="button" class="cancel-button">Cancel</button>
                 <button type="submit" class="save-button" name="edit">Save</button>
             </div>
             </form>
@@ -1225,14 +1273,16 @@ if (isset($_POST['logout'])) {
 
             // Retrieve data from form
             $usepID = $_POST['usepID3'];
+            $email = $_POST['Email3'];
             $lname = $_POST['LName3'];
             $fname = $_POST['FName3']; 
             $gender = $_POST['gender3'];
             $yearlvl = $_POST['yearlevel3'];
             $Program = $_POST['program3'];
+            $voted = $_POST['voted3'];
 
             // Insert data into Users table
-            $sqlVoterEdit = "UPDATE Voters SET LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
+            $sqlVoterEdit = "UPDATE Voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program', voted = '$voted' WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlVoterEdit) === TRUE) {
                 echo "<script>alert('Record updated successfully');</script>";
@@ -1256,28 +1306,6 @@ if (isset($_POST['logout'])) {
             <form method="post">
                 <div class="input-wrapper">
                     <input type="hidden" id="usepID4" name="usepID4" class="input-form">
-                    <input type="hidden" id="FName4" name="FName4" class="input-form">
-                    <input type="hidden" id="LName4" name="LName4" class="input-form">
-                    <select id="gender4" class="input-form" name="gender4" style="display: none;">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                    <select id="yearlevel4" class="input-form" name="yearlevel4" style="display: none;">
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                            <option value="5th Year">5th Year</option>
-                    </select>
-                    <select id="program4" class="input-form" name="program4" style="display: none;">
-                        <option value="BSABE">BSABE</option>
-                        <option value="BEED">BEED</option>
-                        <option value="BECED">BECED</option>
-                        <option value="BSNED">BSNED</option>
-                        <option value="BSED">BSED</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="BTVTED">BTVTED</option>
-                    </select>
                 </div>
                 <br>
                 <div class="popup-content-inner">
@@ -1286,7 +1314,7 @@ if (isset($_POST['logout'])) {
                             This action cannot be undone.</p>
                     </div>
                     <br>
-                    <button class="cancel-button">Cancel</button>
+                    <button type="button" class="cancel-button">Cancel</button>
                     <button type="submit" class="save-button" name="delete">Delete</button>
                 </div>
             </form>
@@ -1339,7 +1367,7 @@ if (isset($_POST['logout'])) {
                         <p>Are you sure you want to logout?</p>
                     </div>
                     <br>
-                    <button class="cancel-button">Cancel</button>
+                    <button type="button" class="cancel-button">Cancel</button>
                     <button type="submit" class="save-button" name="logout">Confirm</button>
                 </div>
             </form>
@@ -1428,6 +1456,15 @@ if (isset($_POST['logout'])) {
             document.getElementById("popup").style.display = "none";
         });
 
+        /*import pop up*/
+        document.getElementById("importbutton").addEventListener("click", function() {
+            document.getElementById("importpop").style.display = "flex";
+        });
+
+        document.querySelector("#importpop .cancel-button").addEventListener("click", function() {
+            document.getElementById("importpop").style.display = "none";
+        });
+
         /*view pop up*/
 
 
@@ -1443,10 +1480,12 @@ if (isset($_POST['logout'])) {
 
                             // Fill input fields with voter data
                             document.getElementById("usepID2").value = rowData.usep_ID;
+                            document.getElementById("Email2").value = rowData.Email;
                             document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
                             document.getElementById("gender2").value = rowData.gender;
                             document.getElementById("yearlevel2").value = rowData.yearLvl;
                             document.getElementById("program2").value = rowData.program;
+                            document.getElementById("voted2").value = rowData.voted;
 
                             // Show the popup
                             var popup = document.getElementById("viewpop");
@@ -1465,12 +1504,6 @@ if (isset($_POST['logout'])) {
 
 
         function closeViewpop() {
-            document.getElementById("usepID2").value = '';
-            document.getElementById("fullName2").value = '';
-            document.getElementById("gender2").value = '';
-            document.getElementById("yearlevel2").value = '';
-            document.getElementById("program2").value = '';
-
             document.getElementById("viewpop").style.display = "none";
         }
 
@@ -1489,15 +1522,17 @@ if (isset($_POST['logout'])) {
                             // Fill input fields with voter data
                             var usepIDField = document.getElementById("usepID3");
                             usepIDField.value = rowData.usep_ID;
-                            usepIDField.readOnly = true; // Make the field read-only
+                            //usepIDField.readOnly = true; // Make the field read-only
 
                             // Fill input fields with voter data
 
+                            document.getElementById("Email3").value = rowData.Email;
                             document.getElementById("FName3").value = rowData.FName;
                             document.getElementById("LName3").value = rowData.LName;
                             document.getElementById("gender3").value = rowData.gender;
                             document.getElementById("yearlevel3").value = rowData.yearLvl;
                             document.getElementById("program3").value = rowData.program;
+                            document.getElementById("voted3").value = rowData.voted;
 
                             // Show the popup
                             var popup = document.getElementById("editpop");
@@ -1531,11 +1566,6 @@ if (isset($_POST['logout'])) {
 
                             // Fill input fields with voter data
                             document.getElementById("usepID4").value = rowData.usep_ID;
-                            document.getElementById("FName4").value = rowData.FName;
-                            document.getElementById("LName4").value = rowData.LName;
-                            document.getElementById("gender4").value = rowData.gender;
-                            document.getElementById("yearlevel4").value = rowData.yearLvl;
-                            document.getElementById("program4").value = rowData.program;
 
                             // Show the popup
                             var popup = document.getElementById("deletepop");
