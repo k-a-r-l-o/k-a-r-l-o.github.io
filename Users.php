@@ -904,9 +904,6 @@ if(isset($_POST['logout'])) {
                         <?php
                             }
                         } 
-
-                        // Close connection
-                        $conn->close();
                         ?>
                     </table>
                 </div>
@@ -1015,8 +1012,6 @@ if(isset($_POST['logout'])) {
             
         }
 
-        // Close connection
-        $conn->close();
     }
     ?>
 
