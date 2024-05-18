@@ -989,7 +989,7 @@ if (isset($_POST['logout'])) {
                                         <!-- Pass row data to viewpop() function -->
                                         <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
                                         <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
-                                        <img onclick="deletepop()" src="delete.png" alt="delete icon">
+                                        <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
                                     </td>
                                 </tr>
                         <?php
@@ -1194,9 +1194,12 @@ if (isset($_POST['logout'])) {
                             <option value="BTVTED">BTVTED</option>
                         </select>
                     </div>
-                    <br>
-                    <button class="cancel-button">Cancel</button>
-                    <button type="submit" class="save-button" name="edit">Save</button>
+
+            </div>
+            <br>
+            <div class="buttons">
+                <button class="cancel-button">Cancel</button>
+                <button type="submit" class="save-button" name="edit">Save</button>
             </div>
             </form>
         </div>
@@ -1206,7 +1209,7 @@ if (isset($_POST['logout'])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (isset($_POST['edit'])) {
-            $usepID = $_POST['usepID3'];
+
 
             // Create connection
             $conn = new mysqli($servername, $username, $password, $dbname);
@@ -1246,17 +1249,79 @@ if (isset($_POST['logout'])) {
             <h3>DELETE VOTER</h3>
         </div>
         <div class="popup-content">
-            <div class="popup-content-inner">
-                <div style="text-align: center;">
-                    <p>Are you sure you want to delete this voter?
-                        This action cannot be undone.</p>
+            <form method="post">
+                <div class="input-wrapper">
+                    <input type="hidden" id="usepID4" name="usepID4" class="input-form">
+                    <input type="hidden" id="FName4" name="FName4" class="input-form">
+                    <input type="hidden" id="LName4" name="LName4" class="input-form">
+                    <select id="gender4" class="input-form" name="gender4" style="display: none;">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <select id="yearlevel4" class="input-form" name="yearlevel4" style="display: none;">
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
+                    <select id="program4" class="input-form" name="program4" style="display: none;">
+                        <option value="BSABE">BSABE</option>
+                        <option value="BEED">BEED</option>
+                        <option value="BECED">BECED</option>
+                        <option value="BSNED">BSNED</option>
+                        <option value="BSED">BSED</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BTVTED">BTVTED</option>
+                    </select>
                 </div>
                 <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Delete</button>
-            </div>
+                <div class="popup-content-inner">
+                    <div style="text-align: center;">
+                        <p>Are you sure you want to delete this voter?
+                            This action cannot be undone.</p>
+                    </div>
+                    <br>
+                    <button class="cancel-button">Cancel</button>
+                    <button type="submit" class="save-button" name="delete">Delete</button>
+                </div>
+            </form>
         </div>
     </div>
+
+
+    <?php
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        if (isset($_POST['delete'])) {
+
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Retrieve data from form
+            $usepID = $_POST['usepID4'];
+
+            // Insert data into Users table
+            $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
+
+            if ($conn->query($sqlVoterDelete) === TRUE) {
+                echo "<script>alert('Record Deleted successfully');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+            } else {
+                echo "<script>alert('Error: " .   $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
+                echo "<script>window.location.href = 'Voters.php';</script>";
+            }
+        }
+    }
+    ?>
+
+
+
     <div id="logoutpop" class="popup">
         <div class="head">
             <h3>LOGOUT</h3>
@@ -1448,8 +1513,37 @@ if (isset($_POST['logout'])) {
         });
 
         /*delete pop up*/
-        function deletepop() {
-            document.getElementById("deletepop").style.display = "flex";
+        function deletepop(usepID) {
+            // AJAX request to PHP script to retrieve voter data based on usepID
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        try {
+                            var rowData = JSON.parse(this.responseText);
+                            console.log(rowData); // Log the response for debugging
+
+                            // Fill input fields with voter data
+                            document.getElementById("usepID4").value = rowData.usep_ID;
+                            document.getElementById("FName4").value = rowData.FName;
+                            document.getElementById("LName4").value = rowData.LName;
+                            document.getElementById("gender4").value = rowData.gender;
+                            document.getElementById("yearlevel4").value = rowData.yearLvl;
+                            document.getElementById("program4").value = rowData.program;
+
+                            // Show the popup
+                            var popup = document.getElementById("deletepop");
+                            popup.style.display = "flex";
+                        } catch (e) {
+                            console.error("Error parsing JSON response: " + e.message);
+                        }
+                    } else {
+                        console.error("AJAX request failed with status: " + this.status);
+                    }
+                }
+            };
+            xhttp.open("GET", "get_voter_data.php?usepID=" + usepID, true);
+            xhttp.send();
         };
 
         document.querySelector("#deletepop .cancel-button").addEventListener("click", function() {
