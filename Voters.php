@@ -1042,9 +1042,11 @@ if (isset($_POST['logout'])) {
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
                         <select id="yearlevel1" class="input-form" name="YearLvl">
-                            <option value="2nd">2nd Year</option>
-                            <option value="3rd">3rd Year</option>
-                            <option value="4th">4th Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1177,9 +1179,11 @@ if (isset($_POST['logout'])) {
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
                         <select id="yearlevel3" class="input-form" name="yearlevel3">
-                            <option value="2nd">2nd Year</option>
-                            <option value="3rd">3rd Year</option>
-                            <option value="4th">4th Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1222,7 +1226,7 @@ if (isset($_POST['logout'])) {
             // Retrieve data from form
             $usepID = $_POST['usepID3'];
             $lname = $_POST['LName3'];
-            $fname = $_POST['FName3'];
+            $fname = $_POST['FName3']; 
             $gender = $_POST['gender3'];
             $yearlvl = $_POST['yearlevel3'];
             $Program = $_POST['program3'];
@@ -1259,9 +1263,11 @@ if (isset($_POST['logout'])) {
                         <option value="Female">Female</option>
                     </select>
                     <select id="yearlevel4" class="input-form" name="yearlevel4" style="display: none;">
-                        <option value="2nd">2nd Year</option>
-                        <option value="3rd">3rd Year</option>
-                        <option value="4th">4th Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
                     </select>
                     <select id="program4" class="input-form" name="program4" style="display: none;">
                         <option value="BSABE">BSABE</option>
