@@ -47,7 +47,7 @@ $input_password = 'Central1234'; // Define the password
 $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
 
 $sqlUserInsert = "INSERT IGNORE INTO Users (usep_id, username, userpass, LName, FName, usertype, User_status) VALUES
-('1', 'Central', ?, 'Cornejo', 'Karl', 'Chairperson', 'Active')";
+('1', 'Central', ?, 'Cornejo', 'Karl', 'Chairperson', 'Inactive')";
 
 
 // Prepare the insert statement

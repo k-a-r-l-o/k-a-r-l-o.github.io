@@ -989,7 +989,7 @@ if (isset($_POST['logout'])) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form method="post">
+                <form method="post" onsubmit="return validatePassword();">
                     <div class="form-group">
                         <label for="UName">Username:</label>
                         <input name="UName" type="text" id="UName" class="input-form" value="" required>
@@ -1000,7 +1000,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="cPassword">Confirm Password:</label>
-                        <input name="cPassword" type="password" id="cPassword" class="input-form" value="" required>
+                        <input name="cPassword" type="password" id="cPassword" class="input-form" value="" required onchange="validatePassword()">
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
@@ -1017,6 +1017,7 @@ if (isset($_POST['logout'])) {
                     <div class="form-group">
                         <label for="User">User Type:</label>
                         <select name="User" id="User" class="input-form" required>
+                        <option value="" disabled selected hidden>Select here</option>
                             <option value="Admin-Front">Admin-Front</option>
                             <option value="Admin-Technical">Admin-Technical</option>
                             <option value="Watcher">Watcher</option>
@@ -1114,22 +1115,22 @@ if (isset($_POST['logout'])) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form name="editing" method="post">
+                <form name="editing" method="post" onsubmit="return validatePassword3();">
                     <div class="form-group">
                         <label for="UName3">Username:</label>
                         <input type="text" id="UName3" name="UName3" class="input-form">
                     </div>
                     <div class="form-group">
-                        <label for="Password3">Password:</label>
-                        <input name="Password" type="password" id="Password3" class="input-form" value="" required>
+                        <label for="Password3">New Password:</label>
+                        <input name="Password3" type="password" id="Password3" class="input-form" value="" required>
                     </div>
                     <div class="form-group">
-                        <label for="cPassword3">Confirm Password:</label>
-                        <input name="cPassword" type="password" id="cPassword3" class="input-form" value="" required>
+                        <label for="cPassword3">Confirm New Password:</label>
+                        <input name="cPassword3" type="password" id="cPassword3" class="input-form" value="" required onchange="validatePassword3()">
                     </div>
                     <div class="form-group">
                         <label for="usepID3">USeP ID:</label>
-                        <input type="number" id="usepID3" name="usepID3" class="input-form">
+                        <input type="number" id="usepID3" name="usepID3" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
@@ -1149,7 +1150,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <br>
                     <div class="buttons">
-                        <button class="cancel-button">Cancel</button>
+                        <button type="button" class="cancel-button">Cancel</button>
                         <button type="submit" class="save-button" name="edit">Save</button>
                     </div>
                 </form>
@@ -1174,12 +1175,19 @@ if (isset($_POST['logout'])) {
             // Retrieve data from form
             $usepID = $_POST['usepID3'];
             $username = $_POST['UName3'];
+            $input_password = $_POST['Password3'];
+            $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
             $lname = $_POST['LName3'];
             $fname = $_POST['FName3'];
             $usertype = $_POST['User3'];
 
             // Insert data into Users table
-            $sqlUserEdit = "UPDATE Users SET username = '$username', FName = '$fname', LName = '$lname' ,usertype  = '$usertype' WHERE usep_ID = '$usepID'";
+            $sqlUserEdit = "";
+            if($usepID!=1){
+                $sqlUserEdit = "UPDATE Users SET username = '$username', userpass = '$hashed_password', FName = '$fname', LName = '$lname' ,usertype  = '$usertype' WHERE usep_ID = '$usepID'";
+            }else{
+                $sqlUserEdit = "UPDATE Users SET username = '$username', userpass = '$hashed_password', FName = '$fname', LName = '$lname' WHERE usep_ID = '$usepID'";
+            }
 
             if ($conn->query($sqlUserEdit) === TRUE) {
                 echo "<script>alert('Record updated successfully');</script>";
@@ -1209,7 +1217,7 @@ if (isset($_POST['logout'])) {
                             This action cannot be undone.</p>
                     </div>
                     <br>
-                    <button class="cancel-button">Cancel</button>
+                    <button type="button" class="cancel-button">Cancel</button>
                     <button type="submit" name="delete" class="save-button">Delete</button>
                 </div>
             </form>
@@ -1407,6 +1415,14 @@ if (isset($_POST['logout'])) {
                         document.getElementById("LName3").value = rowData.LName;
                         document.getElementById("User3").value = rowData.usertype;
 
+                        // Hide the usertype div if usep_ID is 1
+                        var userTypeDiv = document.querySelector(".form-group:has(#User3)");
+                        if (rowData.usep_ID == 1) {
+                            userTypeDiv.style.display = "none";
+                        } else {
+                            userTypeDiv.style.display = "block";
+                        }
+
                         // Show the popup
                         var popup = document.getElementById("editpop");
                         popup.style.display = "flex";
@@ -1417,7 +1433,8 @@ if (isset($_POST['logout'])) {
             };
             xhttp.open("GET", "get_user_data.php?usepID=" + usepID, true);
             xhttp.send();
-        };
+        }
+
 
         document.querySelector("#editpop .cancel-button").addEventListener("click", function() {
             document.getElementById("editpop").style.display = "none";
@@ -1464,6 +1481,58 @@ if (isset($_POST['logout'])) {
         document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
             document.getElementById("logoutpop").style.display = "none";
         });
+
+        function validatePassword() {
+            var password = document.getElementById("Password");
+            var confirmPassword = document.getElementById("cPassword");
+
+            // Check if password is at least 8 characters long
+            if (password.value.length < 8) {
+                password.setCustomValidity("Password must be at least 8 characters long.");
+                alert("Password must be at least 8 characters long.");
+                return false;
+            } else {
+                password.setCustomValidity("");
+            }
+
+            // Check if passwords match
+            if (password.value != confirmPassword.value) {
+                confirmPassword.setCustomValidity("Passwords do not match.");
+                alert("Passwords do not match.");
+                return false;
+            } else {
+                confirmPassword.setCustomValidity("");
+            }
+
+            return true;
+        }
+
+        function validatePassword3() {
+            var password = document.getElementById("Password3");
+            var confirmPassword = document.getElementById("cPassword3");
+
+            // Check if password is at least 8 characters long
+            if (password.value.length < 8) {
+                password.setCustomValidity("Password must be at least 8 characters long.");
+                alert("Password must be at least 8 characters long.");
+                return false;
+            } else {
+                password.setCustomValidity("");
+            }
+
+            // Check if passwords match
+            if (password.value != confirmPassword.value) {
+                confirmPassword.setCustomValidity("Passwords do not match.");
+                alert("Passwords do not match.");
+                return false;
+            } else {
+                confirmPassword.setCustomValidity("");
+            }
+
+            return true;
+        }
+
+
     </script>
 </body>
 

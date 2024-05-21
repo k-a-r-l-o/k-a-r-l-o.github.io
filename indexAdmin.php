@@ -32,21 +32,33 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
         $row = $result->fetch_assoc();
         if (password_verify($input_password, $row["userpass"]) && $input_usertype === $row["usertype"]) {
             // Password is correct and usertype matches, set session and redirect
+            session_start(); // Start the session
             $_SESSION["username"] = $input_username;
             $_SESSION["usertype"] = $input_usertype;
-            header("Location: Dashboard.php");
+            $_SESSION["usep_ID"] = $row["usep_ID"];
+
+            // Update user status to 'Online' using prepared statement
+            $sqlUserEdit = "UPDATE Users SET User_status = 'Active' WHERE usep_ID = ?";
+            $stmtUpdate = $conn->prepare($sqlUserEdit);
+            $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
+            $stmtUpdate->execute();
+
+            header("Location: Dashboard.php"); // Redirect to the dashboard
             exit();
         } else {
             // Password or usertype is incorrect
-            echo "<script>alert('Incorrect username, password, or usertype. Please try again.');</script>";
+            echo "<script>alert('Invalid credentials. Please try again.');</script>";
             echo "<script>window.location.href = 'indexAdmin.php';</script>";
+            exit(); // Stop further execution
         }
     } else {
         // User does not exist
         echo "<script>alert('User not found. Please try again.');</script>";
         echo "<script>window.location.href = 'indexAdmin.php';</script>";
+        exit(); // Stop further execution
     }
 }
+
 
 $conn->close();
 ?>
