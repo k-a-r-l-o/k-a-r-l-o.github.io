@@ -1120,6 +1120,14 @@ if (isset($_POST['logout'])) {
                         <input type="text" id="UName3" name="UName3" class="input-form">
                     </div>
                     <div class="form-group">
+                        <label for="Password3">Password:</label>
+                        <input name="Password" type="password" id="Password3" class="input-form" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cPassword3">Confirm Password:</label>
+                        <input name="cPassword" type="password" id="cPassword3" class="input-form" value="" required>
+                    </div>
+                    <div class="form-group">
                         <label for="usepID3">USeP ID:</label>
                         <input type="number" id="usepID3" name="usepID3" class="input-form">
                     </div>
