@@ -1,44 +1,7 @@
 <?php
-
-// Establishing a connection to the database
-$servername = "localhost"; // Replace with your server name
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "Voting_System"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-session_start();
-
-// Check if session variables are set
-if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
-    // If session variables are not set, redirect to the login page
-    header("Location: indexAdmin.php");
-    exit();
-}
-
-// Check if the logout button is clicked
-if (isset($_POST['logout'])) {
-    // Unset all session variables
-    session_unset();
-
-    // Destroy the session
-    session_destroy();
-
-    // Redirect the user to the login page
-    header("Location: indexAdmin.php");
-    exit(); // Make sure to exit after redirecting
-}
-
-// If session variables are set, proceed with the protected content
+    include "DBSession.php"
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -633,6 +596,7 @@ if (isset($_POST['logout'])) {
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
             height: auto;
             width: 60vh;
+            min-width: 400px;
             border-radius: 5px;
             z-index: 9999;
         }

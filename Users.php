@@ -1,43 +1,7 @@
 <?php
-
-// Establishing a connection to the database
-$servername = "localhost"; // Replace with your server name
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "Voting_System"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-session_start();
-
-// Check if session variables are set
-if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
-    // If session variables are not set, redirect to the login page
-    header("Location: indexAdmin.php");
-    exit();
-}
-
-// Check if the logout button is clicked
-if (isset($_POST['logout'])) {
-    // Unset all session variables
-    session_unset();
-
-    // Destroy the session
-    session_destroy();
-
-    // Redirect the user to the login page
-    header("Location: indexAdmin.php");
-    exit(); // Make sure to exit after redirecting
-}
-// If session variables are set, proceed with the protected content
+    include "DBSession.php"
 ?>
+
 
 
 
@@ -646,6 +610,7 @@ if (isset($_POST['logout'])) {
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
             height: auto;
             width: 60vh;
+            min-width: 400px;
             border-radius: 5px;
             z-index: 9999;
         }
@@ -946,9 +911,25 @@ if (isset($_POST['logout'])) {
                         if ($result->num_rows > 0) {
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
+
+                            // Assuming $row["usep_ID"] contains the ID like 202200294
+                            $usep_ID = $row["usep_ID"];
+
+                            if ($row["usep_ID"] == 1) {
+                                $formatted_usep_ID = "1";
+                            } else {
+                                // Extract the year part
+                                $year = substr($usep_ID, 0, 4);
+
+                                // Extract the remaining part and zero-pad it to 5 digits
+                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
+
+                                // Combine the parts with a dash
+                                $formatted_usep_ID = $year . '-' . $numeric_part;
+                            }
                         ?>
                                 <tr>
-                                    <td class="tdfirst"><?php echo $row["usep_ID"] ?></td>
+                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
                                     <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
                                     <td><?php echo $row["usertype"] ?></td>
                                     <td><?php echo $row["User_status"] ?></td>
@@ -1004,7 +985,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input name="usepID" type="number" id="usepID" class="input-form" value="" required>
+                        <input name="usepID" type="text" id="usepID" class="input-form" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
@@ -1017,7 +998,7 @@ if (isset($_POST['logout'])) {
                     <div class="form-group">
                         <label for="User">User Type:</label>
                         <select name="User" id="User" class="input-form" required>
-                        <option value="" disabled selected hidden>Select here</option>
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="Admin-Front">Admin-Front</option>
                             <option value="Admin-Technical">Admin-Technical</option>
                             <option value="Watcher">Watcher</option>
@@ -1054,8 +1035,14 @@ if (isset($_POST['logout'])) {
                     die("Connection failed: " . $conn->connect_error);
                 }
 
+                // Get the user input
+                $input_usep_ID = $_POST["usepID"];
+
+                // Remove any dashes from the input
+                $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+
                 // Retrieve data from form
-                $usepID = $_POST['usepID'];
+                $usepID = $clean_usep_ID;
                 $username = $_POST['UName'];
                 $input_password = $_POST['Password'];
                 $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
@@ -1130,7 +1117,7 @@ if (isset($_POST['logout'])) {
                     </div>
                     <div class="form-group">
                         <label for="usepID3">USeP ID:</label>
-                        <input type="number" id="usepID3" name="usepID3" class="input-form" required>
+                        <input type="text" id="usepID3" name="usepID3" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
@@ -1172,8 +1159,14 @@ if (isset($_POST['logout'])) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
+            // Get the user input
+            $input_usep_ID = $_POST["usepID3"];
+
+            // Remove any dashes from the input
+            $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+
             // Retrieve data from form
-            $usepID = $_POST['usepID3'];
+            $usepID = $clean_usep_ID;
             $username = $_POST['UName3'];
             $input_password = $_POST['Password3'];
             $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
@@ -1239,8 +1232,14 @@ if (isset($_POST['logout'])) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
+            // Get the user input
+            $input_usep_ID = $_POST["usepID4"];
+
+            // Remove any dashes from the input
+            $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+
             // Retrieve data from form
-            $usepID = $_POST['usepID4'];
+            $usepID = $clean_usep_ID;
 
             // Insert data into Users table
             $sqlUserDelete = "DELETE FROM Users WHERE usep_ID = '$usepID'";
@@ -1366,8 +1365,9 @@ if (isset($_POST['logout'])) {
                         var rowData = JSON.parse(this.responseText);
                         console.log(rowData); // Log the response for debugging
 
-                        // Fill input fields with row data
-                        document.getElementById("usepID2").value = rowData.usep_ID;
+                        var formattedUsepID = formatUsepID(rowData.usep_ID);
+
+                        document.getElementById("usepID2").value = formattedUsepID;
                         document.getElementById("UName2").value = rowData.username;
                         document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
                         document.getElementById("User2").value = rowData.usertype;
@@ -1410,7 +1410,9 @@ if (isset($_POST['logout'])) {
 
                         // Fill input fields with row data
                         document.getElementById("UName3").value = rowData.username;
-                        document.getElementById("usepID3").value = rowData.usep_ID;
+                        var formattedUsepID = formatUsepID(rowData.usep_ID);
+
+                        document.getElementById("usepID3").value = formattedUsepID;
                         document.getElementById("FName3").value = rowData.FName;
                         document.getElementById("LName3").value = rowData.LName;
                         document.getElementById("User3").value = rowData.usertype;
@@ -1530,6 +1532,40 @@ if (isset($_POST['logout'])) {
             }
 
             return true;
+        }
+
+        function formatUsepID(usepID) {
+            // Remove any dashes if present
+            var cleanUsepID = usepID.replace(/-/g, '');
+
+            // Extract the year part
+            var year = cleanUsepID.substring(0, 4);
+
+            // Extract the remaining part and zero-pad it to 5 digits
+            var numericPart = cleanUsepID.substring(4).padStart(5, '0');
+
+            // Combine the parts with a dash
+            return year + '-' + numericPart;
+        }
+
+        function validateUsepID(input) {
+            // Remove all non-numeric characters except dash
+            let value = input.value.replace(/[^0-9-]/g, '');
+
+            // Validate the format
+            let isValid = /^(\d{4}-?\d{0,5})$/.test(value);
+
+            // If valid, set the formatted value back to the input
+            if (isValid) {
+                // Automatically add the dash if not present after the first 4 digits
+                if (value.length > 4 && value[4] !== '-') {
+                    value = value.slice(0, 4) + '-' + value.slice(4);
+                }
+                input.value = value;
+            } else {
+                // If not valid, remove the invalid characters
+                input.value = value.slice(0, -1);
+            }
         }
 
 

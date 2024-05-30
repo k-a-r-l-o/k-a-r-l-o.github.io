@@ -1,44 +1,7 @@
 <?php
-
-// Establishing a connection to the database
-$servername = "localhost"; // Replace with your server name
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "Voting_System"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-session_start();
-
-// Check if session variables are set
-if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
-    // If session variables are not set, redirect to the login page
-    header("Location: indexAdmin.php");
-    exit();
-}
-
-// Check if the logout button is clicked
-if(isset($_POST['logout'])) {
-    // Unset all session variables
-    session_unset();
-        
-    // Destroy the session
-    session_destroy();
-        
-    // Redirect the user to the login page
-    header("Location: indexAdmin.php");
-    exit(); // Make sure to exit after redirecting
-}
-
-// If session variables are set, proceed with the protected content
+    include "DBSession.php"
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -641,7 +604,8 @@ if(isset($_POST['logout'])) {
         overflow: hidden;
     }
 
-    .popup-content-inner {
+    .popup-content-inner, 
+    .buttons {
         display: grid;
         height: auto;
         gap: 10px;
@@ -672,7 +636,7 @@ if(isset($_POST['logout'])) {
         color: white;
         background-color: rgba(150, 191, 245, 0.5); 
         outline: none;
-        box-sizing: border-box; 
+        box-sizing: border-box;
     }
 
     .input-form::placeholder {
@@ -798,7 +762,7 @@ if(isset($_POST['logout'])) {
         }
 
     }
-
+    
     </style>
 
     <script>
@@ -876,19 +840,45 @@ if(isset($_POST['logout'])) {
                       <th>COUNCIL</th>
                       <th class="thlast"></th>
                     </tr>
-            
+                    <?php
+                        // Query to retrieve all data from the Users table
+                        $sql = "SELECT * FROM candidates";
+                        $result = $conn->query($sql);
+
+                        // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+
+                            // Assuming $row["usep_ID"] contains the ID like 202200294
+                            $usep_ID = $row["usep_ID"];
+
+                            // Extract the year part
+                            $year = substr($usep_ID, 0, 4);
+
+                            // Extract the remaining part and zero-pad it to 5 digits
+                            $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
+
+                            // Combine the parts with a dash
+                            $formatted_usep_ID = $year . '-' . $numeric_part;
+                    ?>
                     <tr>
-                      <td class="tdfirst">2022-00123</td>
-                      <td>Maya Cartel</td>
-                      <td>President</td>
-                      <td>SITS</td>
-                      <td class="tdlast">
-                          <img onclick="viewpop()" src="view.png" alt="view icon">
-                          <img onclick="editpop()" src="edit.png" alt="edit icon">
-                          <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                      </td>
-                  </tr>                  
-                    
+                        <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
+                        <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
+                        <td><?php echo $row["position"] ?></td>
+                        <td><?php echo $row["council"] ?></td>
+                        <td class="tdlast">
+                            <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
+                            <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
+                            <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
+                        </td>
+                    </tr>                  
+                    <?php
+                            }
+                        } else {
+                            echo "0 results";
+                        }
+                    ?>
                   </table>
                 </div>
                   <div class="navTable">
@@ -908,33 +898,37 @@ if(isset($_POST['logout'])) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
+                <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="profile">Profile Photo:</label>
                     <div class="upload-btn">
-                        <input type="file" id="profile-photo" accept="image/*" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file">
+                        <input type="file" id="profile-photo" name="prof" accept=".jpg, .jpeg, .png" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file">
                         <span>Upload Photo</span>
                     </div>
                     <img id="preview" src="#" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
                 </div>
                 <div class="form-group">
                     <label for="usepID">USeP ID:</label>
-                    <input type="number" id="usepID" class="input-form">
+                    <input type="text" id="usepID" name="usepID" class="input-form" required onchange="validateUsepID(this)">
                 </div>
                 <div class="form-group">
-                    <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" class="input-form">
+                    <label for="FirstName">First Name:</label>
+                    <input type="text" id="Fname" name="Fname" class="input-form">
+                </div>
+                <div class="form-group">    
+                    <label for="LastName">Last Name:</label>
+                    <input type="text" id="Lname" name="Lname" class="input-form">
                 </div>
                 <div class="form-group">
                     <label for="gender">Gender:</label>
-                    <select id="gender" class="input-form">
+                    <select id="gender" name="gender" class="input-form">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="yearLevel">Year Level:</label>
-                    <select id="yearlevel" class="input-form">
+                    <select id="yearlevel" name="yearlevel" class="input-form">
                         <option value="2nd">2nd Year</option>
                         <option value="3rd">3rd Year</option>
                         <option value="4th">4th Year</option>
@@ -942,32 +936,56 @@ if(isset($_POST['logout'])) {
                 </div>
                 <div class="form-group">
                     <label for="program">Program:</label>
-                    <select id="program" class="input-form">
-                        <option value="BSABE">BSABE</option>
-                        <option value="BEED">BEED</option>
-                        <option value="BECED">BECED</option>
-                        <option value="BSNED">BSNED</option>
-                        <option value="BSED">BSED</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="BTVTED">BTVTED</option>
+                    <select id="program" name="program" class="input-form">
+                        <option value="" disabled selected hidden>Select here</option>
+                        <?php
+
+                        // Query to fetch programs
+                        $query = "SELECT * FROM Programs";
+                        $result = $conn->query($query);
+
+                        // Check if the query returned any results
+                        if ($result->num_rows > 0) {
+                            // Fetch each row and create an option element
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['Program'] . '">' . $row['Program'] . "</option>";
+                            }
+                        } else {
+                            // No programs found
+                            echo '<option value="">No programs available</option>';
+                        }
+
+                      
+                        ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="Council">Council:</label>
-                    <select id="Council" class="input-form">
-                        <option value="TSC">TSC</option>
-                        <option value="SABES">SABES</option>
-                        <option value="OFEE">OFEE</option>
-                        <option value="AECES">AECES</option>
-                        <option value="OFSET">OFSET</option>
-                        <option value="AFSET">AFSET</option>
-                        <option value="SITS">SITS</option>
-                        <option value="FTVETTS">FTVETTS</option>
+                    <select id="Council" name="council" class="input-form">
+                         <option value="" disabled selected hidden>Select here</option>
+                    <?php
+                        // Query to fetch programs
+                        $query = "SELECT council_name FROM List_Councils";
+                        $result = $conn->query($query);
+
+                        // Check if the query returned any results
+                        if ($result->num_rows > 0) {
+                            // Fetch each row and create an option element
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['council_name'] . '">' . $row['council_name'] . "</option>";
+                            }
+                        } else {
+                            // No programs found
+                            echo '<option value="">No programs available</option>';
+                        }
+
+                       
+                        ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="position">Position:</label>
-                    <select id="position" class="input-form">
+                    <select id="position" name="position" class="input-form">
                         <option value="president">President</option>
                         <option value="vice-president">Vice President</option>
                         <option value="secretary">Secretary</option>
@@ -976,18 +994,119 @@ if(isset($_POST['logout'])) {
                 </div>
                 <div class="form-group">
                     <label for="partyList">Party List:</label>
-                    <select id="partyList" class="input-form">
-                        <option value="YANO">YANO</option>
-                        <option value="AGIla">AGIla</option>
+                    <select id="partyList" name="partylist" class="input-form">
+                    <?php
+                        // Query to fetch programs
+                        $query = "SELECT name_partylist FROM List_Partylist";
+                        $result = $conn->query($query);
+
+                        // Check if the query returned any results
+                        if ($result->num_rows > 0) {
+                            // Fetch each row and create an option element
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['name_partylist'] . '">' . $row['name_partylist'] . "</option>";
+                            }
+                        } else {
+                            // No programs found
+                            echo '<option value="">No programs available</option>';
+                        }
+
+                       
+                        ?>
                       </select>
                 </div>
+                <div class="buttons">
+                        <button type="button" class="cancel-button" name="cancel">Cancel</button>
+                        <button type="submit" class="save-button" name="save">Save</button>
+                    </div>
                 </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
             </div>
         </div>    
     </div>
+
+    <?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['save'])) {
+        // Check if a file has been uploaded
+        if(isset($_FILES['prof']) && $_FILES['prof']['error'] == 0){
+            // Get the user input
+            $input_usep_ID = $_POST["usepID"];
+            // Remove any dashes from the input
+            $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+            // Retrieve data from form
+            $usepID = $clean_usep_ID;
+            $lname = $_POST['Lname'];
+            $fname = $_POST['Fname'];
+            $gender = $_POST['gender'];
+            $yearlvl = $_POST['yearlevel'];
+            $program = $_POST['program'];
+            $council = $_POST['council'];
+            $position = $_POST['position'];
+            $partylist = $_POST['partylist'];
+
+            // Handle file upload
+            $target = "uploads/";
+            $targetFile = $target . basename($_FILES["prof"]["name"]);
+            $upload_Done = 1;
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+            // Check if image file is an actual image
+            $check = getimagesize($_FILES["prof"]["tmp_name"]);
+            if($check !== false){
+                $upload_Done = 1;
+            }
+            else{
+                echo "<script>alert('File is not an image.');</script>";
+                $upload_Done = 0;
+            }
+
+            // Check if file already exists
+            if(file_exists($targetFile)){
+                echo "<script>alert('Sorry, file already exists.');</script>";
+                $upload_Done = 0;
+            }
+
+            // Check file size
+            if ($_FILES["prof"]["size"] > 500000) { 
+                echo "<script>alert('Sorry, your file is too large.');</script>";
+                $upload_Done = 0;
+            }
+
+            // Allow certain file formats
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+                echo "<script>alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');</script>";
+                $upload_Done = 0;
+            }
+
+            // Check if $upload_Done is set to 0 by an error
+            if($upload_Done == 0){
+                echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+            }
+            else{
+                // Move uploaded file to target directory
+                if(move_uploaded_file($_FILES["prof"]["tmp_name"], $targetFile)){
+                    // Insert data into Candidates table including the uploaded photo path
+                    $sqlCandidateInsert = "INSERT INTO Candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, partylist) 
+                    VALUES ('$usepID', '$targetFile', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$council', '$position', '$partylist')";
+                    
+                    if($conn->query($sqlCandidateInsert) === TRUE){
+                        echo "<script>alert('New record created successfully');</script>";
+                        echo "<script>window.location.href = 'Candidate.php';</script>";
+                    }
+                    else {
+                        echo "<script>alert('Error: " . $sqlCandidateInsert . "<br>" . $conn->error . "');</script>";
+                    }
+                } else {
+                    echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+                }
+            }
+        } else {
+            echo "<script>alert('Please select a profile photo to upload.');</script>";
+        }
+    }
+}
+?>
+
     
     <div class="popup" id="viewpop">
         <div class="head">
@@ -1031,13 +1150,18 @@ if(isset($_POST['logout'])) {
                 <div class="form-group">
                     <label for="partyList">Party List:</label>
                     <input id="partyList" class="input-form" placeholder="YANO" readonly>
-                </div>
+                 </div>
                 </form>
                 <br>
-                <button class="save-button">Back</button>
+                <button type="button" class="save-button" onclick="closeViewpop()">Back</button>
             </div>
         </div>    
     </div>
+
+
+
+
+
     <div class="popup" id="editpop">
         <div class="head">
           <h3>EDIT CANDIDATE</h3>
@@ -1214,20 +1338,13 @@ if(isset($_POST['logout'])) {
         });
 
         function previewImage(event) {
-            var input = event.target;
-            var preview = document.getElementById('preview');
-            var preview = document.getElementById('preview2');
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
+           var reader = new FileReader();
+           reader.onload = function(){
+              var output = document.getElementById('preview');
+              output.src = reader.result;
+              output.style.display = 'block';
+           }
+           reader.readAsDataURL(event.target.files[0]);
         }
         // Get the table element
         var table = document.getElementById('Results');
@@ -1277,10 +1394,47 @@ if(isset($_POST['logout'])) {
             }
 
             showPage(currentPage);
+
+            // Update the row number display
+            document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
         }
 
         // Show the initial page
         showPage(currentPage);
+
+        function formatUsepID(usepID) {
+            // Remove any dashes if present
+            var cleanUsepID = usepID.replace(/-/g, '');
+
+            // Extract the year part
+            var year = cleanUsepID.substring(0, 4);
+
+            // Extract the remaining part and zero-pad it to 5 digits
+            var numericPart = cleanUsepID.substring(4).padStart(5, '0');
+
+            // Combine the parts with a dash
+            return year + '-' + numericPart;
+        }
+
+        function validateUsepID(input) {
+            // Remove all non-numeric characters except dash
+            let value = input.value.replace(/[^0-9-]/g, '');
+
+            // Validate the format
+            let isValid = /^(\d{4}-?\d{0,5})$/.test(value);
+
+            // If valid, set the formatted value back to the input
+            if (isValid) {
+                // Automatically add the dash if not present after the first 4 digits
+                if (value.length > 4 && value[4] !== '-') {
+                    value = value.slice(0, 4) + '-' + value.slice(4);
+                }
+                input.value = value;
+            } else {
+                // If not valid, remove the invalid characters
+                input.value = value.slice(0, -1);
+            }
+        }
 
         /*log out*/
         document.getElementById("logout").addEventListener("click", function() {

@@ -33,8 +33,10 @@ $sqlUser = "CREATE TABLE IF NOT EXISTS Users (
     LName VARCHAR(255) NOT NULL,
     FName VARCHAR(255) NOT NULL,
     usertype VARCHAR(50) NOT NULL,
-    User_status VARCHAR(50) NOT NULL
+    User_status VARCHAR(50) NOT NULL,
+    last_heartbeat TIMESTAMP NULL DEFAULT NULL
 )";
+
 
 if ($conn->query($sqlUser) === TRUE) {
     echo "Table 'User' created successfully<br>";
@@ -65,7 +67,7 @@ if ($stmtInsert->execute()) {
 }
 
 $sqlListP = "CREATE TABLE IF NOT EXISTS List_Partylist (
-    prty_ID INT UNIQUE KEY AUTO_INCREMENT,
+    prty_ID INT PRIMARY KEY AUTO_INCREMENT,
     name_partylist VARCHAR(55) NOT NULL,
     num_members INT DEFAULT 0
 )";
@@ -76,8 +78,8 @@ if ($conn->query($sqlListP) === TRUE) {
     echo "Error creating table 'ListP': " . $conn->error . "<br>";
 }
 
-$sqlPrtyInsert = "INSERT IGNORE INTO List_Partylist (name_partylist) VALUES
-('YANO')";
+$sqlPrtyInsert = "INSERT IGNORE INTO List_Partylist (prty_ID, name_partylist) VALUES
+('1', 'Independent')";
 
 if ($conn->query($sqlPrtyInsert) === TRUE) {
     echo "Data inserted into 'Program' table successfully<br>";
@@ -135,8 +137,9 @@ $sqlCand = "CREATE TABLE IF NOT EXISTS Candidates (
     LName VARCHAR(255) NOT NULL,
     FName VARCHAR(255) NOT NULL,
     gender VARCHAR(50) NOT NULL,
-    yearLvl INT,
+    yearLvl VARCHAR(50) NOT NULL,
     program VARCHAR(55) NOT NULL,
+    council VARCHAR(55) NOT NULL,
     position VARCHAR(55) NOT NULL,
     partylist VARCHAR(55) NOT NULL,
     PRIMARY KEY(usep_ID)
@@ -177,7 +180,7 @@ if ($conn->query($sqlVtrInsert) === TRUE) {
 }
 
 $sqlProgram = "CREATE TABLE IF NOT EXISTS Programs (
-    prgramID INT AUTO_INCREMENT,
+    prgramID INT,
     Program VARCHAR(255) NOT NULL,
     PRIMARY KEY(prgramID)
 )";
@@ -189,14 +192,14 @@ if ($conn->query($sqlProgram) === TRUE) {
     echo "Error creating table 'Program': " . $conn->error . "<br>";
 }
 
-$sqlProgramInsert = "INSERT IGNORE INTO Programs(Program) VALUES
-    ('BSABE'),
-    ('BEED'),
-    ('BECED'),
-    ('BSNED'),
-    ('BSED'),
-    ('BSIT'),
-    ('BTVTED')
+$sqlProgramInsert = "INSERT IGNORE INTO Programs(prgramID, Program) VALUES
+    ('1', 'BSABE'),
+    ('2', 'BEED'),
+    ('3', 'BECED'),
+    ('4', 'BSNED'),
+    ('5', 'BSED'),
+    ('6', 'BSIT'),
+    ('7', 'BTVTED')
 ;";
 
 if ($conn->query($sqlProgramInsert) === TRUE) {

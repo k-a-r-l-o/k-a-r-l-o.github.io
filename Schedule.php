@@ -1,44 +1,7 @@
 <?php
-
-// Establishing a connection to the database
-$servername = "localhost"; // Replace with your server name
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "Voting_System"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-session_start();
-
-// Check if session variables are set
-if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
-    // If session variables are not set, redirect to the login page
-    header("Location: indexAdmin.php");
-    exit();
-}
-
-// Check if the logout button is clicked
-if(isset($_POST['logout'])) {
-    // Unset all session variables
-    session_unset();
-        
-    // Destroy the session
-    session_destroy();
-        
-    // Redirect the user to the login page
-    header("Location: indexAdmin.php");
-    exit(); // Make sure to exit after redirecting
-}
-
-// If session variables are set, proceed with the protected content
+    include "DBSession.php"
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -447,6 +410,24 @@ if(isset($_POST['logout'])) {
         color: #222E50;
     }
 
+    #clearSchedule {
+        display: flex;
+        height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        border: none;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 0 20px; 
+        cursor: pointer;
+        width: 100%;
+        max-width: 400px;
+        align-items: center;
+        justify-content: center;
+        background-color: #F34235; 
+        color: white;
+    }
+
     .titlecontainer button{
         background-color: transparent;
         color: #ffffff;
@@ -640,6 +621,7 @@ if(isset($_POST['logout'])) {
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         height: auto;
         width: 60vh;
+        min-width: 400px;
         border-radius: 5px;
         z-index: 9999;
     }
@@ -665,9 +647,17 @@ if(isset($_POST['logout'])) {
         box-sizing: border-box;
     }
 
-    .popup-content-inner {
+    .popup-content-inner, .buttons {
         display: grid;
         height: auto;
+        gap: 10px;
+    }
+
+    .buttons1 {
+        display: flex;
+        width: 100%;
+        height: auto;
+        justify-content: center;
         gap: 10px;
     }
 
@@ -845,6 +835,33 @@ if(isset($_POST['logout'])) {
                     <button id="addschedule"><img src="plus.png" alt="plus icon">Add schedule</button>
                 </div>
             </div>
+            <?php
+                $startDate = $startTime = $endDate = $endTime = "";
+
+                $sql = "SELECT startDate, startTime, endDate, endTime FROM voting_schedule LIMIT 1";
+                $result = $conn->query($sql);
+                
+                if ($result->num_rows > 0) {
+                    // Fetch the data
+                    $row = $result->fetch_assoc();
+                    $startDate = $row['startDate'];
+                    $startTime = $row['startTime'];
+                    $endDate = $row['endDate'];
+                    $endTime = $row['endTime'];
+                } else {
+                    // Set default values if no schedule is found
+                    $startDate = $startTime = $endDate = $endTime = "";
+                }
+
+                function formatTime($date) {
+                    return $date->format('h:i A');
+                }
+
+                function formatDate($date) {
+                    return $date->format('F j, Y');
+                }
+            ?>
+
             <div class="schedulecontainer">
                 <div class="realTime-container">
                     <div class="clocktitle">
@@ -864,11 +881,11 @@ if(isset($_POST['logout'])) {
                             <h3>VOTING STARTS:</h3>
                         </div>
                         <div class="timeclockcontainer">
-                            <h1 id="start-time"></h1>
-                            <h5 id ="start-date"></h5>
+                            <h1 id="start-time"><?php echo !empty($startTime) ? htmlspecialchars(formatTime(new DateTime($startTime))) : ''; ?></h1>
+                            <h5 id="start-date"><?php echo !empty($startDate) ? htmlspecialchars(formatDate(new DateTime($startDate))) : ''; ?></h5>
                         </div>
                         <div class="clockfoot">
-                            
+                            <!-- Additional content can be added here -->
                         </div>
                     </div>
                     <div class="endcontainer">
@@ -876,11 +893,11 @@ if(isset($_POST['logout'])) {
                             <h3>VOTING CLOSES:</h3>
                         </div>
                         <div class="timeclockcontainer">
-                            <h1 id="end-time"></h1>
-                            <h5 id ="end-date"></h5>
+                            <h1 id="end-time"><?php echo !empty($endTime) ? htmlspecialchars(formatTime(new DateTime($endTime))) : ''; ?></h1>
+                            <h5 id="end-date"><?php echo !empty($endDate) ? htmlspecialchars(formatDate(new DateTime($endDate))) : ''; ?></h5>
                         </div>
                         <div class="clockfoot">
-                            
+                            <!-- Additional content can be added here -->
                         </div>
                     </div>
                 </div>
@@ -896,6 +913,27 @@ if(isset($_POST['logout'])) {
                     </div>
                 </div>
             </div>
+            <div class="buttons1">
+                <form method="post">
+                    <button id="clearSchedule" name="clear">Clear schedule</button>
+                </form>
+            </div>
+            <?php
+                // Check if form is submitted
+                if (isset($_POST['clear'])) {
+                    // SQL statement to truncate the table
+                    $sqlClear = "TRUNCATE TABLE voting_schedule";
+
+                    // Execute the statement and check if the truncation was successful
+                    if ($conn->query($sqlClear) === TRUE) {
+                        echo "<script>alert('Voting schedule cleared successfully');</script>";
+                        echo "<script>window.location.href = 'Schedule.php';</script>";
+                    } else {
+                        echo "<script>alert('Error clearing voting schedule: " . $conn->error . "');</script>";
+                        echo "<script>window.location.href = 'Schedule.php';</script>";
+                    }
+                }
+            ?>
         </div>
     </div>
     <div class="popup" id="popup">
@@ -904,26 +942,69 @@ if(isset($_POST['logout'])) {
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form>
+                <form method="post" action="">
                     <div class="form-group">
                         <label for="Starts">Voting Starts:</label>
-                        <input type="date" id="StartsDate" class="input-form">
+                        <input type="date" id="StartsDate" name="startDate" class="input-form" value="<?php echo htmlspecialchars($startDate); ?>" required>
                         <br>
-                        <input type="time" id="StartsTime" class="input-form">
+                        <input type="time" id="StartsTime" name="startTime" class="input-form" value="<?php echo htmlspecialchars($startTime); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="Closes">Voting Closes:</label>
-                        <input type="date" id="ClosesDate" class="input-form">
+                        <input type="date" id="ClosesDate" name="endDate" class="input-form" value="<?php echo htmlspecialchars($endDate); ?>" required>
                         <br>
-                        <input type="time" id="ClosesTime" class="input-form">
-                    </div>                    
+                        <input type="time" id="ClosesTime" name="endTime" class="input-form" value="<?php echo htmlspecialchars($endTime); ?>" required>
+                    </div>
+                    <br>
+                    <div class="buttons">
+                        <button type="button" class="cancel-button">Cancel</button>
+                        <button type="submit" class="save-button" name="save">Save</button>
+                    </div>                  
                 </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Save</button>
             </div>
         </div>
     </div>
+    <?php
+    // Check if form is submitted
+    if (isset($_POST['save'])) {
+        // SQL statement to truncate the table
+        $sqlClear = "TRUNCATE TABLE voting_schedule";
+
+        // Execute the statement and check if the truncation was successful
+        if ($conn->query($sqlClear) === TRUE) {
+            // Retrieve data from form
+            $startDate = $_POST['startDate'];
+            $startTime = $_POST['startTime'];
+            $endDate = $_POST['endDate'];
+            $endTime = $_POST['endTime'];
+
+            // Prepare SQL statement to insert data into voting_schedule
+            $sql = "INSERT INTO voting_schedule (startDate, startTime, endDate, endTime) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssss", $startDate, $startTime, $endDate, $endTime);
+
+            // Execute the statement and check if the insertion was successful
+            if ($stmt->execute()) {
+                echo "<script>alert('Voting schedule saved successfully');</script>";
+                echo "<script>window.location.href = 'Schedule.php';</script>";
+            } else {
+                echo "<script>alert('Error saving voting schedule: " . $conn->error . "');</script>";
+                echo "<script>window.location.href = 'Schedule.php';</script>";
+            }
+
+            // Close the statement
+            $stmt->close();
+        } else {
+            echo "<script>alert('Error updating voting schedule: " . $conn->error . "');</script>";
+            echo "<script>window.location.href = 'Schedule.php';</script>";
+            
+        }
+    }
+
+    // Close the connection
+    $conn->close();
+    ?>
+
     <div id="logoutpop" class="popup">
         <div class="head">
           <h3>LOGOUT</h3>
@@ -1043,19 +1124,20 @@ if(isset($_POST['logout'])) {
             }
 
             function validateClosesDateTime() {
-                const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
-                const endDate = new Date(closesDateInput.value + 'T' + closesTimeInput.value);
-                
+                const startDate = new Date("<?php echo $startDate . ' ' . $startTime; ?>");
+                const endDate = new Date("<?php echo $endDate . ' ' . $endTime; ?>");
+
                 return endDate > startDate;
             }
 
             function updateTimeLeft() {
+                const addscheduleButton = document.getElementById('addschedule');
                 const currentDate = new Date();
-                const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
-                const endDate = new Date(closesDateInput.value + 'T' + closesTimeInput.value);
-                
-                // Check if current time is after start time
-                if (currentDate >= startDate) {
+                const startDate = new Date("<?php echo $startDate . ' ' . $startTime; ?>");
+                const endDate = new Date("<?php echo $endDate . ' ' . $endTime; ?>");
+
+                // Check if current time is within the voting period
+                if (currentDate > startDate && currentDate < endDate) {
                     const timeLeft = endDate - currentDate;
                     if (timeLeft > 0) {
                         const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -1065,42 +1147,36 @@ if(isset($_POST['logout'])) {
                         timeLeftContainer.textContent = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
                         playPauseButton.textContent = "Ongoing";
                         playPauseButton.style.backgroundColor = "green";
+                        addscheduleButton.textContent = 'Edit Schedule';
+                        addscheduleButton.style.backgroundColor = 'green';
+                        addscheduleButton.style.color = 'white';
                     } else {
                         timeLeftContainer.textContent = "Voting Closed.";
                         playPauseButton.textContent = "Closed";
                         playPauseButton.style.backgroundColor = "red";
+                        addscheduleButton.textContent = 'Add Schedule';
+                        addscheduleButton.style.backgroundColor = '';
+                        addscheduleButton.style.color = '';
                     }
-                } else {
+                } else if (currentDate < startDate) {
                     timeLeftContainer.textContent = "Voting not started yet.";
                     playPauseButton.textContent = "Not Started";
+                    playPauseButton.style.backgroundColor = "gray";
+                    addscheduleButton.textContent = 'Edit Schedule';
+                    addscheduleButton.style.backgroundColor = 'green';
+                    addscheduleButton.style.color = 'white';
+                } else if (currentDate > endDate) {
+                    // The voting period has ended
+                    timeLeftContainer.textContent = "Voting Closed.";
+                    playPauseButton.textContent = "Closed";
+                    playPauseButton.style.backgroundColor = "red";
+                } else{
+                    timeLeftContainer.textContent = "Voting not started yet.";
+                    playPauseButton.textContent = "No Schedule Added";
                     playPauseButton.style.backgroundColor = "gray";
                 }
             }
 
-            function updateStartEnd() {
-                const startDate = new Date(startsDateInput.value + 'T' + startsTimeInput.value);
-                const endDate = new Date(closesDateInput.value + 'T' + closesTimeInput.value);
-                startTimeContainer.textContent = formatTime(startDate);
-                startDateContainer.textContent = formatDate(startDate);
-                endTimeContainer.textContent = formatTime(endDate);
-                endDateContainer.textContent = formatDate(endDate);
-            }
-
-            function onSaveButtonClick() {
-                if (validateClosesDateTime()) {
-                    updateStartEnd();
-                    updateTimeLeft();
-                } else {
-                    startsDateInput.value = '';
-                    startsTimeInput.value = '';
-                    closesDateInput.value = '';
-                    closesTimeInput.value = '';
-                    alert("Voting Closes date and time should be after Voting Starts date and time.");
-                }
-            }
-
-            const saveButton = document.querySelector('.save-button');
-            saveButton.addEventListener('click', onSaveButtonClick)
             // Update time left every second
             setInterval(updateTimeLeft, 1000);
 
