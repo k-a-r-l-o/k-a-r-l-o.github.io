@@ -943,9 +943,7 @@ include "DBSession.php"
                                 </tr>
                         <?php
                             }
-                        } else {
-                            echo "0 results";
-                        }
+                        } 
                         ?>
                     </table>
                 </div>
