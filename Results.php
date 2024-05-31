@@ -115,7 +115,7 @@
         background-color: #222E50;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
         border-radius:  0px 10px 10px 0px;
-        align-items: center;
+        align-items: baseline;
         justify-items: center;
         z-index: 5;
         overflow: auto;
