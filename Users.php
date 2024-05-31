@@ -610,9 +610,14 @@
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
             height: auto;
             width: 60vh;
-            min-width: 400px;
+            min-width: fit-content;
             border-radius: 5px;
             z-index: 9999;
+        }
+
+        #logoutpop, #editpop,
+        #deletepop, #viewpop {
+            height: auto;
         }
 
         .head {
