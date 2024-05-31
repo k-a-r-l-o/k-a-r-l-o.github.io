@@ -776,13 +776,17 @@
       
         // Sample data for the first pie chart
         var data = {
-          labels: ['SITS', 'SABES', 'AECES'],
+          labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETTS'],
           datasets: [{
-            data: [25, 40, 35],
+            data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: [
-              '#D8031C',
-              '#F6C90E',
-              '#090088'
+                '#D8031C', // Red
+                '#F6C90E', // Yellow
+                '#090088', // Blue
+                '#7F8C8D', // Gray
+                '#228B22', // Forest Green
+                '#3F00FF', // Indigo
+                '#EC7A08'  // Orange
             ],
             hoverOffset: 4,
             borderWidth: 0,
@@ -792,6 +796,29 @@
             shadowColor: 'rgba(0, 0, 0, 0.75)'
           }]
         };
+
+        function updateChartData1() {
+            fetch('getVoteData1.php')
+                .then(response => response.json())
+                .then(data => {
+                    myPieChart.data.datasets[0].data[0] = data.voteCount;
+                    myPieChart.data.datasets[0].data[1] = data.voteCount1;
+                    myPieChart.data.datasets[0].data[2] = data.voteCount2;
+                    myPieChart.data.datasets[0].data[3] = data.voteCount3;
+                    myPieChart.data.datasets[0].data[4] = data.voteCount4;
+                    myPieChart.data.datasets[0].data[5] = data.voteCount5;
+                    myPieChart.data.datasets[0].data[6] = data.voteCount6;
+                    myPieChart.update();
+
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Initial data fetch
+        updateChartData1();
+
+        // Update data every 10 seconds
+        setInterval(updateChartData1, 10000);
       
         // Configuration options for the first pie chart
         var options = {

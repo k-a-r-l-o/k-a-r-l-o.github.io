@@ -215,7 +215,6 @@ $sqlLogs = "CREATE TABLE IF NOT EXISTS Activity_Logs(
     logs_date DATE,
     logs_time TIME,
     logs_action VARCHAR(50) NOT NULL,
-    PRIMARY KEY(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Users(usep_ID)
 )";
 
@@ -227,8 +226,7 @@ if ($conn->query($sqlLogs) === TRUE) {
 
 $sqlInsertLogs = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES 
     ('1', '2024-05-30', '12:00:00','Login'),
-    ('665099', '2024-05-30', '12:05:00', 'Login'),
-    ('202200427', '2024-05-30', '12:10:00', 'Login')";
+    ('202200181', '2024-05-30', '12:10:00', 'Login')";
 
 if ($conn->query($sqlInsertLogs) === TRUE) {
     echo "Sample data inserted into 'Activity_Logs' table successfully<br>";
@@ -293,7 +291,7 @@ $sql_AECES = "CREATE TABLE IF NOT EXISTS AECES_VOTES (
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
-if ($conn->query($sql_FTVETTS) === TRUE) {
+if ($conn->query($sql_AECES) === TRUE) {
     echo "Table inserted into 'AECES' table successfully<br>";
 } else {
     echo "Error inserting table into 'AECES' table: " . $conn->error . "<br>";
@@ -405,29 +403,6 @@ if ($conn->query($sql_SABES) === TRUE) {
 } else {
     echo "Error inserting table into 'SABES_VOTES' table: " . $conn->error . "<br>";
 }
-
-$sql_BECED = "CREATE TABLE IF NOT EXISTS BECED_VOTES (
-    vote_ID INT AUTO_INCREMENT,
-    usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
-    FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
-)";
-
-if ($conn->query($sql_BECED) === TRUE) {
-    echo "Table inserted into 'SABES_VOTES' table successfully<br>";
-} else {
-    echo "Error inserting table into 'SABES_VOTES' table: " . $conn->error . "<br>";
-}
-
-
 
 $conn->close();
 
