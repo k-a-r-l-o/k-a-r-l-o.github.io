@@ -709,7 +709,7 @@
                         <h2>Dashboard</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="votes">1349/1690 votes</h2>
+                        <h2 id="votes">0/0 votes</h2>
                     </div>                    
                 </div>
             </div>
@@ -812,7 +812,7 @@
         var data2 = {
           labels: ['Voted Students', 'Students Not Yet Voted'],
           datasets: [{
-            data: [30, 70],
+            data: [0, 0],
             backgroundColor: [
               '#D8031C',
               '#090088'
@@ -825,6 +825,26 @@
             shadowColor: 'rgba(0, 0, 0, 0.75)'
           }]
         };
+
+        function updateChartData() {
+            fetch('getVoteData.php')
+                .then(response => response.json())
+                .then(data => {
+                    myPieChart2.data.datasets[0].data[0] = data.voteCount;
+                    myPieChart2.data.datasets[0].data[1] = data.notVotedCount;
+                    myPieChart2.update();
+
+                    // Update vote count text
+                    document.getElementById('votes').textContent = `${data.voteCount}/${data.voterCount} votes`;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Initial data fetch
+        updateChartData();
+
+        // Update data every 10 seconds
+        setInterval(updateChartData, 10000);
       
         // Configuration options for the second pie chart
         // Configuration options for the second pie chart
