@@ -997,6 +997,7 @@ include "DBSession.php"
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
                         <select id="yearlevel" name="yearlevel" class="input-form">
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="2nd">2nd Year</option>
                             <option value="3rd">3rd Year</option>
                             <option value="4th">4th Year</option>
@@ -1265,6 +1266,7 @@ include "DBSession.php"
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
                         <select id="yearlevel3" name="yearlevel3" class="input-form">
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="2nd">2nd Year</option>
                             <option value="3rd">3rd Year</option>
                             <option value="4th">4th Year</option>
@@ -1429,7 +1431,7 @@ include "DBSession.php"
 
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
-                    $photoPath = $row['candPic'];   
+                    $photoPath = $row['candPic'];
 
                     // Delete the photo file from the server
                     if (file_exists($photoPath)) {
