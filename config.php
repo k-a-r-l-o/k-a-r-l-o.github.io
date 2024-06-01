@@ -34,7 +34,8 @@ $sqlUser = "CREATE TABLE IF NOT EXISTS Users (
     FName VARCHAR(255) NOT NULL,
     usertype VARCHAR(50) NOT NULL,
     User_status VARCHAR(50) NOT NULL,
-    last_heartbeat TIMESTAMP NULL DEFAULT NULL
+    last_heartbeat TIMESTAMP NULL DEFAULT NULL,
+    logged_out TINYINT(1) DEFAULT 0
 )";
 
 

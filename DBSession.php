@@ -21,28 +21,26 @@ session_start();
 // If user is logged in, update last heartbeat
 if (isset($_SESSION['usep_ID'])) {
     $userId = $_SESSION['usep_ID'];
-    $stmt = $conn->prepare("UPDATE users SET last_heartbeat = NOW() WHERE 
-    usep_ID  = ?");
+    $stmt = $conn->prepare("UPDATE users SET last_heartbeat = NOW(), logged_out = 0 WHERE usep_ID = ?");
     $stmt->bind_param("i", $userId);
     $stmt->execute();
     $stmt->close();
 }
 
-// Check for users who haven't sent a heartbeat in the last 10 minutes
-$timeout = 600; // 10 minutes in seconds
+// Check for users who haven't sent a heartbeat in the last 5 minutes
+$timeout = 300; // 5 minutes in seconds
 
-// Update users to Offline where heartbeat hasn't been sent in the last 10 minutes
-$stmtOffline = $conn->prepare("UPDATE users SET User_status = 'Offline' WHERE last_heartbeat < NOW() - INTERVAL ? SECOND");
+// Update users to Offline where heartbeat hasn't been sent in the last 5 minutes and they are not logged out
+$stmtOffline = $conn->prepare("UPDATE users SET User_status = 'Offline' WHERE last_heartbeat < NOW() - INTERVAL ? SECOND AND logged_out = 0");
 $stmtOffline->bind_param("i", $timeout);
 $stmtOffline->execute();
 $stmtOffline->close();
 
-// Update users to Active where heartbeat has been sent in the last 10 minutes
-$stmtActive = $conn->prepare("UPDATE users SET User_status = 'Active' WHERE last_heartbeat >= NOW() - INTERVAL ? SECOND");
+// Update users to Active where heartbeat has been sent in the last 5 minutes and they are not logged out
+$stmtActive = $conn->prepare("UPDATE users SET User_status = 'Active' WHERE last_heartbeat >= NOW() - INTERVAL ? SECOND AND logged_out = 0");
 $stmtActive->bind_param("i", $timeout);
 $stmtActive->execute();
 $stmtActive->close();
-
 
 // Check if session variables are set
 if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
@@ -53,8 +51,8 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
 
 // Check if the logout button is clicked
 if (isset($_POST['logout'])) {
-    // Update user status to 'Offline'
-    $sqlUserEdit = "UPDATE users SET User_status = 'Offline' WHERE usep_ID = ?";
+    // Update user status to 'Offline' and set logged_out to 1
+    $sqlUserEdit = "UPDATE users SET User_status = 'Offline', logged_out = 1 WHERE usep_ID = ?";
     $stmtUpdate = $conn->prepare($sqlUserEdit);
     $stmtUpdate->bind_param("i", $_SESSION['usep_ID']);
     $stmtUpdate->execute();
@@ -71,4 +69,3 @@ if (isset($_POST['logout'])) {
     exit();
 }
 ?>
-

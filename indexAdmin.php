@@ -37,8 +37,8 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
             $_SESSION["usertype"] = $input_usertype;
             $_SESSION["usep_ID"] = $row["usep_ID"];
 
-            // Update user status to 'Online' using prepared statement
-            $sqlUserEdit = "UPDATE Users SET User_status = 'Active' WHERE usep_ID = ?";
+            // Update user status to 'Active' and set logged_out to 0 using a prepared statement
+            $sqlUserEdit = "UPDATE Users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
             $stmtUpdate = $conn->prepare($sqlUserEdit);
             $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
             $stmtUpdate->execute();

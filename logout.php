@@ -2,8 +2,8 @@
 include 'DBSession.php';
 
 if (isset($_SESSION['usep_ID'])) {
-    // Update user status to 'Offline'
-    $sqlUserEdit = "UPDATE users SET status = 'Offline' WHERE usep_ID = ?";
+    // Update user status to 'Offline' and set logged_out to 1
+    $sqlUserEdit = "UPDATE users SET User_status = 'Offline', logged_out = 1 WHERE usep_ID = ?";
     $stmtUpdate = $conn->prepare($sqlUserEdit);
     $stmtUpdate->bind_param("i", $_SESSION['usep_ID']);
     $stmtUpdate->execute();
