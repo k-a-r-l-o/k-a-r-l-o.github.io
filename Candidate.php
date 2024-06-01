@@ -943,7 +943,7 @@ include "DBSession.php"
                                 </tr>
                         <?php
                             }
-                        } 
+                        }
                         ?>
                     </table>
                 </div>
@@ -1032,14 +1032,14 @@ include "DBSession.php"
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT council_name FROM List_Councils";
+                            $query = "SELECT council_ID, council_name FROM List_Councils";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
                                 // Fetch each row and create an option element
                                 while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['council_name'] . '">' . $row['council_name'] . "</option>";
+                                    echo '<option value="' . $row['council_ID'] . '">' . $row['council_name'] . "</option>";
                                 }
                             } else {
                                 // No programs found
@@ -1053,10 +1053,7 @@ include "DBSession.php"
                     <div class="form-group">
                         <label for="position">Position:</label>
                         <select id="position" name="position" class="input-form">
-                            <option>President</option>
-                            <option>Vice President</option>
-                            <option>Secretary</option>
-                            <option>Treasurer</option>
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -1114,7 +1111,9 @@ include "DBSession.php"
 
                 // Handle file upload
                 $target = "uploads/";
-                $targetFile = $target . basename($_FILES["prof"]["name"]);
+                // Construct the file name based on the user's first name, last name, and USeP ID
+                $fileName =  $input_usep_ID . "-" .  $fname . $lname . ".jpeg";
+                $targetFile = $target . $fileName;
                 $upload_Done = 1;
                 $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
@@ -1392,7 +1391,9 @@ include "DBSession.php"
             if (isset($_FILES['prof3']) && $_FILES['prof3']['error'] == 0) {
                 // Handle file upload
                 $target = "uploads/";
-                $targetFile = $target . basename($_FILES["prof3"]["name"]);
+                // Construct the file name based on the user's first name, last name, and USeP ID
+                $fileName =  $input_usep_ID . "-" .  $fname . $lname . ".jpeg";
+                $targetFile = $target . $fileName;
                 $upload_Done = 1;
                 $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
@@ -1435,41 +1436,43 @@ include "DBSession.php"
                     if (file_exists($photoPath)) {
                         unlink($photoPath);
                     }
+                }
 
-                    // Check if $upload_Done is set to 0 by an error
-                    if ($upload_Done == 0) {
-                        echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                // Check if $upload_Done is set to 0 by an error
+                if ($upload_Done == 0) {
+                    echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                } else {
+                    // Move uploaded file to target directory
+                    if (move_uploaded_file($_FILES["prof3"]["tmp_name"], $targetFile)) {
+                        $updatePhoto = true;
                     } else {
-                        // Move uploaded file to target directory
-                        if (move_uploaded_file($_FILES["prof3"]["tmp_name"], $targetFile)) {
-                            $updatePhoto = true;
-                        } else {
-                            echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
-                        }
+                        echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
                     }
                 }
-
-                // Update data in Candidates table
-                if ($updatePhoto) {
-                    // Update with new photo and usep_ID
-                    $sqlCandidateUpdate = "UPDATE Candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', partylist = '$partylist' WHERE usep_ID = '$usepID'";
-                } else {
-                    // Update without changing photo and include usep_ID
-                    $sqlCandidateUpdate = "UPDATE Candidates SET usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', partylist = '$partylist' WHERE usep_ID = '$usepID'";
-                }
-
-                if ($conn->query($sqlCandidateUpdate) === TRUE) {
-                    echo "<script>alert('Record updated successfully');</script>";
-                    echo "<script>window.location.href = 'Candidate.php';</script>";
-                } else {
-                    echo "<script>alert('Error: " . $sqlCandidateUpdate . "<br>" . $conn->error . "');</script>";
-                }
-            } else {
-                echo "<script>alert('Record not found');</script>";
             }
+
+            // Update data in Candidates table
+            if ($updatePhoto) {
+                // Update with new photo and usep_ID
+                $sqlCandidateUpdate = "UPDATE Candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', partylist = '$partylist' WHERE usep_ID = '$usepID'";
+            } else {
+                // Update without changing photo and include usep_ID
+                $sqlCandidateUpdate = "UPDATE Candidates SET usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', partylist = '$partylist' WHERE usep_ID = '$usepID'";
+            }
+
+            if ($conn->query($sqlCandidateUpdate) === TRUE) {
+                echo "<script>alert('Record updated successfully');</script>";
+                echo "<script>window.location.href = 'Candidate.php';</script>";
+            } else {
+                echo "<script>alert('Error: " . $sqlCandidateUpdate . "<br>" . $conn->error . "');</script>";
+            }
+
+            $conn->close(); // Close the database connection
         }
     }
     ?>
+
+
 
 
 
@@ -1529,7 +1532,7 @@ include "DBSession.php"
                 // Delete the record from the database
                 $sqlCandDelete = "DELETE FROM Candidates WHERE usep_ID = '$usepID'";
                 if ($conn->query($sqlCandDelete) === TRUE) {
-                    echo "<script>alert('Record and associated photo deleted successfully');</script>";
+                    echo "<script>alert('Record deleted successfully');</script>";
                     echo "<script>window.location.href = 'Candidate.php';</script>";
                 } else {
                     echo "<script>alert('Error deleting record: " . $conn->error . "');</script>";
@@ -1584,6 +1587,27 @@ include "DBSession.php"
         document.querySelector(".cancel-button").addEventListener("click", function() {
             document.getElementById("popup").style.display = "none";
         });
+
+        document.getElementById('Council').addEventListener('change', function() {
+            var selectedCouncil = this.value;
+            var positionSelect = document.getElementById('position');
+
+            // Clear previous options
+            positionSelect.innerHTML = '';
+
+            // Fetch positions from PHP script using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_pos_data.php?council=' + selectedCouncil, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    positionSelect.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        });
+
+
 
         /*view pop up*/
         function viewpop(usepID) {

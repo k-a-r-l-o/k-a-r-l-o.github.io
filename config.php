@@ -226,12 +226,26 @@ if ($conn->query($sqlLogs) === TRUE) {
 
 $sqlInsertLogs = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES 
     ('1', '2024-05-30', '12:00:00','Login'),
-    ('202200181', '2024-05-30', '12:10:00', 'Login')";
+    ('665099', '2024-05-30', '12:00:00','Login'),
+    ('202200427', '2024-05-30', '12:10:00', 'Login')";
 
 if ($conn->query($sqlInsertLogs) === TRUE) {
     echo "Sample data inserted into 'Activity_Logs' table successfully<br>";
 } else {
     echo "Error inserting data into 'Activity_Logs' table: " . $conn->error . "<br>";
+}
+
+
+$sqlPos = "CREATE TABLE IF NOT EXISTS Positions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    council_id INT,
+    position_name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (council_id) REFERENCES List_Councils( council_ID)
+)";
+if ($conn->query($sqlPos) === TRUE) {
+    echo "Sample data inserted into 'Positions' table successfully<br>";
+} else {
+    echo "Error inserting data into 'Positions' table: " . $conn->error . "<br>";
 }
 
 //Councils
@@ -403,6 +417,80 @@ if ($conn->query($sql_SABES) === TRUE) {
 } else {
     echo "Error inserting table into 'SABES_VOTES' table: " . $conn->error . "<br>";
 }
+
+// Positions
+$insertPos = "INSERT IGNORE INTO Positions (council_id, position_name) VALUES
+(1, 'Governor'),
+(1, 'Vice Governor'),
+(1, 'Secretary'),
+(1, 'Treasurer'),
+(1, 'Senator'),
+(1, 'Senator'),
+(1, 'Senator'),
+(1, 'Auditor'),
+(2, 'Governor'),
+(2, 'Vice Governor'),
+(2, 'Secretary'),
+(2, 'Treasurer'),
+(2, 'Senator'),
+(2, 'Senator'),
+(2, 'Senator'),
+(2, 'Auditor'),
+(3, 'Governor'),
+(3, 'Vice Governor'),
+(3, 'Secretary'),
+(3, 'Treasurer'),
+(3, 'Senator'),
+(3, 'Senator'),
+(3, 'Senator'),
+(3, 'Auditor'),
+(4, 'Governor'),
+(4, 'Vice Governor'),
+(4, 'Secretary'),
+(4, 'Treasurer'),
+(4, 'Senator'),
+(4, 'Senator'),
+(4, 'Senator'),
+(4, 'Auditor'),
+(5, 'Governor'),
+(5, 'Vice Governor'),
+(5, 'Secretary'),
+(5, 'Treasurer'),
+(5, 'Senator'),
+(5, 'Senator'),
+(5, 'Senator'),
+(5, 'Auditor'),
+(6, 'Governor'),
+(6, 'Vice Governor'),
+(6, 'Secretary'),
+(6, 'Treasurer'),
+(6, 'Senator'),
+(6, 'Senator'),
+(6, 'Senator'),
+(6, 'Auditor'),
+(7, 'Governor'),
+(7, 'Vice Governor'),
+(7, 'Secretary'),
+(7, 'Treasurer'),
+(7, 'Senator'),
+(7, 'Senator'),
+(7, 'Senator'),
+(7, 'Auditor'),
+(8, 'President'),
+(8, 'Vice President for Internal Affairs'),
+(8, 'Vice President for External Affairs'),
+(8, 'General Secretary'),
+(8, 'General Treasurer'),
+(8, 'General Auditor'),
+(8, 'Public Information Officer');
+";
+
+if ($conn->query($insertPos) === TRUE) {
+    echo "Table inserted into 'Positions' table successfully<br>";
+} else {
+    echo "Error inserting table into 'Positions' table: " . $conn->error . "<br>";
+}
+
 
 $conn->close();
 
