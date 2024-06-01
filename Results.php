@@ -498,6 +498,10 @@ $usertype = $_SESSION['usertype'];
             border-top-left-radius: 12px;
         }
 
+        .data-row.hidden {
+            display: none;
+        }
+
         .thfirst {
             border-top-left-radius: 12px;
         }
@@ -779,7 +783,7 @@ $usertype = $_SESSION['usertype'];
 
         }
     </style>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var headerHeight;
 
@@ -799,7 +803,6 @@ $usertype = $_SESSION['usertype'];
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
-
     </script>
 </head>
 
@@ -869,7 +872,7 @@ $usertype = $_SESSION['usertype'];
                 </div>
                 <div class="dropdown">
                     <select name="council" id="Council">
-                        <option value="Student Council">TSC</option>
+                        <option value="TSC">TSC</option>
                         <option value="SABES">SABES</option>
                         <option value="OFEE">OFEE</option>
                         <option value="AECES">AECES</option>
@@ -883,12 +886,41 @@ $usertype = $_SESSION['usertype'];
             <div class="tableandnav">
                 <div class="tablecontainer">
                     <table id="Results">
-                        <tr class="trheader">
-                            <th class="thfirst">NAME</th>
+                        <tr class='trheader'>
+                            <th class='thfirst'>NAME</th>
                             <th>POSITION</th>
-                            <th class="thlast">NO. OF VOTES</th>
+                            <th class='thlast'>NO. OF VOTES</th>
                         </tr>
+                        <?php
+                        // Query to retrieve all data from the table
+                        $sql = "SELECT President AS Pname, 'President' AS position, COUNT(President) AS votes FROM TSC_VOTES GROUP BY President
+                            UNION ALL
+                            SELECT Vice_President_Internal_Affairs AS Pname, 'Vice President Internal Affairs' AS position, COUNT(Vice_President_Internal_Affairs) AS votes FROM TSC_VOTES GROUP BY Vice_President_Internal_Affairs
+                            UNION ALL
+                            SELECT Vice_President_External_Affairs AS Pname, 'Vice President External Affairs' AS position, COUNT(Vice_President_External_Affairs) AS votes FROM TSC_VOTES GROUP BY Vice_President_External_Affairs
+                            UNION ALL
+                            SELECT General_Secretary AS Pname, 'General Secretary' AS position, COUNT(General_Secretary) AS votes FROM TSC_VOTES GROUP BY General_Secretary
+                            UNION ALL
+                            SELECT General_Treasurer AS Pname, 'General Treasurer' AS position, COUNT(General_Treasurer) AS votes FROM TSC_VOTES GROUP BY General_Treasurer
+                            UNION ALL
+                            SELECT General_Auditor AS Pname, 'General Auditor' AS position, COUNT(General_Auditor) AS votes FROM TSC_VOTES GROUP BY General_Auditor
+                            UNION ALL
+                            SELECT Public_Information_Officer AS Pname, 'Public Information Officer' AS position, COUNT(Public_Information_Officer) AS votes FROM TSC_VOTES GROUP BY Public_Information_Officer";
+                        $result = $conn->query($sql);
 
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                        ?>
+                                <tr>
+                                    <td class='tdfirst'><?php echo $row["Pname"] ?></td>
+                                    <td><?php echo $row["position"] ?></td>
+                                    <td class='tdlast'><?php echo $row["votes"] ?></td>
+                                </tr>
+                        <?php
+                            }
+                        }
+                        ?>
                     </table>
                 </div>
                 <div class="navTable">
@@ -941,6 +973,7 @@ $usertype = $_SESSION['usertype'];
             </form>
         </div>
     </div>
+
     <script>
         // JavaScript code to switch HTML files with animation
         function switchHTML(file) {
@@ -958,6 +991,7 @@ $usertype = $_SESSION['usertype'];
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
         });
+
 
         // JavaScript code for navigation
         var currentPage = 0;
@@ -1001,6 +1035,55 @@ $usertype = $_SESSION['usertype'];
         // Show the initial page
         showPage(currentPage);
 
+        $(document).ready(function() {
+            $('#Council').change(function() {
+                var selectedCouncil = $(this).val();
+                $.post('fetch_results.php', {
+                    council: selectedCouncil
+                }, function(response) {
+                    $('#Results').html(response); // Update the #Results element
+                    showPage(currentPage); // Call the pagination function after updating results
+                });
+            });
+
+            var currentPage = 0;
+            var rowsPerPage = 5; // Change this value as needed
+
+            function showPage(page) {
+                var table = document.getElementById('Results');
+                var rows = table.rows;
+
+                // Calculate the start and end indices of the rows to display
+                var startIndex = page * rowsPerPage + 1; // Skip header row
+                var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+                // Hide all rows
+                for (var i = 1; i < rows.length; i++) {
+                    rows[i].style.display = 'none';
+                }
+
+                // Show rows for the current page
+                for (var i = startIndex; i < endIndex; i++) {
+                    rows[i].style.display = '';
+                }
+            }
+            function navigateRows(direction) {
+            currentPage += direction;
+            var table = document.getElementById('Results');
+            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+            // Check if currentPage is within bounds
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= maxPage) {
+                currentPage = maxPage - 1;
+            }
+
+            showPage(currentPage);
+
+        }
+        });
+
         /*export pop up*/
         document.getElementById("export").addEventListener("click", function() {
             document.getElementById("exportpop").style.display = "flex";
@@ -1026,45 +1109,6 @@ $usertype = $_SESSION['usertype'];
                 credentials: 'same-origin'
             });
         }, 300000); // 300000 ms = 5 minutes
-
-        document.getElementById('Council').addEventListener('change', function() {
-            var council = this.value;
-            fetchResults(council);
-        });
-
-        function fetchResults(council) {
-            var selectedCouncil = council;
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'get_result_data.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var results = JSON.parse(xhr.responseText);
-                    updateTable(results);
-                }
-            };
-            xhr.send('council=' + encodeURIComponent(selectedCouncil));
-        }
-
-        function updateTable(results) {
-            var table = document.getElementById('Results');
-            // Clear previous results
-            table.innerHTML = '<tr class="trheader"><th class="thfirst">NAME</th><th>POSITION</th><th class="thlast">NO. OF VOTES</th></tr>';
-            // Populate new results
-            results.forEach(function(row) {
-                var tr = document.createElement('tr');
-                var nameTd = document.createElement('td');
-                nameTd.textContent = row.candidate;
-                var positionTd = document.createElement('td');
-                positionTd.textContent = row.position;
-                var votesTd = document.createElement('td');
-                votesTd.textContent = row.vote_count;
-                tr.appendChild(nameTd);
-                tr.appendChild(positionTd);
-                tr.appendChild(votesTd);
-                table.appendChild(tr);
-            });
-        }
     </script>
 </body>
 

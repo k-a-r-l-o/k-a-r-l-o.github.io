@@ -226,8 +226,7 @@ if ($conn->query($sqlLogs) === TRUE) {
 }
 
 $sqlInsertLogs = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES 
-    ('1', '2024-05-30', '12:00:00','Login'),
-    ('202200181', '2024-05-30', '12:10:00', 'Login')";
+    ('1', '2024-05-30', '12:00:00','Login')";
 
 if ($conn->query($sqlInsertLogs) === TRUE) {
     echo "Sample data inserted into 'Activity_Logs' table successfully<br>";
@@ -480,21 +479,56 @@ if ($conn->query($insertPos) === TRUE) {
 }
 
 
-$sqltscvote = "INSERT INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES
-('202200151', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
-('202200152', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
-('202200153', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
-('202200154', 'Candidate_O', 'Candidate_P', 'Candidate_Q', 'Candidate_R', 'Candidate_S', 'Candidate_T', 'Candidate_U'),
-('202200155', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
-('202200156', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', x`'Candidate_F', 'Candidate_G'),
-('202200157', 'Candidate_V', 'Candidate_W', 'Candidate_X', 'Candidate_Y', 'Candidate_Z', 'Candidate_AA', 'Candidate_BB'),
-('202200158', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N');
+$sqltscvote = "INSERT IGNORE INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES
+('111111', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
+('222222', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
+('333333', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
+('444444', 'Candidate_O', 'Candidate_P', 'Candidate_Q', 'Candidate_R', 'Candidate_S', 'Candidate_T', 'Candidate_U'),
+('555555', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
+('666666', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
+('777777', 'Candidate_V', 'Candidate_W', 'Candidate_X', 'Candidate_Y', 'Candidate_Z', 'Candidate_AA', 'Candidate_BB'),
+('888888', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N')
 ";
 
 if ($conn->query($sqltscvote) === TRUE) {
     echo "Sample data inserted into 'votes' table successfully<br>";
 } else {
     echo "Error inserting data into 'votes' table: " . $conn->error . "<br>";
+}
+
+$sqlSITSvote = "INSERT IGNORE INTO SITS_VOTES (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, Senator1, Senator2, Senator3, Auditor) VALUES
+('111111', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('222222', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('333333', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('444444', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('555555', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('666666', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('777777', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida'),
+('888888', 'Lorjohn Rana', 'Dave Angelo Labad', 'Sweet Frachette Ang', 'Jackilyn Furog', 'Howard Glen Gloria', 'Sydney Pelino', 'Kisaiah Grace Torrenueva', 'Michael Labastida')
+";
+
+if ($conn->query($sqlSITSvote) === TRUE) {
+    echo "Sample data inserted into 'SITS_VOTES' table successfully<br>";
+} else {
+    echo "Error inserting data into 'SITS_VOTES' table: " . $conn->error . "<br>";
+}
+
+
+$sqlSITSvote = "INSERT IGNORE INTO OFSET_VOTES (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, Senator1, Senator2, Senator3, Auditor) VALUES
+('111111', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G', 'Candidate_H'),
+('222222', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N', 'Candidate_O', 'Candidate_P'),
+('333333', 'Candidate_Q', 'Candidate_R', 'Candidate_S', 'Candidate_T', 'Candidate_U', 'Candidate_V', 'Candidate_W', 'Candidate_X'),
+('444444', 'Candidate_Y', 'Candidate_Z', 'Candidate_AA', 'Candidate_BB', 'Candidate_CC', 'Candidate_DD', 'Candidate_EE', 'Candidate_FF'),
+('555555', 'Candidate_GG', 'Candidate_HH', 'Candidate_II', 'Candidate_JJ', 'Candidate_KK', 'Candidate_LL', 'Candidate_MM', 'Candidate_NN'),
+('666666', 'Candidate_OO', 'Candidate_PP', 'Candidate_QQ', 'Candidate_RR', 'Candidate_SS', 'Candidate_TT', 'Candidate_UU', 'Candidate_VV'),
+('777777', 'Candidate_WW', 'Candidate_XX', 'Candidate_YY', 'Candidate_ZZ', 'Candidate_AAA', 'Candidate_BBB', 'Candidate_CCC', 'Candidate_DDD'),
+('888888', 'Candidate_EEE', 'Candidate_FFF', 'Candidate_GGG', 'Candidate_HHH', 'Candidate_III', 'Candidate_JJJ', 'Candidate_KKK', 'Candidate_LLL')
+";
+
+if ($conn->query($sqlSITSvote) === TRUE) {
+    echo "Sample data inserted into 'OFSET_VOTES' table successfully<br>";
+} else {
+    echo "Error inserting data into 'OFSET_VOTES' table: " . $conn->error . "<br>";
 }
 
 
