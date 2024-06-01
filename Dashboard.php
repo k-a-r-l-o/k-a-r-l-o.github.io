@@ -289,7 +289,7 @@
         width: 100%;
         height: 500px;
         border-radius: 12px;
-        background-color: rgb(150, 191, 245, 0.5);
+        background-color: rgba(150, 191, 245, 0.25);
         margin-bottom: 3%;
         color: white;
     }

@@ -485,7 +485,7 @@ if (isset($_GET['prty_ID'])) {
     }
 
     td {
-      background-color: rgba(150, 191, 245, 0.5);
+        background-color: rgba(150, 191, 245, 0.25);
       height: 63px;
       text-align: center;
       align-items: center;

@@ -511,7 +511,7 @@ $usertype = $_SESSION['usertype'];
         }
 
         td {
-            background-color: rgba(150, 191, 245, 0.5);
+            background-color: rgba(150, 191, 245, 0.25);
             height: 63px;
             text-align: center;
             align-items: center;
@@ -893,7 +893,9 @@ $usertype = $_SESSION['usertype'];
                         </tr>
                         <?php
                         // Query to retrieve all data from the table
-                        $sql = "SELECT President AS Pname, 'President' AS position, COUNT(President) AS votes FROM TSC_VOTES GROUP BY President
+                        $sql = "SELECT Pname, position, votes
+                        FROM (
+                            SELECT President AS Pname, 'President' AS position, COUNT(President) AS votes FROM TSC_VOTES GROUP BY President
                             UNION ALL
                             SELECT Vice_President_Internal_Affairs AS Pname, 'Vice President Internal Affairs' AS position, COUNT(Vice_President_Internal_Affairs) AS votes FROM TSC_VOTES GROUP BY Vice_President_Internal_Affairs
                             UNION ALL
@@ -905,7 +907,9 @@ $usertype = $_SESSION['usertype'];
                             UNION ALL
                             SELECT General_Auditor AS Pname, 'General Auditor' AS position, COUNT(General_Auditor) AS votes FROM TSC_VOTES GROUP BY General_Auditor
                             UNION ALL
-                            SELECT Public_Information_Officer AS Pname, 'Public Information Officer' AS position, COUNT(Public_Information_Officer) AS votes FROM TSC_VOTES GROUP BY Public_Information_Officer";
+                            SELECT Public_Information_Officer AS Pname, 'Public Information Officer' AS position, COUNT(Public_Information_Officer) AS votes FROM TSC_VOTES GROUP BY Public_Information_Officer
+                        ) AS combined_results
+                        ORDER BY position, votes DESC";
                         $result = $conn->query($sql);
 
                         $allData = [];
@@ -998,7 +1002,7 @@ $usertype = $_SESSION['usertype'];
 
         // JavaScript code for navigation
         var currentPage = 0;
-        var rowsPerPage = 5; // Change this value as needed
+        var rowsPerPage = 8; // Change this value as needed
 
         function showPage(page) {
             var table = document.getElementById('Results');
@@ -1056,7 +1060,7 @@ $usertype = $_SESSION['usertype'];
             });
 
             var currentPage = 0;
-            var rowsPerPage = 5; // Change this value as needed
+            var rowsPerPage = 8; // Change this value as needed
 
             function showPage(page) {
                 var table = document.getElementById('Results');
