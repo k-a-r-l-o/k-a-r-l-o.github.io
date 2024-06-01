@@ -802,6 +802,10 @@ $usertype = $_SESSION['usertype'];
                 transform: translate(0, 0);
             }
 
+            #deletepop, #logoutpop{
+                width: 100vw;
+            }
+
         }
     </style>
 
@@ -1246,7 +1250,7 @@ $usertype = $_SESSION['usertype'];
                         <img id="preview3" src="#" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
                     </div>
                     <div class="form-group">
-                        <label for="usepID">USeP ID:</label>
+                        <label for="usepID">USeP ID(readonly):</label>
                         <input type="text" id="usepID3" name="usepID3" class="input-form" readonly onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">

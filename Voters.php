@@ -630,7 +630,7 @@
             transform: translate(-50%, -50%);
             background-color: #222E50;
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-            height: auto;
+            height: 90vh;
             width: 60vh;
             min-width: fit-content;
             border-radius: 5px;
@@ -663,10 +663,9 @@
             box-sizing: border-box;
         }
 
-        #importpop .popup-content,
         #logoutpop .popup-content,
         #deletepop .popup-content {
-            overflow: hidden;
+            overflow: auto;
         }
 
         .popup-content-inner,

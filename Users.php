@@ -621,6 +621,10 @@
             height: auto;
         }
 
+        #editpop{
+            height: 90vh;
+        }
+
         .head {
             background: linear-gradient(to bottom, #28579E, #222E50);
             width: 100%;
@@ -1123,8 +1127,8 @@
                         <input name="cPassword3" type="password" id="cPassword3" class="input-form" value="" required onchange="validatePassword3()">
                     </div>
                     <div class="form-group">
-                        <label for="usepID3">USeP ID:</label>
-                        <input type="text" id="usepID3" name="usepID3" class="input-form" required onchange="validateUsepID(this)">
+                        <label for="usepID3">USeP ID(readonly):</label>
+                        <input type="text" id="usepID3" name="usepID3" class="input-form" readonly onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
@@ -1374,7 +1378,11 @@
 
                         var formattedUsepID = formatUsepID(rowData.usep_ID);
 
-                        document.getElementById("usepID2").value = formattedUsepID;
+                        if (rowData.usep_ID == 1) {
+                            document.getElementById("usepID2").value = 1;
+                        } else {
+                            document.getElementById("usepID2").value = formattedUsepID;
+                        }
                         document.getElementById("UName2").value = rowData.username;
                         document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
                         document.getElementById("User2").value = rowData.usertype;
@@ -1419,7 +1427,11 @@
                         document.getElementById("UName3").value = rowData.username;
                         var formattedUsepID = formatUsepID(rowData.usep_ID);
 
-                        document.getElementById("usepID3").value = formattedUsepID;
+                        if (rowData.usep_ID == 1) {
+                            document.getElementById("usepID3").value = 1;
+                        } else {
+                            document.getElementById("usepID3").value = formattedUsepID;
+                        }
                         document.getElementById("FName3").value = rowData.FName;
                         document.getElementById("LName3").value = rowData.LName;
                         document.getElementById("User3").value = rowData.usertype;

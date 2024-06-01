@@ -745,6 +745,13 @@ if (isset($_GET['prty_ID'])) {
             transform: translate(0, 0);
         }
 
+        #backbutton {
+            font-size: 0;
+            padding: 10px;
+            width: auto;
+            gap: 0;
+        }
+
     }
 
     </style>

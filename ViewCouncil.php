@@ -772,6 +772,13 @@ if (isset($_GET['council_name'])) {
             width: 100vw;
         }
 
+        #backbutton {
+            font-size: 0;
+            padding: 10px;
+            width: auto;
+            gap: 0;
+        }
+
     }
     </style>
 

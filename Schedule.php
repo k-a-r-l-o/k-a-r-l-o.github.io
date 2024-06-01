@@ -1158,7 +1158,7 @@
                         timeLeftContainer.textContent = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
                         playPauseButton.textContent = "Ongoing";
                         playPauseButton.style.backgroundColor = "green";
-                        addscheduleButton.textContent = 'Edit Schedule';
+                        addscheduleButton.innerHTML = '<img src="edit2.png" alt="edit icon"> Edit Schedule';
                         addscheduleButton.style.backgroundColor = 'green';
                         addscheduleButton.style.color = 'white';
                     } else {
@@ -1173,7 +1173,7 @@
                     timeLeftContainer.textContent = "Voting not started yet.";
                     playPauseButton.textContent = "Not Started";
                     playPauseButton.style.backgroundColor = "gray";
-                    addscheduleButton.textContent = 'Edit Schedule';
+                    addscheduleButton.innerHTML = '<img src="edit2.png" alt="edit icon"> Edit Schedule';
                     addscheduleButton.style.backgroundColor = 'green';
                     addscheduleButton.style.color = 'white';
                 } else if (currentDate > endDate) {
