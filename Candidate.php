@@ -1,9 +1,20 @@
 <?php
-include "DBSession.php";
-$usertype = $_SESSION['usertype'];
+    include "DBSession.php";
+
+    $usertype = $_SESSION['usertype'];
+    $username = $_SESSION['username'];
+
+    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $usertype);
+    $stmt->execute();
+    $stmt->bind_result($Fname, $LName);
+    $stmt->fetch();
+    $stmt->close();
+    $firstLetterFirstName = substr($Fname, 0, 1);
+    $firstLetterLastName = substr($LName, 0, 1);
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,8 +121,8 @@ $usertype = $_SESSION['usertype'];
         }
 
         .menu {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             width: auto;
             max-width: 390px;
             padding: 2% 1%;
@@ -807,6 +818,48 @@ $usertype = $_SESSION['usertype'];
             }
 
         }
+
+        .accounttag{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        width: 100%;
+        border-radius: 10px;
+        background-color: rgba(150, 191, 245, 0.25);
+        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+        box-sizing: border-box;
+        padding: 25px 0px 25px 0px;
+    }
+
+    .username1, .username, .usertype {
+        color: white;
+        margin: 0;
+    }
+
+    .username1{
+        display: none;
+    }
+
+    .usertype {
+        font-weight: lighter;
+    }
+
+    @media (max-width: 1000px) {
+        .username, .usertype{
+          font-size: 0px;
+        }
+        .accounttag{
+            height: auto;
+            padding: 15px 0px 15px 0px;
+        }
+
+        .username1{
+            display: block;
+        }
+
+    }
     </style>
 
     <script>
@@ -847,6 +900,11 @@ $usertype = $_SESSION['usertype'];
     </header>
     <div class="bodycontainer">
         <div class="menu">
+            <div class="accounttag">
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $Fname. " " .$LName?></h2>
+                <h3 class="usertype"><?php echo $usertype?></h3>
+            </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
                     <div><img src="dashboard.svg" alt="dashboard icon"></div>
