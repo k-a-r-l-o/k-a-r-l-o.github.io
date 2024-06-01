@@ -2,6 +2,17 @@
     include "DBSession.php";
 
     $usertype = $_SESSION['usertype'];
+
+    $council_name = "TSC";
+    
+// Check if the council_name parameter is set in the URL
+if (isset($_GET['council_name'])) {
+    $council_name = $_GET['council_name'];
+    
+} else {
+    $council_name = "TSC";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -819,10 +830,10 @@
             <div class="contenthead">
                 <div class="titlecontainer">
                     <div>
-                        <button onclick="switchHTML('Council.html')" id="backbutton"><img src="backIcon.svg" alt="plus icon">Back</button>
+                        <button onclick="switchHTML('Council.php')" id="backbutton"><img src="backIcon.svg" alt="plus icon">Back</button>
                     </div>
                     <div>
-                        <h2>TSC</h2>
+                        <h2><?php echo $council_name?></h2>
                     </div>
                     <div class="yellowBG">
                         <h2 id="rowNumbershow">0</h2>
@@ -836,14 +847,30 @@
                 <div class="tablecontainer">
                     <table id="Results">
                         <tr class="trheader">
-                        <th class="thfirst">POSITION</th>
-                        <th class="thlast">SLOTS</th>
+                            <th class="thfirst">POSITION</th>
+                            <th class="thlast">SLOTS</th>
                         </tr>
-                
-                        <tr>
-                            <td class="tdfirst">President</td>
-                            <td class="tdlast">1</td>
-                        </tr>
+                        <?php
+                       // Query to retrieve all data from the Users table
+                        $sql = "SELECT position_name FROM positions WHERE council_name = '$council_name'";
+                        $result = $conn->query($sql);
+
+                       // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                               ?>
+                                <tr>
+                                    <td class="tdfirst"><?php echo $row["position_name"]?></td>
+                                    <td class="tdlast">1</td>
+                                </tr>
+                        <?php
+                            }
+                        } 
+
+                        // Close connection
+                        $conn->close();
+                        ?>
                         
                     </table>
                 </div>

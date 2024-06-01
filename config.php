@@ -101,14 +101,14 @@ if ($conn->query($sqlListC) === TRUE) {
 }
 
 $sqlCnlInsert = "INSERT IGNORE INTO List_Councils (council_ID, council_name, program, Cnl_level) VALUES
-    ('1', 'SABES', 'BSABE', '0'),
-    ('2', 'OFEE', 'BEED', '0'),
-    ('3', 'AECES', 'BECED', '0'),
-    ('4', 'OFSET', 'BSNED', '0'),
-    ('5', 'AFSET', 'BSED', '0'),
-    ('6', 'SITS', 'BSIT', '0'),
-    ('7', 'FTVETTS', 'BTVTED', '0'),
-    ('8', 'TSC', 'ALL PROGRAMS', '0');";
+    ('1', 'SABES', 'BSABE', '2'),
+    ('2', 'OFEE', 'BEED', '2'),
+    ('3', 'AECES', 'BECED', '2'),
+    ('4', 'OFSET', 'BSNED', '2'),
+    ('5', 'AFSET', 'BSED', '2'),
+    ('6', 'SITS', 'BSIT', '2'),
+    ('7', 'FTVETTS', 'BTVTED', '2'),
+    ('8', 'TSC', 'ALL PROGRAMS', '1');";
 
 if ($conn->query($sqlCnlInsert) === TRUE) {
     echo "Data inserted into 'List_Councils' table successfully<br>";

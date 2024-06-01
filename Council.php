@@ -451,7 +451,7 @@
 
     table {
       width: 100%;
-      min-width: 600px;
+      min-width: 300px;
       height: auto;
       border-spacing: 0 7px;
     }
@@ -852,7 +852,7 @@
                                     <td><?php echo $row["program"]?></td>
                                     <td><?php echo $row["Cnl_level"]?></td>
                                     <td class="tdlast">
-                                        <img onclick="viewpop()" src="view.png" alt="view icon">
+                                        <img onclick="viewpop('<?php echo $row['council_name']?>')" src="view.png" alt="view icon">
                                     </td>
                                 </tr>
                         <?php
@@ -906,6 +906,13 @@
                     window.location.href = file;
                 }, 500); // Delay should match the animation duration
         }
+
+
+        function viewpop(councilName) {
+             window.location.href = "ViewCouncil.php?council_name=" + encodeURIComponent(councilName);
+        }
+ 
+
 
             // Add a listener for animation end to remove the fade-out class and add the fade-in class
             document.body.addEventListener('animationend', function() {
