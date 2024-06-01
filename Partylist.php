@@ -913,8 +913,9 @@
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 $partylist = $row["name_partylist"];
-                                $stmt = $conn->prepare("SELECT COUNT(*) as candidateCount FROM candidates WHERE partylist = ?");
-                                $stmt->bind_param("s", $partylist);
+                                $prty_ID = $row["prty_ID"];
+                                $stmt = $conn->prepare("SELECT COUNT(*) as candidateCount FROM candidates WHERE prty_ID = ?");
+                                $stmt->bind_param("s", $prty_ID);
                                 $stmt->execute();
                                 $resultCandidates = $stmt->get_result();
                                 $candidateRow = $resultCandidates->fetch_assoc();
