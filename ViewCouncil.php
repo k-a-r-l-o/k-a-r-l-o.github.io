@@ -852,7 +852,7 @@ if (isset($_GET['council_name'])) {
                         </tr>
                         <?php
                        // Query to retrieve all data from the Users table
-                        $sql = "SELECT position_name FROM positions WHERE council_name = '$council_name'";
+                        $sql = "SELECT position_name, position_slot FROM positions WHERE council_name = '$council_name'";
                         $result = $conn->query($sql);
 
                        // Check if there are any rows returned
@@ -862,7 +862,7 @@ if (isset($_GET['council_name'])) {
                                ?>
                                 <tr>
                                     <td class="tdfirst"><?php echo $row["position_name"]?></td>
-                                    <td class="tdlast">1</td>
+                                    <td class="tdlast"><?php echo $row["position_slot"]?></td>
                                 </tr>
                         <?php
                             }
