@@ -797,19 +797,6 @@
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
 
-        // Send heartbeat every 5 minutes
-        setInterval(function() {
-            fetch('heartbeat.php', {
-                method: 'POST',
-                credentials: 'same-origin'
-            });
-        }, 300000); // 300000 ms = 5 minutes
-
-        // Detect window close/tab close
-        window.addEventListener('beforeunload', function() {
-            navigator.sendBeacon('logout.php');
-        });
-
     </script>
 </head>
 <body>
@@ -1196,6 +1183,19 @@
 
             // Initial update
             updateStartEnd();
+        });
+
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
         });
 
     </script>
