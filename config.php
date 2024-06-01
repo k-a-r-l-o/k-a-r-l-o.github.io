@@ -68,8 +68,7 @@ if ($stmtInsert->execute()) {
 
 $sqlListP = "CREATE TABLE IF NOT EXISTS List_Partylist (
     prty_ID INT PRIMARY KEY AUTO_INCREMENT,
-    name_partylist VARCHAR(55) NOT NULL,
-    num_members INT DEFAULT 0
+    name_partylist VARCHAR(55) NOT NULL
 )";
 
 if ($conn->query($sqlListP) === TRUE) {
@@ -141,8 +140,9 @@ $sqlCand = "CREATE TABLE IF NOT EXISTS Candidates (
     program VARCHAR(55) NOT NULL,
     council VARCHAR(55) NOT NULL,
     position VARCHAR(55) NOT NULL,
-    partylist VARCHAR(55) NOT NULL,
-    PRIMARY KEY(usep_ID)
+    prty_ID INT,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (prty_ID) REFERENCES list_partylist(prty_ID)
 )";
 
 if ($conn->query($sqlCand) === TRUE) {
