@@ -966,45 +966,55 @@
         </div>
     </div>
     <?php
-    // Check if form is submitted
-    if (isset($_POST['save'])) {
-        // SQL statement to truncate the table
-        $sqlClear = "TRUNCATE TABLE voting_schedule";
-
-        // Execute the statement and check if the truncation was successful
-        if ($conn->query($sqlClear) === TRUE) {
+        // Check if form is submitted
+        if (isset($_POST['save'])) {
             // Retrieve data from form
             $startDate = $_POST['startDate'];
             $startTime = $_POST['startTime'];
             $endDate = $_POST['endDate'];
             $endTime = $_POST['endTime'];
 
-            // Prepare SQL statement to insert data into voting_schedule
-            $sql = "INSERT INTO voting_schedule (startDate, startTime, endDate, endTime) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssss", $startDate, $startTime, $endDate, $endTime);
+            // Convert date and time to DateTime objects for comparison
+            $startDateTime = new DateTime("$startDate $startTime");
+            $endDateTime = new DateTime("$endDate $endTime");
 
-            // Execute the statement and check if the insertion was successful
-            if ($stmt->execute()) {
-                echo "<script>alert('Voting schedule saved successfully');</script>";
-                echo "<script>window.location.href = 'Schedule.php';</script>";
+            // Validate that start date and time are before end date and time
+            if ($startDateTime < $endDateTime) {
+                // SQL statement to truncate the table
+                $sqlClear = "TRUNCATE TABLE voting_schedule";
+
+                // Execute the statement and check if the truncation was successful
+                if ($conn->query($sqlClear) === TRUE) {
+                    // Prepare SQL statement to insert data into voting_schedule
+                    $sql = "INSERT INTO voting_schedule (startDate, startTime, endDate, endTime) VALUES (?, ?, ?, ?)";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ssss", $startDate, $startTime, $endDate, $endTime);
+
+                    // Execute the statement and check if the insertion was successful
+                    if ($stmt->execute()) {
+                        echo "<script>alert('Voting schedule saved successfully');</script>";
+                        echo "<script>window.location.href = 'Schedule.php';</script>";
+                    } else {
+                        echo "<script>alert('Error saving voting schedule: " . $conn->error . "');</script>";
+                        echo "<script>window.location.href = 'Schedule.php';</script>";
+                    }
+
+                    // Close the statement
+                    $stmt->close();
+                } else {
+                    echo "<script>alert('Error updating voting schedule: " . $conn->error . "');</script>";
+                    echo "<script>window.location.href = 'Schedule.php';</script>";
+                }
             } else {
-                echo "<script>alert('Error saving voting schedule: " . $conn->error . "');</script>";
+                echo "<script>alert('Start date and time must be before end date and time.');</script>";
                 echo "<script>window.location.href = 'Schedule.php';</script>";
             }
-
-            // Close the statement
-            $stmt->close();
-        } else {
-            echo "<script>alert('Error updating voting schedule: " . $conn->error . "');</script>";
-            echo "<script>window.location.href = 'Schedule.php';</script>";
-            
         }
-    }
 
-    // Close the connection
-    $conn->close();
+        // Close the connection
+        $conn->close();
     ?>
+
 
     <div id="logoutpop" class="popup">
         <div class="head">
