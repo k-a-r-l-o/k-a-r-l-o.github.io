@@ -809,9 +809,29 @@ if (isset($_GET['prty_ID'])) {
                     <div>
                         <button onclick="switchHTML('Partylist.php')" id="backbutton"><img src="backIcon.svg" alt="plus icon">Back</button>
                     </div>
-                    <div>
-                        <h2 class="banner">YANO</h2>
-                    </div>
+                    <?php
+
+                        // Query to retrieve the party list name from the database
+                        $sql = "SELECT name_partylist FROM list_partylist WHERE prty_ID = ?";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("i", $prty_ID);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            ?>
+                            <div>
+                                <h2 class="banner"><?php echo htmlspecialchars($row["name_partylist"]); ?></h2>
+                            </div>
+                            <?php
+                        } else {
+                            // Handle the case where no party list is found
+                            echo "<div><h2 class='banner'>Party list not found</h2></div>";
+                        }
+
+                        $stmt->close();
+                    ?>
                     <div class="yellowBG">
                         <h2 id="rowNumbershow">0</h2>
                     </div>  

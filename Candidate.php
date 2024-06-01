@@ -1217,26 +1217,7 @@ $usertype = $_SESSION['usertype'];
                     </div>
                     <div class="form-group">
                         <label for="partyList">Party List:</label>
-                        <select id="partyList2" name="partylist2" class="input-form" disabled>
-                            <?php
-                            // Query to fetch programs
-                            $query = "SELECT * FROM List_Partylist";
-                            $result = $conn->query($query);
-
-                            // Check if the query returned any results
-                            if ($result->num_rows > 0) {
-                                // Fetch each row and create an option element
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['prty_ID'] . '">' . $row['name_partylist'] . "</option>";
-                                }
-                            } else {
-                                // No programs found
-                                echo '<option value="">No partylist available</option>';
-                            }
-
-
-                            ?>
-                        </select>
+                        <input id="partyList2" name="partylist2" class="input-form" readonly>
                     </div>
                 </form>
                 <br>
@@ -1689,23 +1670,46 @@ $usertype = $_SESSION['usertype'];
                             document.getElementById("program2").value = rowData.program;
                             document.getElementById("Council2").value = rowData.council;
                             document.getElementById("position2").value = rowData.position;
-                            document.getElementById("partyList2").value = rowData.prty_ID;
 
+                            // AJAX request to fetch the name_partylist based on prty_ID
+                            var prty_ID = rowData.prty_ID;
+                            var partyListRequest = new XMLHttpRequest();
+                            partyListRequest.onreadystatechange = function() {
+                                if (this.readyState == 4) {
+                                    if (this.status == 200) {
+                                        try {
+                                            var partyListData = JSON.parse(this.responseText);
+                                            console.log(partyListData); // Log the response for debugging
 
-                            // Show the popup
-                            var popup = document.getElementById("viewpop");
-                            popup.style.display = "flex";
+                                            // Set the value of the partyList2 element to the fetched name_partylist
+                                            document.getElementById("partyList2").value = partyListData.name_partylist;
+
+                                            // Show the popup
+                                            var popup = document.getElementById("viewpop");
+                                            popup.style.display = "flex";
+                                        } catch (e) {
+                                            console.error("Error parsing JSON response for party list: " + e.message);
+                                        }
+                                    } else {
+                                        console.error("AJAX request for party list failed with status: " + this.status);
+                                    }
+                                }
+                            };
+                            partyListRequest.open("GET", "getPartyListName.php?prty_ID=" + prty_ID, true);
+                            partyListRequest.send();
+
                         } catch (e) {
-                            console.error("Error parsing JSON response: " + e.message);
+                            console.error("Error parsing JSON response for candidate data: " + e.message);
                         }
                     } else {
-                        console.error("AJAX request failed with status: " + this.status);
+                        console.error("AJAX request for candidate data failed with status: " + this.status);
                     }
                 }
             };
             xhttp.open("GET", "get_cand_data.php?usepID=" + usepID, true);
             xhttp.send();
         }
+
 
         document.querySelector("#viewpop .save-button").addEventListener("click", function() {
             document.getElementById("viewpop").style.display = "none";
