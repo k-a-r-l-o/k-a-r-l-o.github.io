@@ -909,10 +909,18 @@
                         if ($result->num_rows > 0) {
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
+                                $partylist = $row["name_partylist"];
+                                $stmt = $conn->prepare("SELECT COUNT(*) as candidateCount FROM candidates WHERE partylist = ?");
+                                $stmt->bind_param("s", $partylist);
+                                $stmt->execute();
+                                $resultCandidates = $stmt->get_result();
+                                $candidateRow = $resultCandidates->fetch_assoc();
+                                $candidateCount = $candidateRow['candidateCount'];
+                                $stmt->close();
                         ?>
                                 <tr>
-                                    <td class="tdfirst"><?php echo $row["name_partylist"] ?></td>
-                                    <td><?php echo $row["num_members"] ?></td>
+                                    <td class="tdfirst"><?php echo htmlspecialchars($partylist); ?></td>
+                                    <td><?php echo htmlspecialchars($candidateCount); ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
                                         <img onclick="viewpop()" src="view.png" alt="view icon">
