@@ -1,6 +1,9 @@
 <?php
-    include "DBSession.php"
+    include "DBSession.php";
+
+    $usertype = $_SESSION['usertype'];
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +122,7 @@
             background-color: #222E50;
             box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
             border-radius: 0px 10px 10px 0px;
-            align-items: center;
+            align-items: baseline;
             justify-items: center;
             z-index: 5;
             overflow: auto;
@@ -629,12 +632,12 @@
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
             height: auto;
             width: 60vh;
-            min-width: 400px;
+            min-width: fit-content;
             border-radius: 5px;
             z-index: 9999;
         }
 
-        #logoutpop,
+        #logoutpop, #importpop,
         #deletepop {
             height: auto;
         }
@@ -849,6 +852,20 @@
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
+
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
+        });
+        
     </script>
 </head>
 
@@ -872,11 +889,11 @@
                     <div><img src="dashboard.svg" alt="dashboard icon"></div>
                     <div>Dashboard</div>
                 </button>
-                <button onclick="switchHTML('Results.php')">
+                <button id="RESULTS" onclick="switchHTML('Results.php')">
                     <div><img src="result.svg" alt="result icon"></div>
                     <div>Results</div>
                 </button>
-                <button onclick="switchHTML('Candidate.php')">
+                <button id="CANDIDATES" onclick="switchHTML('Candidate.php')">
                     <div><img src="candidates.svg" alt="candidate icon"></div>
                     <div>Candidate</div>
                 </button>
@@ -884,23 +901,23 @@
                     <div><img src="voters.svg" alt="dashboard icon"></div>
                     <div>Voters</div>
                 </button>
-                <button onclick="switchHTML('Partylist.php')">
+                <button id="PARTYLIST" onclick="switchHTML('Partylist.php')">
                     <div><img src="partylist.svg" alt="partylist icon"></div>
                     <div>Partylist</div>
                 </button>
-                <button onclick="switchHTML('Users.php')">
+                <button id="USERS" onclick="switchHTML('Users.php')">
                     <div><img src="user.svg" alt="user icon"></div>
                     <div>Users</div>
                 </button>
-                <button onclick="switchHTML('Council.php')">
+                <button id="COUNCIL" onclick="switchHTML('Council.php')">
                     <div><img src="council.svg" alt="council icon"></div>
                     <div>Council</div>
                 </button>
-                <button onclick="switchHTML('Schedule.php')">
+                <button id="SCHEDULE" onclick="switchHTML('Schedule.php')">
                     <div><img src="schedule.svg" alt="calendar icon"></div>
                     <div>Voting Schedule</div>
                 </button>
-                <button onclick="switchHTML('Logs.php')">
+                <button id="LOGS" onclick="switchHTML('Logs.php')">
                     <div><img src="log.svg" alt="log icon"></div>
                     <div>Log</div>
                 </button>
@@ -1000,19 +1017,19 @@
                 <form method="post">
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="text" id="usepID1" name="usepID" class="input-form" placeholder="Ex. 2020-00001" required onchange="validateUsepID(this)">
+                        <input type="text" id="usepID1" name="usepID" class="input-form" maxlength="10" onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
                         <label for="Email">Email:</label>
-                        <input type="email" id="Email1" name="Email" class="input-form" placeholder="Ex. juan00001@usep.edu.ph" required>
+                        <input type="email" id="Email1" name="Email" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
-                        <input type="text" id="FName1" name="FName" class="input-form" placeholder="Ex. Juan" required>
+                        <input type="text" id="FName1" name="FName" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="LName">Last Name:</label>
-                        <input type="text" id="LName1" name="LName" class="input-form" placeholder="Ex. Dela Cruz" required>
+                        <input type="text" id="LName1" name="LName" class="input-form"  required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
@@ -1054,8 +1071,6 @@
                                 echo '<option value="">No programs available</option>';
                             }
 
-                            // Close the database connection
-                            $conn->close();
                             ?>
                         </select>
                     </div>
@@ -1317,14 +1332,6 @@
                             <option value="BTVTED">BTVTED</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="voted">Vote Status:</label>
-                        <select id="voted3" class="input-form" class="input-form" name="voted3" required>
-                            <option value="Voted">Voted</option>
-                            <option value="Not Voted">Not Voted</option>
-                        </select>
-                    </div>
-
             </div>
             <br>
             <div class="buttons">
@@ -1363,10 +1370,9 @@
             $gender = $_POST['gender3'];
             $yearlvl = $_POST['yearlevel3'];
             $Program = $_POST['program3'];
-            $voted = $_POST['voted3'];
 
             // Insert data into Users table
-            $sqlVoterEdit = "UPDATE Voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program', voted = '$voted' WHERE usep_ID = '$usepID'";
+            $sqlVoterEdit = "UPDATE Voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlVoterEdit) === TRUE) {
                 echo "<script>alert('Record updated successfully');</script>";
@@ -1390,12 +1396,21 @@
             <form method="post">
                 <div class="input-wrapper">
                     <input type="hidden" id="usepID4" name="usepID4" class="input-form">
+                    <input type="hidden" id="voted4" class="input-form" name="voted4">
+                    <input type="hidden" id="program4" class="input-form" name="program4">
                 </div>
                 <br>
                 <div class="popup-content-inner">
                     <div style="text-align: center;">
-                        <p>Are you sure you want to delete this voter?
-                            This action cannot be undone.</p>
+                        <p>
+                            Are you sure you want to delete this voter?<br>
+                        </p>
+                        <p style="color: yellow;">
+                            [Their votes will also be deleted.]
+                        </p>
+                        <p>
+                            This action cannot be undone.
+                        </p>
                     </div>
                     <br>
                     <button type="button" class="cancel-button">Cancel</button>
@@ -1421,24 +1436,72 @@
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            // Get the user input
-            $input_usep_ID = $_POST["usepID4"];
+            $Voted = $_POST["voted4"];
+            if ($Voted==="Not Voted") {
+                // Get the user input
+                $input_usep_ID = $_POST["usepID4"];
 
-            // Remove any dashes from the input
-            $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+                // Remove any dashes from the input
+                $clean_usep_ID = str_replace('-', '', $input_usep_ID);
 
-            // Retrieve data from form
-            $usepID = $clean_usep_ID;
+                // Retrieve data from form
+                $usepID = $clean_usep_ID;
 
-            // Insert data into Users table
-            $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
+                // Insert data into Users table
+                $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
 
-            if ($conn->query($sqlVoterDelete) === TRUE) {
-                echo "<script>alert('Record Deleted successfully');</script>";
-                echo "<script>window.location.href = 'Voters.php';</script>";
-            } else {
-                echo "<script>alert('Error: " .   $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
-                echo "<script>window.location.href = 'Voters.php';</script>";
+                if ($conn->query($sqlVoterDelete) === TRUE) {
+                    echo "<script>alert('Record Deleted successfully');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                } else {
+                    echo "<script>alert('Error: " .   $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                }
+            }else{
+                $program = $_POST["program4"];
+                $input_usep_ID = $_POST["usepID4"];
+
+                // Remove any dashes from the input
+                $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+
+                // Retrieve data from form
+                $usepID = $clean_usep_ID;
+
+                // Delete vote records from tsc_votes table
+                $sqlVoteDelete1 = "DELETE FROM tsc_votes WHERE usep_ID = '$usepID'";
+                if ($conn->query($sqlVoteDelete1) !== TRUE) {
+                    echo "<script>alert('Error deleting votes from tsc_votes table: " . $conn->error . "');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                    exit();
+                }
+
+                // Retrieve the council name for the given program
+                $sqlsearchCouncil = "SELECT council_name FROM list_councils WHERE program = '$program'";
+                $result = $conn->query($sqlsearchCouncil);
+
+                if ($result->num_rows > 0) {
+                    // Council name exists for the given program
+                    $row = $result->fetch_assoc();
+                    $council_name = $row['council_name'];
+
+                    // Delete vote records from the specific council votes table
+                    $sqlVoteDelete2 = "DELETE FROM " . $council_name . "_votes WHERE usep_ID = '$usepID'";
+                    if ($conn->query($sqlVoteDelete2) !== TRUE) {
+                        echo "<script>alert('Error deleting votes from council table: " . $conn->error . "');</script>";
+                        echo "<script>window.location.href = 'Voters.php';</script>";
+                        exit();
+                    }
+                }
+
+                // Delete the voter record from the Voters table
+                $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
+                if ($conn->query($sqlVoterDelete) === TRUE) {
+                    echo "<script>alert('Record deleted successfully');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                } else {
+                    echo "<script>alert('Error: " . $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
+                    echo "<script>window.location.href = 'Voters.php';</script>";
+                }
             }
         }
     }
@@ -1620,7 +1683,6 @@
                             document.getElementById("gender3").value = rowData.gender;
                             document.getElementById("yearlevel3").value = rowData.yearLvl;
                             document.getElementById("program3").value = rowData.program;
-                            document.getElementById("voted3").value = rowData.voted;
 
                             // Show the popup
                             var popup = document.getElementById("editpop");
@@ -1654,6 +1716,8 @@
 
                             // Fill input fields with voter data
                             document.getElementById("usepID4").value = rowData.usep_ID;
+                            document.getElementById("voted4").value = rowData.Voted;
+                            document.getElementById("program4").value = rowData.program;
 
                             // Show the popup
                             var popup = document.getElementById("deletepop");
@@ -1725,3 +1789,19 @@
 </body>
 
 </html>
+<?php 
+
+if ($usertype === 'Admin-Front'){
+    echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
+    echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical'){
+    echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo"<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+}
+    
+?>

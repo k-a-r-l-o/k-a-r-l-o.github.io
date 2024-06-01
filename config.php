@@ -226,8 +226,7 @@ if ($conn->query($sqlLogs) === TRUE) {
 
 $sqlInsertLogs = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES 
     ('1', '2024-05-30', '12:00:00','Login'),
-    ('665099', '2024-05-30', '12:00:00','Login'),
-    ('202200427', '2024-05-30', '12:10:00', 'Login')";
+    ('202200181', '2024-05-30', '12:10:00', 'Login')";
 
 if ($conn->query($sqlInsertLogs) === TRUE) {
     echo "Sample data inserted into 'Activity_Logs' table successfully<br>";
@@ -239,6 +238,7 @@ if ($conn->query($sqlInsertLogs) === TRUE) {
 $sqlPos = "CREATE TABLE IF NOT EXISTS Positions (
     id INT PRIMARY KEY AUTO_INCREMENT,
     council_id INT,
+    council_name VARCHAR(55) NOT NULL,
     position_name VARCHAR(50) NOT NULL,
     FOREIGN KEY (council_id) REFERENCES List_Councils( council_ID)
 )";
@@ -419,70 +419,70 @@ if ($conn->query($sql_SABES) === TRUE) {
 }
 
 // Positions
-$insertPos = "INSERT IGNORE INTO Positions (council_id, position_name) VALUES
-(1, 'Governor'),
-(1, 'Vice Governor'),
-(1, 'Secretary'),
-(1, 'Treasurer'),
-(1, 'Senator'),
-(1, 'Senator'),
-(1, 'Senator'),
-(1, 'Auditor'),
-(2, 'Governor'),
-(2, 'Vice Governor'),
-(2, 'Secretary'),
-(2, 'Treasurer'),
-(2, 'Senator'),
-(2, 'Senator'),
-(2, 'Senator'),
-(2, 'Auditor'),
-(3, 'Governor'),
-(3, 'Vice Governor'),
-(3, 'Secretary'),
-(3, 'Treasurer'),
-(3, 'Senator'),
-(3, 'Senator'),
-(3, 'Senator'),
-(3, 'Auditor'),
-(4, 'Governor'),
-(4, 'Vice Governor'),
-(4, 'Secretary'),
-(4, 'Treasurer'),
-(4, 'Senator'),
-(4, 'Senator'),
-(4, 'Senator'),
-(4, 'Auditor'),
-(5, 'Governor'),
-(5, 'Vice Governor'),
-(5, 'Secretary'),
-(5, 'Treasurer'),
-(5, 'Senator'),
-(5, 'Senator'),
-(5, 'Senator'),
-(5, 'Auditor'),
-(6, 'Governor'),
-(6, 'Vice Governor'),
-(6, 'Secretary'),
-(6, 'Treasurer'),
-(6, 'Senator'),
-(6, 'Senator'),
-(6, 'Senator'),
-(6, 'Auditor'),
-(7, 'Governor'),
-(7, 'Vice Governor'),
-(7, 'Secretary'),
-(7, 'Treasurer'),
-(7, 'Senator'),
-(7, 'Senator'),
-(7, 'Senator'),
-(7, 'Auditor'),
-(8, 'President'),
-(8, 'Vice President for Internal Affairs'),
-(8, 'Vice President for External Affairs'),
-(8, 'General Secretary'),
-(8, 'General Treasurer'),
-(8, 'General Auditor'),
-(8, 'Public Information Officer');
+$insertPos = "INSERT IGNORE INTO Positions (council_id, council_name, position_name) VALUES 
+    (1, 'SABES', 'Governor'),
+    (1, 'SABES', 'Vice Governor'),
+    (1, 'SABES', 'Secretary'),
+    (1, 'SABES', 'Treasurer'),
+    (1, 'SABES', 'Senator'),
+    (1, 'SABES', 'Senator'),
+    (1, 'SABES', 'Senator'),
+    (1, 'SABES', 'Auditor'),
+    (2, 'OFEE', 'Governor'),
+    (2, 'OFEE', 'Vice Governor'),
+    (2, 'OFEE', 'Secretary'),
+    (2, 'OFEE', 'Treasurer'),
+    (2, 'OFEE', 'Senator'),
+    (2, 'OFEE', 'Senator'),
+    (2, 'OFEE', 'Senator'),
+    (2, 'OFEE', 'Auditor'),
+    (3, 'AECES', 'Governor'),
+    (3, 'AECES', 'Vice Governor'),
+    (3, 'AECES', 'Secretary'),
+    (3, 'AECES', 'Treasurer'),
+    (3, 'AECES', 'Senator'),
+    (3, 'AECES', 'Senator'),
+    (3, 'AECES', 'Senator'),
+    (3, 'AECES', 'Auditor'),
+    (4, 'OFSET', 'Governor'),
+    (4, 'OFSET', 'Vice Governor'),
+    (4, 'OFSET', 'Secretary'),
+    (4, 'OFSET', 'Treasurer'),
+    (4, 'OFSET', 'Senator'),
+    (4, 'OFSET', 'Senator'),
+    (4, 'OFSET', 'Senator'),
+    (4, 'OFSET', 'Auditor'),
+    (5, 'AFSET', 'Governor'),
+    (5, 'AFSET', 'Vice Governor'),
+    (5, 'AFSET', 'Secretary'),
+    (5, 'AFSET', 'Treasurer'),
+    (5, 'AFSET', 'Senator'),
+    (5, 'AFSET', 'Senator'),
+    (5, 'AFSET', 'Senator'),
+    (5, 'AFSET', 'Auditor'),
+    (6, 'SITS', 'Governor'),
+    (6, 'SITS', 'Vice Governor'),
+    (6, 'SITS', 'Secretary'),
+    (6, 'SITS', 'Treasurer'),
+    (6, 'SITS', 'Senator'),
+    (6, 'SITS', 'Senator'),
+    (6, 'SITS', 'Senator'),
+    (6, 'SITS', 'Auditor'),
+    (7, 'FTVETTS', 'Governor'),
+    (7, 'FTVETTS', 'Vice Governor'),
+    (7, 'FTVETTS', 'Secretary'),
+    (7, 'FTVETTS', 'Treasurer'),
+    (7, 'FTVETTS', 'Senator'),
+    (7, 'FTVETTS', 'Senator'),
+    (7, 'FTVETTS', 'Senator'),
+    (7, 'FTVETTS', 'Auditor'),
+    (8, 'TSC', 'President'),
+    (8, 'TSC', 'Vice President for Internal Affairs'),
+    (8, 'TSC', 'Vice President for External Affairs'),
+    (8, 'TSC', 'General Secretary'),
+    (8, 'TSC', 'General Treasurer'),
+    (8, 'TSC', 'General Auditor'),
+    (8, 'TSC', 'Public Information Officer');
 ";
 
 if ($conn->query($insertPos) === TRUE) {
@@ -490,6 +490,27 @@ if ($conn->query($insertPos) === TRUE) {
 } else {
     echo "Error inserting table into 'Positions' table: " . $conn->error . "<br>";
 }
+
+
+$sqltscvote = "INSERT INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES
+('202200151', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
+('202200152', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
+('202200153', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
+('202200154', 'Candidate_O', 'Candidate_P', 'Candidate_Q', 'Candidate_R', 'Candidate_S', 'Candidate_T', 'Candidate_U'),
+('202200155', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
+('202200156', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', x`'Candidate_F', 'Candidate_G'),
+('202200157', 'Candidate_V', 'Candidate_W', 'Candidate_X', 'Candidate_Y', 'Candidate_Z', 'Candidate_AA', 'Candidate_BB'),
+('202200158', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N');
+";
+
+if ($conn->query($sqltscvote) === TRUE) {
+    echo "Sample data inserted into 'votes' table successfully<br>";
+} else {
+    echo "Error inserting data into 'votes' table: " . $conn->error . "<br>";
+}
+
+
+
 
 
 $conn->close();

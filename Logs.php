@@ -1,6 +1,9 @@
 <?php
-include "DBSession.php"
+    include "DBSession.php";
+
+    $usertype = $_SESSION['usertype'];
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +122,7 @@ include "DBSession.php"
             background-color: #222E50;
             box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
             border-radius: 0px 10px 10px 0px;
-            align-items: center;
+            align-items: baseline;
             justify-items: center;
             z-index: 5;
             overflow: auto;
@@ -608,7 +611,7 @@ include "DBSession.php"
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
             height: auto;
             width: 60vh;
-            min-width: 400px;
+            min-width: fit-content;
             border-radius: 5px;
             z-index: 9999;
         }
@@ -775,6 +778,19 @@ include "DBSession.php"
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
+
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
+        });
     </script>
 </head>
 
@@ -798,35 +814,35 @@ include "DBSession.php"
                     <div><img src="dashboard.svg" alt="dashboard icon"></div>
                     <div>Dashboard</div>
                 </button>
-                <button title="Results" onclick="switchHTML('Results.php')">
+                <button id="RESULTS" title="Results" onclick="switchHTML('Results.php')">
                     <div><img src="result.svg" alt="result icon"></div>
                     <div>Results</div>
                 </button>
-                <button title="Candidates" onclick="switchHTML('Candidate.php')">
+                <button id="CANDIDATES" title="Candidates" onclick="switchHTML('Candidate.php')">
                     <div><img src="candidates.svg" alt="candidate icon"></div>
                     <div>Candidate</div>
                 </button>
-                <button title="Voters" onclick="switchHTML('Voters.php')">
+                <button id="VOTERS" title="Voters" onclick="switchHTML('Voters.php')">
                     <div><img src="voters.svg" alt="voters icon"></div>
                     <div>Voters</div>
                 </button>
-                <button title="Partylists" title="Councils" onclick="switchHTML('Partylist.php')">
+                <button id="PARTYLIST" title="Partylists" title="Councils" onclick="switchHTML('Partylist.php')">
                     <div><img src="partylist.svg" alt="partylist icon"></div>
                     <div>Partylist</div>
                 </button>
-                <button title="Users" onclick="switchHTML('Users.php')">
+                <button id="USERS" title="Users" onclick="switchHTML('Users.php')">
                     <div><img src="user.svg" alt="user icon"></div>
                     <div>Users</div>
                 </button>
-                <button title="Councils" onclick="switchHTML('Council.php')">
+                <button id="COUNCIL" title="Councils" onclick="switchHTML('Council.php')">
                     <div><img src="council.svg" alt="council icon"></div>
                     <div>Council</div>
                 </button>
-                <button title="Voting Schedule" onclick="switchHTML('Schedule.php')">
+                <button id="SCHEDULE" title="Voting Schedule" onclick="switchHTML('Schedule.php')">
                     <div><img src="schedule.svg" alt="calendar icon"></div>
                     <div>Voting Schedule</div>
                 </button>
-                <button title="Logs" id="selected">
+                <button id="LOGS" title="Logs" id="selected">
                     <div><img src="log.svg" alt="log icon"></div>
                     <div>Log</div>
                 </button>
@@ -909,7 +925,7 @@ include "DBSession.php"
                         <p>Are you sure you want to logout?</p>
                     </div>
                     <br>
-                    <button class="cancel-button">Cancel</button>
+                    <button type="button" class="cancel-button">Cancel</button>
                     <button type="submit" class="save-button" name="logout">Confirm</button>
                 </div>
             </form>
@@ -993,3 +1009,20 @@ include "DBSession.php"
 </body>
 
 </html>
+
+<?php 
+
+if ($usertype === 'Admin-Front'){
+    echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
+    echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical'){
+    echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo"<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+}
+    
+?>

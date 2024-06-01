@@ -30,10 +30,19 @@ if (isset($_SESSION['usep_ID'])) {
 
 // Check for users who haven't sent a heartbeat in the last 10 minutes
 $timeout = 600; // 10 minutes in seconds
-$stmt = $conn->prepare("UPDATE users SET User_status = 'Offline' WHERE last_heartbeat < NOW() - INTERVAL ? SECOND");
-$stmt->bind_param("i", $timeout);
-$stmt->execute();
-$stmt->close();
+
+// Update users to Offline where heartbeat hasn't been sent in the last 10 minutes
+$stmtOffline = $conn->prepare("UPDATE users SET User_status = 'Offline' WHERE last_heartbeat < NOW() - INTERVAL ? SECOND");
+$stmtOffline->bind_param("i", $timeout);
+$stmtOffline->execute();
+$stmtOffline->close();
+
+// Update users to Active where heartbeat has been sent in the last 10 minutes
+$stmtActive = $conn->prepare("UPDATE users SET User_status = 'Active' WHERE last_heartbeat >= NOW() - INTERVAL ? SECOND");
+$stmtActive->bind_param("i", $timeout);
+$stmtActive->execute();
+$stmtActive->close();
+
 
 // Check if session variables are set
 if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {

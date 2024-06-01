@@ -1,5 +1,7 @@
 <?php
-    include "DBSession.php"
+    include "DBSession.php";
+
+    $usertype = $_SESSION['usertype'];
 ?>
 
 <!DOCTYPE html>
@@ -438,7 +440,7 @@
 
     table {
       width: 100%;
-      min-width: 600px;
+      min-width: 300px;
       height: auto;
       border-spacing: 0 7px;
     }
@@ -573,7 +575,7 @@
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
         height: auto;
         width: 60vh;
-        min-width: 400px;
+        min-width: fit-content;
         border-radius: 5px;
         z-index: 9999;
     }
@@ -782,6 +784,19 @@
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
 
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
+        });
+
     </script>
 </head>
 <body>
@@ -801,14 +816,14 @@
         <div class="menu">
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
-                <button onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
-                <button onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
-                <button onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
+                <button id="RESULTS" onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button id="CANDIDATES" onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
+                <button id="VOTERS" onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
+                <button id="PARTYLIST" onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button id="USERS" onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button id="selected"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
-                <button onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
-                <button onclick="switchHTML('Logs.php')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
+                <button id="SCHEDULE" onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
+                <button id="LOGS" onclick="switchHTML('Logs.php')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
                 <button id="logout" class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
             </div>
@@ -827,7 +842,7 @@
                     </div>                    
                 </div>
                 <div class="dropdown">
-                    <button id="add"><img src="plus.png" alt="plus icon">Add new</button>
+                <!--<button id="add"><img src="plus.png" alt="plus icon">Add new</button>-->
                 </div>
             </div>
             <div class="tableandnav">
@@ -835,44 +850,12 @@
                     <table id="Results">
                         <tr class="trheader">
                         <th class="thfirst">POSITION</th>
-                        <th>SLOTS</th>
-                        <th class="thlast"></th>
+                        <th class="thlast">SLOTS</th>
                         </tr>
                 
                         <tr>
                             <td class="tdfirst">President</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="tdfirst">Vice President</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="tdfirst">Secretary</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="tdfirst">Treasurer</td>
-                            <td>1</td>
-                            <td class="tdlast">
-                                <img onclick="editpop()" src="edit.png" alt="edit icon">
-                                <img onclick="deletepop()" src="delete.png" alt="delete icon">
-                            </td>
+                            <td class="tdlast">1</td>
                         </tr>
                         
                     </table>
@@ -959,7 +942,7 @@
                     <p>Are you sure you want to logout?</p>
                 </div>
                 <br>
-                <button class="cancel-button">Cancel</button>
+                <button type="button" class="cancel-button">Cancel</button>
                 <button type="submit" class="save-button" name="logout">Confirm</button>
             </div>
             </form>
@@ -1083,3 +1066,20 @@
     </script>
 </body>
 </html>
+
+<?php
+
+if ($usertype === 'Admin-Front') {
+    echo "<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+}
+
+?>

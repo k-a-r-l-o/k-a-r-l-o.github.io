@@ -1,7 +1,8 @@
 <?php
-    include "DBSession.php"
-?>
+    include "DBSession.php";
 
+    $usertype = $_SESSION['usertype'];
+?>
 
 
 
@@ -821,6 +822,19 @@
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
+
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
+        });
     </script>
 </head>
 
@@ -990,7 +1004,7 @@
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input name="usepID" type="text" id="usepID" class="input-form" value="" required>
+                        <input name="usepID" type="text" id="usepID" class="input-form" value="" maxlength="10" required onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
@@ -1122,7 +1136,7 @@
                     </div>
                     <div class="form-group">
                         <label for="usepID3">USeP ID:</label>
-                        <input type="text" id="usepID3" name="usepID3" class="input-form" required>
+                        <input type="text" id="usepID3" name="usepID3" class="input-form" required onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
                         <label for="FName">First Name:</label>
@@ -1272,7 +1286,7 @@
                         <p>Are you sure you want to logout?</p>
                     </div>
                     <br>
-                    <button class="cancel-button">Cancel</button>
+                    <button type="button" class="cancel-button">Cancel</button>
                     <button type="submit" class="save-button" name="logout">Confirm</button>
                 </div>
             </form>

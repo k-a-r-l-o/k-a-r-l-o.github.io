@@ -1,5 +1,7 @@
 <?php
-include "DBSession.php"
+include "DBSession.php";
+$usertype = $_SESSION['usertype'];
+
 ?>
 
 
@@ -117,7 +119,7 @@ include "DBSession.php"
             background-color: #222E50;
             box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
             border-radius: 0px 10px 10px 0px;
-            align-items: center;
+            align-items: baseline;
             justify-items: center;
             z-index: 5;
             overflow: auto;
@@ -822,6 +824,20 @@ include "DBSession.php"
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
+
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
+        });
+        
     </script>
 </head>
 
@@ -845,7 +861,7 @@ include "DBSession.php"
                     <div><img src="dashboard.svg" alt="dashboard icon"></div>
                     <div>Dashboard</div>
                 </button>
-                <button onclick="switchHTML('Results.php')">
+                <button id="RESULTS" onclick="switchHTML('Results.php')">
                     <div><img src="result.svg" alt="result icon"></div>
                     <div>Results</div>
                 </button>
@@ -853,27 +869,27 @@ include "DBSession.php"
                     <div><img src="candidates.svg" alt="candidate icon"></div>
                     <div>Candidate</div>
                 </button>
-                <button onclick="switchHTML('Voters.php')">
+                <button id="VOTERS" onclick="switchHTML('Voters.php')">
                     <div><img src="voters.svg" alt="voter icon"></div>
                     <div>Voters</div>
                 </button>
-                <button onclick="switchHTML('Partylist.php')">
+                <button id="PARTYLIST" onclick="switchHTML('Partylist.php')">
                     <div><img src="partylist.svg" alt="partylist icon"></div>
                     <div>Partylist</div>
                 </button>
-                <button onclick="switchHTML('Users.php')">
+                <button id="USERS" onclick="switchHTML('Users.php')">
                     <div><img src="user.svg" alt="user icon"></div>
                     <div>Users</div>
                 </button>
-                <button onclick="switchHTML('Council.php')">
+                <button id="COUNCIL" onclick="switchHTML('Council.php')">
                     <div><img src="council.svg" alt="council icon"></div>
                     <div>Council</div>
                 </button>
-                <button onclick="switchHTML('Schedule.php')">
+                <button id="SCHEDULE" onclick="switchHTML('Schedule.php')">
                     <div><img src="schedule.svg" alt="calendar icon"></div>
                     <div>Voting Schedule</div>
                 </button>
-                <button onclick="switchHTML('Logs.php')">
+                <button id="LOGS" onclick="switchHTML('Logs.php')">
                     <div><img src="log.svg" alt="log icon"></div>
                     <div>Log</div>
                 </button>
@@ -937,7 +953,7 @@ include "DBSession.php"
                                     <td><?php echo $row["council"] ?></td>
                                     <td class="tdlast">
                                         <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
+                                        <img onclick="editpop('<?php echo $row['usep_ID']; ?>','<?php echo $row['council']; ?>')" src="edit.png" alt="edit icon">
                                         <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
                                     </td>
                                 </tr>
@@ -975,7 +991,7 @@ include "DBSession.php"
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="text" id="usepID" name="usepID" class="input-form" required onchange="validateUsepID(this)">
+                        <input type="text" id="usepID" name="usepID" class="input-form" maxlength="10" onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
                         <label for="FirstName">First Name:</label>
@@ -988,6 +1004,7 @@ include "DBSession.php"
                     <div class="form-group">
                         <label for="gender">Gender:</label>
                         <select id="gender" name="gender" class="input-form">
+                            <option value="" disabled selected hidden>Select here</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
@@ -996,9 +1013,9 @@ include "DBSession.php"
                         <label for="yearLevel">Year Level:</label>
                         <select id="yearlevel" name="yearlevel" class="input-form">
                             <option value="" disabled selected hidden>Select here</option>
-                            <option value="2nd">2nd Year</option>
-                            <option value="3rd">3rd Year</option>
-                            <option value="4th">4th Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1032,14 +1049,14 @@ include "DBSession.php"
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT council_ID, council_name FROM List_Councils";
+                            $query = "SELECT council_name FROM List_Councils";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
                                 // Fetch each row and create an option element
                                 while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['council_ID'] . '">' . $row['council_name'] . "</option>";
+                                    echo '<option value="' . $row['council_name'] . '">' . $row['council_name'] . "</option>";
                                 }
                             } else {
                                 // No programs found
@@ -1053,7 +1070,7 @@ include "DBSession.php"
                     <div class="form-group">
                         <label for="position">Position:</label>
                         <select id="position" name="position" class="input-form">
-
+                            <option value="" disabled selected hidden>Select Council First</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1185,7 +1202,7 @@ include "DBSession.php"
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="number" id="usepID2" class="input-form" readonly onchange="validateUsepID(this)">
+                        <input type="text" id="usepID2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
                         <label for="fullName">Full Name:</label>
@@ -1243,7 +1260,7 @@ include "DBSession.php"
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="text" id="usepID3" name="usepID3" class="input-form" onchange="validateUsepID(this)">
+                        <input type="text" id="usepID3" name="usepID3" class="input-form" readonly onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
                         <label for="FirstName">First Name:</label>
@@ -1264,9 +1281,9 @@ include "DBSession.php"
                         <label for="yearLevel">Year Level:</label>
                         <select id="yearlevel3" name="yearlevel3" class="input-form">
                             <option value="" disabled selected hidden>Select here</option>
-                            <option value="2nd">2nd Year</option>
-                            <option value="3rd">3rd Year</option>
-                            <option value="4th">4th Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1321,10 +1338,7 @@ include "DBSession.php"
                     <div class="form-group">
                         <label for="position">Position:</label>
                         <select id="position3" name="position3" class="input-form">
-                            <option>President</option>
-                            <option>Vice President</option>
-                            <option>Secretary</option>
-                            <option>Treasurer</option>
+                           
                         </select>
                     </div>
                     <div class="form-group">
@@ -1554,7 +1568,7 @@ include "DBSession.php"
                     <p>Are you sure you want to logout?</p>
                 </div>
                 <br>
-                <button class="cancel-button">Cancel</button>
+                <button type="button" class="cancel-button">Cancel</button>
                 <button type="submit" class="save-button" name="logout">Confirm</button>
             </div>
 
@@ -1588,6 +1602,8 @@ include "DBSession.php"
             document.getElementById("popup").style.display = "none";
         });
 
+
+        /// add dropdown council
         document.getElementById('Council').addEventListener('change', function() {
             var selectedCouncil = this.value;
             var positionSelect = document.getElementById('position');
@@ -1607,6 +1623,44 @@ include "DBSession.php"
             xhr.send();
         });
 
+           /// edit dropdown council
+        document.getElementById('Council3').addEventListener('change', function() {
+            var selectedCouncil = this.value;
+            var positionSelect = document.getElementById('position3');
+
+            // Clear previous options
+            positionSelect.innerHTML = '';
+
+            // Fetch positions from PHP script using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_pos_data.php?council=' + selectedCouncil, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    positionSelect.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        });
+
+        function getpos(council) {
+            var selectedCouncil = council;
+            var positionSelect = document.getElementById('position3');
+
+            // Clear previous options
+            positionSelect.innerHTML = '';
+
+            // Fetch positions from PHP script using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_pos_data.php?council=' + selectedCouncil, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    positionSelect.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
 
 
         /*view pop up*/
@@ -1620,9 +1674,10 @@ include "DBSession.php"
                             var rowData = JSON.parse(this.responseText);
                             console.log(rowData); // Log the response for debugging
 
+                            var formattedUsepID = formatUsepID(rowData.usep_ID);
 
                             document.getElementById("preview2").src = rowData.candPic || 'DefaultProfile.png';
-                            document.getElementById("usepID2").value = rowData.usep_ID;
+                            document.getElementById("usepID2").value = formattedUsepID;
                             document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
                             document.getElementById("gender2").value = rowData.gender;
                             document.getElementById("yearlevel2").value = rowData.yearLvl;
@@ -1652,8 +1707,9 @@ include "DBSession.php"
         });
 
         /*edit pop up*/
-        function editpop(usepID) {
+        function editpop(usepID,council) {
             // AJAX request to PHP script to retrieve voter data based on usepID
+            getpos(council);
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4) {
@@ -1662,10 +1718,11 @@ include "DBSession.php"
                             var rowData = JSON.parse(this.responseText);
                             console.log(rowData); // Log the response for debugging
 
+                            var formattedUsepID = formatUsepID(rowData.usep_ID);
 
                             document.getElementById("preview3").src = rowData.candPic || 'DefaultProfile.png';
                             document.getElementById("preview3").style.display = 'block';
-                            document.getElementById("usepID3").value = rowData.usep_ID;
+                            document.getElementById("usepID3").value = formattedUsepID;
                             document.getElementById("Fname3").value = rowData.FName;
                             document.getElementById("Lname3").value = rowData.LName;
                             document.getElementById("gender3").value = rowData.gender;
@@ -1852,3 +1909,20 @@ include "DBSession.php"
 </body>
 
 </html>
+
+<?php
+
+if ($usertype === 'Admin-Front') {
+    echo "<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+}
+
+?>

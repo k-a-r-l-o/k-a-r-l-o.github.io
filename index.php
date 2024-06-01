@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "Voting_System";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +27,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Include SweetAlert CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
+
   <style>
 
     body {
@@ -118,7 +141,7 @@
         height: auto;
         background-color: white;
         border-radius: 12px;
-        box-shadow: 5px 8px 15px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.15);
         padding: 40px;
     }
 
@@ -424,9 +447,9 @@
                 <div>
                     <h1>Login</h1>
                 </div>
-                <form method = "get" action = "validateUser.php">
+                <form method="post">
                     <div class="forgap">
-                        <input type="email" id="username" name="username" placeholder="Username" required>
+                        <input type="email" id="username" name="username" placeholder="Email Address" required>
                     </div>
                     <div>
                         <input type="password" id="password" name="password" placeholder="Password" required>
@@ -437,7 +460,7 @@
                     <div class="forgap">
                         
                     </div>
-                    <button type="submit" onclick="switchHTML('Voting1.html')" class="loginbutton">Login</button>
+                    <button type="submit" class="loginbutton">Login</button>
                     <div class="forgap">
                         
                     </div>
@@ -570,3 +593,90 @@
 
 </body>
 </html>
+<?php
+// If form is submitted
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+    $input_username = trim($_POST["username"]);
+    $input_password = trim($_POST["password"]);
+
+    // Prepare SQL statement to retrieve user from database
+    $sql = "SELECT * FROM voters WHERE Email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $input_username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // User exists, fetch details
+        $row = $result->fetch_assoc();
+
+        // Extract the year part
+        $year = substr($row["usep_ID"], 0, 4);
+
+        // Extract the remaining part and zero-pad it to 5 digits
+        $numeric_part = str_pad(substr($row["usep_ID"], 4), 5, "0", STR_PAD_LEFT);
+
+        // Combine the parts with a dash
+        $formatted_usep_ID = $year . '-' . $numeric_part;
+
+        if ($input_password === $formatted_usep_ID) {
+            if ("Not Voted" === $row["voted"]) {
+                // Password and voted status are correct, set session and redirect
+                $_SESSION["username"] = $input_username;
+                $_SESSION["program"] = $row["program"];
+                $_SESSION["usep_ID"] = $row["usep_ID"];
+
+                header("Location: Voting1.php"); // Redirect to the voting page
+                exit();
+            } else {
+                // User has already voted
+                echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'You have already cast your vote',
+                        text: 'You cannot vote again.',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'index.php';
+                        }
+                    });
+                </script>";
+                exit(); // Stop further execution
+            }
+        } else {
+            // Password is incorrect
+            echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid credentials',
+                    text: 'Please try again.',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'index.php';
+                    }
+                });
+            </script>";
+            exit(); // Stop further execution
+        }
+    } else {
+        // User does not exist
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'User not found',
+                text: 'Please try again.',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'index.php';
+                }
+            });
+        </script>";
+        exit(); // Stop further execution
+    }
+}
+
+$conn->close();
+?>

@@ -512,7 +512,7 @@
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         height: auto;
         width: 60vh;
-        min-width: 400px;
+        min-width: fit-content;
         border-radius: 5px;
         z-index: 9999;
     }
@@ -692,10 +692,10 @@
         <div class="menu">
             <div class="buttonContainer">
                 <button id="selected"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
-                <button onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
-                <button id="PARTYLIST"onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button id="RESULTS" onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button id="CANDIDATES" onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
+                <button id="VOTERS" onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
+                <button id="PARTYLIST" onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
                 <button id="USERS" onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button id="COUNCIL" onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
                 <button id="SCHEDULE"onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
@@ -745,7 +745,7 @@
                     <p>Are you sure you want to logout?</p>
                 </div>
                 <br>
-                <button class="cancel-button">Cancel</button>
+                <button type="button" class="cancel-button">Cancel</button>
                 <button type="submit" class="save-button" name="logout">Confirm</button>
             </div>
             </form>
@@ -782,13 +782,13 @@
           datasets: [{
             data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: [
-                '#D8031C', // Red
-                '#F6C90E', // Yellow
-                '#090088', // Blue
-                '#7F8C8D', // Gray
-                '#228B22', // Forest Green
-                '#3F00FF', // Indigo
-                '#EC7A08'  // Orange
+                '#D8031C',
+                '#F6C90E', 
+                '#090088', 
+                '#E76615', 
+                '#009D23', 
+                '#9F00A3', 
+                '#008AC6'  
             ],
             hoverOffset: 4,
             borderWidth: 0,
@@ -926,6 +926,7 @@
         window.addEventListener('beforeunload', function() {
             navigator.sendBeacon('logout.php');
         });
+        
     </script>
       
 </body>
@@ -933,15 +934,16 @@
 <?php 
 
 if ($usertype === 'Admin-Front'){
+    echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
     echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
     echo"<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
     echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
 } else if ($usertype === 'Admin-Technical'){
+    echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo"<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
     echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
-    echo"<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
-    echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
 }
     
 ?>

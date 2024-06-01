@@ -1,7 +1,8 @@
 <?php
-    include "DBSession.php"
-?>
+    include "DBSession.php";
 
+    $usertype = $_SESSION['usertype'];
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +117,7 @@
         background-color: #222E50;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
         border-radius:  0px 10px 10px 0px;
-        align-items: center;
+        align-items: baseline;
         justify-items: center;
         z-index: 5;
         overflow: auto;
@@ -621,7 +622,7 @@
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         height: auto;
         width: 60vh;
-        min-width: 400px;
+        min-width: fit-content;
         border-radius: 5px;
         z-index: 9999;
     }
@@ -796,6 +797,19 @@
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
 
+        // Send heartbeat every 5 minutes
+        setInterval(function() {
+            fetch('heartbeat.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }, 300000); // 300000 ms = 5 minutes
+
+        // Detect window close/tab close
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('logout.php');
+        });
+
     </script>
 </head>
 <body>
@@ -809,14 +823,14 @@
         <div class="menu">
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')"><div><img src="dashboard.svg" alt="dashboard icon"></div><div>Dashboard</div></button>
-                <button onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
-                <button onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
-                <button onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
-                <button onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
-                <button onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
-                <button onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
+                <button id="RESULTS" onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
+                <button id="CANDIDATES" onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="dashboard icon"></div><div>Candidate</div></button>
+                <button id="VOTERS" onclick="switchHTML('Voters.php')"><div><img src="voters.svg" alt="voter icon"></div><div>Voters</div></button>
+                <button id="PARTYLIST" onclick="switchHTML('Partylist.php')"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button id="USERS" onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
+                <button id="COUNCIL" onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
                 <button id="selected"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
-                <button onclick="switchHTML('Logs.php')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
+                <button id="LOGS" onclick="switchHTML('Logs.php')"><div><img src="log.svg" alt="log icon"></div><div>Log</div></button>
                 <br>
                 <button id="logout" class="Logoutbutton"><div><img src="logout.svg" alt="log out icon"></div><div>Logout</div></button>
             </div>
@@ -1016,7 +1030,7 @@
                     <p>Are you sure you want to logout?</p>
                 </div>
                 <br>
-                <button class="cancel-button">Cancel</button>
+                <button type="button" class="cancel-button">Cancel</button>
                 <button type="submit" class="save-button" name="logout">Confirm</button>
             </div>
             </form>
@@ -1189,3 +1203,19 @@
     
 </body>
 </html>
+<?php 
+
+if ($usertype === 'Admin-Front'){
+    echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
+    echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical'){
+    echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo"<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+}
+    
+?>

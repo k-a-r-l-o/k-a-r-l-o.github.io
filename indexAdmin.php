@@ -183,7 +183,7 @@ $conn->close();
         height: auto;
         background-color: white;
         border-radius: 12px;
-        box-shadow: 5px 8px 15px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.15);
         padding: 40px;
     }
 
