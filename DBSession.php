@@ -43,7 +43,7 @@ $stmtActive->execute();
 $stmtActive->close();
 
 // Check if session variables are set
-if (!isset($_SESSION['username']) || !isset($_SESSION['usertype'])) {
+if (!isset($_SESSION['username']) && !isset($_SESSION['usertype'])) {
     // If session variables are not set, redirect to the login page
     header("Location: indexAdmin.php");
     exit();

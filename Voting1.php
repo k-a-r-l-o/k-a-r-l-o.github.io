@@ -1,3 +1,10 @@
+<?php
+    include "DBSessionVoter.php";
+
+    $username = $_SESSION["username"];
+    $program = $_SESSION["program"];
+    $usep_ID = $_SESSION["usep_ID"];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

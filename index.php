@@ -594,47 +594,161 @@ if ($conn->connect_error) {
 </body>
 </html>
 <?php
+
+// Set the desired timezone
+date_default_timezone_set('Asia/Manila');
+
+// Get the current date and time in the specified timezone
+$currentDateTime = date('Y-m-d H:i:s'); 
+
+// Proceed with your existing code to check the voting schedule
+// Query to retrieve the voting schedule
+$sql1 = "SELECT * FROM voting_schedule";
+$result1 = $conn->query($sql1);
+
+if ($result1->num_rows > 0) {
+    // There should be only one row in the result, assuming there's only one voting schedule
+    $row = $result1->fetch_assoc();
+
+    // Combine start date and time
+    $startDateTime = $row["startDate"] . ' ' . $row["startTime"];
+    // Combine end date and time
+    $endDateTime = $row["endDate"] . ' ' . $row["endTime"];
+
+    // Check if the current date and time fall within the range
+    if ($currentDateTime >= $startDateTime && $currentDateTime <= $endDateTime) {
+        // Current date and time are within the range
+        // Proceed with the login process
+    } else {
+        // Current date and time are not within the range
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Voting not available',
+                text: 'Voting is not currently available.',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.close();
+                }
+            });
+        </script>";
+        exit(); // Stop further execution
+    }
+} else {
+    // No voting schedule found
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'No voting schedule',
+            text: 'There is no voting schedule available.',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.close();
+            }
+        });
+    </script>";
+    exit(); // Stop further execution
+}
+
 // If form is submitted
 if (isset($_POST["username"]) && isset($_POST["password"])) {
-    $input_username = trim($_POST["username"]);
-    $input_password = trim($_POST["password"]);
+    // Set the desired timezone
+    date_default_timezone_set('Asia/Manila');
 
-    // Prepare SQL statement to retrieve user from database
-    $sql = "SELECT * FROM voters WHERE Email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $input_username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Get the current date and time in the specified timezone
+    $currentDateTime = date('Y-m-d H:i:s'); 
 
-    if ($result->num_rows > 0) {
-        // User exists, fetch details
-        $row = $result->fetch_assoc();
+    // Proceed with your existing code to check the voting schedule
+    // Query to retrieve the voting schedule
+    $sql2 = "SELECT * FROM voting_schedule";
+    $result2 = $conn->query($sql2);
+    if ($result2->num_rows > 0) {
+        // There should be only one row in the result, assuming there's only one voting schedule
+        $row = $result2->fetch_assoc();
+    
+        // Combine start date and time
+        $startDateTime = $row["startDate"] . ' ' . $row["startTime"];
+        // Combine end date and time
+        $endDateTime = $row["endDate"] . ' ' . $row["endTime"];
+    
+        // Check if the current date and time fall within the range
+        if ($currentDateTime >= $startDateTime && $currentDateTime <= $endDateTime) {
+            $input_username = trim($_POST["username"]);
+            $input_password = trim($_POST["password"]);
 
-        // Extract the year part
-        $year = substr($row["usep_ID"], 0, 4);
+            // Prepare SQL statement to retrieve user from database
+            $sql = "SELECT * FROM voters WHERE Email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $input_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-        // Extract the remaining part and zero-pad it to 5 digits
-        $numeric_part = str_pad(substr($row["usep_ID"], 4), 5, "0", STR_PAD_LEFT);
+            if ($result->num_rows > 0) {
+                // User exists, fetch details
+                $row = $result->fetch_assoc();
 
-        // Combine the parts with a dash
-        $formatted_usep_ID = $year . '-' . $numeric_part;
+                // Extract the year part
+                $year = substr($row["usep_ID"], 0, 4);
 
-        if ($input_password === $formatted_usep_ID) {
-            if ("Not Voted" === $row["voted"]) {
-                // Password and voted status are correct, set session and redirect
-                $_SESSION["username"] = $input_username;
-                $_SESSION["program"] = $row["program"];
-                $_SESSION["usep_ID"] = $row["usep_ID"];
+                // Extract the remaining part and zero-pad it to 5 digits
+                $numeric_part = str_pad(substr($row["usep_ID"], 4), 5, "0", STR_PAD_LEFT);
 
-                header("Location: Voting1.php"); // Redirect to the voting page
-                exit();
+                // Combine the parts with a dash
+                $formatted_usep_ID = $year . '-' . $numeric_part;
+
+                if ($input_password === $formatted_usep_ID) {
+                    if ("Not Voted" === $row["voted"]) {
+                        // Password and voted status are correct, set session and redirect
+                        $_SESSION["username"] = $input_username;
+                        $_SESSION["program"] = $row["program"];
+                        $_SESSION["usep_ID"] = $row["usep_ID"];
+
+                        echo '<script>';
+                        echo 'console.log("Redirecting to Voting1.php...");';
+                        echo 'window.location.href = "Voting1.php";'; // Redirect to the voting page
+                        echo '</script>';
+                        exit();
+                    } else {
+                        // User has already voted
+                        echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'You have already cast your vote',
+                                text: 'You cannot vote again.',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = 'index.php';
+                                }
+                            });
+                        </script>";
+                        exit(); // Stop further execution
+                    }
+                } else {
+                    // Password is incorrect
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Invalid credentials',
+                            text: 'Please try again.',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = 'index.php';
+                            }
+                        });
+                    </script>";
+                    exit(); // Stop further execution
+                }
             } else {
-                // User has already voted
+                // User does not exist
                 echo "<script>
                     Swal.fire({
                         icon: 'error',
-                        title: 'You have already cast your vote',
-                        text: 'You cannot vote again.',
+                        title: 'User not found',
+                        text: 'Please try again.',
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -645,12 +759,12 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                 exit(); // Stop further execution
             }
         } else {
-            // Password is incorrect
+            // Current date and time are not within the range
             echo "<script>
                 Swal.fire({
                     icon: 'error',
-                    title: 'Invalid credentials',
-                    text: 'Please try again.',
+                    title: 'Voting not available',
+                    text: 'Voting is not currently available.',
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -661,12 +775,12 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             exit(); // Stop further execution
         }
     } else {
-        // User does not exist
+        // No voting schedule found
         echo "<script>
             Swal.fire({
                 icon: 'error',
-                title: 'User not found',
-                text: 'Please try again.',
+                title: 'No voting schedule',
+                text: 'There is no voting schedule available.',
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
