@@ -1326,10 +1326,6 @@
             });
         }, 300000); // 300000 ms = 5 minutes
 
-        // Detect window close/tab close
-        window.addEventListener('beforeunload', function() {
-            navigator.sendBeacon('logout.php');
-        });
     </script>
 </body>
 
