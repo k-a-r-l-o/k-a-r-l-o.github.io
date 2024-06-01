@@ -908,9 +908,11 @@ $usertype = $_SESSION['usertype'];
                             SELECT Public_Information_Officer AS Pname, 'Public Information Officer' AS position, COUNT(Public_Information_Officer) AS votes FROM TSC_VOTES GROUP BY Public_Information_Officer";
                         $result = $conn->query($sql);
 
+                        $allData = [];
                         if ($result->num_rows > 0) {
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
+                                $allData[] = $row;
                         ?>
                                 <tr>
                                     <td class='tdfirst'><?php echo $row["Pname"] ?></td>
@@ -936,7 +938,7 @@ $usertype = $_SESSION['usertype'];
 
                     </div>
                     <div class="nextcontainer">
-                        <button id="export" type="button">Export</button>
+                        <button onclick="exportAllDataToExcel()" id="export" type="button">Export</button>
                     </div>
                 </div>
             </div>
@@ -975,6 +977,7 @@ $usertype = $_SESSION['usertype'];
     </div>
 
     <script>
+        var allData = <?php echo json_encode($allData); ?>;
         // JavaScript code to switch HTML files with animation
         function switchHTML(file) {
             // Add fade-out animation to the body
@@ -1041,7 +1044,13 @@ $usertype = $_SESSION['usertype'];
                 $.post('fetch_results.php', {
                     council: selectedCouncil
                 }, function(response) {
-                    $('#Results').html(response); // Update the #Results element
+                    var parsedResponse = JSON.parse(response);
+                    allData = parsedResponse.allData; // Update allData with the new data
+
+                    // Update the #Results element with the HTML table rows
+                    $('#Results').html(parsedResponse.output);
+
+                    currentPage = 0; // Reset to the first page
                     showPage(currentPage); // Call the pagination function after updating results
                 });
             });
@@ -1084,10 +1093,42 @@ $usertype = $_SESSION['usertype'];
         }
         });
 
-        /*export pop up*/
-        document.getElementById("export").addEventListener("click", function() {
-            document.getElementById("exportpop").style.display = "flex";
-        });
+        function exportAllDataToExcel() {
+            var tableHTML = '<table><thead><tr><th>NAME</th><th>POSITION</th><th>NO. OF VOTES</th></tr></thead><tbody>';
+            allData.forEach(function(row) {
+                tableHTML += '<tr>';
+                tableHTML += '<td>' + row.Pname + '</td>';
+                tableHTML += '<td>' + row.position + '</td>';
+                tableHTML += '<td>' + row.votes + '</td>';
+                tableHTML += '</tr>';
+            });
+            tableHTML += '</tbody></table>';
+
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+
+            // Get current date and time
+            var currentDate = new Date();
+            var date = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1).toString().padStart(2, '0') + "-" + currentDate.getDate().toString().padStart(2, '0');
+            var time = currentDate.getHours().toString().padStart(2, '0') + "-" + currentDate.getMinutes().toString().padStart(2, '0') + "-" + currentDate.getSeconds().toString().padStart(2, '0');
+
+            var filenameInput = document.getElementById("Council").value;
+            var filename = filenameInput ? filenameInput + ' results ' + date + ' ' + time + '.xls' : 'tableData ' + date + ' ' + time + '.xls';
+
+            downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], { type: dataType });
+                navigator.msSaveOrOpenBlob(blob, filename);
+                document.getElementById("exportpop").style.display = "flex";
+            } else {
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                downloadLink.download = filename;
+                downloadLink.click();
+                document.getElementById("exportpop").style.display = "flex";
+            }
+        }
 
         document.querySelector("#exportpop .save-button").addEventListener("click", function() {
             document.getElementById("exportpop").style.display = "none";

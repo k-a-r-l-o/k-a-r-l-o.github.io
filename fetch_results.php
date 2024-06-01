@@ -173,8 +173,10 @@ $output = "
 </tr>
 </div>";
 
+$allData = [];
 // Fetch the results and build the table rows
 while ($row = $result->fetch_assoc()) {
+    $allData[] = $row;
     $output .= "
     <tr>
         <td class='tdfirst'>{$row['Pname']}</td>
@@ -187,4 +189,10 @@ while ($row = $result->fetch_assoc()) {
 $conn->close();
 
 // Output the table rows
-echo $output;
+$response = [
+    'output' => $output,
+    'allData' => $allData
+];
+
+// Output the JSON encoded response
+echo json_encode($response);
