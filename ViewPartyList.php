@@ -2,6 +2,14 @@
     include "DBSession.php";
 
     $usertype = $_SESSION['usertype'];
+
+    // Check if the council_name parameter is set in the URL
+if (isset($_GET['prty_ID'])) {
+    $prty_ID = $_GET['prty_ID'];
+    
+} else {
+    $prty_ID = 1;
+}
 ?>
 
 <!DOCTYPE html>
@@ -819,15 +827,28 @@
                             <th class="thfirst">NAME</th>
                             <th class="thlast">POSITION</th>
                         </tr>
-                
-                        <tr data-table="table1">
-                            <td class="tdfirst">Rachel Davis</td>
-                            <td class="tdlast">President</td>
-                        </tr>
-                        <tr data-table="table2">
-                            <td class="tdfirst">Jonathan Carter</td>
-                            <td class="tdlast">Vice President</td>
-                        </tr>
+
+                        <?php
+                       // Query to retrieve all data from the Users table
+                        $sql = "SELECT LName, FName, position FROM candidates WHERE prty_ID = '$prty_ID'";
+                        $result = $conn->query($sql);
+
+                       // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                               ?>
+                                <tr>
+                                    <td class="tdfirst"><?php echo $row["FName"] . " " . $row["LName"]; ?></td>
+                                    <td class="tdlast"><?php echo $row["position"]?></td>
+                                </tr>
+                        <?php
+                            }
+                        } 
+
+                        // Close connection
+                        $conn->close();
+                        ?>
                         
                     </table>
                 </div>

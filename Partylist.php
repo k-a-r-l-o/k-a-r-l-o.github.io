@@ -927,7 +927,7 @@
                                     <td><?php echo htmlspecialchars($candidateCount); ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop()" src="view.png" alt="view icon">
+                                        <img onclick="viewpop(<?php echo $row['prty_ID']; ?>)" src="view.png" alt="view icon">
                                         <img onclick="editpop(<?php echo $row['prty_ID']; ?>)" src="edit.png" alt="edit icon">
                                         <img onclick="deletepop(<?php echo $row['prty_ID']; ?>)" src="delete.png" alt="delete icon">
 
@@ -1146,6 +1146,10 @@
             setTimeout(function() {
                 window.location.href = file;
             }, 500); // Delay should match the animation duration
+        }
+
+        function viewpop(prty_ID) {
+             window.location.href = "ViewPartylist.php?prty_ID=" + encodeURIComponent(prty_ID);
         }
 
         // Add a listener for animation end to remove the fade-out class and add the fade-in class

@@ -1066,18 +1066,18 @@ $usertype = $_SESSION['usertype'];
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT name_partylist FROM List_Partylist";
+                            $query = "SELECT * FROM List_Partylist";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
                                 // Fetch each row and create an option element
                                 while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['name_partylist'] . '">' . $row['name_partylist'] . "</option>";
+                                    echo '<option value="' . $row['prty_ID'] . '">' . $row['name_partylist'] . "</option>";
                                 }
                             } else {
                                 // No programs found
-                                echo '<option value="">No programs available</option>';
+                                echo '<option value="">No partylist available</option>';
                             }
 
 
@@ -1155,7 +1155,7 @@ $usertype = $_SESSION['usertype'];
                     // Move uploaded file to target directory
                     if (move_uploaded_file($_FILES["prof"]["tmp_name"], $targetFile)) {
                         // Insert data into Candidates table including the uploaded photo path
-                        $sqlCandidateInsert = "INSERT INTO Candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, partylist) 
+                        $sqlCandidateInsert = "INSERT INTO Candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, prty_ID ) 
                     VALUES ('$usepID', '$targetFile', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$council', '$position', '$partylist')";
 
                         if ($conn->query($sqlCandidateInsert) === TRUE) {
@@ -1217,7 +1217,26 @@ $usertype = $_SESSION['usertype'];
                     </div>
                     <div class="form-group">
                         <label for="partyList">Party List:</label>
-                        <input id="partyList2" class="input-form" readonly>
+                        <select id="partyList2" name="partylist2" class="input-form" disabled>
+                            <?php
+                            // Query to fetch programs
+                            $query = "SELECT * FROM List_Partylist";
+                            $result = $conn->query($query);
+
+                            // Check if the query returned any results
+                            if ($result->num_rows > 0) {
+                                // Fetch each row and create an option element
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . $row['prty_ID'] . '">' . $row['name_partylist'] . "</option>";
+                                }
+                            } else {
+                                // No programs found
+                                echo '<option value="">No partylist available</option>';
+                            }
+
+
+                            ?>
+                        </select>
                     </div>
                 </form>
                 <br>
@@ -1331,21 +1350,20 @@ $usertype = $_SESSION['usertype'];
                     <div class="form-group">
                         <label for="partyList">Party List:</label>
                         <select id="partyList3" name="partyList3" class="input-form">
-                            <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT name_partylist FROM List_Partylist";
+                            $query = "SELECT * FROM List_Partylist";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
                                 // Fetch each row and create an option element
                                 while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['name_partylist'] . '">' . $row['name_partylist'] . "</option>";
+                                    echo '<option value="' . $row['prty_ID'] . '">' . $row['name_partylist'] . "</option>";
                                 }
                             } else {
                                 // No programs found
-                                echo '<option value="">No programs available</option>';
+                                echo '<option value="">No partylist available</option>';
                             }
                             ?>
                         </select>
@@ -1455,7 +1473,7 @@ $usertype = $_SESSION['usertype'];
             // Update data in Candidates table
             if ($updatePhoto) {
                 // Update with new photo and usep_ID
-                $sqlCandidateUpdate = "UPDATE Candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', partylist = '$partylist' WHERE usep_ID = '$usepID'";
+                $sqlCandidateUpdate = "UPDATE Candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID  = '$partylist' WHERE usep_ID = '$usepID'";
             } else {
                 // Update without changing photo and include usep_ID
                 $sqlCandidateUpdate = "UPDATE Candidates SET usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', partylist = '$partylist' WHERE usep_ID = '$usepID'";
@@ -1671,7 +1689,7 @@ $usertype = $_SESSION['usertype'];
                             document.getElementById("program2").value = rowData.program;
                             document.getElementById("Council2").value = rowData.council;
                             document.getElementById("position2").value = rowData.position;
-                            document.getElementById("partyList2").value = rowData.partylist;
+                            document.getElementById("partyList2").value = rowData.prty_ID;
 
 
                             // Show the popup
@@ -1717,7 +1735,7 @@ $usertype = $_SESSION['usertype'];
                             document.getElementById("program3").value = rowData.program;
                             document.getElementById("Council3").value = rowData.council;
                             document.getElementById("position3").value = rowData.position;
-                            document.getElementById("partyList3").value = rowData.partylist;
+                            document.getElementById("partyList3").value = rowData.prty_ID;
 
 
                             // Show the popup
