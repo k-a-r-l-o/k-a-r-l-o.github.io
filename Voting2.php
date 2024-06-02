@@ -4,6 +4,20 @@ include "DBSessionVoter.php";
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
+
+// Retrieve the votes from the URL parameters
+$votes = $_GET;
+
+// Map the position keys to human-readable names if necessary
+$positionNames = [
+    'President' => 'President',
+    'Vice_President_Internal_Affairs' => 'Vice President Internal Affairs',
+    'Vice_President_External_Affairs' => 'Vice President External Affairs',
+    'General_Secretary' => 'General Secretary',
+    'General_Treasurer' => 'General Treasurer',
+    'General_Auditor' => 'General Auditor',
+    'Public_Information_Officer' => 'Public Information Officer'
+];
 ?>
 
 <!DOCTYPE html>
@@ -583,25 +597,43 @@ $usep_ID = $_SESSION["usep_ID"];
     <div class="bodycontainer">
         <div class="content">
             <div class="cardcontainer">
- 
-                    <div class="card">
-                        <div class="positiontitle">
-                            <h3>SC SUMMARY</h3>
-                        </div>
-                        <div class="cardcontent">
 
-                            <div class="pos">
-                                <p>Position:</p>
-                                <p class="c">Candidate</p>
-                            </div>
-
-                        </div>
+                <div class="card">
+                    <div class="positiontitle">
+                        <h3>SC SUMMARY</h3>
                     </div>
+                    <div class="cardcontent">
 
-                    <div class="button">
-                        <button onclick="switchHTML('Voting1.php')">Back</button>
-                        <button onclick="switchHTML('Voting3.php')">Submit</button>
+                        <div class="pos">
+                            <?php
+                            // Display the votes
+                            foreach ($votes as $position => $candidateId) {
+                                if ($candidateId != '100010001') {
+                                    // Query to get the candidate name using $candidateId
+                                    $sql = "SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->bind_param('i', $candidateId);
+                                    $stmt->execute();
+                                    $stmt->bind_result($candidateName);
+                                    $stmt->fetch();
+                                    $stmt->close();
+                                } else {
+                                    $candidateName = 'Abstain';
+                                }
+
+                                echo '<p>Position: ' . $positionNames[$position] . '</p>';
+                                echo '<p class="c">Candidate: ' . htmlspecialchars($candidateName) . '</p>';
+                            }
+                            ?>
+                        </div>
+
                     </div>
+                </div>
+
+                <div class="button">
+                    <button onclick="switchHTML('Voting1.php')">Back</button>
+                    <button onclick="switchHTML('Voting3.php')">Submit</button>
+                </div>
 
             </div>
         </div>
@@ -643,7 +675,6 @@ $usep_ID = $_SESSION["usep_ID"];
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
         });
-
     </script>
 
 
