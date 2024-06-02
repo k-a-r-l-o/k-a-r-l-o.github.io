@@ -596,7 +596,7 @@ $usep_ID = $_SESSION["usep_ID"];
                                 // Remove "Candidate" suffix and replace underscores with spaces
                           //      $positionName = str_replace('Candidate', '', $position);
                            //     $positionName = str_replace('_', ' ', $positionName);
-                                $positionName = htmlspecialchars($positionName);
+                          //      $positionName = htmlspecialchars($positionName);
 
                                 // Fetch the candidate name based on the candidate ID
                                 $stmt->execute();
@@ -609,7 +609,7 @@ $usep_ID = $_SESSION["usep_ID"];
                                 }
 
                                 echo '<div class="pos">
-                                <p>' . $positionName . ':</p>
+                                <p>' . $position . ':</p>
                                 <p class="c">' . $candidateName . '</p>
                               </div>';
                             }
