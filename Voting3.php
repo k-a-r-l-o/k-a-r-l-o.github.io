@@ -5,12 +5,13 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-$sqlID = "SELECT council_id FROM list_councils WHERE program = '$program'";
+$sqlID = "SELECT council_id, council_name FROM list_councils WHERE program = '$program'";
 $resultID = $conn->query($sqlID);
 
 if ($resultID->num_rows > 0) {
     $row = $resultID->fetch_assoc();
     $council_id = $row['council_id'];
+    $council_name = $row['council_name'];
 } else {
     echo "No council found for the given program.";
     exit();
@@ -636,7 +637,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="cardcontainer">
                 <div class="title">
                     <div class="tname">
-                        <h2>STUDENT COUNCIL</h2>
+                        <h2><?php echo htmlspecialchars($council_name); ?></h2>
                     </div>
                 </div>                   
                 <form method="post" id="votingForm">
