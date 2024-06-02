@@ -922,7 +922,7 @@
                         $sql = "SELECT a.logs_date,
                         a.logs_time, u.username, u.usertype, a.logs_action
                         FROM activity_logs a 
-                        LEFT JOIN Users u 
+                        LEFT JOIN users u 
                         ON a.usep_ID = u.usep_ID
                         ORDER BY a.logs_date, a.logs_time DESC";
                          $result = $conn->query($sql);
