@@ -1115,10 +1115,13 @@
                     // Log the login activity
                     $usepID = $_SESSION["usep_ID"];
                     $logAction = 'Added User';
-                    $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    date_default_timezone_set('Asia/Manila');
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s");
+                    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
-                        $stmt->bind_param("is", $usepID, $logAction);
+                        $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
                         $stmt->execute();
                         $stmt->close();
                     } else {
@@ -1247,10 +1250,13 @@
                 // Log the login activity
                 $usepID = $_SESSION["usep_id"];
                 $logAction = 'edited user';
-                $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                date_default_timezone_set('Asia/Manila');
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
-                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
                     $stmt->execute();
                     $stmt->close();
                 } else {
@@ -1313,10 +1319,13 @@
                 // Log the login activity
                 $usepID = $_SESSION["usep_id"];
                 $logAction = 'deleted user';
-                $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                date_default_timezone_set('Asia/Manila');
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
-                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
                     $stmt->execute();
                     $stmt->close();
                 } else {
