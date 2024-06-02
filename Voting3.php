@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $queryString = http_build_query($votes);
-        echo "<script>window.location.href = 'Voting4.php';</script>";
+        echo "<script>window.location.href = 'Voting4.php?$queryString';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
