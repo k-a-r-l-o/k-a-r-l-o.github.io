@@ -52,8 +52,8 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
             $usepID = $_SESSION["usep_ID"];
             $logAction = 'Logged in';
             date_default_timezone_set('Asia/Manila');
-            $time = date("h:i:s A");
-            $date = date("F j, Y");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
             $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sqlInsertLog);
             if ($stmt) {
