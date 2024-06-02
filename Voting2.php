@@ -587,17 +587,19 @@ $usep_ID = $_SESSION["usep_ID"];
 
 
                         <div class="cardcontent">
-                        <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo '<h2>Selected Candidates</h2>';
 
-    foreach ($_POST as $position => $candidateId) {
-        echo '<p>Position: ' . htmlspecialchars($position) . ' - Candidate ID: ' . htmlspecialchars($candidateId) . '</p>';
-    }
-} else {
-    echo 'No data received.';
-}
-?>
+                            <?php
+                            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                echo '<h2>Selected Candidates</h2>';
+
+                                foreach ($_POST as $position => $candidateId) {
+                                    $formattedPosition = str_replace('_', ' ', $position);
+                                    echo '<p> ' . htmlspecialchars($position)  . htmlspecialchars($candidateId) . '</p>';
+                                }
+                            } else {
+                                echo 'No data received.';
+                            }
+                            ?>
                         </div>
                     </div>
 
