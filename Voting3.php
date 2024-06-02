@@ -678,8 +678,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $fieldName = $positionToColumn[$positionName]; // Map to the correct field name
 
                             // Fetch candidates for the current position
-                            $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                            if (strpos($positionName, 'Senator') !== false) {
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%'";
+                            } else {
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                            }
                             $resultCandidates = $conn->query($sqlCandidates);
+
 
                             // Start the HTML output for the card
                             echo '<div class="card">
