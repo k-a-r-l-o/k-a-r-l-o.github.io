@@ -974,36 +974,36 @@
             UNION ALL
             
             SELECT CONCAT(c_Vice_President_External.FName, ' ', c_Vice_President_External.LName) AS Pname, 'Vice President External Affairs' AS position, COUNT(tv.Vice_President_External_Affairs) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_Vice_President_External ON tv.Vice_President_External_Affairs = c_Vice_President_External.usep_ID
+            FROM tsc_votes tv
+            INNER JOIN candidates c_Vice_President_External ON tv.Vice_President_External_Affairs = c_Vice_President_External.usep_ID
             GROUP BY tv.Vice_President_External_Affairs
             
             UNION ALL
             
             SELECT CONCAT(c_General_Secretary.FName, ' ', c_General_Secretary.LName) AS Pname, 'General Secretary' AS position, COUNT(tv.General_Secretary) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_General_Secretary ON tv.General_Secretary = c_General_Secretary.usep_ID
+            FROM tsc_votes tv
+            INNER JOIN candidates c_General_Secretary ON tv.General_Secretary = c_General_Secretary.usep_ID
             GROUP BY tv.General_Secretary
             
             UNION ALL
             
             SELECT CONCAT(c_General_Treasurer.FName, ' ', c_General_Treasurer.LName) AS Pname, 'General Treasurer' AS position, COUNT(tv.General_Treasurer) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_General_Treasurer ON tv.General_Treasurer = c_General_Treasurer.usep_ID
+            FROM tsc_votes tv
+            INNER JOIN candidates c_General_Treasurer ON tv.General_Treasurer = c_General_Treasurer.usep_ID
             GROUP BY tv.General_Treasurer
             
             UNION ALL
             
             SELECT CONCAT(c_General_Auditor.FName, ' ', c_General_Auditor.LName) AS Pname, 'General Auditor' AS position, COUNT(tv.General_Auditor) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_General_Auditor ON tv.General_Auditor = c_General_Auditor.usep_ID
+            FROM tsc_votes tv
+            INNER JOIN candidates c_General_Auditor ON tv.General_Auditor = c_General_Auditor.usep_ID
             GROUP BY tv.General_Auditor
             
             UNION ALL
             
             SELECT CONCAT(c_Public_Information_Officer.FName, ' ', c_Public_Information_Officer.LName) AS Pname, 'Public Information Officer' AS position, COUNT(tv.Public_Information_Officer) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_Public_Information_Officer ON tv.Public_Information_Officer = c_Public_Information_Officer.usep_ID
+            FROM tsc_votes tv
+            INNER JOIN candidates c_Public_Information_Officer ON tv.Public_Information_Officer = c_Public_Information_Officer.usep_ID
             GROUP BY tv.Public_Information_Officer
             
         ) AS subquery
