@@ -12,7 +12,8 @@ if ($resultID->num_rows > 0) {
     $row = $resultID->fetch_assoc();
     $council_id = $row['council_id'];
     $council_name = $row['council_name'];
-    $table_name = $conn->real_escape_string($council_name . "_votes");
+    $council_name1 = strtolower($row['council_name']); 
+    $table_name = $conn->real_escape_string($council_name1 . "_votes");
 } else {
     echo "No council found for the given program.";
     exit();
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     );
 
     if ($stmt->execute()) {
-        echo "<script>window.location.href = 'Voting2.php';</script>";
+        echo "<script>window.location.href = 'Voting4.php';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
