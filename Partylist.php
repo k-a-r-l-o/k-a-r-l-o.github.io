@@ -1044,10 +1044,9 @@
            
             // Retrieve data from form
             $PName = $_POST['namePart'];
-            $MNum = '0';
             // Insert data into Users table
-            $sqlPrtyInsert = "INSERT INTO list_partylist (name_partylist, num_members) 
-                        VALUES ('$PName', '$MNum')";
+            $sqlPrtyInsert = "INSERT INTO list_partylist (name_partylist) 
+                        VALUES ('$PName')";
 
             if ($conn->query($sqlPrtyInsert) === TRUE) {
                 // Log the login activity
