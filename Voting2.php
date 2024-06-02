@@ -621,8 +621,8 @@ $positionNames = [
                                     $candidateName = 'Abstain';
                                 }
 
-                                echo '<p>Position: ' . $positionNames[$position] . '</p>';
-                                echo '<p class="c">Candidate: ' . htmlspecialchars($candidateName) . '</p>';
+                                echo '<p>   ' . $positionNames[$position] . '</p>';
+                                echo '<p class="c">  ' . htmlspecialchars($candidateName) . '</p>';
                             }
                             ?>
                         </div>
