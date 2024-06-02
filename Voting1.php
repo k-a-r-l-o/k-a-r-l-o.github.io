@@ -580,7 +580,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                        // Initialize an array to hold vote values
+                        // Initialize an array to hold vote values with default abstain values
                         $votes = [
                             'President' => '100010001',
                             'Vice_President_Internal_Affairs' => '100010001',
@@ -591,21 +591,10 @@ $usep_ID = $_SESSION["usep_ID"];
                             'Public_Information_Officer' => '100010001'
                         ];
 
-                        // Map positions to corresponding fields in TSC_VOTES table
-                        $positionToFieldMap = [
-                            'President' => 'President',
-                            'Vice President Internal Affairs' => 'Vice_President_Internal_Affairs',
-                            'Vice President External Affairs' => 'Vice_President_External_Affairs',
-                            'General Secretary' => 'General_Secretary',
-                            'General Treasurer' => 'General_Treasurer',
-                            'General Auditor' => 'General_Auditor',
-                            'Public Information Officer' => 'Public_Information_Officer'
-                        ];
-
                         // Process each position from the form submission
-                        foreach ($positionToFieldMap as $position => $field) {
+                        foreach ($votes as $position => &$candidateId) {
                             if (isset($_POST[$position])) {
-                                $votes[$field] = htmlspecialchars($_POST[$position]);
+                                $candidateId = htmlspecialchars($_POST[$position]);
                             }
                         }
 
@@ -647,7 +636,7 @@ $usep_ID = $_SESSION["usep_ID"];
                     ?>
 
                     <form method="post">
-                        <input type="hidden" name="usep_ID" value="<?php echo $userId; ?>">
+                        <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
                         <?php
                         // Fetch positions from the positions table for council_ID = 8
                         $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
@@ -657,6 +646,9 @@ $usep_ID = $_SESSION["usep_ID"];
                             // Loop through each position
                             while ($positionRow = $resultPositions->fetch_assoc()) {
                                 $positionName = htmlspecialchars($positionRow['position_name']);
+
+                                // Map position name to corresponding database field name
+                                $fieldName = str_replace(' ', '_', $positionName);
 
                                 // Fetch candidates for the current position
                                 $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
@@ -671,8 +663,8 @@ $usep_ID = $_SESSION["usep_ID"];
                                     <div class="candidateinfocontent">';
 
                                 // Add the Abstain option
-                                echo '<label for="' . $positionName . 'Abstain">
-                                <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
+                                echo '<label for="' . $fieldName . 'Abstain">
+                                <input type="radio" id="' . $fieldName . 'Abstain" name="' . $fieldName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
                             </label>';
 
                                 // Check if any candidates were found
@@ -684,8 +676,8 @@ $usep_ID = $_SESSION["usep_ID"];
                                         $candidateName = htmlspecialchars($candidateRow['FName'] . ' ' . $candidateRow['LName']);
                                         $candidateImage = htmlspecialchars($candidateRow['candPic']);
 
-                                        echo '<label for="' . $positionName . 'Candidate' . $counter . '">
-                                        <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
+                                        echo '<label for="' . $fieldName . 'Candidate' . $counter . '">
+                                        <input type="radio" id="' . $fieldName . 'Candidate' . $counter . '" name="' . $fieldName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
                                     </label>';
                                         $counter++;
                                     }
@@ -696,7 +688,7 @@ $usep_ID = $_SESSION["usep_ID"];
                                 // Close the form and add the candidate image container
                                 echo '</div>
                                     <div class="candidateimage">
-                                        <img id="' . $positionName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
+                                        <img id="' . $fieldName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
                                     </div>
                                 </div>
                             </div>';
