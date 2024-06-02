@@ -926,8 +926,6 @@ if (isset($_GET['prty_ID'])) {
                         <?php
                             }
                         } 
-
-
                         ?>
                         
                     </table>
