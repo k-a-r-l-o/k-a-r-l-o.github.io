@@ -756,8 +756,18 @@ $usep_ID = $_SESSION["usep_ID"];
             sessionStorage.setItem(imageId, newImageSrc);
         }
 
+        function storeSelectedValue(radio) {
+            var name = radio.name;
+            var value = radio.value;
+            sessionStorage.setItem(name, value);
+        }
+
         function getStoredImage(imageId) {
             return sessionStorage.getItem(imageId);
+        }
+
+        function getStoredValue(name) {
+            return sessionStorage.getItem(name);
         }
 
         // Add event listeners to all candidate radio buttons
@@ -768,6 +778,9 @@ $usep_ID = $_SESSION["usep_ID"];
                 if (radio.checked) {
                     // Update the image to the selected candidate's image
                     updateCandidateImage(radio.getAttribute('data-image-id'), radio.getAttribute('data-image-src'));
+                    // Store the selected value in sessionStorage
+                    storeSelectedValue(radio);
+
                 }
             });
         });
@@ -775,9 +788,11 @@ $usep_ID = $_SESSION["usep_ID"];
 
         window.onload = function() {
             candidateRadios.forEach(function(radio) {
-                var storedImageSrc = getStoredImage(radio.getAttribute('data-image-id'));
-                if (storedImageSrc !== null) {
-                    updateCandidateImage(radio.getAttribute('data-image-id'), storedImageSrc);
+                var storedValue = getStoredValue(radio.name);
+                if (storedValue !== null && storedValue === radio.value) {
+                    radio.checked = true;
+                    // Update the image to the stored candidate's image
+                    updateCandidateImage(radio.getAttribute('data-image-id'), radio.getAttribute('data-image-src'));
                 }
             });
         };
