@@ -640,6 +640,27 @@ $usep_ID = $_SESSION["usep_ID"];
                         <button type="submit" name="next">Next</button>
                     </div>
                 </form>
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    // Fetch positions again to process the form data
+                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
+                    $resultPositions = $conn->query($sqlPositions);
+
+                    if ($resultPositions->num_rows > 0) {
+                        while ($positionRow = $resultPositions->fetch_assoc()) {
+                            $positionName = htmlspecialchars($positionRow['position_name']);
+
+                            // Check if the position exists in the POST data
+                            if (isset($_POST[$positionName])) {
+                                $selectedCandidateId = $_POST[$positionName];
+                                echo "Selected candidate for $positionName: $selectedCandidateId<br>";
+                            } else {
+                                echo "No selection made for $positionName<br>";
+                            }
+                        }
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>
