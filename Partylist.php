@@ -983,7 +983,7 @@
                                     <td><?php echo htmlspecialchars($candidateCount); ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop(<?php echo $row['prty_ID']; ?>)" src="view.png" alt="view icon">
+                                        <img onclick="viewpop('<?php echo $prty_ID; ?>')" src="view.png" alt="view icon">
                                         <?php
                                         if ($prty_ID == 1) {
                                             // Do nothing
