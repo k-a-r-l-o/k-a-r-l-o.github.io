@@ -1,5 +1,12 @@
 <?php
-// Assuming $conn is your database connection
+
+include "DBSessionVoter.php";
+
+$username = $_SESSION["username"];
+$program = $_SESSION["program"];
+$usep_ID = $_SESSION["usep_ID"];
+
+
 
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
