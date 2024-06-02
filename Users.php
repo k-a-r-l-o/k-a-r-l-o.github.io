@@ -1002,7 +1002,7 @@
                                         <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
                                         <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
                                         <?php
-                                        if ($row["usep_id"] == 1) {
+                                        if ($row["usep_ID"] == 1) {
                                             // Do nothing
                                         } else {
                                             echo '<img onclick="deletepop(' . $row['usep_ID'] . ')" src="delete.png" alt="delete icon">';
