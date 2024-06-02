@@ -261,7 +261,7 @@ $usep_ID = $_SESSION["usep_ID"];
             display: flex;
             padding: 20px 10%;
             box-sizing: border-box;
-            background-color: rgb(150, 191, 245, 0.75);
+            background-color: rgb(150, 191, 245, 0.5);
             height: auto;
             border-radius: 0 0 12px 12px;
             align-items: center;
@@ -584,7 +584,7 @@ $usep_ID = $_SESSION["usep_ID"];
                     </div>
 
                     <div class="cardcontent">
-                    <?php
+                       <?php
                     // Assuming $conn is your database connection
 
                     // Prepare a statement for fetching candidate names
@@ -619,8 +619,8 @@ $usep_ID = $_SESSION["usep_ID"];
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.php')">Back</button>
-                    <button onclick="switchHTML('Voting3.php')">Next</button>
+                    <button id="customBackButton">Back</button>
+                    <button type="submit" onclick="switchHTML('Voting5.php')">Submit</button>
                 </div>
             </div>
         </div>
@@ -661,9 +661,16 @@ $usep_ID = $_SESSION["usep_ID"];
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
         });
+
+        document.getElementById("customBackButton").addEventListener("click", function() {
+            // Go back in the browsing history
+            window.history.back();
+        });
     </script>
 
 
 </body>
 
 </html>
+
+

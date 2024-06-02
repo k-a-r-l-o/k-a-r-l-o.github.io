@@ -993,7 +993,7 @@ if (isset($_GET['prty_ID'])) {
 
         // JavaScript code for navigation
         var currentPage = 0;
-        var rowsPerPage = 5; // Change this value as needed
+        var rowsPerPage = 10; // Change this value as needed
 
         function showPage(page) {
             var table = document.getElementById('Results');

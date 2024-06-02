@@ -874,7 +874,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         <div class="searchspace">
             <div class="searchicon">
                 <img src="search.png" alt="search icon">
-                <input placeholder="Search" alt="Search">
+                <input type="text" id="searchInput" placeholder="Search" alt="Search" onchange="searchTable()">
             </div>
         </div>
     </header>
@@ -1110,10 +1110,49 @@ $firstLetterLastName = substr($LName, 0, 1);
             document.body.classList.add('fade-in');
         });
 
+        function searchTable() {
+            // Get the input value and convert to uppercase for case-insensitive search
+            let input = document.getElementById('searchInput').value.toUpperCase();
+            // Get the table
+            let table = document.getElementById('Results');
+            // Get all the rows in the table
+            let tr = table.getElementsByTagName('tr');
+
+            // Loop through all table rows, starting from the second row (index 1)
+            for (let i = 1; i < tr.length; i++) {
+                let tds = tr[i].getElementsByTagName('td');
+                let matchFound = false;
+
+                // Loop through all cells in the row
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j]) {
+                        // Get the text content of the cell
+                        let txtValue = tds[j].textContent || tds[j].innerText;
+                        // Check if the text content matches the input value
+                        if (txtValue.toUpperCase().indexOf(input) > -1) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Display the row if a match is found, else hide it
+                if (matchFound) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+
+            if(input===""){
+                navigateRows(-1);
+            }
+        }
+
 
         // JavaScript code for navigation
         var currentPage = 0;
-        var rowsPerPage = 8; // Change this value as needed
+        var rowsPerPage = 10; // Change this value as needed
 
         function showPage(page) {
             var table = document.getElementById('Results');
@@ -1171,7 +1210,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             });
 
             var currentPage = 0;
-            var rowsPerPage = 8; // Change this value as needed
+            var rowsPerPage = 10; // Change this value as needed
 
             function showPage(page) {
                 var table = document.getElementById('Results');

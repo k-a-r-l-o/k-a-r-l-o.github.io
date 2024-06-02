@@ -1,3 +1,12 @@
+<?php
+include "DBSessionVoter.php";
+
+$username = $_SESSION["username"];
+$program = $_SESSION["program"];
+$usep_ID = $_SESSION["usep_ID"];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -327,7 +336,7 @@
             <h2>Congratulations!</h2>   
             <p class="rec">Vote Recorded.</p>
             <img src="finishVote_icon.png" alt="finish" class="center">
-            <button onclick="switchHTML('indexVoter.php')">Done</button>
+            <button onclick="switchHTML('index.php')">Done</button>
         </div>
     </div>
 </div> 
@@ -385,3 +394,11 @@
 
 </body>
 </html>
+<?php 
+  session_unset(); // Unset all session variables
+  session_destroy(); // Destroy the session
+?>
+<!-- Include JavaScript code to clear sessionStorage -->
+<script>
+  sessionStorage.clear();
+</script>

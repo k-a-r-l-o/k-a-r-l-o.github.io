@@ -923,7 +923,8 @@
                         a.logs_time, u.username, u.usertype, a.logs_action
                         FROM Activity_Logs a 
                         LEFT JOIN Users u 
-                        ON a.usep_ID = u.usep_ID";
+                        ON a.usep_ID = u.usep_ID
+                        ORDER BY a.logs_date, a.logs_time DESC";
                          $result = $conn->query($sql);
 
                         // Check if there are any rows returned
@@ -1034,7 +1035,7 @@
 
         // JavaScript code for navigation
         var currentPage = 0;
-        var rowsPerPage = 5; // Change this value as needed
+        var rowsPerPage = 10; // Change this value as needed
 
         function showPage(page) {
             var table = document.getElementById('Results');
