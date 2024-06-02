@@ -610,7 +610,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="step-name">Student Council</div>
                 </div>
 
-                <div class="stepper-item completed>
+                <div class="stepper-item completed">
                     <div class="step-counter"></div>
                     <div class="step-name">SC Summary</div>
                 </div>
