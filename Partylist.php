@@ -961,7 +961,7 @@
                         </tr>
                         <?php
                         // Query to retrieve all data from the Users table
-                        $sql = "SELECT * FROM list_partylist ";
+                        $sql = "SELECT * FROM list_partylist";
                         $result = $conn->query($sql);
 
                         // Check if there are any rows returned
