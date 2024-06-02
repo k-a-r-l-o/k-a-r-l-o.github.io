@@ -5,10 +5,6 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-if($program==="BSEd"){
-    echo"<script>document.getElementById('passpop').style.display = 'flex';</script>";
-}
-
 $sqlID = "SELECT council_id, council_name FROM list_councils WHERE program = '$program'";
 $resultID = $conn->query($sqlID);
 
@@ -1073,3 +1069,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 
 </html>
+<?php
+if($program==="BSEd"){
+    echo"<script>document.getElementById('passpop').style.display = 'flex';</script>";
+}
+?>
