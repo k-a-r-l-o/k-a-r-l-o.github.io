@@ -576,97 +576,102 @@ $usep_ID = $_SESSION["usep_ID"];
                     </div>
                 </div>
                 <?php
-                // Assuming $conn is your database connection
+                    // Assuming $conn is your database connection
 
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                    // Initialize an array to hold vote values with default abstain values
-                    $votes = [
-                        'President' => '100010001',
-                        'Vice_President_Internal_Affairs' => '100010001',
-                        'Vice_President_External_Affairs' => '100010001',
-                        'General_Secretary' => '100010001',
-                        'General_Treasurer' => '100010001',
-                        'General_Auditor' => '100010001',
-                        'Public_Information_Officer' => '100010001'
-                    ];
+                        // Initialize an array to hold vote values with default abstain values
+                        $votes = [
+                            'President' => '100010001',
+                            'Vice_President_Internal_Affairs' => '100010001',
+                            'Vice_President_External_Affairs' => '100010001',
+                            'General_Secretary' => '100010001',
+                            'General_Treasurer' => '100010001',
+                            'General_Auditor' => '100010001',
+                            'Public_Information_Officer' => '100010001'
+                        ];
 
-                    // Process each position from the form submission
-                    foreach ($votes as $position => &$candidateId) {
-                        if (isset($_POST[$position])) {
-                            $candidateId = htmlspecialchars($_POST[$position]);
+                        // Process each position from the form submission
+                        foreach ($votes as $position => &$candidateId) {
+                            // Convert position to match the form input names
+                            $formFieldName = str_replace('_', ' ', $position);
+                            $formFieldName = str_replace('Internal Affairs', 'for Internal Affairs', $formFieldName);
+                            $formFieldName = str_replace('External Affairs', 'for External Affairs', $formFieldName);
+
+                            if (isset($_POST[$formFieldName])) {
+                                $candidateId = htmlspecialchars($_POST[$formFieldName]);
+                            }
                         }
+
+                        // Construct the SQL query to insert or update the vote
+                        $sqlSaveVote = "
+                            INSERT INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                            ON DUPLICATE KEY UPDATE 
+                                President = VALUES(President),
+                                Vice_President_Internal_Affairs = VALUES(Vice_President_Internal_Affairs),
+                                Vice_President_External_Affairs = VALUES(Vice_President_External_Affairs),
+                                General_Secretary = VALUES(General_Secretary),
+                                General_Treasurer = VALUES(General_Treasurer),
+                                General_Auditor = VALUES(General_Auditor),
+                                Public_Information_Officer = VALUES(Public_Information_Officer)";
+
+                        // Prepare and execute the statement
+                        $stmt = $conn->prepare($sqlSaveVote);
+                        $stmt->bind_param(
+                            'iiiiiiii', 
+                            $usep_ID, 
+                            $votes['President'], 
+                            $votes['Vice_President_Internal_Affairs'], 
+                            $votes['Vice_President_External_Affairs'], 
+                            $votes['General_Secretary'], 
+                            $votes['General_Treasurer'], 
+                            $votes['General_Auditor'], 
+                            $votes['Public_Information_Officer']
+                        );
+
+                        if ($stmt->execute()) {
+                            echo "Votes recorded successfully.";
+                        } else {
+                            echo "Error: " . $stmt->error;
+                        }
+
+                        $stmt->close();
                     }
+                    ?>
 
-                    // Construct the SQL query to insert or update the vote
-                    $sqlSaveVote = "
-                        INSERT INTO tsc_votes (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                        ON DUPLICATE KEY UPDATE 
-                            President = VALUES(President),
-                            Vice_President_for_Internal_Affairs = VALUES(Vice_President_Internal_Affairs),
-                            Vice_President_for_External_Affairs = VALUES(Vice_President_External_Affairs),
-                            General_Secretary = VALUES(General_Secretary),
-                            General_Treasurer = VALUES(General_Treasurer),
-                            General_Auditor = VALUES(General_Auditor),
-                            Public_Information_Officer = VALUES(Public_Information_Officer)";
+                    <form method="post">
+                        <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
+                        <?php
+                        // Fetch positions from the positions table for council_ID = 8
+                        $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
+                        $resultPositions = $conn->query($sqlPositions);
 
-                    // Prepare and execute the statement
-                    $stmt = $conn->prepare($sqlSaveVote);
-                    $stmt->bind_param(
-                        'iiiiiiii', 
-                        $usep_ID, 
-                        $votes['President'], 
-                        $votes['Vice_President_Internal_Affairs'], 
-                        $votes['Vice_President_External_Affairs'], 
-                        $votes['General_Secretary'], 
-                        $votes['General_Treasurer'], 
-                        $votes['General_Auditor'], 
-                        $votes['Public_Information_Officer']
-                    );
+                        if ($resultPositions->num_rows > 0) {
+                            // Loop through each position
+                            while ($positionRow = $resultPositions->fetch_assoc()) {
+                                $positionName = htmlspecialchars($positionRow['position_name']);
 
-                    if ($stmt->execute()) {
-                        echo "Votes recorded successfully.";
-                    } else {
-                        echo "Error: " . $stmt->error;
-                    }
+                                // Convert position names to form input names
+                                $formFieldName = str_replace(' ', '_', $positionName);
+                                $formFieldName = str_replace('for_', 'for_', $formFieldName); // Special case for 'for'
 
-                    $stmt->close();
-                }
-                ?>
+                                // Fetch candidates for the current position
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                                $resultCandidates = $conn->query($sqlCandidates);
 
-                <form method="post">
-                    <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
-                    <?php
-                    // Fetch positions from the positions table for council_ID = 8
-                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
-                    $resultPositions = $conn->query($sqlPositions);
+                                // Start the HTML output for the card
+                                echo '<div class="card">
+                                <div class="positiontitle">
+                                    <h3>' . $positionName . '</h3>
+                                </div>
+                                <div class="cardcontent">
+                                    <div class="candidateinfocontent">';
 
-                    if ($resultPositions->num_rows > 0) {
-                        // Loop through each position
-                        while ($positionRow = $resultPositions->fetch_assoc()) {
-                            $positionName = htmlspecialchars($positionRow['position_name']);
-
-                            // Convert position names to match the keys used in the PHP votes array
-                            $fieldName = str_replace(' ', '_', $positionName);
-                            $fieldName = str_replace('for_', '_', $fieldName); // Special case for 'for'
-
-                            // Fetch candidates for the current position
-                            $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
-                            $resultCandidates = $conn->query($sqlCandidates);
-
-                            // Start the HTML output for the card
-                            echo '<div class="card">
-                            <div class="positiontitle">
-                                <h3>' . $positionName . '</h3>
-                            </div>
-                            <div class="cardcontent">
-                                <div class="candidateinfocontent">';
-
-                            // Add the Abstain option
-                            echo '<label for="' . $fieldName . 'Abstain">
-                            <input type="radio" id="' . $fieldName . 'Abstain" name="' . $fieldName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
-                        </label>';
+                                // Add the Abstain option
+                                echo '<label for="' . $formFieldName . 'Abstain">
+                                <input type="radio" id="' . $formFieldName . 'Abstain" name="' . $positionName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $formFieldName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $formFieldName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
+                            </label>';
 
                             // Check if any candidates were found
                             if ($resultCandidates->num_rows > 0) {
