@@ -986,6 +986,14 @@
                                         <img onclick="viewpop(<?php echo $row['prty_ID']; ?>)" src="view.png" alt="view icon">
                                         <img onclick="editpop(<?php echo $row['prty_ID']; ?>)" src="edit.png" alt="edit icon">
                                         <img onclick="deletepop(<?php echo $row['prty_ID']; ?>)" src="delete.png" alt="delete icon">
+                                        <?php
+                                        if ($row["prty_ID"] == 1) {
+                                            // Do nothing
+                                        } else {
+                                            echo '<img onclick="editpop(' . $row['prty_ID'] . ')" src="edit.png" alt="edit icon">';
+                                            echo '<img onclick="deletepop(' . $row['prty_ID'] . ')" src="delete.png" alt="delete icon">';
+                                        }
+                                        ?>
 
                                     </td>
                                 </tr>
@@ -1033,14 +1041,7 @@
 
         if (isset($_POST['save'])) {
 
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
+           
             // Retrieve data from form
             $PName = $_POST['namePart'];
             $MNum = '0';
@@ -1155,14 +1156,7 @@
         if (isset($_POST['delete'])) {
 
 
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
+          
             // Retrieve data from form
             $partyID = $_POST['pID3'];
 
