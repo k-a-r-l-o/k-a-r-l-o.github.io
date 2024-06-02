@@ -583,7 +583,7 @@ $usep_ID = $_SESSION["usep_ID"];
     <div class="bodycontainer">
         <div class="content">
             <div class="cardcontainer">
-                <form id="voteForm">
+ 
                     <div class="card">
                         <div class="positiontitle">
                             <h3>SC SUMMARY</h3>
@@ -602,7 +602,7 @@ $usep_ID = $_SESSION["usep_ID"];
                         <button onclick="switchHTML('Voting1.php')">Back</button>
                         <button onclick="switchHTML('Voting3.php')">Submit</button>
                     </div>
-                </form>
+
             </div>
         </div>
     </div>
