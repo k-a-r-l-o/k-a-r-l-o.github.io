@@ -4,8 +4,8 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
+    $sql1 = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+    $stmt = $conn->prepare($sql1);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
     $stmt->bind_result($Fname, $LName);
@@ -642,19 +642,12 @@
             transform: translate(-50%, -50%);
             background-color: #222E50;
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-            height: 90vh;
+            height: auto;
             width: 60vh;
             min-width: fit-content;
             border-radius: 5px;
             z-index: 9999;
         }
-
-        #logoutpop, #importpop,
-        #deletepop {
-            height: auto;
-        }
-
-
 
         .head {
             background: linear-gradient(to bottom, #28579E, #222E50);
@@ -830,7 +823,8 @@
         }
 
         @media (max-width: 1000px) {
-            .popup {
+            #editpop, #popup,
+            #viewpop {
                 height: 80vh;
             }
 
@@ -839,6 +833,10 @@
         @media (max-width: 500px) {
             .popup {
                 width: 100vw;
+            }
+
+            #deletepop {
+                height: auto;
             }
 
         }
@@ -918,7 +916,7 @@
         <div class="searchspace">
             <div class="searchicon">
                 <img src="search.png" alt="search icon">
-                <input placeholder="Search" alt="Search">
+                <input type="text" id="searchInput" placeholder="Search" alt="Search" onchange="searchTable()">
             </div>
         </div>
     </header>
@@ -990,24 +988,23 @@
             </div>
             <div class="tableandnav">
                 <div class="tablecontainer">
-                    <table id="Results">
-                        <tr class="trheader">
-                            <th class="thfirst">USEP ID</th>
-                            <th>NAME</th>
-                            <th>YEAR LEVEL</th>
-                            <th>PROGRAM</th>
-                            <th class="thlast"></th>
-                        </tr>
-                        <?php
-                        // Query to retrieve all data from the Users table
-                        $sql = "SELECT * FROM Voters";
-                        $result = $conn->query($sql);
+                <table id="Results">
+                    <tr class="trheader">
+                        <th class="thfirst">USEP ID</th>
+                        <th>NAME</th>
+                        <th>YEAR LEVEL</th>
+                        <th>PROGRAM</th>
+                        <th class="thlast"></th>
+                    </tr>
+                    <?php
+                    // Query to retrieve all data from the Voters table
+                    $sql = "SELECT * FROM Voters";
+                    $result = $conn->query($sql);
 
-                        // Check if there are any rows returned
-                        if ($result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-
+                    // Check if there are any rows returned
+                    if ($result->num_rows > 0) {
+                        // Output data of each row
+                        while ($row = $result->fetch_assoc()) {
                             // Assuming $row["usep_ID"] contains the ID like 202200294
                             $usep_ID = $row["usep_ID"];
 
@@ -1019,28 +1016,24 @@
 
                             // Combine the parts with a dash
                             $formatted_usep_ID = $year . '-' . $numeric_part;
-                        ?>
-                                <tr>
-                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
-                                    <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
-                                    <td><?php echo $row["yearLvl"] ?></td>
-                                    <td><?php echo $row["program"] ?></td>
-                                    <td class="tdlast">
-                                        <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
-                                        <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        } else {
-                            echo "0 results";
+                    ?>
+                            <tr>
+                                <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
+                                <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
+                                <td><?php echo $row["yearLvl"] ?></td>
+                                <td><?php echo $row["program"] ?></td>
+                                <td class="tdlast">
+                                    <!-- Pass row data to viewpop() function -->
+                                    <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
+                                    <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
+                                    <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
+                                </td>
+                            </tr>
+                    <?php
                         }
-                        ?>
-
-
-                    </table>
+                    }
+                    ?>
+                </table>
                 </div>
                 <div class="navTable">
                     <div class="prevcontainer">
@@ -1102,8 +1095,8 @@
                             <?php
 
                             // Query to fetch programs
-                            $query = "SELECT * FROM Programs";
-                            $result = $conn->query($query);
+                            $query1 = "SELECT * FROM Programs";
+                            $result = $conn->query($query1);
 
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
@@ -1149,13 +1142,6 @@
             if ($result->num_rows > 0) {
                 echo "<script>alert('Voter already exists!');</script>";
             } else {
-                // Create connection
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
 
                 // Get the user input
                 $input_usep_ID = $_POST["usepID"];
@@ -1292,31 +1278,31 @@
             <div class="popup-content-inner">
                 <form>
                     <div class="form-group">
-                        <label for="usepID">USeP ID:</label>
+                        <label for="usepID2">USeP ID:</label>
                         <input type="text" id="usepID2" class="input-form" readonly>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group2">
                         <label for="Email">Email:</label>
                         <input type="email" id="Email2" name="Email2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="fullName">Full Name:</label>
+                        <label for="fullName2">Full Name:</label>
                         <input type="text" id="fullName2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="gender">Gender:</label>
+                        <label for="gender2">Gender:</label>
                         <input id="gender2" class="input-form" readonly>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group2">
                         <label for="yearLevel">Year Level:</label>
                         <input id="yearlevel2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="program">Program:</label>
+                        <label for="program2">Program:</label>
                         <input id="program2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="voted">Vote Status:</label>
+                        <label for="voted2">Vote Status:</label>
                         <input type="text" id="voted2" class="input-form" readonly>
                     </div>
                 </form>
@@ -1333,30 +1319,30 @@
             <div class="popup-content-inner">
                 <form method="post">
                     <div class="form-group">
-                        <label for="usepID">USeP ID(readonly):</label>
+                        <label for="usepID3">USeP ID(readonly):</label>
                         <input type="text" id="usepID3" name="usepID3" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="Email">Email:</label>
+                        <label for="Email3">Email:</label>
                         <input type="email" id="Email3" name="Email3" class="input-form" required>
                     </div>
                     <div class="form-group">
-                        <label for="FName">First Name:</label>
+                        <label for="FName3">First Name:</label>
                         <input type="text" id="FName3" name="FName3" class="input-form" required>
                     </div>
                     <div class="form-group">
-                        <label for="LName">Last Name:</label>
+                        <label for="LName3">Last Name:</label>
                         <input type="text" id="LName3" name="LName3" class="input-form" required>
                     </div>
                     <div class="form-group">
-                        <label for="gender">Gender:</label>
+                        <label for="gender3">Gender:</label>
                         <select id="gender3" class="input-form" name="gender3" required>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="yearLevel">Year Level:</label>
+                        <label for="yearLevel3">Year Level:</label>
                         <select id="yearlevel3" class="input-form" name="yearlevel3" required>
                             <option value="1st Year">1st Year</option>
                             <option value="2nd Year">2nd Year</option>
@@ -1366,15 +1352,26 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="program">Program:</label>
+                        <label for="program3">Program:</label>
                         <select id="program3" class="input-form" name="program3" required>
-                            <option value="BSABE">BSABE</option>
-                            <option value="BEED">BEED</option>
-                            <option value="BECED">BECED</option>
-                            <option value="BSNED">BSNED</option>
-                            <option value="BSED">BSED</option>
-                            <option value="BSIT">BSIT</option>
-                            <option value="BTVTED">BTVTED</option>
+                            <?php
+
+                            // Query to fetch programs
+                            $query = "SELECT * FROM Programs";
+                            $result = $conn->query($query);
+
+                            // Check if the query returned any results
+                            if ($result->num_rows > 0) {
+                                // Fetch each row and create an option element
+                                while($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . $row['Program'] . '">' . $row['Program'] . "</option>";
+                                }
+                            } else {
+                                // No programs found
+                                echo '<option value="">No programs available</option>';
+                            }
+
+                            ?>
                         </select>
                     </div>
             </div>
@@ -1391,15 +1388,6 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (isset($_POST['edit'])) {
-
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
 
             // Get the user input
             $input_usep_ID = $_POST["usepID3"];
@@ -1472,17 +1460,8 @@
 
         if (isset($_POST['delete'])) {
 
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
             $Voted = $_POST["voted4"];
-            if ($Voted==="Not Voted") {
+            if ($Voted !== 'Voted') {
                 // Get the user input
                 $input_usep_ID = $_POST["usepID4"];
 
@@ -1502,7 +1481,7 @@
                     echo "<script>alert('Error: " .   $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
                     echo "<script>window.location.href = 'Voters.php';</script>";
                 }
-            }else{
+            } else{
                 $program = $_POST["program4"];
                 $input_usep_ID = $_POST["usepID4"];
 
@@ -1589,6 +1568,45 @@
             document.body.classList.add('fade-in');
         });
 
+        function searchTable() {
+            // Get the input value and convert to uppercase for case-insensitive search
+            let input = document.getElementById('searchInput').value.toUpperCase();
+            // Get the table
+            let table = document.getElementById('Results');
+            // Get all the rows in the table
+            let tr = table.getElementsByTagName('tr');
+
+            // Loop through all table rows, starting from the second row (index 1)
+            for (let i = 1; i < tr.length; i++) {
+                let tds = tr[i].getElementsByTagName('td');
+                let matchFound = false;
+
+                // Loop through all cells in the row
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j]) {
+                        // Get the text content of the cell
+                        let txtValue = tds[j].textContent || tds[j].innerText;
+                        // Check if the text content matches the input value
+                        if (txtValue.toUpperCase().indexOf(input) > -1) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Display the row if a match is found, else hide it
+                if (matchFound) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+
+            if(input===""){
+                navigateRows(-1);
+            }
+        }
+
         // Get the table element
         var table = document.getElementById('Results');
 
@@ -1625,6 +1643,7 @@
         }
 
         function navigateRows(direction) {
+            document.getElementById('searchInput').value = '';
             currentPage += direction;
             var table = document.getElementById('Results');
             var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);

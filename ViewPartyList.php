@@ -841,12 +841,6 @@ if (isset($_GET['prty_ID'])) {
             <img id="Logo" src="U-Vote Logo.svg" alt="Logo">
             <img id="Name" src="U-Vote Name.svg" alt="Name">
         </div>
-        <div class="searchspace">
-            <div class="searchicon">
-                <img src="search.png" alt="search icon">
-                <input placeholder="Search" alt="Search">
-            </div>
-        </div>
     </header>
     <div class="bodycontainer" >
     

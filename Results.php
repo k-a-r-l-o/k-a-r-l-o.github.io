@@ -1,18 +1,18 @@
 <?php
-    include "DBSession.php";
+include "DBSession.php";
 
-    $usertype = $_SESSION['usertype'];
-    $username = $_SESSION['username'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
 
-    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $usertype);
-    $stmt->execute();
-    $stmt->bind_result($Fname, $LName);
-    $stmt->fetch();
-    $stmt->close();
-    $firstLetterFirstName = substr($Fname, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+$sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usertype);
+$stmt->execute();
+$stmt->bind_result($Fname, $LName);
+$stmt->fetch();
+$stmt->close();
+$firstLetterFirstName = substr($Fname, 0, 1);
+$firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -795,47 +795,52 @@
 
         }
 
-        .accounttag{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        width: 100%;
-        border-radius: 10px;
-        background-color: rgba(150, 191, 245, 0.25);
-        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
-        box-sizing: border-box;
-        padding: 25px 0px 25px 0px;
-    }
-
-    .username1, .username, .usertype {
-        color: white;
-        margin: 0;
-    }
-
-    .username1{
-        display: none;
-    }
-
-    .usertype {
-        font-weight: lighter;
-    }
-
-    @media (max-width: 1000px) {
-        .username, .usertype{
-          font-size: 0px;
-        }
-        .accounttag{
-            height: auto;
-            padding: 15px 0px 15px 0px;
+        .accounttag {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(150, 191, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            padding: 25px 0px 25px 0px;
         }
 
-        .username1{
-            display: block;
+        .username1,
+        .username,
+        .usertype {
+            color: white;
+            margin: 0;
         }
 
-    }
+        .username1 {
+            display: none;
+        }
+
+        .usertype {
+            font-weight: lighter;
+        }
+
+        @media (max-width: 1000px) {
+
+            .username,
+            .usertype {
+                font-size: 0px;
+            }
+
+            .accounttag {
+                height: auto;
+                padding: 15px 0px 15px 0px;
+            }
+
+            .username1 {
+                display: block;
+            }
+
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -876,9 +881,9 @@
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $Fname. " " .$LName?></h2>
-                <h3 class="usertype"><?php echo $usertype?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $Fname . " " . $LName ?></h2>
+                <h3 class="usertype"><?php echo $usertype ?></h3>
             </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
@@ -952,23 +957,70 @@
                         </tr>
                         <?php
                         // Query to retrieve all data from the table
-                        $sql = "SELECT Pname, position, votes
-                        FROM (
-                            SELECT President AS Pname, 'President' AS position, COUNT(President) AS votes FROM TSC_VOTES GROUP BY President
-                            UNION ALL
-                            SELECT Vice_President_Internal_Affairs AS Pname, 'Vice President Internal Affairs' AS position, COUNT(Vice_President_Internal_Affairs) AS votes FROM TSC_VOTES GROUP BY Vice_President_Internal_Affairs
-                            UNION ALL
-                            SELECT Vice_President_External_Affairs AS Pname, 'Vice President External Affairs' AS position, COUNT(Vice_President_External_Affairs) AS votes FROM TSC_VOTES GROUP BY Vice_President_External_Affairs
-                            UNION ALL
-                            SELECT General_Secretary AS Pname, 'General Secretary' AS position, COUNT(General_Secretary) AS votes FROM TSC_VOTES GROUP BY General_Secretary
-                            UNION ALL
-                            SELECT General_Treasurer AS Pname, 'General Treasurer' AS position, COUNT(General_Treasurer) AS votes FROM TSC_VOTES GROUP BY General_Treasurer
-                            UNION ALL
-                            SELECT General_Auditor AS Pname, 'General Auditor' AS position, COUNT(General_Auditor) AS votes FROM TSC_VOTES GROUP BY General_Auditor
-                            UNION ALL
-                            SELECT Public_Information_Officer AS Pname, 'Public Information Officer' AS position, COUNT(Public_Information_Officer) AS votes FROM TSC_VOTES GROUP BY Public_Information_Officer
-                        ) AS combined_results
-                        ORDER BY position, votes DESC";
+                        $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
+        FROM (
+            SELECT CONCAT(c_President.FName, ' ', c_President.LName) AS Pname, 'President' AS position, COUNT(tv.President) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_President ON tv.President = c_President.usep_ID
+            GROUP BY tv.President
+            
+            UNION ALL
+            
+            SELECT CONCAT(c_Vice_President_Internal.FName, ' ', c_Vice_President_Internal.LName) AS Pname, 'Vice President Internal Affairs' AS position, COUNT(tv.Vice_President_Internal_Affairs) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_Vice_President_Internal ON tv.Vice_President_Internal_Affairs = c_Vice_President_Internal.usep_ID
+            GROUP BY tv.Vice_President_Internal_Affairs
+            
+            UNION ALL
+            
+            SELECT CONCAT(c_Vice_President_External.FName, ' ', c_Vice_President_External.LName) AS Pname, 'Vice President External Affairs' AS position, COUNT(tv.Vice_President_External_Affairs) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_Vice_President_External ON tv.Vice_President_External_Affairs = c_Vice_President_External.usep_ID
+            GROUP BY tv.Vice_President_External_Affairs
+            
+            UNION ALL
+            
+            SELECT CONCAT(c_General_Secretary.FName, ' ', c_General_Secretary.LName) AS Pname, 'General Secretary' AS position, COUNT(tv.General_Secretary) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_General_Secretary ON tv.General_Secretary = c_General_Secretary.usep_ID
+            GROUP BY tv.General_Secretary
+            
+            UNION ALL
+            
+            SELECT CONCAT(c_General_Treasurer.FName, ' ', c_General_Treasurer.LName) AS Pname, 'General Treasurer' AS position, COUNT(tv.General_Treasurer) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_General_Treasurer ON tv.General_Treasurer = c_General_Treasurer.usep_ID
+            GROUP BY tv.General_Treasurer
+            
+            UNION ALL
+            
+            SELECT CONCAT(c_General_Auditor.FName, ' ', c_General_Auditor.LName) AS Pname, 'General Auditor' AS position, COUNT(tv.General_Auditor) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_General_Auditor ON tv.General_Auditor = c_General_Auditor.usep_ID
+            GROUP BY tv.General_Auditor
+            
+            UNION ALL
+            
+            SELECT CONCAT(c_Public_Information_Officer.FName, ' ', c_Public_Information_Officer.LName) AS Pname, 'Public Information Officer' AS position, COUNT(tv.Public_Information_Officer) AS votes 
+            FROM TSC_VOTES tv
+            INNER JOIN Candidates c_Public_Information_Officer ON tv.Public_Information_Officer = c_Public_Information_Officer.usep_ID
+            GROUP BY tv.Public_Information_Officer
+            
+        ) AS subquery
+        ORDER BY 
+            CASE 
+                WHEN subquery.position = 'President' THEN 1 
+                WHEN subquery.position = 'Vice President Internal Affairs' THEN 2 
+                WHEN subquery.position = 'Vice President External Affairs' THEN 3 
+                WHEN subquery.position = 'General Secretary' THEN 4 
+                WHEN subquery.position = 'General Treasurer' THEN 5 
+                WHEN subquery.position = 'General Auditor' THEN 6 
+                WHEN subquery.position = 'Public Information Officer' THEN 7 
+                ELSE 8 
+            END,
+            subquery.votes DESC, 
+            subquery.Pname ASC";
+
                         $result = $conn->query($sql);
 
                         $allData = [];
@@ -1139,21 +1191,24 @@
                     rows[i].style.display = '';
                 }
             }
+
             function navigateRows(direction) {
-            currentPage += direction;
-            var table = document.getElementById('Results');
-            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+                currentPage += direction;
+                var table = document.getElementById('Results');
+                var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
 
-            // Check if currentPage is within bounds
-            if (currentPage < 0) {
-                currentPage = 0;
-            } else if (currentPage >= maxPage) {
-                currentPage = maxPage - 1;
+                // Check if currentPage is within bounds
+                if (currentPage < 0) {
+                    currentPage = 0;
+                } else if (currentPage >= maxPage) {
+                    currentPage = maxPage - 1;
+                }
+
+                showPage(currentPage);
+
+
+
             }
-
-            showPage(currentPage);
-
-        }
         });
 
         function exportAllDataToExcel() {
@@ -1182,7 +1237,9 @@
             document.body.appendChild(downloadLink);
 
             if (navigator.msSaveOrOpenBlob) {
-                var blob = new Blob(['\ufeff', tableHTML], { type: dataType });
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
                 navigator.msSaveOrOpenBlob(blob, filename);
                 document.getElementById("exportpop").style.display = "flex";
             } else {
@@ -1191,6 +1248,7 @@
                 downloadLink.click();
                 document.getElementById("exportpop").style.display = "flex";
             }
+
         }
 
         document.querySelector("#exportpop .save-button").addEventListener("click", function() {

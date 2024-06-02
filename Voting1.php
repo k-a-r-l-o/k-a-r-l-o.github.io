@@ -546,55 +546,67 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="positiontitle">
-                        <h3>President</h3>
-                    </div>
+                <?php
+                // Assuming $conn is your database connection
 
-                    <div class="cardcontent">
-                        <div class="candidateinfocontent">
-                            <form>
-                                <label for="pAbstain">
-                                    <input type="radio" id="pAbstain" name="candidate" value="Abstain">Abstain
-                                </label>
-                                <label for="p1">
-                                    <input type="radio" id="p1" name="candidate" value="1">Maya Cartel
-                                </label>
-                                <label for="p2">
-                                    <input type="radio" id="p2" name="candidate" value="2">John Doe
-                                </label>
-                            </form>
-                        </div>
-                        <div class="candidateimage">
-                            <img src="DefaultProfile.png" alt="sub">
-                        </div>
-                    </div>
-                </div>
+                // Fetch positions from the positions table for council_ID = 8
+                $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
+                $resultPositions = $conn->query($sqlPositions);
 
-                <div class="card">
-                    <div class="positiontitle">
-                        <h3>Vice President</h3>
-                    </div>
+                if ($resultPositions->num_rows > 0) {
+                    // Loop through each position
+                    while ($positionRow = $resultPositions->fetch_assoc()) {
+                        $positionName = htmlspecialchars($positionRow['position_name']);
 
-                    <div class="cardcontent">
-                        <div class="candidateinfocontent">
-                            <form>
-                                <label for="vAbstain">
-                                    <input type="radio" id="vAbstain" name="candidate" value="Abstain">Abstain
-                                </label>
-                                <label for="v1">
-                                    <input type="radio" id="v1" name="candidate" value="1">Maya Cartel
-                                </label>
-                                <label for="v2">
-                                    <input type="radio" id="v2" name="candidate" value="2">John Doe
-                                </label>
-                            </form>
-                        </div>
-                        <div class="candidateimage">
-                            <img src="DefaultProfile.png" alt="sub">
-                        </div>
-                    </div>
-                </div>
+                        // Fetch candidates for the current position
+                        $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                        $resultCandidates = $conn->query($sqlCandidates);
+
+                        // Start the HTML output for the card
+                        echo '<div class="card">
+                                <div class="positiontitle">
+                                    <h3>' . $positionName . '</h3>
+                                </div>
+                                <div class="cardcontent">
+                                    <div class="candidateinfocontent">
+                                        <form>';
+
+                        // Add the Abstain option
+                        echo '<label for="' . $positionName . 'Abstain">
+                                <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . 'Candidate" value="Abstain" checked>Abstain
+                            </label>';
+
+                        // Check if any candidates were found
+                        if ($resultCandidates->num_rows > 0) {
+                            // Loop through the fetched candidates and add them to the card
+                            $counter = 1;
+                            while ($candidateRow = $resultCandidates->fetch_assoc()) {
+                                $candidateId = htmlspecialchars($candidateRow['usep_ID']);
+                                $candidateName = htmlspecialchars($candidateRow['FName'].''.$candidateRow['LName']);
+                                $candidateImage = htmlspecialchars($candidateRow['candPic']);
+
+                                echo '<label for="' . $positionName . 'Candidate' . $counter . '">
+                                        <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . 'Candidate" value="' . $candidateId . '">' . $candidateName . '
+                                    </label>';
+                                $counter++;
+                            }
+                        } else {
+                            echo 'No candidates found for ' . $positionName . '.';
+                        }
+
+                        // Close the form and add the candidate image container
+                        echo '        </form>
+                                    </div>
+                                    <div class="candidateimage">
+                                        <img id="' . $positionName . 'CandidateImage" src="DefaultProfile.png" alt="sub">
+                                    </div>
+                                </div>
+                            </div>';
+                    }
+                } else {
+                    echo 'No positions found for council_ID 8.';
+                }
+                ?>
 
                 <div class="button">
                     <div></div> 
@@ -641,7 +653,47 @@
             document.body.classList.add('fade-in');
         });
 
-    </script>
+
+        // Function to update candidate image based on selected radio button
+        function updateCandidateImage(position) {
+            var selectedCandidate = document.querySelector('input[name="' + position + 'Candidate"]:checked');
+            var candidateImage = document.getElementById(position + 'CandidateImage');
+            if (selectedCandidate && candidateImage) {
+                var candidateId = selectedCandidate.value;
+                // Fetch candidate image URL based on candidateId
+                // Replace 'fetchCandidateImageURL' with your actual function to fetch candidate image URL
+                var imageURL = "uploads/"+candPic;
+                if (imageURL) {
+                    candidateImage.src = imageURL;
+                } else {
+                    candidateImage.src = 'DefaultProfile.png';
+                }
+            }
+        }
+
+        // Call the function for each position initially
+        <?php
+        $resultPositions->data_seek(0); // Reset result set pointer
+        while ($positionRow = $resultPositions->fetch_assoc()) {
+            $positionName = htmlspecialchars($positionRow['position_name']);
+            echo 'updateCandidateImage("' . $positionName . '");';
+        }
+        ?>
+
+        // Add event listeners to radio buttons to update image on selection change
+        <?php
+        $resultPositions->data_seek(0); // Reset result set pointer
+        while ($positionRow = $resultPositions->fetch_assoc()) {
+            $positionName = htmlspecialchars($positionRow['position_name']);
+            echo 'document.querySelectorAll(\'input[name="' . $positionName . 'Candidate"]\').forEach(function(radio) {
+                radio.addEventListener("change", function() {
+                    updateCandidateImage("' . $positionName . '");
+                });
+            });';
+        }
+        ?>
+</script>
+
       
 
 </body>

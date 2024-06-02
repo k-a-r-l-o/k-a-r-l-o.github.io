@@ -251,16 +251,22 @@ if ($conn->query($sqlPos) === TRUE) {
 
 //Councils
 $sql_TSC = "CREATE TABLE IF NOT EXISTS TSC_VOTES (
-    vote_ID INT AUTO_INCREMENT,
     usep_ID INT,
-    President VARCHAR(255) NOT NULL,
-    Vice_President_Internal_Affairs VARCHAR(255) NOT NULL,
-    Vice_President_External_Affairs VARCHAR(255) NOT NULL,
-    General_Secretary VARCHAR(255) NOT NULL,
-    General_Treasurer VARCHAR(255) NOT NULL,
-    General_Auditor VARCHAR(255) NOT NULL,
-    Public_Information_Officer VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+    President INT NOT NULL,
+    Vice_President_Internal_Affairs INT NOT NULL,
+    Vice_President_External_Affairs INT NOT NULL,
+    General_Secretary INT NOT NULL,
+    General_Treasurer INT NOT NULL,
+    General_Auditor INT NOT NULL,
+    Public_Information_Officer INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (President) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_President_Internal_Affairs) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_President_External_Affairs) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (General_Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (General_Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (General_Auditor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Public_Information_Officer) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -271,17 +277,24 @@ if ($conn->query($sql_TSC) === TRUE) {
 }
 
 $sql_FTVETTS = "CREATE TABLE IF NOT EXISTS FTVETTS_VOTES (
-    vote_ID INT AUTO_INCREMENT,
     usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -292,17 +305,24 @@ if ($conn->query($sql_FTVETTS) === TRUE) {
 }
 
 $sql_AECES = "CREATE TABLE IF NOT EXISTS AECES_VOTES (
-    vote_ID INT AUTO_INCREMENT,
-    usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+      usep_ID INT,
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -314,17 +334,24 @@ if ($conn->query($sql_AECES) === TRUE) {
 
 
 $sql_OFEE = "CREATE TABLE IF NOT EXISTS OFEE_VOTES (
-    vote_ID INT AUTO_INCREMENT,
-    usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+      usep_ID INT,
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -335,17 +362,24 @@ if ($conn->query($sql_OFEE) === TRUE) {
 }
 
 $sql_SITS = "CREATE TABLE IF NOT EXISTS SITS_VOTES (
-    vote_ID INT AUTO_INCREMENT,
-    usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+     usep_ID INT,
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -356,18 +390,24 @@ if ($conn->query($sql_SITS) === TRUE) {
 }
 
 $sql_AFSET = "CREATE TABLE IF NOT EXISTS AFSET_VOTES (
-    vote_ID INT AUTO_INCREMENT,
-    usep_ID INT,
-    Major VARCHAR(255) NOT NULL,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+     usep_ID INT,
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -378,17 +418,24 @@ if ($conn->query($sql_AFSET) === TRUE) {
 }
 
 $sql_OFSET = "CREATE TABLE IF NOT EXISTS OFSET_VOTES (
-    vote_ID INT AUTO_INCREMENT,
-    usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+     usep_ID INT,
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -399,17 +446,24 @@ if ($conn->query($sql_OFSET) === TRUE) {
 }
 
 $sql_SABES = "CREATE TABLE IF NOT EXISTS SABES_VOTES (
-    vote_ID INT AUTO_INCREMENT,
     usep_ID INT,
-    LC_Governor VARCHAR(255) NOT NULL,
-    Vice_Governor VARCHAR(255) NOT NULL,
-    Secretary VARCHAR(255) NOT NULL,
-    Treasurer VARCHAR(255) NOT NULL,
-    Senator1 VARCHAR(255) NOT NULL,
-    Senator2 VARCHAR(255) NOT NULL,
-    Senator3 VARCHAR(255) NOT NULL,
-    Auditor VARCHAR(255) NOT NULL,
-    PRIMARY KEY(vote_ID, usep_ID),
+    LC_Governor INT NOT NULL,
+    Vice_Governor INT NOT NULL,
+    Secretary INT NOT NULL,
+    Treasurer INT NOT NULL,
+    Senator1 INT NOT NULL,
+    Senator2 INT NOT NULL,
+    Senator3 INT NOT NULL,
+    Auditor INT NOT NULL,
+    PRIMARY KEY(usep_ID),
+    FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Secretary) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Treasurer) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
@@ -480,15 +534,10 @@ if ($conn->query($insertPos) === TRUE) {
 
 
 $sqltscvote = "INSERT IGNORE INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES
-('111111', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
-('222222', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
-('333333', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
-('444444', 'Candidate_O', 'Candidate_P', 'Candidate_Q', 'Candidate_R', 'Candidate_S', 'Candidate_T', 'Candidate_U'),
-('555555', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N'),
-('666666', 'Candidate_A', 'Candidate_B', 'Candidate_C', 'Candidate_D', 'Candidate_E', 'Candidate_F', 'Candidate_G'),
-('777777', 'Candidate_V', 'Candidate_W', 'Candidate_X', 'Candidate_Y', 'Candidate_Z', 'Candidate_AA', 'Candidate_BB'),
-('888888', 'Candidate_H', 'Candidate_I', 'Candidate_J', 'Candidate_K', 'Candidate_L', 'Candidate_M', 'Candidate_N')
-";
+('202200294', '202300229', '202300513', '202300015', '202300463', '202300100', '202300364', '202300387'),
+('202200295', '202300229', '202300513', '202300015', '202300231', '202300100', '202300424', '202300387'),
+('202200296', '202300429', '202300513', '202300088', '202300231', '202300100', '202300424', '202300387'),
+('202200427', '202300267', '202300514', '202300088', '202300463', '202300352', '202300424', '202300387')";
 
 if ($conn->query($sqltscvote) === TRUE) {
     echo "Sample data inserted into 'votes' table successfully<br>";

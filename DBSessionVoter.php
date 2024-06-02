@@ -19,7 +19,7 @@ session_set_cookie_params(1800);
 session_start();
 
 // Check if session variables are set
-if (!isset($_SESSION['username']) && !isset($_SESSION['program']) && !isset($_SESSION['usep_ID'])) {
+if (!isset($_SESSION['username']) || !isset($_SESSION['program']) || !isset($_SESSION['usep_ID'])) {
     // If any session variable is not set, redirect to the login page
     header("Location: index.php");
     exit();
