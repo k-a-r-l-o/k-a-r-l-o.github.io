@@ -1079,7 +1079,7 @@
                             <?php
 
                             // Query to fetch programs
-                            $query = "SELECT * FROM Programs";
+                            $query = "SELECT * FROM programs";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1103,7 +1103,7 @@
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT council_name FROM List_Councils";
+                            $query = "SELECT council_name FROM list_councils";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1133,7 +1133,7 @@
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT * FROM List_Partylist";
+                            $query = "SELECT * FROM list_partylist";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1222,14 +1222,14 @@
                     // Move uploaded file to target directory
                     if (move_uploaded_file($_FILES["prof"]["tmp_name"], $targetFile)) {
                         // Insert data into Candidates table including the uploaded photo path
-                        $sqlCandidateInsert = "INSERT INTO Candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, prty_ID ) 
+                        $sqlCandidateInsert = "INSERT INTO candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, prty_ID ) 
                     VALUES ('$usepID', '$targetFile', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$council', '$position', '$partylist')";
 
                         if ($conn->query($sqlCandidateInsert) === TRUE) {
                             // Log the login activity
                             $usepID = $_SESSION["usep_ID"];
                             $logAction = 'Added Candidate';
-                            $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                            $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                             $stmt = $conn->prepare($sqlInsertLog);
                             if ($stmt) {
                                 $stmt->bind_param("is", $usepID, $logAction);
@@ -1360,7 +1360,7 @@
                             <?php
 
                             // Query to fetch programs
-                            $query = "SELECT * FROM Programs";
+                            $query = "SELECT * FROM programs";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1384,7 +1384,7 @@
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT council_name FROM List_Councils";
+                            $query = "SELECT council_name FROM list_councils";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1413,7 +1413,7 @@
                         <select id="partyList3" name="partyList3" class="input-form">
                             <?php
                             // Query to fetch programs
-                            $query = "SELECT * FROM List_Partylist";
+                            $query = "SELECT * FROM list_partylist";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1499,7 +1499,7 @@
                 }
 
                 // Retrieve the photo file path from the database
-                $sqlGetPhoto = "SELECT candPic FROM Candidates WHERE usep_ID = '$usepID'";
+                $sqlGetPhoto = "SELECT candPic FROM candidates WHERE usep_ID = '$usepID'";
                 $result = $conn->query($sqlGetPhoto);
 
                 if ($result->num_rows > 0) {
@@ -1528,17 +1528,17 @@
             // Update data in Candidates table
             if ($updatePhoto) {
                 // Update with new photo and usep_ID
-                $sqlCandidateUpdate = "UPDATE Candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID  = '$partylist' WHERE usep_ID = '$usepID'";
+                $sqlCandidateUpdate = "UPDATE candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID  = '$partylist' WHERE usep_ID = '$usepID'";
             } else {
                 // Update without changing photo and include usep_ID
-                $sqlCandidateUpdate = "UPDATE Candidates SET usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID = '$partylist' WHERE usep_ID = '$usepID'";
+                $sqlCandidateUpdate = "UPDATE candidates SET usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID = '$partylist' WHERE usep_ID = '$usepID'";
             }
 
             if ($conn->query($sqlCandidateUpdate) === TRUE) {
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
                 $logAction = 'Edited Candidate';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);
@@ -1596,7 +1596,7 @@
             $usepID = $clean_usep_ID;
 
             // Retrieve the photo file path from the database
-            $sqlGetPhoto = "SELECT candPic FROM Candidates WHERE usep_ID = '$usepID'";
+            $sqlGetPhoto = "SELECT candPic FROM candidates WHERE usep_ID = '$usepID'";
             $result = $conn->query($sqlGetPhoto);
 
             if ($result->num_rows > 0) {
@@ -1609,12 +1609,12 @@
                 }
 
                 // Delete the record from the database
-                $sqlCandDelete = "DELETE FROM Candidates WHERE usep_ID = '$usepID'";
+                $sqlCandDelete = "DELETE FROM candidates WHERE usep_ID = '$usepID'";
                 if ($conn->query($sqlCandDelete) === TRUE) {
                     // Log the login activity
                     $usepID = $_SESSION["usep_ID"];
                     $logAction = 'Deleted Candidate';
-                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
                         $stmt->bind_param("is", $usepID, $logAction);
