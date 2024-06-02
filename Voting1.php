@@ -579,8 +579,6 @@ $usep_ID = $_SESSION["usep_ID"];
                 // Assuming $conn is your database connection
 
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    // Handle form submission
-                    $usep_ID = $_POST['usep_ID']; // Assuming you have the user ID from session or other means
 
                     // Prepare an array to collect the votes
                     $votes = [];
