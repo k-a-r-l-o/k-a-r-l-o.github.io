@@ -237,6 +237,7 @@ $usep_ID = $_SESSION["usep_ID"];
             display: flex;
             flex-direction: column;
             align-items: center;
+
         }
 
         .positiontitle {
@@ -594,13 +595,14 @@ $usep_ID = $_SESSION["usep_ID"];
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 echo '<h2>Selected Candidates</h2>';
-
                                 foreach ($_POST as $position => $candidateId) {
-                                    $formattedPosition = str_replace('_', ' ', $position);
-                                    echo '<div class="pos">
-                                    <p>' . htmlspecialchars($formattedPosition) . ':</p>
-                                    <p class="c">' . htmlspecialchars($candidateId) . '</p>
-                                  </div>';
+                                    if ($position !== 'usep_ID') { // Skip the usep_ID field
+                                        $formattedPosition = str_replace('_', ' ', $position);
+                                        echo '<div class="pos">
+                                <p>' . htmlspecialchars($formattedPosition) . ':</p>
+                                <p class="c">' . htmlspecialchars($candidateId) . '</p>
+                              </div>';
+                                    }
                                 }
                             } else {
                                 echo 'No data received.';
@@ -619,14 +621,6 @@ $usep_ID = $_SESSION["usep_ID"];
     </div>
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Database connection
-        $conn = new mysqli('hostname', 'username', 'password', 'database');
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
         // Retrieve form data
         $usep_ID = $_POST['usep_ID'];
         $positions = [
