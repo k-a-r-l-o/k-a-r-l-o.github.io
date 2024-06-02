@@ -571,17 +571,17 @@ $positionNames = [
                     <div class="step-name">Student Council</div>
                 </div>
 
-                <div class="stepper-item active">
+                <div class="stepper-item completed">
                     <div class="step-counter"></div>
                     <div class="step-name">SC Summary</div>
                 </div>
 
-                <div class="stepper-item">
+                <div class="stepper-item completed">
                     <div class="step-counter"></div>
                     <div class="step-name">Local Council</div>
                 </div>
 
-                <div class="stepper-item">
+                <div class="stepper-item active">
                     <div class="step-counter"></div>
                     <div class="step-name">LC Summary</div>
                 </div>
