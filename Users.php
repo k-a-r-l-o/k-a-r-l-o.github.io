@@ -895,7 +895,7 @@
         <div class="menu">
             <div class="accounttag">
                 <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $Fname. " " .$LName?></h2>
+                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
                 <h3 class="usertype"><?php echo $usertype?></h3>
             </div>
             <div class="buttonContainer">
@@ -977,9 +977,9 @@
                             while ($row = $result->fetch_assoc()) {
 
                             // Assuming $row["usep_ID"] contains the ID like 202200294
-                            $usep_ID = $row["usep_id"];
+                            $usep_ID = $row["usep_ID"];
 
-                            if ($row["usep_id"] == 1) {
+                            if ($row["usep_ID"] == 1) {
                                 $formatted_usep_ID = "1";
                             } else {
                                 // Extract the year part
@@ -994,18 +994,18 @@
                         ?>
                                 <tr>
                                     <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
-                                    <td><?php echo $row["fname"] . " " . $row["lname"] ?></td>
+                                    <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
                                     <td><?php echo $row["usertype"] ?></td>
-                                    <td><?php echo $row["user_status"] ?></td>
+                                    <td><?php echo $row["User_status"] ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop(<?php echo $row['usep_id']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop(<?php echo $row['usep_id']; ?>)" src="edit.png" alt="edit icon">
+                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
+                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
                                         <?php
                                         if ($row["usep_id"] == 1) {
                                             // Do nothing
                                         } else {
-                                            echo '<img onclick="deletepop(' . $row['usep_id'] . ')" src="delete.png" alt="delete icon">';
+                                            echo '<img onclick="deletepop(' . $row['usep_ID'] . ')" src="delete.png" alt="delete icon">';
                                         }
                                         ?>
 
