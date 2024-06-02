@@ -6,7 +6,7 @@ $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
 if($program==="BSEd"){
-    echo"document.getElementById('passpop').style.display = 'flex';";
+    echo"<script>document.getElementById('passpop').style.display = 'flex';</script>";
 }
 
 $sqlID = "SELECT council_id, council_name FROM list_councils WHERE program = '$program'";
