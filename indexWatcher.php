@@ -1,10 +1,10 @@
 <?php
     session_start();
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "Voting_System";
+    $servername = "localhost"; // Replace with your server name
+$username = "u753706103_uvote"; // Replace with your username
+$password = "UV+;!!c#~p1"; // Replace with your password
+$dbname = "u753706103_Voting_System"; // Replace with your database name
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -38,7 +38,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             $_SESSION["usep_ID"] = $row["usep_ID"];
 
             // Update user status to 'Active' and set logged_out to 0 using a prepared statement
-            $sqlUserEdit = "UPDATE Users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
+            $sqlUserEdit = "UPDATE users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
             $stmtUpdate = $conn->prepare($sqlUserEdit);
             $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
             $stmtUpdate->execute();
@@ -46,7 +46,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             // Log the login activity
             $usepID = $_SESSION["usep_ID"];
             $logAction = 'Logged in';
-            $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+            $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
             $stmt = $conn->prepare($sqlInsertLog);
             if ($stmt) {
                 $stmt->bind_param("is", $usepID, $logAction);

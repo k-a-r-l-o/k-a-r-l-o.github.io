@@ -1,9 +1,9 @@
 <?php
 // Establishing a connection to the database
 $servername = "localhost"; // Replace with your server name
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "Voting_System"; // Replace with your database name
+$username = "u753706103_uvote"; // Replace with your username
+$password = "UV+;!!c#~p1"; // Replace with your password
+$dbname = "u753706103_Voting_System"; // Replace with your database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -61,7 +61,7 @@ if (isset($_POST['logout'])) {
     // Log the login activity
     $usepID = $_SESSION["usep_ID"];
     $logAction = 'Logged out';
-    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
     $stmt = $conn->prepare($sqlInsertLog);
     if ($stmt) {
         $stmt->bind_param("is", $usepID, $logAction);

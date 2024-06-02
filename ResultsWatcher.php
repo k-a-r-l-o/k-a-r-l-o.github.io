@@ -3,6 +3,7 @@
 
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
+    $username1 = strtolower($_SESSION['username']);
 
     $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
@@ -15,7 +16,7 @@
     $firstLetterLastName = substr($LName, 0, 1);
 
     // Fetch the vote count for the user's specific vote table
-    $userVotesTable = $username . "_votes";
+    $userVotesTable = $username1 . "_votes";
     $sqlUserVotes = "SELECT COUNT(*) as vote_count FROM $userVotesTable";
     $resultUserVotes = $conn->query($sqlUserVotes);
     $userVoteCount = $resultUserVotes->fetch_assoc()['vote_count'];
@@ -31,11 +32,11 @@
     }
     // Fetch the total vote count from the voters table
     if($username==='TSC'){
-        $sqlTotalVotes = "SELECT COUNT(*) as total_votes FROM Voters";
+        $sqlTotalVotes = "SELECT COUNT(*) as total_votes FROM voters";
         $resultTotalVotes = $conn->query($sqlTotalVotes);
         $totalVoteCount = $resultTotalVotes->fetch_assoc()['total_votes'];
     }else{
-        $sqlTotalVotes = "SELECT COUNT(*) as total_votes FROM Voters WHERE program = '$program'";
+        $sqlTotalVotes = "SELECT COUNT(*) as total_votes FROM voters WHERE program = '$program'";
         $resultTotalVotes = $conn->query($sqlTotalVotes);
         $totalVoteCount = $resultTotalVotes->fetch_assoc()['total_votes'];
     }

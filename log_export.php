@@ -6,7 +6,7 @@ if (isset($_SESSION["usep_ID"]) && isset($_POST['council'])) {
     $council = $_POST['council'];
     $logAction = 'Export Result for ' . $council;
 
-    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
     $stmt = $conn->prepare($sqlInsertLog);
 
     if ($stmt) {

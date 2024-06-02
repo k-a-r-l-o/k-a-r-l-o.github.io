@@ -4,15 +4,15 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+    $sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($Fname, $LName);
+    $stmt->bind_result($fname, $lname);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($Fname, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+    $firstLetterFirstName = substr($fname, 0, 1);
+    $firstLetterLastName = substr($lname, 0, 1);
 
 ?>
 

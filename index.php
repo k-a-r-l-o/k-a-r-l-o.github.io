@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "Voting_System";
+$servername = "localhost"; // Replace with your server name
+$username = "u753706103_uvote"; // Replace with your username
+$password = "UV+;!!c#~p1"; // Replace with your password
+$dbname = "u753706103_Voting_System"; // Replace with your database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

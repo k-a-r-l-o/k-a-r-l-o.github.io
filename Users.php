@@ -4,15 +4,15 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+    $sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($Fname, $LName);
+    $stmt->bind_result($fname, $lname);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($Fname, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+    $firstLetterFirstName = substr($fname, 0, 1);
+    $firstLetterLastName = substr($lname, 0, 1);
 
 ?>
 
@@ -968,7 +968,7 @@
                         </tr>
                         <?php
                         // Query to retrieve all data from the Users table
-                        $sql = "SELECT * FROM Users";
+                        $sql = "SELECT * FROM users";
                         $result = $conn->query($sql);
 
                         // Check if there are any rows returned
@@ -977,35 +977,35 @@
                             while ($row = $result->fetch_assoc()) {
 
                             // Assuming $row["usep_ID"] contains the ID like 202200294
-                            $usep_ID = $row["usep_ID"];
+                            $usep_id = $row["usep_id"];
 
-                            if ($row["usep_ID"] == 1) {
-                                $formatted_usep_ID = "1";
+                            if ($row["usep_id"] == 1) {
+                                $formatted_usep_id = "1";
                             } else {
                                 // Extract the year part
-                                $year = substr($usep_ID, 0, 4);
+                                $year = substr($usep_id, 0, 4);
 
                                 // Extract the remaining part and zero-pad it to 5 digits
-                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
+                                $numeric_part = str_pad(substr($usep_id, 4), 5, "0", STR_PAD_LEFT);
 
                                 // Combine the parts with a dash
-                                $formatted_usep_ID = $year . '-' . $numeric_part;
+                                $formatted_usep_id = $year . '-' . $numeric_part;
                             }
                         ?>
                                 <tr>
-                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
-                                    <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
+                                    <td class="tdfirst"><?php echo $formatted_usep_id; ?></td>
+                                    <td><?php echo $row["fname"] . " " . $row["lname"] ?></td>
                                     <td><?php echo $row["usertype"] ?></td>
                                     <td><?php echo $row["User_status"] ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
+                                        <img onclick="viewpop(<?php echo $row['usep_id']; ?>)" src="view.png" alt="view icon">
+                                        <img onclick="editpop(<?php echo $row['usep_id']; ?>)" src="edit.png" alt="edit icon">
                                         <?php
-                                        if ($row["usep_ID"] == 1) {
+                                        if ($row["usep_id"] == 1) {
                                             // Do nothing
                                         } else {
-                                            echo '<img onclick="deletepop(' . $row['usep_ID'] . ')" src="delete.png" alt="delete icon">';
+                                            echo '<img onclick="deletepop(' . $row['usep_id'] . ')" src="delete.png" alt="delete icon">';
                                         }
                                         ?>
 
@@ -1085,7 +1085,7 @@
 
             $usepID = $_POST['usepID'];
 
-            $sqlsearch = "SELECT * FROM Users WHERE usep_ID = '$usepID'";
+            $sqlsearch = "SELECT * FROM users WHERE usep_id = '$usepID'";
             $result = $conn->query($sqlsearch);
 
             if ($result->num_rows > 0) {
@@ -1093,29 +1093,29 @@
             } else {
 
                 // Get the user input
-                $input_usep_ID = $_POST["usepID"];
+                $input_usep_id = $_POST["usepID"];
 
                 // Remove any dashes from the input
-                $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+                $clean_usep_id = str_replace('-', '', $input_usep_id);
 
                 // Retrieve data from form
-                $usepID = $clean_usep_ID;
-                $username = $_POST['UName'];
-                $input_password = $_POST['Password'];
+                $usepID = $clean_usep_id;
+                $username = $_POST['uname'];
+                $input_password = $_POST['password'];
                 $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
-                $lname = $_POST['LName'];
-                $fname = $_POST['FName'];
-                $usertype = $_POST['User'];
-                $userstatus = 'Offline';
+                $lname = $_POST['lname'];
+                $fname = $_POST['fname'];
+                $usertype = $_POST['user'];
+                $userstatus = 'offline';
 
                 // Insert data into Users table
-                $sqlUserInsert = "INSERT INTO Users (usep_ID, username, userpass, LName, FName, usertype, User_status) 
+                $sqlUserInsert = "INSERT INTO users (usep_id, username, userpass, lname, fname, usertype, user_status) 
                                 VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
                 if ($conn->query($sqlUserInsert) === TRUE) {
                     // Log the login activity
-                    $usepID = $_SESSION["usep_ID"];
-                    $logAction = 'Added User';
-                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $usepID = $_SESSION["usep_id"];
+                    $logAction = 'added user';
+                    $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
                         $stmt->bind_param("is", $usepID, $logAction);

@@ -2,9 +2,9 @@
 
 // Establishing a connection to the database
 $servername = "localhost"; // Replace with your server name
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "Voting_System"; // Replace with your database name
+$username = "u753706103_uvote"; // Replace with your username
+$password = "UV+;!!c#~p1"; // Replace with your password
+$dbname = "u753706103_Voting_System"; // Replace with your database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
