@@ -4,15 +4,15 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
+    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($fname, $lname);
+    $stmt->bind_result($FName, $LName);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($fname, 0, 1);
-    $firstLetterLastName = substr($lname, 0, 1);
+    $firstLetterFirstName = substr($FName, 0, 1);
+    $firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -1228,26 +1228,26 @@
 
             // Retrieve data from form
             $usepID = $clean_usep_ID;
-            $username = $_POST['UName3'];
-            $input_password = $_POST['Password3'];
+            $username = $_POST['uname3'];
+            $input_password = $_POST['password3'];
             $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
-            $lname = $_POST['LName3'];
-            $fname = $_POST['FName3'];
-            $usertype = $_POST['User3'];
+            $lname = $_POST['lname3'];
+            $fname = $_POST['fname3'];
+            $usertype = $_POST['user3'];
 
             // Insert data into Users table
             $sqlUserEdit = "";
             if($usepID!=1){
-                $sqlUserEdit = "UPDATE Users SET username = '$username', userpass = '$hashed_password', FName = '$fname', LName = '$lname' ,usertype  = '$usertype' WHERE usep_ID = '$usepID'";
+                $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', fname = '$fname', lname = '$lname' ,usertype  = '$usertype' WHERE usep_id = '$usepID'";
             }else{
-                $sqlUserEdit = "UPDATE Users SET username = '$username', userpass = '$hashed_password', FName = '$fname', LName = '$lname' WHERE usep_ID = '$usepID'";
+                $sqlUserEdit = "UPDATE ssers SET username = '$username', userpass = '$hashed_password', fname = '$fname', lname = '$lname' WHERE usep_id = '$usepID'";
             }
 
             if ($conn->query($sqlUserEdit) === TRUE) {
                 // Log the login activity
-                $usepID = $_SESSION["usep_ID"];
-                $logAction = 'Edited User';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $usepID = $_SESSION["usep_id"];
+                $logAction = 'edited user';
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);

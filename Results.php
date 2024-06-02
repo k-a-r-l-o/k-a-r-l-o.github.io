@@ -1,18 +1,18 @@
 <?php
-include "DBSession.php";
+    include "DBSession.php";
 
-$usertype = $_SESSION['usertype'];
-$username = $_SESSION['username'];
+    $usertype = $_SESSION['usertype'];
+    $username = $_SESSION['username'];
 
-$sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $username, $usertype);
-$stmt->execute();
-$stmt->bind_result($fname, $lnaame);
-$stmt->fetch();
-$stmt->close();
-$firstLetterFirstName = substr($fname, 0, 1);
-$firstLetterLastName = substr($lname, 0, 1);
+    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $usertype);
+    $stmt->execute();
+    $stmt->bind_result($FName, $LName);
+    $stmt->fetch();
+    $stmt->close();
+    $firstLetterFirstName = substr($FName, 0, 1);
+    $firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -881,9 +881,9 @@ $firstLetterLastName = substr($lname, 0, 1);
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $Fname . " " . $LName ?></h2>
-                <h3 class="usertype"><?php echo $usertype ?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
+                <h3 class="usertype"><?php echo $usertype?></h3>
             </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
@@ -957,19 +957,19 @@ $firstLetterLastName = substr($lname, 0, 1);
                         </tr>
                         <?php
                         // Query to retrieve all data from the table
-                        $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
+                        $sql = "SELECT subquery.pname, subquery.position, subquery.votes 
         FROM (
-            SELECT CONCAT(c_President.FName, ' ', c_President.LName) AS Pname, 'President' AS position, COUNT(tv.President) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_President ON tv.President = c_President.usep_ID
-            GROUP BY tv.President
+            SELECT CONCAT(c_president.fname, ' ', c_president.lname) AS pname, 'President' AS position, COUNT(tv.president) AS votes 
+            FROM tsc_votes tv
+            INNER JOIN candidates c_president ON tv.president = c_president.usep_id
+            GROUP BY tv.president
             
             UNION ALL
             
-            SELECT CONCAT(c_Vice_President_Internal.FName, ' ', c_Vice_President_Internal.LName) AS Pname, 'Vice President Internal Affairs' AS position, COUNT(tv.Vice_President_Internal_Affairs) AS votes 
-            FROM TSC_VOTES tv
-            INNER JOIN Candidates c_Vice_President_Internal ON tv.Vice_President_Internal_Affairs = c_Vice_President_Internal.usep_ID
-            GROUP BY tv.Vice_President_Internal_Affairs
+            SELECT CONCAT(c_vice_president_internal.fname, ' ', c_vice_president_internal.lname) AS pname, 'Vice President Internal Affairs' AS position, COUNT(tv.vice_president_internal_affairs) AS votes 
+            FROM tsc_votes tv
+            INNER JOIN candidates c_vice_president_internal ON tv.vice_president_internal_affairs = c_vice_president_internal.usep_id
+            GROUP BY tv.vice_president_internal_affairs
             
             UNION ALL
             

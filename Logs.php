@@ -4,14 +4,14 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($Fname, $LName);
+    $stmt->bind_result($FName, $LName);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($Fname, 0, 1);
+    $firstLetterFirstName = substr($FName, 0, 1);
     $firstLetterLastName = substr($LName, 0, 1);
 
 ?>
@@ -852,7 +852,7 @@
         <div class="menu">
             <div class="accounttag">
                 <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $Fname. " " .$LName?></h2>
+                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
                 <h3 class="usertype"><?php echo $usertype?></h3>
             </div>
             <div class="buttonContainer">
