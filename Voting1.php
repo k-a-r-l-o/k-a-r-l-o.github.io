@@ -575,93 +575,141 @@ $usep_ID = $_SESSION["usep_ID"];
                         <h2>STUDENT COUNCIL</h2>
                     </div>
                 </div>
-                <form method="post">
-                    <?php
+                <?php
                     // Assuming $conn is your database connection
 
-                    // Fetch positions from the positions table for council_ID = 8
-                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
-                    $resultPositions = $conn->query($sqlPositions);
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                    if ($resultPositions->num_rows > 0) {
-                        // Loop through each position
-                        while ($positionRow = $resultPositions->fetch_assoc()) {
-                            $positionName = htmlspecialchars($positionRow['position_name']);
+                        // Initialize an array to hold vote values
+                        $votes = [
+                            'President' => '100010001',
+                            'Vice_President_Internal_Affairs' => '100010001',
+                            'Vice_President_External_Affairs' => '100010001',
+                            'General_Secretary' => '100010001',
+                            'General_Treasurer' => '100010001',
+                            'General_Auditor' => '100010001',
+                            'Public_Information_Officer' => '100010001'
+                        ];
 
-                            // Fetch candidates for the current position
-                            $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
-                            $resultCandidates = $conn->query($sqlCandidates);
+                        // Map positions to corresponding fields in TSC_VOTES table
+                        $positionToFieldMap = [
+                            'President' => 'President',
+                            'Vice President Internal Affairs' => 'Vice_President_Internal_Affairs',
+                            'Vice President External Affairs' => 'Vice_President_External_Affairs',
+                            'General Secretary' => 'General_Secretary',
+                            'General Treasurer' => 'General_Treasurer',
+                            'General Auditor' => 'General_Auditor',
+                            'Public Information Officer' => 'Public_Information_Officer'
+                        ];
 
-                            // Start the HTML output for the card
-                            echo '<div class="card">
-                            <div class="positiontitle">
-                                <h3>' . $positionName . '</h3>
-                            </div>
-                            <div class="cardcontent">
-                                <div class="candidateinfocontent">';
-
-                            // Add the Abstain option
-                            echo '<label for="' . $positionName . 'Abstain">
-                            <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
-                        </label>';
-
-                            // Check if any candidates were found
-                            if ($resultCandidates->num_rows > 0) {
-                                // Loop through the fetched candidates and add them to the card
-                                $counter = 1;
-                                while ($candidateRow = $resultCandidates->fetch_assoc()) {
-                                    $candidateId = htmlspecialchars($candidateRow['usep_ID']);
-                                    $candidateName = htmlspecialchars($candidateRow['FName'] . ' ' . $candidateRow['LName']);
-                                    $candidateImage = htmlspecialchars($candidateRow['candPic']);
-
-                                    echo '<label for="' . $positionName . 'Candidate' . $counter . '">
-                                    <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
-                                </label>';
-                                    $counter++;
-                                }
-                            } else {
-                                echo 'No candidates found for ' . $positionName . '.';
+                        // Process each position from the form submission
+                        foreach ($positionToFieldMap as $position => $field) {
+                            if (isset($_POST[$position])) {
+                                $votes[$field] = htmlspecialchars($_POST[$position]);
                             }
-
-                            // Close the form and add the candidate image container
-                            echo '</div>
-                                <div class="candidateimage">
-                                    <img id="' . $positionName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
-                                </div>
-                            </div>
-                        </div>';
                         }
-                    } else {
-                        echo 'No positions found for council_ID 8.';
+
+                        // Construct the SQL query to insert or update the vote
+                        $sqlSaveVote = "
+                            INSERT INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                            ON DUPLICATE KEY UPDATE 
+                                President = VALUES(President),
+                                Vice_President_Internal_Affairs = VALUES(Vice_President_Internal_Affairs),
+                                Vice_President_External_Affairs = VALUES(Vice_President_External_Affairs),
+                                General_Secretary = VALUES(General_Secretary),
+                                General_Treasurer = VALUES(General_Treasurer),
+                                General_Auditor = VALUES(General_Auditor),
+                                Public_Information_Officer = VALUES(Public_Information_Officer)";
+
+                        // Prepare and execute the statement
+                        $stmt = $conn->prepare($sqlSaveVote);
+                        $stmt->bind_param(
+                            'iiiiiiii', 
+                            $usep_ID, 
+                            $votes['President'], 
+                            $votes['Vice_President_Internal_Affairs'], 
+                            $votes['Vice_President_External_Affairs'], 
+                            $votes['General_Secretary'], 
+                            $votes['General_Treasurer'], 
+                            $votes['General_Auditor'], 
+                            $votes['Public_Information_Officer']
+                        );
+
+                        if ($stmt->execute()) {
+                            echo "Votes recorded successfully.";
+                        } else {
+                            echo "Error: " . $stmt->error;
+                        }
+
+                        $stmt->close();
                     }
                     ?>
-                    <div class="button">
-                        <div></div>
-                        <button type="submit" name="next">Next</button>
-                    </div>
-                </form>
 
-                <?php
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    // Fetch positions again to process the form data
-                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
-                    $resultPositions = $conn->query($sqlPositions);
+                    <form method="post">
+                        <input type="hidden" name="usep_ID" value="<?php echo $userId; ?>">
+                        <?php
+                        // Fetch positions from the positions table for council_ID = 8
+                        $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
+                        $resultPositions = $conn->query($sqlPositions);
 
-                    if ($resultPositions->num_rows > 0) {
-                        while ($positionRow = $resultPositions->fetch_assoc()) {
-                            $positionName = htmlspecialchars($positionRow['position_name']);
+                        if ($resultPositions->num_rows > 0) {
+                            // Loop through each position
+                            while ($positionRow = $resultPositions->fetch_assoc()) {
+                                $positionName = htmlspecialchars($positionRow['position_name']);
 
-                            // Check if the position exists in the POST data
-                            if (isset($_POST[$positionName])) {
-                                $selectedCandidateId = $_POST[$positionName];
-                                echo "Selected candidate for $positionName: $selectedCandidateId<br>";
-                            } else {
-                                echo "No selection made for $positionName<br>";
+                                // Fetch candidates for the current position
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                                $resultCandidates = $conn->query($sqlCandidates);
+
+                                // Start the HTML output for the card
+                                echo '<div class="card">
+                                <div class="positiontitle">
+                                    <h3>' . $positionName . '</h3>
+                                </div>
+                                <div class="cardcontent">
+                                    <div class="candidateinfocontent">';
+
+                                // Add the Abstain option
+                                echo '<label for="' . $positionName . 'Abstain">
+                                <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
+                            </label>';
+
+                                // Check if any candidates were found
+                                if ($resultCandidates->num_rows > 0) {
+                                    // Loop through the fetched candidates and add them to the card
+                                    $counter = 1;
+                                    while ($candidateRow = $resultCandidates->fetch_assoc()) {
+                                        $candidateId = htmlspecialchars($candidateRow['usep_ID']);
+                                        $candidateName = htmlspecialchars($candidateRow['FName'] . ' ' . $candidateRow['LName']);
+                                        $candidateImage = htmlspecialchars($candidateRow['candPic']);
+
+                                        echo '<label for="' . $positionName . 'Candidate' . $counter . '">
+                                        <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
+                                    </label>';
+                                        $counter++;
+                                    }
+                                } else {
+                                    echo 'No candidates found for ' . $positionName . '.';
+                                }
+
+                                // Close the form and add the candidate image container
+                                echo '</div>
+                                    <div class="candidateimage">
+                                        <img id="' . $positionName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
+                                    </div>
+                                </div>
+                            </div>';
                             }
+                        } else {
+                            echo 'No positions found for council_ID 8.';
                         }
-                    }
-                }
-                ?>
+                        ?>
+                        <div class="button">
+                            <div></div>
+                            <button type="submit" name="next">Next</button>
+                        </div>
+                    </form>
 
             </div>
         </div>
