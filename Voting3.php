@@ -12,7 +12,7 @@ if ($resultID->num_rows > 0) {
     $row = $resultID->fetch_assoc();
     $council_id = $row['council_id'];
     $council_name = $row['council_name'];
-    $council_name1 = strtolower($row['council_name']); 
+    $council_name1 = strtolower($row['council_name']);
     $table_name = $conn->real_escape_string($council_name1 . "_votes");
 } else {
     echo "No council found for the given program.";
@@ -644,7 +644,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="tname">
                         <h2><?php echo htmlspecialchars($council_name); ?></h2>
                     </div>
-                </div>                   
+                </div>
                 <form method="post" id="votingForm">
                     <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($usep_ID); ?>">
                     <?php
@@ -863,8 +863,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 document.querySelector('input[name="position"][value="' + selectedCandidate + '"]').checked = true;
             }
         };
-
     </script>
 
 </body>
+
 </html>
