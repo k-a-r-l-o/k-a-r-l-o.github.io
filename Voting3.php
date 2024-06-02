@@ -646,19 +646,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
                 <form method="post" id="votingForm">
-                    <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($usep_ID); ?>">
+                    <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
                     <?php
-                    // Fetch positions from the positions table for council_ID = 8
+                    // Fetch positions from the positions table for the council_id
                     $sqlPositions = "SELECT position_name FROM positions WHERE council_id = $council_id";
                     $resultPositions = $conn->query($sqlPositions);
 
                     if ($resultPositions->num_rows > 0) {
+                        // Mapping of position names to table column names
+                        $positionToColumn = [
+                            'Governor' => 'LC_Governor',
+                            'Vice Governor' => 'Vice_Governor',
+                            'Secretary' => 'Secretary',
+                            'Treasurer' => 'Treasurer',
+                            'Senator1' => 'Senator1',
+                            'Senator2' => 'Senator2',
+                            'Senator3' => 'Senator3',
+                            'Senator4' => 'Senator4',
+                            'Senator5' => 'Senator5',
+                            'Senator6' => 'Senator6',
+                            'Senator7' => 'Senator7',
+                            'Senator8' => 'Senator8',
+                            'Senator9' => 'Senator9',
+                            'Auditor' => 'Auditor'
+                        ];
+
                         // Loop through each position
                         while ($positionRow = $resultPositions->fetch_assoc()) {
                             $positionName = htmlspecialchars($positionRow['position_name']);
-
-                            // Convert position names to match the keys used in the PHP votes array
-                            $fieldName = str_replace(' ', '_', $positionName); // Replace spaces with underscores
+                            $fieldName = $positionToColumn[$positionName]; // Map to the correct field name
 
                             // Fetch candidates for the current position
                             $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
@@ -687,7 +703,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $candidateImage = htmlspecialchars($candidateRow['candPic']);
 
                                     echo '<label for="' . $fieldName . 'Candidate' . $counter . '">
-                                    <input type="radio" id="' . $fieldName . 'Candidate' . $counter . '" name="' . $fieldName . '" value="' . $candidateId . '" onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
+                                    <input type="radio" id="' . $fieldName . 'Candidate' . $counter . '" name="' . $fieldName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
                                 </label>';
                                     $counter++;
                                 }
