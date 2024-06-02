@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Construct the SQL query to insert or update the vote
     $sqlSaveVote = "
-        INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, Senator1, Senator2, Senator3, Auditor)
+        INSERT INTO '$table_name' (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, Senator1, Senator2, Senator3, Auditor)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE 
             LC_Governor = VALUES(LC_Governor),
