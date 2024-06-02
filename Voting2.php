@@ -621,7 +621,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
                 <div class="button">
                     <button id="customBackButton">Back</button>
-                    <button type="submit" name="save" onclick="switchHTML('Voting5.php')">Submit</button>
+                    <button type="submit" name="submit">Submit</button>
                 </div>
                 </form>
             </div>
@@ -631,7 +631,7 @@ $usep_ID = $_SESSION["usep_ID"];
     <?php
     // Assuming $conn is your database connection
 
-    if (isset($_POST['s'])) {
+    if (isset($_POST['submit'])) {
         // Loop through the submitted data to insert into the TSC_VOTES table
         foreach ($_POST as $position => $candidateId) {
             // Your existing code to fetch candidate names
@@ -645,7 +645,7 @@ $usep_ID = $_SESSION["usep_ID"];
         $insertStmt->close();
 
         // Redirect to a success page or display a success message
-        header("Location: success.php");
+        header("Location: Voting5.php");
         exit();
     } else {
         // Handle if the form is not submitted properly
