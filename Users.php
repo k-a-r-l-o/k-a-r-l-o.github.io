@@ -4,15 +4,15 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
+    $sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($FName, $LName);
+    $stmt->bind_result($fname, $lname);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($FName, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+    $firstLetterFirstName = substr($fname, 0, 1);
+    $firstLetterLastName = substr($lname, 0, 1);
 
 ?>
 
@@ -996,7 +996,7 @@
                                     <td class="tdfirst"><?php echo $formatted_usep_id; ?></td>
                                     <td><?php echo $row["fname"] . " " . $row["lname"] ?></td>
                                     <td><?php echo $row["usertype"] ?></td>
-                                    <td><?php echo $row["User_status"] ?></td>
+                                    <td><?php echo $row["user_status"] ?></td>
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
                                         <img onclick="viewpop(<?php echo $row['usep_id']; ?>)" src="view.png" alt="view icon">
@@ -1307,13 +1307,13 @@
             $usepID = $clean_usep_ID;
 
             // Insert data into Users table
-            $sqlUserDelete = "DELETE FROM Users WHERE usep_ID = '$usepID'";
+            $sqlUserDelete = "DELETE FROM users WHERE usep_id = '$usepID'";
 
             if ($conn->query($sqlUserDelete) === TRUE) {
                 // Log the login activity
-                $usepID = $_SESSION["usep_ID"];
-                $logAction = 'Deleted User';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $usepID = $_SESSION["usep_id"];
+                $logAction = 'deleted user';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);
