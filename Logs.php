@@ -924,7 +924,7 @@
                         FROM activity_logs a 
                         LEFT JOIN users u 
                         ON a.usep_ID = u.usep_ID
-                        ORDER BY a.logs_date, a.logs_time DESC";
+                        ORDER BY a.logs_date DESC, a.logs_time DESC";
                          $result = $conn->query($sql);
 
                         // Check if there are any rows returned
