@@ -1095,7 +1095,7 @@
                             <?php
 
                             // Query to fetch programs
-                            $query1 = "SELECT * FROM Programs";
+                            $query1 = "SELECT * FROM programs";
                             $result = $conn->query($query1);
 
                             // Check if the query returned any results
@@ -1136,7 +1136,7 @@
             // Retrieve data from form
             $usepID = $clean_usep_ID;
 
-            $sqlsearch = "SELECT * FROM Voters WHERE usep_ID = '$usepID'";
+            $sqlsearch = "SELECT * FROM voters WHERE usep_ID = '$usepID'";
             $result = $conn->query($sqlsearch);
 
             if ($result->num_rows > 0) {
@@ -1160,14 +1160,14 @@
                 $voted = 'Not Voted';
 
                 // Insert data into Users table
-                $sqlVoterInsert = "INSERT INTO Voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted ) 
+                $sqlVoterInsert = "INSERT INTO voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted ) 
                                 VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl','$Program' ,'$voted')";
 
                 if ($conn->query($sqlVoterInsert) === TRUE) {
                     // Log the login activity
                     $usepID = $_SESSION["usep_ID"];
                     $logAction = 'Added Voter';
-                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
                         $stmt->bind_param("is", $usepID, $logAction);
@@ -1247,12 +1247,12 @@
                     $voted = 'Not Voted';
 
                     // Check if voter already exists
-                    $sqlsearch = "SELECT * FROM Voters WHERE usep_ID = '$usepID'";
+                    $sqlsearch = "SELECT * FROM voters WHERE usep_ID = '$usepID'";
                     $result = $conn->query($sqlsearch);
 
                     if ($result->num_rows == 0) {
                         // Insert data into Voters table
-                        $sqlVoterInsert = "INSERT INTO Voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted) 
+                        $sqlVoterInsert = "INSERT INTO voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted) 
                                         VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$voted')";
 
                         if ($conn->query($sqlVoterInsert) === TRUE) {
@@ -1268,7 +1268,7 @@
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
                 $logAction = 'Imported Voter';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);
@@ -1383,7 +1383,7 @@
                             <?php
 
                             // Query to fetch programs
-                            $query = "SELECT * FROM Programs";
+                            $query = "SELECT * FROM programs";
                             $result = $conn->query($query);
 
                             // Check if the query returned any results
@@ -1431,13 +1431,13 @@
             $Program = $_POST['program3'];
 
             // Insert data into Users table
-            $sqlVoterEdit = "UPDATE Voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
+            $sqlVoterEdit = "UPDATE voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlVoterEdit) === TRUE) {
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
                 $logAction = 'Edited Voter';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);
@@ -1511,13 +1511,13 @@
                 $usepID = $clean_usep_ID;
 
                 // Insert data into Users table
-                $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
+                $sqlVoterDelete = "DELETE FROM voters WHERE usep_ID = '$usepID'";
 
                 if ($conn->query($sqlVoterDelete) === TRUE) {
                     // Log the login activity
                     $usepID = $_SESSION["usep_ID"];
                     $logAction = 'Deleted Voter';
-                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
                         $stmt->bind_param("is", $usepID, $logAction);
@@ -1570,7 +1570,7 @@
                 }
 
                 // Delete the voter record from the Voters table
-                $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
+                $sqlVoterDelete = "DELETE FROM voters WHERE usep_ID = '$usepID'";
                 if ($conn->query($sqlVoterDelete) === TRUE) {
                     echo "<script>alert('Record deleted successfully');</script>";
                     echo "<script>window.location.href = 'Voters.php';</script>";
