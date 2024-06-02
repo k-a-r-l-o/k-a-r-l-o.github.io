@@ -1228,12 +1228,12 @@
 
             // Retrieve data from form
             $usepID = $clean_usep_ID;
-            $username = $_POST['uname3'];
-            $input_password = $_POST['password3'];
+            $username = $_POST['Uname3'];
+            $input_password = $_POST['Password3'];
             $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
-            $LName = $_POST['lname3'];
-            $FName = $_POST['fname3'];
-            $usertype = $_POST['user3'];
+            $LName = $_POST['LName3'];
+            $FName = $_POST['FName3'];
+            $usertype = $_POST['User3'];
 
             // Insert data into Users table
             $sqlUserEdit = "";
