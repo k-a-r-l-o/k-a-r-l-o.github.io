@@ -581,42 +581,42 @@ $usep_ID = $_SESSION["usep_ID"];
                 <div class="card">
                     <div class="positiontitle">
                         <h3>SC SUMMARY</h3>
-                    </div> 
+                    </div>
 
                     <form method="post">
-                    <div class="cardcontent">
-                       <?php
-                    // Assuming $conn is your database connection
+                        <div class="cardcontent">
+                            <?php
+                            // Assuming $conn is your database connection
 
-                    // Prepare a statement for fetching candidate names
-                    $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
-                    $stmt->bind_param("s", $candidateId);
+                            // Prepare a statement for fetching candidate names
+                            $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
+                            $stmt->bind_param("s", $candidateId);
 
-                    foreach ($_POST as $position => $candidateId) {
-                        // Remove "Candidate" suffix and replace underscores with spaces
-                        $positionName = str_replace('Candidate', '', $position);
-                        $positionName = str_replace('_', ' ', $positionName);
-                        $positionName = htmlspecialchars($positionName);
+                            foreach ($_POST as $position => $candidateId) {
+                                // Remove "Candidate" suffix and replace underscores with spaces
+                                $positionName = str_replace('Candidate', '', $position);
+                                $positionName = str_replace('_', ' ', $positionName);
+                                $positionName = htmlspecialchars($positionName);
 
-                        // Fetch the candidate name based on the candidate ID
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        if ($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            $candidateName = htmlspecialchars($row['candidateName']);
-                        } else {
-                            $candidateName = 'Abstain'; // or handle it in another way
-                        }
+                                // Fetch the candidate name based on the candidate ID
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $candidateName = htmlspecialchars($row['candidateName']);
+                                } else {
+                                    $candidateName = 'Abstain'; // or handle it in another way
+                                }
 
-                        echo '<div class="pos">
+                                echo '<div class="pos">
                                 <p>' . $positionName . ':</p>
                                 <p class="c">' . $candidateName . '</p>
                               </div>';
-                    }
+                            }
 
-                    $stmt->close();
-                    ?>
-                    </div>
+                            $stmt->close();
+                            ?>
+                        </div>
                 </div>
 
                 <div class="button">
@@ -627,6 +627,32 @@ $usep_ID = $_SESSION["usep_ID"];
             </div>
         </div>
     </div>
+
+    <?php
+    // Assuming $conn is your database connection
+
+    if (isset($_POST['s'])) {
+        // Loop through the submitted data to insert into the TSC_VOTES table
+        foreach ($_POST as $position => $candidateId) {
+            // Your existing code to fetch candidate names
+
+            // Insert the candidate ID into the database
+            $insertStmt = $conn->prepare("INSERT INTO TSC_VOTES (usep_ID, $position) VALUES (?, ?)");
+            $insertStmt->bind_param("ss", $usep_ID, $candidateId);
+            $insertStmt->execute();
+        }
+
+        $insertStmt->close();
+
+        // Redirect to a success page or display a success message
+        header("Location: success.php");
+        exit();
+    } else {
+        // Handle if the form is not submitted properly
+        echo "Form submission error!";
+    }
+    ?>
+
     <script>
         var headerHeight;
 
@@ -674,5 +700,3 @@ $usep_ID = $_SESSION["usep_ID"];
 </body>
 
 </html>
-
-
