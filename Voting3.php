@@ -5,7 +5,7 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-$sqlID = "SELECT council_id FROM list_councils WHERE council_name = '$program'";
+$sqlID = "SELECT council_id FROM list_councils WHERE program = '$program'";
 $resultID = $conn->query($sqlID);
 
 if ($resultID->num_rows > 0) {
