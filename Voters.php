@@ -924,7 +924,7 @@
         <div class="menu">
             <div class="accounttag">
                 <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $Fname. " " .$LName?></h2>
+                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
                 <h3 class="usertype"><?php echo $usertype?></h3>
             </div>
             <div class="buttonContainer">
