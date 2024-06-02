@@ -635,7 +635,7 @@ $usep_ID = $_SESSION["usep_ID"];
                 }
                 ?>
 
-                <form method="post">
+                <form method="post" id="votingForm">
                     <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
                     <?php
                     // Fetch positions from the positions table for council_ID = 8
@@ -836,6 +836,23 @@ $usep_ID = $_SESSION["usep_ID"];
             }
             return "";
         }
+
+        // Event listener for form submission
+        document.getElementById("votingForm").addEventListener("submit", function(event) {
+            // Get the selected candidate value
+            var selectedCandidate = document.querySelector('input[name="position"]:checked').value;
+
+            // Set the cookie with the selected candidate value
+            setCookie("selectedCandidate", selectedCandidate, 1); // Set cookie to expire in 1 day
+        });
+
+        // Function to restore selected radio button based on cookie
+        window.onload = function() {
+            var selectedCandidate = getCookie("selectedCandidate");
+            if (selectedCandidate !== "") {
+                document.querySelector('input[name="position"][value="' + selectedCandidate + '"]').checked = true;
+            }
+        };
 
     </script>
 
