@@ -11,7 +11,7 @@
     $stmt->bind_result($FName, $LName);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($Fname, 0, 1);
+    $firstLetterFirstName = substr($FName, 0, 1);
     $firstLetterLastName = substr($LName, 0, 1);
 
 
