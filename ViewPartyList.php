@@ -873,8 +873,8 @@ if (isset($_GET['prty_ID'])) {
                     <?php
 
                         // Query to retrieve the party list name from the database
-                        $sql = "SELECT name_partylist FROM list_partylist WHERE prty_ID = ?";
-                        $stmt = $conn->prepare($sql);
+                        $sql1 = "SELECT name_partylist FROM list_partylist WHERE prty_ID = ?";
+                        $stmt = $conn->prepare($sql1);
                         $stmt->bind_param("i", $prty_ID);
                         $stmt->execute();
                         $result = $stmt->get_result();
