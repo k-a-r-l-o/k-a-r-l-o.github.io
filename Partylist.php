@@ -984,8 +984,6 @@
                                     <td class="tdlast">
                                         <!-- Pass row data to viewpop() function -->
                                         <img onclick="viewpop(<?php echo $row['prty_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop(<?php echo $row['prty_ID']; ?>)" src="edit.png" alt="edit icon">
-                                        <img onclick="deletepop(<?php echo $row['prty_ID']; ?>)" src="delete.png" alt="delete icon">
                                         <?php
                                         if ($prty_ID == 1) {
                                             // Do nothing
