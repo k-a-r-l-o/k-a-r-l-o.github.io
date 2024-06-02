@@ -21,7 +21,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     $input_usertype = 'Watcher';
 
     // Prepare SQL statement to retrieve user from database
-    $sql = "SELECT * FROM Users WHERE username = ?";
+    $sql = "SELECT * FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $input_username);
     $stmt->execute();
