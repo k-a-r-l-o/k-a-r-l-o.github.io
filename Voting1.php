@@ -578,71 +578,72 @@ $usep_ID = $_SESSION["usep_ID"];
 
 
                 <form action="Voting2.php" method="POST">
-                    <?php
-                    // Assuming $conn is your database connection
+    <?php
+    // Assuming $conn is your database connection
 
-                    // Fetch positions from the positions table for council_ID = 8
-                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
-                    $resultPositions = $conn->query($sqlPositions);
+    // Fetch positions from the positions table for council_ID = 8
+    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
+    $resultPositions = $conn->query($sqlPositions);
 
-                    if ($resultPositions->num_rows > 0) {
-                        // Loop through each position
-                        while ($positionRow = $resultPositions->fetch_assoc()) {
-                            $positionName = htmlspecialchars($positionRow['position_name']);
+    if ($resultPositions->num_rows > 0) {
+        // Loop through each position
+        while ($positionRow = $resultPositions->fetch_assoc()) {
+            $positionName = htmlspecialchars($positionRow['position_name']);
 
-                            // Fetch candidates for the current position
-                            $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
-                            $resultCandidates = $conn->query($sqlCandidates);
+            // Fetch candidates for the current position
+            $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+            $resultCandidates = $conn->query($sqlCandidates);
 
-                            // Start the HTML output for the card
-                            echo '<div class="card">
-                            <div class="positiontitle">
-                                <h3>' . $positionName . '</h3>
-                            </div>
-                            <div class="cardcontent">
-                                <div class="candidateinfocontent">';
+            // Start the HTML output for the card
+            echo '<div class="card">
+            <div class="positiontitle">
+                <h3>' . $positionName . '</h3>
+            </div>
+            <div class="cardcontent">
+                <div class="candidateinfocontent">';
 
-                            // Add the Abstain option
-                            echo '<label for="' . $positionName . 'Abstain">
-                            <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . 'Candidate" value="100010001" checked onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
-                        </label>';
+            // Add the Abstain option
+            echo '<label for="' . $positionName . 'Abstain">
+            <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
+        </label>';
 
-                            // Check if any candidates were found
-                            if ($resultCandidates->num_rows > 0) {
-                                // Loop through the fetched candidates and add them to the card
-                                $counter = 1;
-                                while ($candidateRow = $resultCandidates->fetch_assoc()) {
-                                    $candidateId = htmlspecialchars($candidateRow['usep_ID']);
-                                    $candidateName = htmlspecialchars($candidateRow['FName'] . ' ' . $candidateRow['LName']);
-                                    $candidateImage = htmlspecialchars($candidateRow['candPic']);
+            // Check if any candidates were found
+            if ($resultCandidates->num_rows > 0) {
+                // Loop through the fetched candidates and add them to the card
+                $counter = 1;
+                while ($candidateRow = $resultCandidates->fetch_assoc()) {
+                    $candidateId = htmlspecialchars($candidateRow['usep_ID']);
+                    $candidateName = htmlspecialchars($candidateRow['FName'] . ' ' . $candidateRow['LName']);
+                    $candidateImage = htmlspecialchars($candidateRow['candPic']);
 
-                                    echo '<label for="' . $positionName . 'Candidate' . $counter . '">
-                                    <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . 'Candidate" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
-                                </label>';
-                                    $counter++;
-                                }
-                            } else {
-                                echo 'No candidates found for ' . $positionName . '.';
-                            }
+                    echo '<label for="' . $positionName . 'Candidate' . $counter . '">
+                    <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
+                </label>';
+                    $counter++;
+                }
+            } else {
+                echo 'No candidates found for ' . $positionName . '.';
+            }
 
-                            // Close the form and add the candidate image container
-                            echo '</div>
-                                <div class="candidateimage">
-                                    <img id="' . $positionName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
-                                </div>
-                            </div>
-                        </div>';
-                        }
-                    } else {
-                        echo 'No positions found for council_ID 8.';
-                    }
-                    ?>
+            // Close the form and add the candidate image container
+            echo '</div>
+                <div class="candidateimage">
+                    <img id="' . $positionName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
+                </div>
+            </div>
+        </div>';
+        }
+    } else {
+        echo 'No positions found for council_ID 8.';
+    }
+    ?>
 
-                    <div class="button">
-                        <div></div>
-                        <button type="submit">Next</button>
-                    </div>
-                </form>
+    <div class="button">
+        <div></div>
+        <button type="submit">Next</button>
+    </div>
+</form>
+
             </div>
         </div>
     </div>

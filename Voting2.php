@@ -587,37 +587,17 @@ $usep_ID = $_SESSION["usep_ID"];
 
 
                         <div class="cardcontent">
-                            <?php
-                            // Assuming $conn is your database connection
+                        <?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo '<h2>Selected Candidates</h2>';
 
-                            // Prepare a statement for fetching candidate names
-                            $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
-                            $stmt->bind_param("s", $candidateId);
-
-                            foreach ($_POST as $position => $candidateId) {
-                                // Remove "Candidate" suffix and replace underscores with spaces
-                                $positionName = str_replace('Candidate', '', $position);
-                                $positionName = str_replace('_', ' ', $positionName);
-                                $positionName = htmlspecialchars($positionName);
-
-                                // Fetch the candidate name based on the candidate ID
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                if ($result->num_rows > 0) {
-                                    $row = $result->fetch_assoc();
-                                    $candidateName = htmlspecialchars($row['candidateName']);
-                                } else {
-                                    $candidateName = 'Abstain'; // or handle it in another way
-                                }
-
-                                echo '<div class="pos">
-                                <p>' . $positionName . ':</p>
-                                <p class="c">' . $candidateName . '</p>
-                              </div>';
-                            }
-
-                            $stmt->close();
-                            ?>
+    foreach ($_POST as $position => $candidateId) {
+        echo '<p>Position: ' . htmlspecialchars($position) . ' - Candidate ID: ' . htmlspecialchars($candidateId) . '</p>';
+    }
+} else {
+    echo 'No data received.';
+}
+?>
                         </div>
                     </div>
 

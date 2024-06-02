@@ -57,7 +57,7 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
             $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sqlInsertLog);
             if ($stmt) {
-                $stmt->bind_param("is", $usepID,$date,$time, $logAction);
+                $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
                 $stmt->execute();
                 $stmt->close();
             } else {
