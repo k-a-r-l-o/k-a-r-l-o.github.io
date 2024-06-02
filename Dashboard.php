@@ -4,7 +4,7 @@
     $usertype = $_SESSION['usertype'];
     $username = $_SESSION['username'];
 
-    $sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
+    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
