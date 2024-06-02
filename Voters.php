@@ -998,7 +998,7 @@
                     </tr>
                     <?php
                     // Query to retrieve all data from the Voters table
-                    $sql = "SELECT * FROM Voters";
+                    $sql = "SELECT * FROM voters";
                     $result = $conn->query($sql);
 
                     // Check if there are any rows returned
