@@ -12,6 +12,7 @@ if ($resultID->num_rows > 0) {
     $row = $resultID->fetch_assoc();
     $council_id = $row['council_id'];
     $council_name = $row['council_name'];
+    $table_name = $conn->real_escape_string($council_name . "_votes");
 } else {
     echo "No council found for the given program.";
     exit();
@@ -20,13 +21,14 @@ if ($resultID->num_rows > 0) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initialize an array to hold vote values with default abstain values
     $votes = [
-        'President' => '100010001',
-        'Vice_President_Internal_Affairs' => '100010001',
-        'Vice_President_External_Affairs' => '100010001',
-        'General_Secretary' => '100010001',
-        'General_Treasurer' => '100010001',
-        'General_Auditor' => '100010001',
-        'Public_Information_Officer' => '100010001'
+        'LC_Governor' => '100010001',
+        'Vice_Governor' => '100010001',
+        'Secretary' => '100010001',
+        'Treasurer' => '100010001',
+        'Senator1' => '100010001',
+        'Senator2' => '100010001',
+        'Senator3' => '100010001',
+        'Auditor' => '100010001'
     ];
 
     // Process each position from the form submission
@@ -38,29 +40,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Construct the SQL query to insert or update the vote
     $sqlSaveVote = "
-        INSERT INTO tsc_votes (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, Senator1, Senator2, Senator3, Auditor)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE 
-            President = VALUES(President),
-            Vice_President_Internal_Affairs = VALUES(Vice_President_Internal_Affairs),
-            Vice_President_External_Affairs = VALUES(Vice_President_External_Affairs),
-            General_Secretary = VALUES(General_Secretary),
-            General_Treasurer = VALUES(General_Treasurer),
-            General_Auditor = VALUES(General_Auditor),
-            Public_Information_Officer = VALUES(Public_Information_Officer)";
+            LC_Governor = VALUES(LC_Governor),
+            Vice_Governor = VALUES(Vice_Governor),
+            Secretary = VALUES(Secretary),
+            Treasurer = VALUES(Treasurer),
+            Senator1 = VALUES(Senator1),
+            Senator2 = VALUES(Senator2),
+            Senator3 = VALUES(Senator3),
+            Auditor = VALUES(Auditor)";
 
     // Prepare and execute the statement
     $stmt = $conn->prepare($sqlSaveVote);
     $stmt->bind_param(
-        'iiiiiiii',
+        'iiiiiiiii',
         $usep_ID,
-        $votes['President'],
-        $votes['Vice_President_Internal_Affairs'],
-        $votes['Vice_President_External_Affairs'],
-        $votes['General_Secretary'],
-        $votes['General_Treasurer'],
-        $votes['General_Auditor'],
-        $votes['Public_Information_Officer']
+        $votes['LC_Governor'],
+        $votes['Vice_Governor'],
+        $votes['Secretary'],
+        $votes['Treasurer'],
+        $votes['Senator1'],
+        $votes['Senator2'],
+        $votes['Senator3'],
+        $votes['Auditor']
     );
 
     if ($stmt->execute()) {
