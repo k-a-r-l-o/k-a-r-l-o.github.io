@@ -921,7 +921,7 @@
                         // Query to retrieve all data from the Activity Logs table left join Users
                         $sql = "SELECT a.logs_date,
                         a.logs_time, u.username, u.usertype, a.logs_action
-                        FROM Activity_Logs a 
+                        FROM activity_logs a 
                         LEFT JOIN Users u 
                         ON a.usep_ID = u.usep_ID
                         ORDER BY a.logs_date, a.logs_time DESC";
