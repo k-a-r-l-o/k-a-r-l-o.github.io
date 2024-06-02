@@ -575,48 +575,15 @@ $usep_ID = $_SESSION["usep_ID"];
                         <h2>STUDENT COUNCIL</h2>
                     </div>
                 </div>
-                <?php
-                // Assuming $conn is your database connection
-
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                    // Prepare an array to collect the votes
-                    $votes = [];
+                <form method="post">
+                    <?php
+                    // Assuming $conn is your database connection
 
                     // Fetch positions from the positions table for council_ID = 8
                     $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
                     $resultPositions = $conn->query($sqlPositions);
 
                     if ($resultPositions->num_rows > 0) {
-                        // Loop through each position and collect votes
-                        while ($positionRow = $resultPositions->fetch_assoc()) {
-                            $positionName = $positionRow['position_name'];
-                            if (isset($_POST[$positionName])) {
-                                $votes[$positionName] = $_POST[$positionName];
-                            }
-                        }
-                    }
-
-                    // Insert the votes into the tsc_votes table
-                    if (!empty($votes)) {
-                        foreach ($votes as $position => $candidateID) {
-                            $sqlInsert = "INSERT INTO tsc_votes (usep_ID, $position) VALUES (?, ?) ON DUPLICATE KEY UPDATE $position = VALUES($position)";
-                            $stmt = $conn->prepare($sqlInsert);
-                            $stmt->bind_param("ii", $usep_ID, $candidateID);
-                            $stmt->execute();
-                        }
-                        echo "Votes submitted successfully!";
-                    } else {
-                        echo "No votes to submit.";
-                    }
-                } else {
-                    // Fetch positions from the positions table for council_ID = 8
-                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
-                    $resultPositions = $conn->query($sqlPositions);
-
-                    if ($resultPositions->num_rows > 0) {
-                        echo '<form method="post">';
-
                         // Loop through each position
                         while ($positionRow = $resultPositions->fetch_assoc()) {
                             $positionName = htmlspecialchars($positionRow['position_name']);
@@ -636,7 +603,7 @@ $usep_ID = $_SESSION["usep_ID"];
                             // Add the Abstain option
                             echo '<label for="' . $positionName . 'Abstain">
                             <input type="radio" id="' . $positionName . 'Abstain" name="' . $positionName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
-                            </label>';
+                        </label>';
 
                             // Check if any candidates were found
                             if ($resultCandidates->num_rows > 0) {
@@ -648,8 +615,8 @@ $usep_ID = $_SESSION["usep_ID"];
                                     $candidateImage = htmlspecialchars($candidateRow['candPic']);
 
                                     echo '<label for="' . $positionName . 'Candidate' . $counter . '">
-                                    <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . '" value="' . $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
-                                    </label>';
+                                    <input type="radio" id="' . $positionName . 'Candidate' . $counter . '" name="' . $positionName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $positionName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $positionName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
+                                </label>';
                                     $counter++;
                                 }
                             } else {
@@ -664,17 +631,15 @@ $usep_ID = $_SESSION["usep_ID"];
                             </div>
                         </div>';
                         }
-
-                        echo '<input type="hidden" name="usep_ID" value="YOUR_USER_ID">'; // Replace YOUR_USER_ID with actual user ID
-                        echo '<div class="button">
-                                <button type="submit" name="next">Next</button>
-                            </div>';
-                        echo '</form>';
                     } else {
                         echo 'No positions found for council_ID 8.';
                     }
-                }
-                ?>
+                    ?>
+                    <div class="button">
+                        <div></div>
+                        <button type="submit" name="next">Next</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
