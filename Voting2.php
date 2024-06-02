@@ -622,7 +622,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
                 <div class="button">
                     <button id="customBackButton">Back</button>
-                    <button type="submit" name="saveVote">Submit</button>
+                    <button type="submit" id="saveVote">Submit</button>
                 </div>
 
             </div>
@@ -675,7 +675,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
         $(document).ready(function() {
             // Listen for the click event on the Save Vote button
-            $('#saveVoteButton').on('click', function(e) {
+            $('#saveVote').on('click', function(e) {
                 e.preventDefault(); // Prevent the default form submission
 
                 // Perform AJAX request to save_vote.php
