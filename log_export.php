@@ -9,11 +9,11 @@ if (isset($_SESSION["usep_ID"]) && isset($_POST['council'])) {
     date_default_timezone_set('Asia/Manila');
     $date = date("Y-m-d");
     $time = date("H:i:s");
-    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
-          
 
-    if ($stmt) {
-        $stmt->bind_param("is", $usepID, $logAction);
+    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
+
+    if ($stmt = $conn->prepare($sqlInsertLog)) { // Prepare statement correctly
+        $stmt->bind_param("isss", $usepID, $date, $time, $logAction); // Bind all parameters
         if ($stmt->execute()) {
             echo json_encode(["status" => "success"]);
         } else {
