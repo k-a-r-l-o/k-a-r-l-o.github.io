@@ -594,8 +594,8 @@ $usep_ID = $_SESSION["usep_ID"];
 
                             foreach ($_POST as $position => $candidateId) {
                                 // Remove "Candidate" suffix and replace underscores with spaces
-                                $positionName = str_replace('Candidate', '', $position);
-                                $positionName = str_replace('_', ' ', $positionName);
+                          //      $positionName = str_replace('Candidate', '', $position);
+                           //     $positionName = str_replace('_', ' ', $positionName);
                                 $positionName = htmlspecialchars($positionName);
 
                                 // Fetch the candidate name based on the candidate ID
@@ -637,7 +637,7 @@ $usep_ID = $_SESSION["usep_ID"];
             // Your existing code to fetch candidate names
 
             // Insert the candidate ID into the database
-            $insertStmt = $conn->prepare("INSERT INTO TSC_VOTES (usep_ID, $position) VALUES (?, ?)");
+            $insertStmt = $conn->prepare("INSERT INTO tsc_votes (usep_ID, $position) VALUES (?, ?)");
             $insertStmt->bind_param("ss", $usep_ID, $candidateId);
             $insertStmt->execute();
         }
