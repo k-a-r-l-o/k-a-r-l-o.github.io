@@ -631,8 +631,8 @@ $positionNames = [
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.php')">Back</button>
-                    <button onclick="switchHTML('Voting3.php')">Submit</button>
+                    <button onclick="switchHTML('Voting3.php')">Back</button>
+                    <button onclick="switchHTML('Voting5.php')">Submit</button>
                 </div>
 
             </div>
