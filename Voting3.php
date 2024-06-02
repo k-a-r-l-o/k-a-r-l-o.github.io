@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     );
 
     if ($stmt->execute()) {
+        $queryString = http_build_query($votes);
         echo "<script>window.location.href = 'Voting4.php';</script>";
     } else {
         echo "Error: " . $stmt->error;
@@ -781,8 +782,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             sessionStorage.setItem(imageId, newImageSrc);
         }
 
+        function storeSelectedValue(radio) {
+            var name = radio.name;
+            var value = radio.value;
+            sessionStorage.setItem(name, value);
+        }
+
         function getStoredImage(imageId) {
             return sessionStorage.getItem(imageId);
+        }
+
+        function getStoredValue(name) {
+            return sessionStorage.getItem(name);
         }
 
         // Add event listeners to all candidate radio buttons
@@ -793,6 +804,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (radio.checked) {
                     // Update the image to the selected candidate's image
                     updateCandidateImage(radio.getAttribute('data-image-id'), radio.getAttribute('data-image-src'));
+                    // Store the selected value in sessionStorage
+                    storeSelectedValue(radio);
+
                 }
             });
         });
@@ -800,9 +814,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         window.onload = function() {
             candidateRadios.forEach(function(radio) {
-                var storedImageSrc = getStoredImage(radio.getAttribute('data-image-id'));
-                if (storedImageSrc !== null) {
-                    updateCandidateImage(radio.getAttribute('data-image-id'), storedImageSrc);
+                var storedValue = getStoredValue(radio.name);
+                if (storedValue !== null && storedValue === radio.value) {
+                    radio.checked = true;
+                    // Update the image to the stored candidate's image
+                    updateCandidateImage(radio.getAttribute('data-image-id'), radio.getAttribute('data-image-src'));
                 }
             });
         };
@@ -871,14 +887,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Set the cookie with the selected candidate value
             setCookie("selectedCandidate", selectedCandidate, 1); // Set cookie to expire in 1 day
         });
-
-        // Function to restore selected radio button based on cookie
-        window.onload = function() {
-            var selectedCandidate = getCookie("selectedCandidate");
-            if (selectedCandidate !== "") {
-                document.querySelector('input[name="position"][value="' + selectedCandidate + '"]').checked = true;
-            }
-        };
     </script>
 
 </body>
