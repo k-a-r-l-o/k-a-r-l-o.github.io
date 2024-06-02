@@ -989,7 +989,7 @@
                                 $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
 
                                 // Combine the parts with a dash
-                                $formatted_usep_iD = $year . '-' . $numeric_part;
+                                $formatted_usep_ID = $year . '-' . $numeric_part;
                             }
                         ?>
                                 <tr>
@@ -1231,16 +1231,16 @@
             $username = $_POST['uname3'];
             $input_password = $_POST['password3'];
             $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
-            $lname = $_POST['lname3'];
-            $fname = $_POST['fname3'];
+            $LName = $_POST['lname3'];
+            $FName = $_POST['fname3'];
             $usertype = $_POST['user3'];
 
             // Insert data into Users table
             $sqlUserEdit = "";
             if($usepID!=1){
-                $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', fname = '$fname', lname = '$lname' ,usertype  = '$usertype' WHERE usep_id = '$usepID'";
+                $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', fname = '$FName', lname = '$LName' ,usertype  = '$usertype' WHERE usep_id = '$usepID'";
             }else{
-                $sqlUserEdit = "UPDATE ssers SET username = '$username', userpass = '$hashed_password', fname = '$fname', lname = '$lname' WHERE usep_id = '$usepID'";
+                $sqlUserEdit = "UPDATE ssers SET username = '$username', userpass = '$hashed_password', fname = '$FName', lname = '$LName' WHERE usep_id = '$usepID'";
             }
 
             if ($conn->query($sqlUserEdit) === TRUE) {
