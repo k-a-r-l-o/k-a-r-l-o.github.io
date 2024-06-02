@@ -631,8 +631,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </header>
-
-    <form method="post" id="votingForm">
+    <div class="bodycontainer">
+        <div class="content">
+            <div class="cardcontainer">
+                <div class="title">
+                    <div class="tname">
+                        <h2>STUDENT COUNCIL</h2>
+                    </div>
+                </div>                   
+                <form method="post" id="votingForm">
                     <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($usep_ID); ?>">
                     <?php
                     // Fetch positions from the positions table for council_ID = 8
