@@ -9,7 +9,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
 
 // Check if the request method is POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Retrieve all candidate IDs from the AJAX request
     $president = isset($_POST['PresidentCandidate']) ? $_POST['PresidentCandidate'] : null;
     $vpInternal = isset($_POST['VicePresidentInternalCandidate']) ? $_POST['VicePresidentInternalCandidate'] : null;
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Close the statement and the database connection
     $stmt->close();
-    $conn->close();
+
 } else {
     // Handle cases where the request method is not POST
     echo "Invalid request method.";
