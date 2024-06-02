@@ -1030,7 +1030,7 @@
                                 $allData[] = $row;
                         ?>
                                 <tr>
-                                    <td class='tdfirst'><?php echo $row["Pname"] ?></td>
+                                    <td class='tdfirst'><?php echo $row["pname"] ?></td>
                                     <td><?php echo $row["position"] ?></td>
                                     <td class='tdlast'><?php echo $row["votes"] ?></td>
                                 </tr>
