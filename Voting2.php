@@ -594,7 +594,11 @@ $usep_ID = $_SESSION["usep_ID"];
 
                                 foreach ($_POST as $position => $candidateId) {
                                     $formattedPosition = str_replace('_', ' ', $position);
-                                    echo '<p>   ' . htmlspecialchars($position)  . htmlspecialchars($candidateId) . '</p>';
+                                    echo '<div class="pos">
+                                    <p>'. htmlspecialchars($formattedPosition) . ':</p>
+                                    <p class="c">' . htmlspecialchars($candidateId) . '</p>
+                                  </div>';
+    
                                 }
                             } else {
                                 echo 'No data received.';
