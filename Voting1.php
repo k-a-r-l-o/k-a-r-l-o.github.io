@@ -614,19 +614,21 @@ $usep_ID = $_SESSION["usep_ID"];
                     // Prepare and execute the statement
                     $stmt = $conn->prepare($sqlSaveVote);
                     $stmt->bind_param(
-                        'iiiiiiii', 
-                        $usep_ID, 
-                        $votes['President'], 
-                        $votes['Vice_President_Internal_Affairs'], 
-                        $votes['Vice_President_External_Affairs'], 
-                        $votes['General_Secretary'], 
-                        $votes['General_Treasurer'], 
-                        $votes['General_Auditor'], 
+                        'iiiiiiii',
+                        $usep_ID,
+                        $votes['President'],
+                        $votes['Vice_President_Internal_Affairs'],
+                        $votes['Vice_President_External_Affairs'],
+                        $votes['General_Secretary'],
+                        $votes['General_Treasurer'],
+                        $votes['General_Auditor'],
                         $votes['Public_Information_Officer']
                     );
 
                     if ($stmt->execute()) {
                         echo "<script>window.location.href = 'Voting2.php';</script>";
+                        $queryString = http_build_query($votes);
+                        echo "<script>window.location.href = 'Voting1.php?$queryString';</script>";
                     } else {
                         echo "Error: " . $stmt->error;
                     }
@@ -853,8 +855,8 @@ $usep_ID = $_SESSION["usep_ID"];
                 document.querySelector('input[name="position"][value="' + selectedCandidate + '"]').checked = true;
             }
         };
-
     </script>
 
 </body>
+
 </html>
