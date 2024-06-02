@@ -632,7 +632,7 @@ $positionNames = [
 
                 <div class="button">
                     <button onclick="switchHTML('Voting1.php')">Back</button>
-                    <button onclick="switchHTML('Voting3.php')">Submit</button>
+                    <button onclick="switchHTML1('Voting3.php')">Submit</button>
                 </div>
 
             </div>
@@ -670,6 +670,17 @@ $positionNames = [
             }, 500); // Delay should match the animation duration
         }
 
+        function switchHTML1(file) {
+            // Add fade-out animation to the body
+            document.body.classList.add('fade-out');
+            sessionStorage.clear();
+
+            // Wait for the animation to finish, then switch to the new HTML file
+            setTimeout(function() {
+                window.location.href = file;
+            }, 500); // Delay should match the animation duration
+        }
+
         // Add a listener for animation end to remove the fade-out class and add the fade-in class
         document.body.addEventListener('animationend', function() {
             document.body.classList.remove('fade-out');
@@ -681,7 +692,3 @@ $positionNames = [
 </body>
 
 </html>
-<!-- Include JavaScript code to clear sessionStorage -->
-<script>
-  sessionStorage.clear();
-</script>
