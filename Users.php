@@ -1100,12 +1100,12 @@
 
                 // Retrieve data from form
                 $usepID = $clean_usep_id;
-                $username = $_POST['uname'];
-                $input_password = $_POST['password'];
+                $username = $_POST['UName'];
+                $input_password = $_POST['Password'];
                 $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
-                $lname = $_POST['lname'];
-                $fname = $_POST['fname'];
-                $usertype = $_POST['user'];
+                $lname = $_POST['LName'];
+                $fname = $_POST['FName'];
+                $usertype = $_POST['User'];
                 $userstatus = 'Offline';
 
                 // Insert data into Users table
@@ -1113,8 +1113,8 @@
                                 VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
                 if ($conn->query($sqlUserInsert) === TRUE) {
                     // Log the login activity
-                    $usepID = $_SESSION["usep_id"];
-                    $logAction = 'added user';
+                    $usepID = $_SESSION["usep_ID"];
+                    $logAction = 'Added User';
                     $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
