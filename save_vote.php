@@ -1,15 +1,12 @@
 <?php
-
 include "DBSessionVoter.php";
 
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-
-
 // Check if the request method is POST
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve all candidate IDs from the AJAX request
     $president = isset($_POST['PresidentCandidate']) ? $_POST['PresidentCandidate'] : null;
     $vpInternal = isset($_POST['VicePresidentInternalCandidate']) ? $_POST['VicePresidentInternalCandidate'] : null;
@@ -25,12 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Perform the database insertion
     $sqlInsertVote = "INSERT INTO tsc_votes (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sqlInsertVote);
-    $stmt->bind_param("ssssssss", $usep_ID, $president, $vpInternal, $vpExternal, $secretary, $treasurer, $auditor, $pio); // Assuming $usep_ID is the ID of the voter
-    $usep_ID = ""; // Set the voter's ID here
-    $stmt->execute();
-
-    // Check if the insertion was successful
-    if ($stmt->affected_rows > 0) {
+    $stmt->bind_param("ssssssss", $usep_ID, $president, $vpInternal, $vpExternal, $secretary, $treasurer, $auditor, $pio);
+    
+    if ($stmt->execute()) {
         echo "Vote saved successfully.";
     } else {
         echo "Error saving vote: " . $conn->error;

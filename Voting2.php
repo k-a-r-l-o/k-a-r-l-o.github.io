@@ -579,52 +579,53 @@ $usep_ID = $_SESSION["usep_ID"];
     <div class="bodycontainer">
         <div class="content">
             <div class="cardcontainer">
-                <div class="card">
-                    <div class="positiontitle">
-                        <h3>SC SUMMARY</h3>
-                    </div>
+                <form id="voteForm">
+                    <div class="card">
+                        <div class="positiontitle">
+                            <h3>SC SUMMARY</h3>
+                        </div>
 
 
-                    <div class="cardcontent">
-                        <?php
-                        // Assuming $conn is your database connection
+                        <div class="cardcontent">
+                            <?php
+                            // Assuming $conn is your database connection
 
-                        // Prepare a statement for fetching candidate names
-                        $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
-                        $stmt->bind_param("s", $candidateId);
+                            // Prepare a statement for fetching candidate names
+                            $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
+                            $stmt->bind_param("s", $candidateId);
 
-                        foreach ($_POST as $position => $candidateId) {
-                            // Remove "Candidate" suffix and replace underscores with spaces
-                            $positionName = str_replace('Candidate', '', $position);
-                            $positionName = str_replace('_', ' ', $positionName);
-                            $positionName = htmlspecialchars($positionName);
+                            foreach ($_POST as $position => $candidateId) {
+                                // Remove "Candidate" suffix and replace underscores with spaces
+                                $positionName = str_replace('Candidate', '', $position);
+                                $positionName = str_replace('_', ' ', $positionName);
+                                $positionName = htmlspecialchars($positionName);
 
-                            // Fetch the candidate name based on the candidate ID
-                            $stmt->execute();
-                            $result = $stmt->get_result();
-                            if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $candidateName = htmlspecialchars($row['candidateName']);
-                            } else {
-                                $candidateName = 'Abstain'; // or handle it in another way
-                            }
+                                // Fetch the candidate name based on the candidate ID
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $candidateName = htmlspecialchars($row['candidateName']);
+                                } else {
+                                    $candidateName = 'Abstain'; // or handle it in another way
+                                }
 
-                            echo '<div class="pos">
+                                echo '<div class="pos">
                                 <p>' . $positionName . ':</p>
                                 <p class="c">' . $candidateName . '</p>
                               </div>';
-                        }
+                            }
 
-                        $stmt->close();
-                        ?>
+                            $stmt->close();
+                            ?>
+                        </div>
                     </div>
-                </div>
 
-                <div class="button">
-                    <button id="customBackButton">Back</button>
-                    <button type="submit" id="saveVote">Submit</button>
-                </div>
-
+                    <div class="button">
+                        <button id="customBackButton">Back</button>
+                        <button type="submit" id="saveVote">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -681,7 +682,7 @@ $usep_ID = $_SESSION["usep_ID"];
                 // Perform AJAX request to save_vote.php
                 $.ajax({
                     url: 'save_vote.php',
-                    type: 'GET',
+                    type: 'POST',
                     data: $('#voteForm').serialize(), // Serialize the form data
                     success: function(response) {
                         // Handle the response from save_vote.php
