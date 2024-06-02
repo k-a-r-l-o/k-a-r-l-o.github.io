@@ -640,6 +640,7 @@ $usep_ID = $_SESSION["usep_ID"];
                         <button type="submit" name="next">Next</button>
                     </div>
                 </form>
+
                 <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Fetch positions again to process the form data
@@ -661,6 +662,7 @@ $usep_ID = $_SESSION["usep_ID"];
                     }
                 }
                 ?>
+
             </div>
         </div>
     </div>
