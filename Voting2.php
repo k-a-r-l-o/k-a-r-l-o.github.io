@@ -594,13 +594,13 @@ $usep_ID = $_SESSION["usep_ID"];
                                 <p>Position:</p>
                                 <p class="c">Candidate</p>
                             </div>
-                            
+
                         </div>
                     </div>
 
                     <div class="button">
-                    <button onclick="switchHTML('index.php')">Back</button>
-                        <button type="submit" id="saveVote">Submit</button>
+                        <button onclick="switchHTML('Voting1.php')">Back</button>
+                        <button onclick="switchHTML('Voting3.php')">Submit</button>
                     </div>
                 </form>
             </div>
