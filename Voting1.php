@@ -628,7 +628,7 @@ $usep_ID = $_SESSION["usep_ID"];
                     if ($stmt->execute()) {
                         echo "<script>window.location.href = 'Voting2.php';</script>";
                         $queryString = http_build_query($votes);
-                        echo "<script>window.location.href = 'Voting1.php?$queryString';</script>";
+                        echo "<script>window.location.href = 'Voting2.php?$queryString';</script>";
                     } else {
                         echo "Error: " . $stmt->error;
                     }
