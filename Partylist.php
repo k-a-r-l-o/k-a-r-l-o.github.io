@@ -991,8 +991,6 @@
                                 </tr>
                         <?php
                             }
-                        } else {
-                            echo "0 results";
                         }
                         ?>
 
