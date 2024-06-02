@@ -10,13 +10,20 @@ $votes = $_GET;
 
 // Map the position keys to human-readable names if necessary
 $positionNames = [
-    'President' => 'President',
-    'Vice_President_Internal_Affairs' => 'Vice President Internal Affairs',
-    'Vice_President_External_Affairs' => 'Vice President External Affairs',
-    'General_Secretary' => 'General Secretary',
-    'General_Treasurer' => 'General Treasurer',
-    'General_Auditor' => 'General Auditor',
-    'Public_Information_Officer' => 'Public Information Officer'
+    'LC_Governor' => 'Governor',
+    'Vice_Governor' => 'Vice Governor',
+    'Secretary' => 'Secretary',
+    'Treasurer' => 'Treasurer',
+    'Senator1' => 'Senator1',
+    'Senator2' => 'Senator2',
+    'Senator3' => 'Senator3',
+    'Senator4' => 'Senator4',
+    'Senator5' => 'Senator5',
+    'Senator6' => 'Senator6',
+    'Senator7' => 'Senator7',
+    'Senator8' => 'Senator8',
+    'Senator9' => 'Senator9',
+    'Auditor' => 'Auditor'
 ];
 ?>
 
@@ -600,7 +607,7 @@ $positionNames = [
 
                 <div class="card">
                     <div class="positiontitle">
-                        <h3>SC SUMMARY</h3>
+                        <h3>LC SUMMARY</h3>
                     </div>
                     <div class="cardcontent">
 
@@ -632,7 +639,7 @@ $positionNames = [
 
                 <div class="button">
                     <button onclick="switchHTML('Voting3.php')">Back</button>
-                    <button onclick="switchHTML('Voting5.php')">Submit</button>
+                    <button onclick="switchHTML1('Voting5.php')">Submit</button>
                 </div>
 
             </div>
@@ -663,6 +670,17 @@ $positionNames = [
         function switchHTML(file) {
             // Add fade-out animation to the body
             document.body.classList.add('fade-out');
+
+            // Wait for the animation to finish, then switch to the new HTML file
+            setTimeout(function() {
+                window.location.href = file;
+            }, 500); // Delay should match the animation duration
+        }
+
+        function switchHTML1(file) {
+            // Add fade-out animation to the body
+            document.body.classList.add('fade-out');
+            sessionStorage.clear();
 
             // Wait for the animation to finish, then switch to the new HTML file
             setTimeout(function() {
