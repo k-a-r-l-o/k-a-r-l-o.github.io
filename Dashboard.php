@@ -8,11 +8,11 @@
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($fname, $lname);
+    $stmt->bind_result($FName, $LName);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($fname, 0, 1);
-    $firstLetterLastName = substr($lname, 0, 1);
+    $firstLetterFirstName = substr($FName, 0, 1);
+    $firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
