@@ -681,7 +681,6 @@ $positionNames = [
 </body>
 
 </html>
-
 <!-- Include JavaScript code to clear sessionStorage -->
 <script>
   sessionStorage.clear();
