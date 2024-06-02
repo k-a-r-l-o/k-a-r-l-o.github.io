@@ -591,7 +591,7 @@ $usep_ID = $_SESSION["usep_ID"];
                             $positionName = htmlspecialchars($positionRow['position_name']);
 
                             // Fetch candidates for the current position
-                            $sqlCandidates = "SELECT * FROM Candidates WHERE position = '$positionName'";
+                            $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
                             $resultCandidates = $conn->query($sqlCandidates);
 
                             // Start the HTML output for the card
