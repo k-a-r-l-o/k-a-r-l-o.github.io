@@ -8,11 +8,11 @@
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $usertype);
     $stmt->execute();
-    $stmt->bind_result($fname, $lname);
+    $stmt->bind_result($FName, $LName);
     $stmt->fetch();
     $stmt->close();
-    $firstLetterFirstName = substr($fname, 0, 1);
-    $firstLetterLastName = substr($lname, 0, 1);
+    $firstLetterFirstName = substr($FName, 0, 1);
+    $firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -977,23 +977,23 @@
                             while ($row = $result->fetch_assoc()) {
 
                             // Assuming $row["usep_ID"] contains the ID like 202200294
-                            $usep_id = $row["usep_id"];
+                            $usep_ID = $row["usep_id"];
 
                             if ($row["usep_id"] == 1) {
-                                $formatted_usep_id = "1";
+                                $formatted_usep_ID = "1";
                             } else {
                                 // Extract the year part
-                                $year = substr($usep_id, 0, 4);
+                                $year = substr($usep_ID, 0, 4);
 
                                 // Extract the remaining part and zero-pad it to 5 digits
-                                $numeric_part = str_pad(substr($usep_id, 4), 5, "0", STR_PAD_LEFT);
+                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
 
                                 // Combine the parts with a dash
-                                $formatted_usep_id = $year . '-' . $numeric_part;
+                                $formatted_usep_iD = $year . '-' . $numeric_part;
                             }
                         ?>
                                 <tr>
-                                    <td class="tdfirst"><?php echo $formatted_usep_id; ?></td>
+                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
                                     <td><?php echo $row["fname"] . " " . $row["lname"] ?></td>
                                     <td><?php echo $row["usertype"] ?></td>
                                     <td><?php echo $row["user_status"] ?></td>
