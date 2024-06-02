@@ -17,6 +17,7 @@ $usep_ID = $_SESSION["usep_ID"];
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -583,52 +584,52 @@ $usep_ID = $_SESSION["usep_ID"];
                         <h3>SC SUMMARY</h3>
                     </div>
 
- 
-                        <div class="cardcontent">
-                            <?php
-                            // Assuming $conn is your database connection
 
-                            // Prepare a statement for fetching candidate names
-                            $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
-                            $stmt->bind_param("s", $candidateId);
+                    <div class="cardcontent">
+                        <?php
+                        // Assuming $conn is your database connection
 
-                            foreach ($_POST as $position => $candidateId) {
-                                // Remove "Candidate" suffix and replace underscores with spaces
-                                $positionName = str_replace('Candidate', '', $position);
-                                $positionName = str_replace('_', ' ', $positionName);
-                                $positionName = htmlspecialchars($positionName);
+                        // Prepare a statement for fetching candidate names
+                        $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
+                        $stmt->bind_param("s", $candidateId);
 
-                                // Fetch the candidate name based on the candidate ID
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                if ($result->num_rows > 0) {
-                                    $row = $result->fetch_assoc();
-                                    $candidateName = htmlspecialchars($row['candidateName']);
-                                } else {
-                                    $candidateName = 'Abstain'; // or handle it in another way
-                                }
+                        foreach ($_POST as $position => $candidateId) {
+                            // Remove "Candidate" suffix and replace underscores with spaces
+                            $positionName = str_replace('Candidate', '', $position);
+                            $positionName = str_replace('_', ' ', $positionName);
+                            $positionName = htmlspecialchars($positionName);
 
-                                echo '<div class="pos">
+                            // Fetch the candidate name based on the candidate ID
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $candidateName = htmlspecialchars($row['candidateName']);
+                            } else {
+                                $candidateName = 'Abstain'; // or handle it in another way
+                            }
+
+                            echo '<div class="pos">
                                 <p>' . $positionName . ':</p>
                                 <p class="c">' . $candidateName . '</p>
                               </div>';
-                            }
+                        }
 
-                            $stmt->close();
-                            ?>
-                        </div>
+                        $stmt->close();
+                        ?>
+                    </div>
                 </div>
 
                 <div class="button">
                     <button id="customBackButton">Back</button>
-                    <button type="submit" name="submit">Submit</button>
+                    <button type="submit" name="saveVote">Submit</button>
                 </div>
-     
+
             </div>
         </div>
     </div>
 
-    
+
 
     <script>
         var headerHeight;
@@ -670,6 +671,29 @@ $usep_ID = $_SESSION["usep_ID"];
         document.getElementById("customBackButton").addEventListener("click", function() {
             // Go back in the browsing history
             window.history.back();
+        });
+
+        $(document).ready(function() {
+            // Listen for the click event on the Save Vote button
+            $('#saveVoteButton').on('click', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Perform AJAX request to save_vote.php
+                $.ajax({
+                    url: 'save_vote.php',
+                    type: 'POST',
+                    data: $('#voteForm').serialize(), // Serialize the form data
+                    success: function(response) {
+                        // Handle the response from save_vote.php
+                        alert('Vote saved successfully!');
+                        // You can display a success message or perform other actions here
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle AJAX errors here
+                        alert('Error saving vote: ' + xhr.responseText);
+                    }
+                });
+            });
         });
     </script>
 
