@@ -1117,6 +1117,22 @@
             $sqlPartylistEdit = "UPDATE list_partylist SET name_partylist = '$partylist' WHERE prty_ID = '$party_id'";
 
             if ($conn->query($sqlPartylistEdit) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Edited Partylist';
+                date_default_timezone_set('Asia/Manila');
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('Record updated successfully');</script>";
                 echo "<script>window.location.href = 'Partylist.php';</script>";
             } else {
@@ -1164,6 +1180,22 @@
             $sqlPartylistDelete = "DELETE FROM list_partylist WHERE prty_ID = '$partyID'";
 
             if ($conn->query($sqlPartylistDelete) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Deleted Partylist';
+                date_default_timezone_set('Asia/Manila');
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('Record Deleted successfully');</script>";
                 echo "<script>window.location.href = 'Partylist.php';</script>";
             } else {
