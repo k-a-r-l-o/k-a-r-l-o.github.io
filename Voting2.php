@@ -588,7 +588,7 @@ $usep_ID = $_SESSION["usep_ID"];
                     // Assuming $conn is your database connection
 
                     // Prepare a statement for fetching candidate names
-                    $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM andidates WHERE usep_ID = ?");
+                    $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
                     $stmt->bind_param("s", $candidateId);
 
                     foreach ($_POST as $position => $candidateId) {
