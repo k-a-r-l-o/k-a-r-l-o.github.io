@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // For example, you can use mysqli_real_escape_string or prepared statements for security
 
     // Perform the database insertion
-    $sqlInsertVote = "INSERT INTO TSC_VOTES (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sqlInsertVote = "INSERT INTO tsc_votes (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sqlInsertVote);
     $stmt->bind_param("ssssssss", $usep_ID, $president, $vpInternal, $vpExternal, $secretary, $treasurer, $auditor, $pio); // Assuming $usep_ID is the ID of the voter
     $usep_ID = ""; // Set the voter's ID here
