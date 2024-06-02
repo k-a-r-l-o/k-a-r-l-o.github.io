@@ -987,7 +987,7 @@
                                         <img onclick="editpop(<?php echo $row['prty_ID']; ?>)" src="edit.png" alt="edit icon">
                                         <img onclick="deletepop(<?php echo $row['prty_ID']; ?>)" src="delete.png" alt="delete icon">
                                         <?php
-                                        if ($row["prty_ID"] == 1) {
+                                        if ($prty_ID === 1) {
                                             // Do nothing
                                         } else {
                                             echo '<img onclick="editpop(' . $row['prty_ID'] . ')" src="edit.png" alt="edit icon">';
