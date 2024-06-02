@@ -626,7 +626,7 @@ $usep_ID = $_SESSION["usep_ID"];
                     );
 
                     if ($stmt->execute()) {
-                        header('Voting2.php');
+                        echo "<script>window.location.href = 'Voting2.php';</script>";
                     } else {
                         echo "Error: " . $stmt->error;
                     }
