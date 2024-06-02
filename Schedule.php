@@ -1053,7 +1053,7 @@
                         // Log the login activity
                         $usepID = $_SESSION["usep_ID"];
                         $logAction = 'Added/Edited Schedule';
-                        $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                        $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                         $stmt = $conn->prepare($sqlInsertLog);
                         if ($stmt) {
                             $stmt->bind_param("is", $usepID, $logAction);
