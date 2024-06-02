@@ -234,6 +234,9 @@ $usep_ID = $_SESSION["usep_ID"];
 
         form {
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .positiontitle {
@@ -595,10 +598,9 @@ $usep_ID = $_SESSION["usep_ID"];
                                 foreach ($_POST as $position => $candidateId) {
                                     $formattedPosition = str_replace('_', ' ', $position);
                                     echo '<div class="pos">
-                                    <p>'. htmlspecialchars($formattedPosition) . ':</p>
+                                    <p>' . htmlspecialchars($formattedPosition) . ':</p>
                                     <p class="c">' . htmlspecialchars($candidateId) . '</p>
                                   </div>';
-    
                                 }
                             } else {
                                 echo 'No data received.';
@@ -615,6 +617,48 @@ $usep_ID = $_SESSION["usep_ID"];
             </div>
         </div>
     </div>
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Database connection
+        $conn = new mysqli('hostname', 'username', 'password', 'database');
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Retrieve form data
+        $usep_ID = $_POST['usep_ID'];
+        $positions = [
+            'President', 'Vice_President_Internal_Affairs', 'Vice_President_External_Affairs',
+            'General_Secretary', 'General_Treasurer', 'General_Auditor', 'Public_Information_Officer'
+        ];
+
+        $values = [];
+        foreach ($positions as $position) {
+            if (isset($_POST[$position])) {
+                $values[$position] = $_POST[$position];
+            } else {
+                $values[$position] = null; // Handle cases where no candidate was selected for a position
+            }
+        }
+
+        // Prepare and bind the SQL statement
+        $stmt = $conn->prepare("INSERT INTO tsc_votes (usep_ID, President, Vice_President_Internal_Affairs, Vice_President_External_Affairs, General_Secretary, General_Treasurer, General_Auditor, Public_Information_Officer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param('iiiiiiii', $usep_ID, $values['President'], $values['Vice_President_Internal_Affairs'], $values['Vice_President_External_Affairs'], $values['General_Secretary'], $values['General_Treasurer'], $values['General_Auditor'], $values['Public_Information_Officer']);
+
+        // Execute the query
+        if ($stmt->execute()) {
+            echo "Votes have been successfully recorded.";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        // Close the statement and connection
+        $stmt->close();
+        $conn->close();
+    }
+    ?>
 
 
 
@@ -658,29 +702,6 @@ $usep_ID = $_SESSION["usep_ID"];
         document.getElementById("customBackButton").addEventListener("click", function() {
             // Go back in the browsing history
             window.history.back();
-        });
-
-        $(document).ready(function() {
-            // Listen for the click event on the Save Vote button
-            $('#saveVote').on('click', function(e) {
-                e.preventDefault(); // Prevent the default form submission
-
-                // Perform AJAX request to save_vote.php
-                $.ajax({
-                    url: 'save_vote.php',
-                    type: 'POST',
-                    data: $('#voteForm').serialize(), // Serialize the form data
-                    success: function(response) {
-                        // Handle the response from save_vote.php
-                        alert('Vote saved successfully!');
-                        // You can display a success message or perform other actions here
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle AJAX errors here
-                        alert('Error saving vote: ' + xhr.responseText);
-                    }
-                });
-            });
         });
     </script>
 
