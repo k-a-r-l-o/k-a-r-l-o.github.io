@@ -5,19 +5,7 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-// Retrieve the votes from the URL parameters
-$votes = $_GET;
 
-// Map the position keys to human-readable names if necessary
-$positionNames = [
-    'President' => 'President',
-    'Vice_President_Internal_Affairs' => 'Vice President Internal Affairs',
-    'Vice_President_External_Affairs' => 'Vice President External Affairs',
-    'General_Secretary' => 'General Secretary',
-    'General_Treasurer' => 'General Treasurer',
-    'General_Auditor' => 'General Auditor',
-    'Public_Information_Officer' => 'Public Information Officer'
-];
 ?>
 
 <!DOCTYPE html>
