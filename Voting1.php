@@ -583,8 +583,8 @@ $usep_ID = $_SESSION["usep_ID"];
                     // Initialize an array to hold vote values with default abstain values
                     $votes = [
                         'President' => '100010001',
-                        'Vice_President_for_Internal_Affairs' => '100010001',
-                        'Vice_President_for_External_Affairs' => '100010001',
+                        'Vice_President_Internal_Affairs' => '100010001',
+                        'Vice_President_External_Affairs' => '100010001',
                         'General_Secretary' => '100010001',
                         'General_Treasurer' => '100010001',
                         'General_Auditor' => '100010001',
@@ -617,8 +617,8 @@ $usep_ID = $_SESSION["usep_ID"];
                         'iiiiiiii', 
                         $usep_ID, 
                         $votes['President'], 
-                        $votes['Vice_President_for_Internal_Affairs'], 
-                        $votes['Vice_President_for_External_Affairs'], 
+                        $votes['Vice_President_Internal_Affairs'], 
+                        $votes['Vice_President_External_Affairs'], 
                         $votes['General_Secretary'], 
                         $votes['General_Treasurer'], 
                         $votes['General_Auditor'], 
@@ -649,7 +649,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
                             // Convert position names to match the keys used in the PHP votes array
                             $fieldName = str_replace(' ', '_', $positionName);
-                            $fieldName = str_replace('for_', 'for_', $fieldName); // Special case for 'for'
+                            $fieldName = str_replace('for_', '_', $fieldName); // Special case for 'for'
 
                             // Fetch candidates for the current position
                             $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
