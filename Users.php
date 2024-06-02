@@ -1106,10 +1106,10 @@
                 $lname = $_POST['lname'];
                 $fname = $_POST['fname'];
                 $usertype = $_POST['user'];
-                $userstatus = 'offline';
+                $userstatus = 'Offline';
 
                 // Insert data into Users table
-                $sqlUserInsert = "INSERT INTO users (usep_id, username, userpass, lname, fname, usertype, user_status) 
+                $sqlUserInsert = "INSERT INTO users (usep_ID, username, userpass, LName, FName, usertype, User_status) 
                                 VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
                 if ($conn->query($sqlUserInsert) === TRUE) {
                     // Log the login activity
