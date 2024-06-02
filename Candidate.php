@@ -986,6 +986,11 @@
                                 // Assuming $row["usep_ID"] contains the ID like 202200294
                                 $usep_ID = $row["usep_ID"];
 
+                                // Skip displaying the entry with usep_ID equal to 100010001
+                                if ($usep_ID == '100010001') {
+                                    continue;
+                                }
+
                                 // Extract the year part
                                 $year = substr($usep_ID, 0, 4);
 
@@ -1221,6 +1226,19 @@
                     VALUES ('$usepID', '$targetFile', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$council', '$position', '$partylist')";
 
                         if ($conn->query($sqlCandidateInsert) === TRUE) {
+                            // Log the login activity
+                            $usepID = $_SESSION["usep_ID"];
+                            $logAction = 'Added Candidate';
+                            $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                            $stmt = $conn->prepare($sqlInsertLog);
+                            if ($stmt) {
+                                $stmt->bind_param("is", $usepID, $logAction);
+                                $stmt->execute();
+                                $stmt->close();
+                            } else {
+                                echo "Error preparing statement: " . $conn->error;
+                                exit();
+                            }
                             echo "<script>alert('New record created successfully');</script>";
                             echo "<script>window.location.href = 'Candidate.php';</script>";
                         } else {
@@ -1517,6 +1535,19 @@
             }
 
             if ($conn->query($sqlCandidateUpdate) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Edited Candidate';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('Record updated successfully');</script>";
                 echo "<script>window.location.href = 'Candidate.php';</script>";
             } else {
@@ -1580,6 +1611,19 @@
                 // Delete the record from the database
                 $sqlCandDelete = "DELETE FROM Candidates WHERE usep_ID = '$usepID'";
                 if ($conn->query($sqlCandDelete) === TRUE) {
+                    // Log the login activity
+                    $usepID = $_SESSION["usep_ID"];
+                    $logAction = 'Deleted Candidate';
+                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $stmt = $conn->prepare($sqlInsertLog);
+                    if ($stmt) {
+                        $stmt->bind_param("is", $usepID, $logAction);
+                        $stmt->execute();
+                        $stmt->close();
+                    } else {
+                        echo "Error preparing statement: " . $conn->error;
+                        exit();
+                    }
                     echo "<script>alert('Record deleted successfully');</script>";
                     echo "<script>window.location.href = 'Candidate.php';</script>";
                 } else {

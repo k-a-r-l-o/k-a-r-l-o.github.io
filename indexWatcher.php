@@ -1,3 +1,81 @@
+<?php
+    session_start();
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "Voting_System";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }       
+
+// If form is submitted
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+    $input_username = $_POST["username"];
+    $input_password = $_POST["password"];
+    $input_usertype = 'Watcher';
+
+    // Prepare SQL statement to retrieve user from database
+    $sql = "SELECT * FROM Users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $input_username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // User exists, fetch details
+        $row = $result->fetch_assoc();
+        if (password_verify($input_password, $row["userpass"]) && $input_usertype === $row["usertype"]) {
+            // Password is correct and usertype matches, set session and redirect
+            session_start(); // Start the session
+            $_SESSION["username"] = $input_username;
+            $_SESSION["usertype"] = $input_usertype;
+            $_SESSION["usep_ID"] = $row["usep_ID"];
+
+            // Update user status to 'Active' and set logged_out to 0 using a prepared statement
+            $sqlUserEdit = "UPDATE Users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
+            $stmtUpdate = $conn->prepare($sqlUserEdit);
+            $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
+            $stmtUpdate->execute();
+
+            // Log the login activity
+            $usepID = $_SESSION["usep_ID"];
+            $logAction = 'Logged in';
+            $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+            $stmt = $conn->prepare($sqlInsertLog);
+            if ($stmt) {
+                $stmt->bind_param("is", $usepID, $logAction);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                echo "Error preparing statement: " . $conn->error;
+                exit();
+            }
+
+            header("Location: ResultsWatcher.php"); // Redirect to the dashboard
+            exit();
+        } else {
+            // Password or usertype is incorrect
+            echo "<script>alert('Invalid credentials. Please try again.');</script>";
+            echo "<script>window.location.href = 'indexWatcher.php';</script>";
+            exit(); // Stop further execution
+        }
+    } else {
+        // User does not exist
+        echo "<script>alert('User not found. Please try again.');</script>";
+        echo "<script>window.location.href = 'indexWatcher.php';</script>";
+        exit(); // Stop further execution
+    }
+}
+
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -294,9 +372,9 @@
                 <div>
                     <h1>Login</h1>
                 </div>
-                <form method = "get" action = "validateUser.php">
+                <form method = "post">
                     <div class="forgap">
-                        <input type="email" id="username" name="username" placeholder="Username" required>
+                        <input type="text" id="username" name="username" placeholder="Username" required>
                     </div>
                     <div>
                         <input type="password" id="password" name="password" placeholder="Password" required>
@@ -307,7 +385,7 @@
                     <div class="forgap">
                         
                     </div>
-                    <button type="submit" onclick="switchHTML('ResultsWatcher.html')" class="loginbutton">Login</button>
+                    <button type="submit" class="loginbutton">Login</button>
                     <div class="forgap">
                         
                     </div>

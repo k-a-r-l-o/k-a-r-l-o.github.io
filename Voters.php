@@ -1164,6 +1164,19 @@
                                 VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl','$Program' ,'$voted')";
 
                 if ($conn->query($sqlVoterInsert) === TRUE) {
+                    // Log the login activity
+                    $usepID = $_SESSION["usep_ID"];
+                    $logAction = 'Added Voter';
+                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $stmt = $conn->prepare($sqlInsertLog);
+                    if ($stmt) {
+                        $stmt->bind_param("is", $usepID, $logAction);
+                        $stmt->execute();
+                        $stmt->close();
+                    } else {
+                        echo "Error preparing statement: " . $conn->error;
+                        exit();
+                    }
                     echo "<script>alert('New record created successfully');</script>";
                     echo "<script>window.location.href = 'Voters.php';</script>";
                 } else {
@@ -1252,6 +1265,19 @@
                     }
                 }
 
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Imported Voter';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 fclose($file);
                 echo "<script>alert('CSV File has been successfully imported.');</script>";
                 echo "<script>window.location.href = 'Voters.php';</script>";
@@ -1408,6 +1434,19 @@
             $sqlVoterEdit = "UPDATE Voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlVoterEdit) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Edited Voter';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('Record updated successfully');</script>";
                 echo "<script>window.location.href = 'Voters.php';</script>";
             } else {
@@ -1475,6 +1514,19 @@
                 $sqlVoterDelete = "DELETE FROM Voters WHERE usep_ID = '$usepID'";
 
                 if ($conn->query($sqlVoterDelete) === TRUE) {
+                    // Log the login activity
+                    $usepID = $_SESSION["usep_ID"];
+                    $logAction = 'Deleted Voter';
+                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $stmt = $conn->prepare($sqlInsertLog);
+                    if ($stmt) {
+                        $stmt->bind_param("is", $usepID, $logAction);
+                        $stmt->execute();
+                        $stmt->close();
+                    } else {
+                        echo "Error preparing statement: " . $conn->error;
+                        exit();
+                    }
                     echo "<script>alert('Record Deleted successfully');</script>";
                     echo "<script>window.location.href = 'Voters.php';</script>";
                 } else {

@@ -1,3 +1,46 @@
+<?php
+    include "DBSessionWatcher.php";
+
+    $usertype = $_SESSION['usertype'];
+    $username = $_SESSION['username'];
+
+    $sql = "SELECT Fname, LName FROM users WHERE username = ? AND usertype = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $usertype);
+    $stmt->execute();
+    $stmt->bind_result($Fname, $LName);
+    $stmt->fetch();
+    $stmt->close();
+    $firstLetterFirstName = substr($Fname, 0, 1);
+    $firstLetterLastName = substr($LName, 0, 1);
+
+    // Fetch the vote count for the user's specific vote table
+    $userVotesTable = $username . "_votes";
+    $sqlUserVotes = "SELECT COUNT(*) as vote_count FROM $userVotesTable";
+    $resultUserVotes = $conn->query($sqlUserVotes);
+    $userVoteCount = $resultUserVotes->fetch_assoc()['vote_count'];
+
+    // Fetch the program from list_councils where council_name is equal to the username
+    $sqlProgram = "SELECT program FROM list_councils WHERE council_name = '$username'";
+    $resultProgram = $conn->query($sqlProgram);
+    $program = "";
+    if ($resultProgram->num_rows > 0) {
+        $program = $resultProgram->fetch_assoc()['program'];
+    } else {
+        $program = "Invalid";
+    }
+    // Fetch the total vote count from the voters table
+    if($username==='TSC'){
+        $sqlTotalVotes = "SELECT COUNT(*) as total_votes FROM Voters";
+        $resultTotalVotes = $conn->query($sqlTotalVotes);
+        $totalVoteCount = $resultTotalVotes->fetch_assoc()['total_votes'];
+    }else{
+        $sqlTotalVotes = "SELECT COUNT(*) as total_votes FROM Voters WHERE program = '$program'";
+        $resultTotalVotes = $conn->query($sqlTotalVotes);
+        $totalVoteCount = $resultTotalVotes->fetch_assoc()['total_votes'];
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +51,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <style>
 
     body {
@@ -561,14 +605,14 @@
             <div class="contenthead">
                 <div class="titlecontainer">
                     <div>
-                        <h2>TSC Partial/Unofficial Result</h2>
+                        <h2><?php echo $username; ?> Partial/Unofficial Result</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="votes">1349/1690 votes</h2>
+                        <h2 id="votes">0/0 votes</h2>
                     </div>                 
                 </div>
                 <div class="dropdown">
-                    <button id="logout" type="button">Logout</button>
+                    <button id="logout" name="logout">Logout</button>
                 </div>
             </div>
             <div class="tableandnav">
@@ -578,71 +622,6 @@
                     <th class="thfirst">NAME</th>
                     <th>POSITION</th>
                     <th class="thlast">NO. OF VOTES</th>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Maya Cartel</td>
-                    <td>President</td>
-                    <td class="tdlast">524</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Jonathan Carter</td>
-                    <td>President</td>
-                    <td class="tdlast">537</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Michael Brown</td>
-                    <td>Vice President</td>
-                    <td class="tdlast">110</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Sophia Garcia</td>
-                    <td>Secretary</td>
-                    <td class="tdlast">95</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">William Wilson</td>
-                    <td>Treasurer</td>
-                    <td class="tdlast">80</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Emma Anderson</td>
-                    <td>Senators</td>
-                    <td class="tdlast">75</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">James Taylor</td>
-                    <td>Senators</td>
-                    <td class="tdlast">70</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Olivia Martinez</td>
-                    <td>PIO</td>
-                    <td class="tdlast">65</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Daniel Nelson</td>
-                    <td>Treasurer</td>
-                    <td class="tdlast">50</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Emily White</td>
-                    <td>Senators</td>
-                    <td class="tdlast">45</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Alexander Thomas</td>
-                    <td>Vice President</td>
-                    <td class="tdlast">60</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Sophia Hernandez</td>
-                    <td>Secretary</td>
-                    <td class="tdlast">55</td>
-                    </tr>
-                    <tr>
-                    <td class="tdfirst">Karl Cornejo</td>
-                    <td>Secretary</td>
-                    <td class="tdlast">97</td>
                     </tr>
                 </table>
             </div>
@@ -662,14 +641,16 @@
           <h3>LOGOUT</h3>
         </div>
         <div class="popup-content">
-            <div class="popup-content-inner">
-                <div style="text-align: center;">
-                    <p>Are you sure you want to logout?</p>
+            <form method="post">
+                <div class="popup-content-inner">
+                    <div style="text-align: center;">
+                        <p>Are you sure you want to logout?</p>
+                    </div>
+                    <br>
+                    <button type="button" class="cancel-button">Cancel</button>
+                    <button type="submit" class="save-button" name="logout">Confirm</button>
                 </div>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Confirm</button>
-            </div>
+            </form>
         </div>
     </div>
     <script>
@@ -755,15 +736,75 @@
                 document.getElementById("logoutpop").style.display = "flex";
             });
 
-            document.querySelector("#logoutpop .save-button").addEventListener("click", function() {
-                switchHTML('indexWatcher.html');
-            });
-
             document.querySelector("#logoutpop .cancel-button").addEventListener("click", function() {
                 document.getElementById("logoutpop").style.display = "none";
             });
 
+
+    $(document).ready(function() {
+
+            var selectedCouncil = "<?php echo $username; ?>"; // Embed PHP variable into JavaScript
+            $.post('fetch_results.php', {
+                council: selectedCouncil
+            }, function(response) {
+                var parsedResponse = JSON.parse(response);
+                allData = parsedResponse.allData; // Update allData with the new data
+
+                // Update the #Results element with the HTML table rows
+                $('#Results').html(parsedResponse.output);
+
+                currentPage = 0; // Reset to the first page
+                showPage(currentPage); // Call the pagination function after updating results
+            });
+
+
+        var currentPage = 0;
+        var rowsPerPage = 8; // Change this value as needed
+
+        function showPage(page) {
+            var table = document.getElementById('Results');
+            var rows = table.rows;
+
+            // Calculate the start and end indices of the rows to display
+            var startIndex = page * rowsPerPage + 1; // Skip header row
+            var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+            // Hide all rows
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = 'none';
+            }
+
+            // Show rows for the current page
+            for (var i = startIndex; i < endIndex; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        function navigateRows(direction) {
+            currentPage += direction;
+            var table = document.getElementById('Results');
+            var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
+
+            // Check if currentPage is within bounds
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= maxPage) {
+                currentPage = maxPage - 1;
+            }
+
+            showPage(currentPage);
+        }
+    });
+
+    $(document).ready(function() {
+        var userVoteCount = <?php echo $userVoteCount; ?>;
+        var totalVoteCount = <?php echo $totalVoteCount; ?>;
+
+        // Populate the votes count in the h2 element
+        $('#votes').text(userVoteCount + " / " + totalVoteCount);
+    });
     </script>
+
       
 
 </body>

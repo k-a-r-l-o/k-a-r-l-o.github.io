@@ -1051,6 +1051,19 @@
                         VALUES ('$PName', '$MNum')";
 
             if ($conn->query($sqlPrtyInsert) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Added Partylist';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('New record created successfully');</script>";
                 echo "<script>window.location.href = 'Partylist.php';</script>";
             } else {

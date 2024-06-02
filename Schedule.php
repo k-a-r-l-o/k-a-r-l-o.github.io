@@ -1050,6 +1050,19 @@
 
                     // Execute the statement and check if the insertion was successful
                     if ($stmt->execute()) {
+                        // Log the login activity
+                        $usepID = $_SESSION["usep_ID"];
+                        $logAction = 'Added/Edited Schedule';
+                        $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                        $stmt = $conn->prepare($sqlInsertLog);
+                        if ($stmt) {
+                            $stmt->bind_param("is", $usepID, $logAction);
+                            $stmt->execute();
+                            $stmt->close();
+                        } else {
+                            echo "Error preparing statement: " . $conn->error;
+                            exit();
+                        }
                         echo "<script>alert('Voting schedule saved successfully');</script>";
                         echo "<script>window.location.href = 'Schedule.php';</script>";
                     } else {

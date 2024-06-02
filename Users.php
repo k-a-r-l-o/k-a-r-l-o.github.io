@@ -1112,6 +1112,19 @@
                 $sqlUserInsert = "INSERT INTO Users (usep_ID, username, userpass, LName, FName, usertype, User_status) 
                                 VALUES ('$usepID', '$username', '$hashed_password', '$lname', '$fname', '$usertype', '$userstatus')";
                 if ($conn->query($sqlUserInsert) === TRUE) {
+                    // Log the login activity
+                    $usepID = $_SESSION["usep_ID"];
+                    $logAction = 'Added User';
+                    $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                    $stmt = $conn->prepare($sqlInsertLog);
+                    if ($stmt) {
+                        $stmt->bind_param("is", $usepID, $logAction);
+                        $stmt->execute();
+                        $stmt->close();
+                    } else {
+                        echo "Error preparing statement: " . $conn->error;
+                        exit();
+                    }
                     echo "<script>alert('New record created successfully');</script>";
                     echo "<script>window.location.href = 'Users.php';</script>";
                 } else {
@@ -1231,6 +1244,19 @@
             }
 
             if ($conn->query($sqlUserEdit) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Edited User';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('Record updated successfully');</script>";
                 echo "<script>window.location.href = 'Users.php';</script>";
             } else {
@@ -1284,6 +1310,19 @@
             $sqlUserDelete = "DELETE FROM Users WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlUserDelete) === TRUE) {
+                // Log the login activity
+                $usepID = $_SESSION["usep_ID"];
+                $logAction = 'Deleted User';
+                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $stmt = $conn->prepare($sqlInsertLog);
+                if ($stmt) {
+                    $stmt->bind_param("is", $usepID, $logAction);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    echo "Error preparing statement: " . $conn->error;
+                    exit();
+                }
                 echo "<script>alert('Record Deleted successfully');</script>";
                 echo "<script>window.location.href = 'Users.php';</script>";
             } else {

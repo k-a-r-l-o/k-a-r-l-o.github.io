@@ -132,15 +132,15 @@ if ($conn->query($sqlVotScd) === TRUE) {
 
 
 $sqlCand = "CREATE TABLE IF NOT EXISTS Candidates (
-    usep_ID INT,
-    candPic VARCHAR(255) NOT NULL,
-    LName VARCHAR(255) NOT NULL,
-    FName VARCHAR(255) NOT NULL,
-    gender VARCHAR(50) NOT NULL,
-    yearLvl VARCHAR(50) NOT NULL,
-    program VARCHAR(55) NOT NULL,
-    council VARCHAR(55) NOT NULL,
-    position VARCHAR(55) NOT NULL,
+    usep_ID INT NOT NULL,
+    candPic VARCHAR(255),
+    LName VARCHAR(255)  NOT NULL,
+    FName VARCHAR(255)  ,
+    gender VARCHAR(50)  ,
+    yearLvl VARCHAR(50)  ,
+    program VARCHAR(55)  ,
+    council VARCHAR(55)  ,
+    position VARCHAR(55)  ,
     prty_ID INT,
     PRIMARY KEY(usep_ID),
     FOREIGN KEY (prty_ID) REFERENCES list_partylist(prty_ID)
@@ -151,6 +151,16 @@ if ($conn->query($sqlCand) === TRUE) {
 } else {
     echo "Error creating table 'Cand': " . $conn->error . "<br>";
 }
+
+$sqlAbstainInsert = "INSERT IGNORE INTO Candidates (usep_ID, FName) VALUES
+('100010001', 'Abstain')";
+
+if ($conn->query($sqlAbstainInsert) === TRUE) {
+    echo "Abstain inserted into 'Candidates' table successfully<br>";
+} else {
+    echo "Error inserting data into 'Candidates' table: " . $conn->error . "<br>";
+}
+
 
 
 $sqlVoters = "CREATE TABLE IF NOT EXISTS Voters (
@@ -211,10 +221,10 @@ if ($conn->query($sqlProgramInsert) === TRUE) {
 
 
 
-$sqlLogs = "CREATE TABLE IF NOT EXISTS Activity_Logs(
-    usep_ID INT,
-    logs_date DATE,
-    logs_time TIME,
+$sqlLogs = "CREATE TABLE IF NOT EXISTS Activity_Logs (
+    usep_ID INT NOT NULL,
+    logs_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    logs_time TIME NOT NULL DEFAULT CURRENT_TIME,
     logs_action VARCHAR(50) NOT NULL,
     FOREIGN KEY (usep_ID) REFERENCES Users(usep_ID)
 )";
@@ -395,10 +405,16 @@ $sql_AFSET = "CREATE TABLE IF NOT EXISTS AFSET_VOTES (
     Vice_Governor INT NOT NULL,
     Secretary INT NOT NULL,
     Treasurer INT NOT NULL,
-    Senator1 INT NOT NULL,
-    Senator2 INT NOT NULL,
-    Senator3 INT NOT NULL,
-    Auditor INT NOT NULL,
+    Senator1 INT,
+    Senator2 INT,
+    Senator3 INT,
+    Senator4 INT,
+    Senator5 INT,
+    Senator6 INT,
+    Senator7 INT,
+    Senator8 INT,
+    Senator9 INT,
+    Auditor INT,
     PRIMARY KEY(usep_ID),
     FOREIGN KEY (LC_Governor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (Vice_Governor) REFERENCES Candidates(usep_ID),
@@ -407,6 +423,12 @@ $sql_AFSET = "CREATE TABLE IF NOT EXISTS AFSET_VOTES (
     FOREIGN KEY (Senator1) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (Senator2) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (Senator3) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator4) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator5) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator6) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator7) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator8) REFERENCES Candidates(usep_ID),
+    FOREIGN KEY (Senator9) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (Auditor) REFERENCES Candidates(usep_ID),
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";

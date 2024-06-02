@@ -1249,7 +1249,15 @@ $firstLetterLastName = substr($LName, 0, 1);
                 document.getElementById("exportpop").style.display = "flex";
             }
 
+            // Log the export activity
+            $.post('log_export.php', { council: filenameInput }, function(response) {
+                var parsedResponse = JSON.parse(response);
+                if (parsedResponse.status !== "success") {
+                    console.error("Logging export activity failed: " + parsedResponse.message);
+                }
+            });
         }
+
 
         document.querySelector("#exportpop .save-button").addEventListener("click", function() {
             document.getElementById("exportpop").style.display = "none";

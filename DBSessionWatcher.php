@@ -45,7 +45,7 @@ $stmtActive->close();
 // Check if session variables are set
 if (!isset($_SESSION['username']) || !isset($_SESSION['usertype']) || !isset($_SESSION['usep_ID'])) {
     // If session variables are not set, redirect to the login page
-    header("Location: indexAdmin.php");
+    header("Location: indexWatcher.php");
     exit();
 }
 
@@ -79,7 +79,7 @@ if (isset($_POST['logout'])) {
     session_destroy();
 
     // Redirect the user to the login page
-    header("Location: indexAdmin.php");
+    header("Location: indexWatcher.php");
     exit();
 }
 ?>

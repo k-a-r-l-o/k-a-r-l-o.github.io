@@ -31,8 +31,7 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
         // User exists, fetch details
         $row = $result->fetch_assoc();
         if (password_verify($input_password, $row["userpass"]) && $input_usertype === $row["usertype"]) {
-            // Password is correct and usertype matches, set session and redirect
-            session_start(); // Start the session
+            // Password is correct and usertype matches, set session variables
             $_SESSION["username"] = $input_username;
             $_SESSION["usertype"] = $input_usertype;
             $_SESSION["usep_ID"] = $row["usep_ID"];
@@ -40,10 +39,31 @@ if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user
             // Update user status to 'Active' and set logged_out to 0 using a prepared statement
             $sqlUserEdit = "UPDATE Users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
             $stmtUpdate = $conn->prepare($sqlUserEdit);
-            $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
-            $stmtUpdate->execute();
+            if ($stmtUpdate) {
+                $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
+                $stmtUpdate->execute();
+                $stmtUpdate->close();
+            } else {
+                echo "Error preparing statement: " . $conn->error;
+                exit();
+            }
 
-            header("Location: Dashboard.php"); // Redirect to the dashboard
+            // Log the login activity
+            $usepID = $_SESSION["usep_ID"];
+            $logAction = 'Logged in';
+            $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+            $stmt = $conn->prepare($sqlInsertLog);
+            if ($stmt) {
+                $stmt->bind_param("is", $usepID, $logAction);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                echo "Error preparing statement: " . $conn->error;
+                exit();
+            }
+
+            // Redirect to the dashboard
+            header("Location: Dashboard.php");
             exit();
         } else {
             // Password or usertype is incorrect
