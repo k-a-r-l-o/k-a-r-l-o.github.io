@@ -583,7 +583,7 @@ $usep_ID = $_SESSION["usep_ID"];
                         <h3>SC SUMMARY</h3>
                     </div>
 
-                    <form method="post">
+ 
                         <div class="cardcontent">
                             <?php
                             // Assuming $conn is your database connection
@@ -623,35 +623,12 @@ $usep_ID = $_SESSION["usep_ID"];
                     <button onclick="switchHTML('Voting1.php')">Back</button>
                     <button type="submit" name="submit">Submit</button>
                 </div>
-                </form>
+     
             </div>
         </div>
     </div>
 
-    <?php
-    // Assuming $conn is your database connection
-
-    if (isset($_POST['submit'])) {
-        // Loop through the submitted data to insert into the TSC_VOTES table
-        foreach ($_POST as $position => $candidateId) {
-            // Your existing code to fetch candidate names
-
-            // Insert the candidate ID into the database
-            $insertStmt = $conn->prepare("INSERT INTO tsc_votes (usep_ID, $position) VALUES (?, ?)");
-            $insertStmt->bind_param("ss", $usep_ID, $candidateId);
-            $insertStmt->execute();
-        }
-
-        $insertStmt->close();
-
-        // Redirect to a success page or display a success message
-        header("Location: Voting5.php");
-        exit();
-    } else {
-        // Handle if the form is not submitted properly
-        echo "Form submission error!";
-    }
-    ?>
+    
 
     <script>
         var headerHeight;
