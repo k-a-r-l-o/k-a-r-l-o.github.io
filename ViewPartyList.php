@@ -927,8 +927,7 @@ if (isset($_GET['prty_ID'])) {
                             }
                         } 
 
-                        // Close connection
-                        $conn->close();
+
                         ?>
                         
                     </table>
