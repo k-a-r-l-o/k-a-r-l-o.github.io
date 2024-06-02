@@ -680,8 +680,8 @@ $usep_ID = $_SESSION["usep_ID"];
 
                 // Perform AJAX request to save_vote.php
                 $.ajax({
-                    url: 'save_vote.php',
-                    type: 'POST',
+                    url: 'Voting1.php',
+                    type: 'GET',
                     data: $('#voteForm').serialize(), // Serialize the form data
                     success: function(response) {
                         // Handle the response from save_vote.php
