@@ -600,135 +600,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         }
 
-        /*pop up*/
-    .popup {
-        color: white;
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #222E50;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-        height: auto;
-        width: 60vh;
-        border-radius: 5px;
-        z-index: 9999;
-    }
-
-    #logoutpop, #deletepop{
-        height: auto;
-    }
-
-
-
-    .head {
-        background: linear-gradient(to bottom, #28579E, #222E50);
-        width: 100%;
-        height: 6vh;
-        border-radius: 5px 5px 0 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .popup-content {
-        flex: 1;
-        overflow: auto;
-        padding: 5%;
-        box-sizing: border-box;
-    }
-
-    #logoutpop .popup-content, #deletepop .popup-content{
-        overflow: hidden;
-    }
-
-    .popup-content-inner {
-        display: grid;
-        height: auto;
-        gap: 10px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px;
-        height: auto;
-    }
-
-    .form-group label {
-        text-align: left;
-        width: 100%;
-        margin-bottom: 10px;
-        font-size: 15px;
-    }
-
-    .input-form{
-        width: 100%;
-        height: 40px;
-        padding: 1% 1%;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        color: white;
-        background-color: rgba(150, 191, 245, 0.5); 
-        outline: none;
-        box-sizing: border-box; 
-    }
-
-    .input-form::placeholder {
-        color: inherit; 
-    }
-
-    .popup-content .cancel-button, .popup-content .save-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40PX;
-        width: 100%;
-        font-size: large;
-        font-weight: lighter;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .popup-content .cancel-button {
-        background-color: #ffffff;
-        color: #090074;
-    }
-
-    .popup-content .save-button {
-        background-color: #4361EE;
-        color: white;
-    }
-
-    .cancel-button:hover {
-        color: white;
-        background-color: #F34235;
-    }
-
-    .save-button:hover {
-        background-color: #7790ff;
-    }
-
-    @media (max-width: 1000px) {
-      .popup{
-          height: auto;
-      }
-
-    }
-
-    @media (max-width: 500px) {
-      .popup{
-            width: 100vw;
-        }
-
-    }
     </style>
 
 </head>
@@ -866,24 +737,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </form>
             </div>
         </div>
-    </div>
-    <div class="popup" id="passpop">
-        <div class="head">
-          <h3>ENTER ADMIN PASSKEY</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <form>
-                <div class="form-group">
-                    <label for="pName">Passkey:</label>
-                    <input type="text" id="passkey" class="input-form">
-                </div>
-                </form>
-                <br>
-                <button class="cancel-button">Cancel</button>
-                <button class="save-button">Login</button>
-            </div>
-        </div>    
     </div>
 
     <script>
@@ -1069,8 +922,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 
 </html>
-<?php
-if($program==="BSEd"){
-    echo"<script>document.getElementById('passpop').style.display = 'flex';</script>";
-}
-?>
