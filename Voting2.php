@@ -594,11 +594,12 @@ $usep_ID = $_SESSION["usep_ID"];
                                 <p>Position:</p>
                                 <p class="c">Candidate</p>
                             </div>
+                            
                         </div>
                     </div>
 
                     <div class="button">
-                        <button id="customBackButton">Back</button>
+                    <button onclick="switchHTML('index.php')">Back</button>
                         <button type="submit" id="saveVote">Submit</button>
                     </div>
                 </form>
@@ -643,10 +644,6 @@ $usep_ID = $_SESSION["usep_ID"];
             document.body.classList.add('fade-in');
         });
 
-        document.getElementById("customBackButton").addEventListener("click", function() {
-            // Go back in the browsing history
-            window.history.back();
-        });
     </script>
 
 
