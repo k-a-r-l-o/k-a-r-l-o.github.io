@@ -890,7 +890,7 @@
         <div class="menu">
             <div class="accounttag">
                 <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $Fname. " " .$LName?></h2>
+                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
                 <h3 class="usertype"><?php echo $usertype?></h3>
             </div>
             <div class="buttonContainer">
@@ -961,7 +961,7 @@
                         </tr>
                         <?php
                         // Query to retrieve all data from the Users table
-                        $sql = "SELECT * FROM List_Partylist ";
+                        $sql = "SELECT * FROM list_partylist ";
                         $result = $conn->query($sql);
 
                         // Check if there are any rows returned
@@ -1047,14 +1047,14 @@
             $PName = $_POST['namePart'];
             $MNum = '0';
             // Insert data into Users table
-            $sqlPrtyInsert = "INSERT INTO List_Partylist (name_partylist, num_members) 
+            $sqlPrtyInsert = "INSERT INTO list_partylist (name_partylist, num_members) 
                         VALUES ('$PName', '$MNum')";
 
             if ($conn->query($sqlPrtyInsert) === TRUE) {
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
                 $logAction = 'Added Partylist';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);
@@ -1121,7 +1121,7 @@
 
 
             // Insert data into Users table
-            $sqlPartylistEdit = "UPDATE List_Partylist SET name_partylist = '$partylist' WHERE prty_ID = '$party_id'";
+            $sqlPartylistEdit = "UPDATE list_partylist SET name_partylist = '$partylist' WHERE prty_ID = '$party_id'";
 
             if ($conn->query($sqlPartylistEdit) === TRUE) {
                 echo "<script>alert('Record updated successfully');</script>";
@@ -1175,7 +1175,7 @@
             $partyID = $_POST['pID3'];
 
             // Insert data into Users table
-            $sqlPartylistDelete = "DELETE FROM List_Partylist WHERE prty_ID = '$partyID'";
+            $sqlPartylistDelete = "DELETE FROM list_partylist WHERE prty_ID = '$partyID'";
 
             if ($conn->query($sqlPartylistDelete) === TRUE) {
                 echo "<script>alert('Record Deleted successfully');</script>";
