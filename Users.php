@@ -1238,9 +1238,9 @@
             // Insert data into Users table
             $sqlUserEdit = "";
             if($usepID!=1){
-                $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', fname = '$FName', lname = '$LName' ,usertype  = '$usertype' WHERE usep_id = '$usepID'";
+                $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', FName = '$FName', LName = '$LName' ,usertype  = '$usertype' WHERE usep_ID = '$usepID'";
             }else{
-                $sqlUserEdit = "UPDATE ssers SET username = '$username', userpass = '$hashed_password', fname = '$FName', lname = '$LName' WHERE usep_id = '$usepID'";
+                $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', FName = '$FName', LName = '$LName' WHERE usep_ID = '$usepID'";
             }
 
             if ($conn->query($sqlUserEdit) === TRUE) {
@@ -1307,13 +1307,13 @@
             $usepID = $clean_usep_ID;
 
             // Insert data into Users table
-            $sqlUserDelete = "DELETE FROM users WHERE usep_id = '$usepID'";
+            $sqlUserDelete = "DELETE FROM users WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlUserDelete) === TRUE) {
                 // Log the login activity
                 $usepID = $_SESSION["usep_id"];
                 $logAction = 'deleted user';
-                $sqlInsertLog = "INSERT INTO Activity_Logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
+                $sqlInsertLog = "INSERT INTO activity_logs (usep_id, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
                     $stmt->bind_param("is", $usepID, $logAction);
