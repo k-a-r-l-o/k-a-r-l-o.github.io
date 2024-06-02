@@ -584,43 +584,49 @@ $usep_ID = $_SESSION["usep_ID"];
                     </div>
 
                     <div class="cardcontent">
-                       <?php
-                    // Assuming $conn is your database connection
+                        <?php
+                        // Assuming $conn is your database connection
 
-                    // Prepare a statement for fetching candidate names
-                    $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
-                    $stmt->bind_param("s", $candidateId);
+                        // Prepare a statement for fetching candidate names
+                        $stmt = $conn->prepare("SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?");
+                        $stmt->bind_param("s", $candidateId);
 
-                    foreach ($_POST as $position => $candidateId) {
-                        // Remove "Candidate" suffix and replace underscores with spaces
-                        $positionName = str_replace('Candidate', '', $position);
-                        $positionName = str_replace('_', ' ', $positionName);
-                        $positionName = htmlspecialchars($positionName);
+                        foreach ($_POST as $position => $candidateId) {
+                            // Remove "Candidate" suffix and replace underscores with spaces
+                            $positionName = str_replace('Candidate', '', $position);
+                            $positionName = str_replace('_', ' ', $positionName);
+                            $positionName = htmlspecialchars($positionName);
 
-                        // Fetch the candidate name based on the candidate ID
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        if ($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            $candidateName = htmlspecialchars($row['candidateName']);
-                        } else {
-                            $candidateName = 'Abstain'; // or handle it in another way
+                            // Fetch the candidate name based on the candidate ID
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $candidateName = htmlspecialchars($row['candidateName']);
+                            } else {
+                                $candidateName = 'Abstain'; // or handle it in another way
+                            }
+
+                            // Insert the vote into TSC_VOTES table
+                            $insertStmt = $conn->prepare("INSERT INTO tsc_votes (usep_ID, $position) VALUES (?, ?)");
+                            $insertStmt->bind_param("ss", $usepId, $candidateId);
+                            $insertStmt->execute();
+
+                            echo '<div class="pos">
+            <p>' . $positionName . ':</p>
+            <p class="c">' . $candidateName . '</p>
+          </div>';
                         }
 
-                        echo '<div class="pos">
-                                <p>' . $positionName . ':</p>
-                                <p class="c">' . $candidateName . '</p>
-                              </div>';
-                    }
-
-                    $stmt->close();
-                    ?>
+                        $stmt->close();
+                        $insertStmt->close();
+                        ?>
                     </div>
                 </div>
 
                 <div class="button">
                     <button id="customBackButton">Back</button>
-                    <button type="submit" onclick="switchHTML('Voting5.php')">Submit</button>
+                    <button type="submit" name="save" onclick="switchHTML('Voting5.php')">Submit</button>
                 </div>
             </div>
         </div>
@@ -672,5 +678,3 @@ $usep_ID = $_SESSION["usep_ID"];
 </body>
 
 </html>
-
-
