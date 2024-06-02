@@ -620,7 +620,7 @@ $usep_ID = $_SESSION["usep_ID"];
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.php')">Back</button>
+                    <button id="customBackButton">Back</button>
                     <button type="submit" name="submit">Submit</button>
                 </div>
      
