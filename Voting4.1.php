@@ -10,13 +10,20 @@ $votes = $_GET;
 
 // Map the position keys to human-readable names if necessary
 $positionNames = [
-    'President' => 'President',
-    'Vice_President_Internal_Affairs' => 'Vice President Internal Affairs',
-    'Vice_President_External_Affairs' => 'Vice President External Affairs',
-    'General_Secretary' => 'General Secretary',
-    'General_Treasurer' => 'General Treasurer',
-    'General_Auditor' => 'General Auditor',
-    'Public_Information_Officer' => 'Public Information Officer'
+    'LC_Governor' => 'Governor',
+    'Vice_Governor' => 'Vice Governor',
+    'Secretary' => 'Secretary',
+    'Treasurer' => 'Treasurer',
+    'MATH Senator1' => 'MATH Senator1',
+    'MATH Senator2' => 'MATH Senator2',
+    'MATH Senator3' => 'MATH Senator3',
+    'ENGLISH Senator1' => 'ENGLISH Senator1',
+    'ENGLISH Senator2' => 'ENGLISH Senator2',
+    'ENGLISH Senator3' => 'ENGLISH Senator3',
+    'FILIPINO Senator1' => 'FILIPINO Senator1',
+    'FILIPINO Senator2' => 'FILIPINO Senator2',
+    'FILIPINO Senator3' => 'FILIPINO Senator3',
+    'Auditor' => 'Auditor'
 ];
 ?>
 
@@ -554,136 +561,6 @@ $positionNames = [
             }
 
         }
-
-        /*pop up*/
-    .popup {
-        color: white;
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #222E50;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-        height: auto;
-        width: 60vh;
-        border-radius: 5px;
-        z-index: 9999;
-    }
-
-    #logoutpop, #deletepop{
-        height: auto;
-    }
-
-
-
-    .head {
-        background: linear-gradient(to bottom, #28579E, #222E50);
-        width: 100%;
-        height: 6vh;
-        border-radius: 5px 5px 0 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .popup-content {
-        flex: 1;
-        overflow: auto;
-        padding: 5%;
-        box-sizing: border-box;
-    }
-
-    #logoutpop .popup-content, #deletepop .popup-content{
-        overflow: hidden;
-    }
-
-    .popup-content-inner {
-        display: grid;
-        height: auto;
-        gap: 10px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px;
-        height: auto;
-    }
-
-    .form-group label {
-        text-align: left;
-        width: 100%;
-        margin-bottom: 10px;
-        font-size: 15px;
-    }
-
-    .input-form{
-        width: 100%;
-        height: 40px;
-        padding: 1% 1%;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        color: white;
-        background-color: rgba(150, 191, 245, 0.5); 
-        outline: none;
-        box-sizing: border-box; 
-    }
-
-    .input-form::placeholder {
-        color: inherit; 
-    }
-
-    .popup-content .cancel-button, .popup-content .save-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40PX;
-        width: 100%;
-        font-size: large;
-        font-weight: lighter;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .popup-content .cancel-button {
-        background-color: #ffffff;
-        color: #090074;
-    }
-
-    .popup-content .save-button {
-        background-color: #4361EE;
-        color: white;
-    }
-
-    .cancel-button:hover {
-        color: white;
-        background-color: #F34235;
-    }
-
-    .save-button:hover {
-        background-color: #7790ff;
-    }
-
-    @media (max-width: 1000px) {
-      .popup{
-          height: auto;
-      }
-
-    }
-
-    @media (max-width: 500px) {
-      .popup{
-            width: 100vw;
-        }
-
-    }
     </style>
 
 </head>
@@ -701,17 +578,17 @@ $positionNames = [
                     <div class="step-name">Student Council</div>
                 </div>
 
-                <div class="stepper-item active">
+                <div class="stepper-item completed">
                     <div class="step-counter"></div>
                     <div class="step-name">SC Summary</div>
                 </div>
 
-                <div class="stepper-item">
+                <div class="stepper-item completed">
                     <div class="step-counter"></div>
                     <div class="step-name">Local Council</div>
                 </div>
 
-                <div class="stepper-item">
+                <div class="stepper-item active">
                     <div class="step-counter"></div>
                     <div class="step-name">LC Summary</div>
                 </div>
@@ -730,7 +607,7 @@ $positionNames = [
 
                 <div class="card">
                     <div class="positiontitle">
-                        <h3>SC SUMMARY</h3>
+                        <h3>LC SUMMARY</h3>
                     </div>
                     <div class="cardcontent">
 
@@ -761,35 +638,12 @@ $positionNames = [
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.php')">Back</button>
-                    <button onclick="switchHTML1('Voting3.php')">Submit</button>
+                    <button onclick="switchHTML('Voting3.php')">Back</button>
+                    <button onclick="switchHTML1('Voting5.php')">Submit</button>
                 </div>
 
             </div>
         </div>
-    </div>
-    <div class="popup" id="passpop">
-        <div class="head">
-          <h3>CHOOSE YOUR MAJOR</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <form action="Voting3.1.php" method="post">
-                <div class="form-group">
-                    <label for="major">Passkey:</label>
-                    <select name="major" id="major" class="input-form" required>
-                            <option value="" disabled selected hidden>Select here</option>
-                            <option value="MATH">Math</option>
-                            <option value="ENGLISH">Math</option>
-                            <option value="Filipino">Math</option>
-                    </select>
-                </div>
-                </form>
-                <br>
-                <button type="button" class="cancel-button">Cancel</button>
-                <button type="submit" class="save-button">Enter</button>
-            </div>
-        </div>    
     </div>
 
     <script>
@@ -824,19 +678,14 @@ $positionNames = [
         }
 
         function switchHTML1(file) {
-            var program = <?php echo json_encode($_SESSION["program"]); ?>;
-            if(program==='BSEd'){
-                document.getElementById('passpop').style.display = 'flex';
-            }else{
-                // Add fade-out animation to the body
-                document.body.classList.add('fade-out');
-                sessionStorage.clear();
+            // Add fade-out animation to the body
+            document.body.classList.add('fade-out');
+            sessionStorage.clear();
 
-                // Wait for the animation to finish, then switch to the new HTML file
-                setTimeout(function() {
-                    window.location.href = file;
-                }, 500); // Delay should match the animation duration
-            }
+            // Wait for the animation to finish, then switch to the new HTML file
+            setTimeout(function() {
+                window.location.href = file;
+            }, 500); // Delay should match the animation duration
         }
 
         // Add a listener for animation end to remove the fade-out class and add the fade-in class
@@ -844,29 +693,6 @@ $positionNames = [
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
         });
-
-              // Hide the popup when the cancel button is clicked
-    document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
-        document.getElementById("passpop").style.display = "none";
-    });
-
-    // Check the entered passkey and open the new page if correct
-    document.querySelector("#passpop .save-button").addEventListener("click", function() {
-        // Retrieve the entered passkey
-        var passkey = document.getElementById("passkey").value;
-
-        // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
-        if (passkey === 'adminni') {
-            // Open the new page in the same window
-            window.open('indexWatcher.php', '_self');
-        } else {
-            // Notify the user about incorrect passkey
-            alert('Incorrect passkey. Please try again.');
-        }
-
-        // Hide the popup
-        document.getElementById("passpop").style.display = "none";
-    });
     </script>
 
 

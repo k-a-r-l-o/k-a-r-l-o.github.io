@@ -5,21 +5,114 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-// Retrieve the votes from the URL parameters
-$votes = $_GET;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $selected_major = $_POST['major'];
+}
 
-// Map the position keys to human-readable names if necessary
-$positionNames = [
-    'President' => 'President',
-    'Vice_President_Internal_Affairs' => 'Vice President Internal Affairs',
-    'Vice_President_External_Affairs' => 'Vice President External Affairs',
-    'General_Secretary' => 'General Secretary',
-    'General_Treasurer' => 'General Treasurer',
-    'General_Auditor' => 'General Auditor',
-    'Public_Information_Officer' => 'Public Information Officer'
-];
+
+
+$sqlID = "SELECT council_id, council_name FROM list_councils WHERE program = '$program'";
+$resultID = $conn->query($sqlID);
+
+if ($resultID->num_rows > 0) {
+    $row = $resultID->fetch_assoc();
+    $council_id = $row['council_id'];
+    $council_name = $row['council_name'];
+    $council_name1 = strtolower($row['council_name']);
+    $table_name = $conn->real_escape_string($council_name1 . "_votes");
+} else {
+    echo "No council found for the given program.";
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Initialize an array to hold vote values with default abstain values
+    $votes = [
+        'LC_Governor' => '100010001',
+        'Vice_Governor' => '100010001',
+        'Secretary' => '100010001',
+        'Treasurer' => '100010001',
+        'MATH Senator1' => 'null',
+        'MATH Senator2' => 'null',
+        'MATH Senator3' => 'null',
+        'ENGLISH Senator1' => 'null',
+        'ENGLISH Senator1' => 'null',
+        'ENGLISH Senator1' => 'null',
+        'FILIPINO Senator1' => 'null',
+        'FILIPINO Senator2' => 'null',
+        'FILIPINO Senator3' => 'null',
+        'Auditor' => '100010001'
+    ];
+
+    
+
+    // Process each position from the form submission
+    foreach ($votes as $position => &$candidateId) {
+        if (isset($_POST[$position])) {
+            $candidateId = htmlspecialchars($_POST[$position]);
+        }
+    }
+
+    // Construct the SQL query to insert or update the vote
+    $sqlSaveVote = "
+        INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, 
+        MATH Senator1,
+        MATH Senator2,
+        MATH Senator3,
+        ENGLISH Senator1,
+        ENGLISH Senator2,
+        ENGLISH Senator3,
+        FILIPINO Senator1,
+        FILIPINO Senator2,
+        FILIPINO Senator3, Auditor)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE 
+            LC_Governor = VALUES(LC_Governor),
+            Vice_Governor = VALUES(Vice_Governor),
+            Secretary = VALUES(Secretary),
+            Treasurer = VALUES(Treasurer),
+            MATH Senator1 = VALUES(MATH Senator1),
+            MATH Senator2 = VALUES(MATH Senator2),
+            MATH Senator3 = VALUES(MATH Senator3),
+            ENGLISH Senator1 = VALUES(ENGLISH Senator1),
+            ENGLISHSenator2 = VALUES(ENGLISH Senator2),
+            ENGLISH Senator3 = VALUES(ENGLISH Senator3),
+            FILIPINO Senator1 = VALUES(FILIPINO Senator1),
+            FILIPINO Senator2 = VALUES(FILIPINO Senator2),
+            FILIPINO Senator3 = VALUES(FILIPINO Senator3),
+            Auditor = VALUES(Auditor)";
+
+    // Prepare and execute the statement
+    $stmt = $conn->prepare($sqlSaveVote);
+    $stmt->bind_param(
+        'iiiiiiiii',
+        $usep_ID,
+        $votes['LC_Governor'],
+        $votes['Vice_Governor'],
+        $votes['Secretary'],
+        $votes['Treasurer'],
+        $votes['MATH Senator1'],
+        $votes['MATH Senator2'],
+        $votes['MATH Senator3'],
+        $votes['ENGLISH Senator1'],
+        $votes['ENGLISH Senator2'],
+        $votes['ENGLISH Senator3'],
+        $votes['FILIPINO Senator1'],
+        $votes['FILIPINO Senator2'],
+        $votes['FILIPINO Senator3'],
+        $votes['Auditor']
+    );
+
+    if ($stmt->execute()) {
+        $queryString = http_build_query($votes);
+        echo "<script>window.location.href = 'Voting4.1.php?$queryString';</script>";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +124,6 @@ $positionNames = [
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -236,7 +328,7 @@ $positionNames = [
         .card {
             height: auto;
             width: 100%;
-            max-width: 715px;
+            max-width: 1285px;
             display: flex;
             flex-direction: column;
             justify-self: center;
@@ -251,7 +343,6 @@ $positionNames = [
             display: flex;
             flex-direction: column;
             align-items: center;
-
         }
 
         .positiontitle {
@@ -263,7 +354,6 @@ $positionNames = [
             height: auto;
             border-radius: 12px 12px 0 0;
             padding: 12px 10%;
-            justify-content: center;
             box-sizing: border-box;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
@@ -280,12 +370,11 @@ $positionNames = [
             display: flex;
             padding: 20px 10%;
             box-sizing: border-box;
-            background-color: rgb(150, 191, 245, 0.5);
+            background-color: rgb(150, 191, 245, 0.75);
             height: auto;
             border-radius: 0 0 12px 12px;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
         }
 
         input[type="radio"] {
@@ -391,7 +480,7 @@ $positionNames = [
             width: 100%;
             display: flex;
             justify-content: space-between;
-            max-width: 715px;
+            max-width: 1285px;
         }
 
         .button button {
@@ -446,18 +535,6 @@ $positionNames = [
             border-radius: 5px;
         }
 
-        .pos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            width: 100%;
-        }
-
-        .pos p {
-            font-size: 20px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
         @media (max-width: 1000px) {
 
             header {
@@ -486,8 +563,8 @@ $positionNames = [
 
             .positiontitle h3,
             h2,
-            button,
-            p {
+            label,
+            button {
                 scale: 0.9;
             }
 
@@ -498,6 +575,9 @@ $positionNames = [
         }
 
         @media (max-width: 900px) {
+            .cardcontent {
+                flex-direction: column;
+            }
 
             .candidateimage {
                 justify-content: center;
@@ -544,8 +624,8 @@ $positionNames = [
 
             .positiontitle h3,
             h2,
-            button,
-            p {
+            label,
+            button {
                 scale: 0.8;
             }
 
@@ -555,135 +635,6 @@ $positionNames = [
 
         }
 
-        /*pop up*/
-    .popup {
-        color: white;
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #222E50;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-        height: auto;
-        width: 60vh;
-        border-radius: 5px;
-        z-index: 9999;
-    }
-
-    #logoutpop, #deletepop{
-        height: auto;
-    }
-
-
-
-    .head {
-        background: linear-gradient(to bottom, #28579E, #222E50);
-        width: 100%;
-        height: 6vh;
-        border-radius: 5px 5px 0 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .popup-content {
-        flex: 1;
-        overflow: auto;
-        padding: 5%;
-        box-sizing: border-box;
-    }
-
-    #logoutpop .popup-content, #deletepop .popup-content{
-        overflow: hidden;
-    }
-
-    .popup-content-inner {
-        display: grid;
-        height: auto;
-        gap: 10px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px;
-        height: auto;
-    }
-
-    .form-group label {
-        text-align: left;
-        width: 100%;
-        margin-bottom: 10px;
-        font-size: 15px;
-    }
-
-    .input-form{
-        width: 100%;
-        height: 40px;
-        padding: 1% 1%;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        color: white;
-        background-color: rgba(150, 191, 245, 0.5); 
-        outline: none;
-        box-sizing: border-box; 
-    }
-
-    .input-form::placeholder {
-        color: inherit; 
-    }
-
-    .popup-content .cancel-button, .popup-content .save-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40PX;
-        width: 100%;
-        font-size: large;
-        font-weight: lighter;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .popup-content .cancel-button {
-        background-color: #ffffff;
-        color: #090074;
-    }
-
-    .popup-content .save-button {
-        background-color: #4361EE;
-        color: white;
-    }
-
-    .cancel-button:hover {
-        color: white;
-        background-color: #F34235;
-    }
-
-    .save-button:hover {
-        background-color: #7790ff;
-    }
-
-    @media (max-width: 1000px) {
-      .popup{
-          height: auto;
-      }
-
-    }
-
-    @media (max-width: 500px) {
-      .popup{
-            width: 100vw;
-        }
-
-    }
     </style>
 
 </head>
@@ -701,12 +652,12 @@ $positionNames = [
                     <div class="step-name">Student Council</div>
                 </div>
 
-                <div class="stepper-item active">
+                <div class="stepper-item completed">
                     <div class="step-counter"></div>
                     <div class="step-name">SC Summary</div>
                 </div>
 
-                <div class="stepper-item">
+                <div class="stepper-item active">
                     <div class="step-counter"></div>
                     <div class="step-name">Local Council</div>
                 </div>
@@ -723,73 +674,104 @@ $positionNames = [
             </div>
         </div>
     </header>
-
     <div class="bodycontainer">
         <div class="content">
             <div class="cardcontainer">
-
-                <div class="card">
-                    <div class="positiontitle">
-                        <h3>SC SUMMARY</h3>
+                <div class="title">
+                    <div class="tname">
+                        <h2><?php echo htmlspecialchars($council_name); ?></h2>
                     </div>
-                    <div class="cardcontent">
+                </div>
+                <form method="post" id="votingForm">
+                    <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
+                    <?php
+                    // Fetch positions from the positions table for the council_id
+                    $sqlPositions = "SELECT position_name FROM positions WHERE council_id = $council_id";
+                    $resultPositions = $conn->query($sqlPositions);
 
-                        <div class="pos">
-                            <?php
-                            // Display the votes
-                            foreach ($votes as $position => $candidateId) {
-                                if ($candidateId != '100010001') {
-                                    // Query to get the candidate name using $candidateId
-                                    $sql = "SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->bind_param('i', $candidateId);
-                                    $stmt->execute();
-                                    $stmt->bind_result($candidateName);
-                                    $stmt->fetch();
-                                    $stmt->close();
-                                } else {
-                                    $candidateName = 'Abstain';
-                                }
+                    if ($resultPositions->num_rows > 0) {
+                        // Mapping of position names to table column names
+                        $positionToColumn = [
+                            'Governor' => 'LC_Governor',
+                            'Vice Governor' => 'Vice_Governor',
+                            'Secretary' => 'Secretary',
+                            'Treasurer' => 'Treasurer',
+                            'MATH Senator1' => 'MATH Senator1',
+                            'MATH Senator2' => 'MATH Senator2',
+                            'MATH Senator3' => 'MATH Senator3',
+                            'ENGLISH Senator1' => 'ENGLISH Senator1',
+                            'ENGLISH Senator2' => 'ENGLISH Senator2',
+                            'ENGLISH Senator3' => 'ENGLISH Senator3',
+                            'FILIPINO Senator1' => 'FILIPINO Senator1',
+                            'FILIPINO Senator2' => 'FILIPINO Senator2',
+                            'FILIPINO Senator3' => 'FILIPINO Senator3',
+                            'Auditor' => 'Auditor'
+                        ];
 
-                                echo '<p>   ' . $positionNames[$position] . '</p>';
-                                echo '<p class="c">  ' . htmlspecialchars($candidateName) . '</p>';
+                        // Loop through each position
+                        while ($positionRow = $resultPositions->fetch_assoc()) {
+                            $positionName = htmlspecialchars($positionRow['position_name']);
+                            $fieldName = $positionToColumn[$positionName]; // Map to the correct field name
+
+                            // Fetch candidates for the current position
+                            if (strpos($positionName, 'Senator') !== false && isset($selected_major)) {
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%' AND major = '$selected_major'";
+                            } else {
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName' AND major = '$selected_major'";
                             }
-                            ?>
-                        </div>
+                            $resultCandidates = $conn->query($sqlCandidates);
 
+
+                            // Start the HTML output for the card
+                            echo '<div class="card">
+                            <div class="positiontitle">
+                                <h3>' . $positionName . '</h3>
+                            </div>
+                            <div class="cardcontent">
+                                <div class="candidateinfocontent">';
+
+                            // Add the Abstain option
+                            echo '<label for="' . $fieldName . 'Abstain">
+                            <input type="radio" id="' . $fieldName . 'Abstain" name="' . $fieldName . '" value="100010001" checked onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'uploads/Abstain.png\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="uploads/Abstain.png">Abstain
+                        </label>';
+
+                            // Check if any candidates were found
+                            if ($resultCandidates->num_rows > 0) {
+                                // Loop through the fetched candidates and add them to the card
+                                $counter = 1;
+                                while ($candidateRow = $resultCandidates->fetch_assoc()) {
+                                    $candidateId = htmlspecialchars($candidateRow['usep_ID']);
+                                    $candidateName = htmlspecialchars($candidateRow['FName'] . ' ' . $candidateRow['LName']);
+                                    $candidateImage = htmlspecialchars($candidateRow['candPic']);
+
+                                    echo '<label for="' . $fieldName . 'Candidate' . $counter . '">
+                                    <input type="radio" id="' . $fieldName . 'Candidate' . $counter . '" name="' . $fieldName . '" value="' .  $candidateId . '" onchange="updateCandidateImage(\'' . $fieldName . 'CandidateImage\', \'' . $candidateImage . '\')" data-image-id="' . $fieldName . 'CandidateImage" data-image-src="' . $candidateImage . '">' . $candidateName . '
+                                </label>';
+                                    $counter++;
+                                }
+                            } else {
+                                echo 'No candidates found for ' . $positionName . '.';
+                            }
+
+                            // Close the form and add the candidate image container
+                            echo '</div>
+                                <div class="candidateimage">
+                                    <img id="' . $fieldName . 'CandidateImage" src="uploads/Abstain.png" alt="sub">
+                                </div>
+                            </div>
+                        </div>';
+                        }
+                    } else {
+                        echo 'No positions found for council_ID ' . $council_id . '.';
+                    }
+                    ?>
+                    <div class="button">
+                        <div></div>
+                        <button type="submit" name="next">Next</button>
                     </div>
-                </div>
-
-                <div class="button">
-                    <button onclick="switchHTML('Voting1.php')">Back</button>
-                    <button onclick="switchHTML1('Voting3.php')">Submit</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="popup" id="passpop">
-        <div class="head">
-          <h3>CHOOSE YOUR MAJOR</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <form action="Voting3.1.php" method="post">
-                <div class="form-group">
-                    <label for="major">Passkey:</label>
-                    <select name="major" id="major" class="input-form" required>
-                            <option value="" disabled selected hidden>Select here</option>
-                            <option value="MATH">Math</option>
-                            <option value="ENGLISH">Math</option>
-                            <option value="Filipino">Math</option>
-                    </select>
-                </div>
                 </form>
-                <br>
-                <button type="button" class="cancel-button">Cancel</button>
-                <button type="submit" class="save-button">Enter</button>
             </div>
-        </div>    
+        </div>
     </div>
 
     <script>
@@ -823,29 +805,131 @@ $positionNames = [
             }, 500); // Delay should match the animation duration
         }
 
-        function switchHTML1(file) {
-            var program = <?php echo json_encode($_SESSION["program"]); ?>;
-            if(program==='BSEd'){
-                document.getElementById('passpop').style.display = 'flex';
-            }else{
-                // Add fade-out animation to the body
-                document.body.classList.add('fade-out');
-                sessionStorage.clear();
-
-                // Wait for the animation to finish, then switch to the new HTML file
-                setTimeout(function() {
-                    window.location.href = file;
-                }, 500); // Delay should match the animation duration
-            }
-        }
-
         // Add a listener for animation end to remove the fade-out class and add the fade-in class
         document.body.addEventListener('animationend', function() {
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
         });
 
-              // Hide the popup when the cancel button is clicked
+
+        // Function to update candidate image based on selected radio button
+        function updateCandidateImage(imageId, newImageSrc) {
+            // Get the candidate image element by ID
+            var candidateImage = document.getElementById(imageId);
+            // Update the image source
+            candidateImage.src = newImageSrc;
+
+            // Store the selected image source in sessionStorage
+            sessionStorage.setItem(imageId, newImageSrc);
+        }
+
+        function storeSelectedValue(radio) {
+            var name = radio.name;
+            var value = radio.value;
+            sessionStorage.setItem(name, value);
+        }
+
+        function getStoredImage(imageId) {
+            return sessionStorage.getItem(imageId);
+        }
+
+        function getStoredValue(name) {
+            return sessionStorage.getItem(name);
+        }
+
+        // Add event listeners to all candidate radio buttons
+        var candidateRadios = document.querySelectorAll('input[type="radio"]');
+        candidateRadios.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                // Check if this radio button is selected
+                if (radio.checked) {
+                    // Update the image to the selected candidate's image
+                    updateCandidateImage(radio.getAttribute('data-image-id'), radio.getAttribute('data-image-src'));
+                    // Store the selected value in sessionStorage
+                    storeSelectedValue(radio);
+
+                }
+            });
+        });
+
+
+        window.onload = function() {
+            candidateRadios.forEach(function(radio) {
+                var storedValue = getStoredValue(radio.name);
+                if (storedValue !== null && storedValue === radio.value) {
+                    radio.checked = true;
+                    // Update the image to the stored candidate's image
+                    updateCandidateImage(radio.getAttribute('data-image-id'), radio.getAttribute('data-image-src'));
+                }
+            });
+        };
+
+        <?php
+        $resultPositions->data_seek(0); // Reset result set pointer
+        while ($positionRow = $resultPositions->fetch_assoc()) {
+            $positionName = htmlspecialchars($positionRow['position_name']);
+            echo 'updateCandidateImage("' . $positionName . '");';
+        }
+        ?>
+
+        // Add event listeners to radio buttons to update image on selection change
+        <?php
+        $resultPositions->data_seek(0); // Reset result set pointer
+        while ($positionRow = $resultPositions->fetch_assoc()) {
+            $positionName = htmlspecialchars($positionRow['position_name']);
+            echo 'document.querySelectorAll(\'input[name="' . $positionName . 'Candidate"]\').forEach(function(radio) {
+                radio.addEventListener("change", function() {
+                    updateCandidateImage("' . $positionName . '");
+                });
+            });';
+        }
+        ?>
+
+        // Function to set a cookie
+        function setCookie(cookieName, cookieValue, expirationDays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (expirationHours * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+        }
+
+        // Function to get the value of a cookie
+        function getCookie(cookieName) {
+            var name = cookieName + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var cookieArray = decodedCookie.split(';');
+            for (var i = 0; i < cookieArray.length; i++) {
+                var cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(name) === 0) {
+                    var cookieValue = cookie.substring(name.length, cookie.length);
+                    // Check if the cookie value is an image URL or base64 data
+                    if (isValidImageUrl(cookieValue)) {
+                        // If it's a URL, you can directly use it
+                        return cookieValue;
+                    } else {
+                        // If it's base64 data, you can create an image element and set its src
+                        var img = new Image();
+                        img.src = cookieValue;
+                        return img;
+                    }
+                }
+            }
+            return "";
+        }
+
+        // Event listener for form submission
+        document.getElementById("votingForm").addEventListener("submit", function(event) {
+            // Get the selected candidate value
+            var selectedCandidate = document.querySelector('input[name="position"]:checked').value;
+
+            // Set the cookie with the selected candidate value
+            setCookie("selectedCandidate", selectedCandidate, 1); // Set cookie to expire in 1 day
+        });
+
+        // Hide the popup when the cancel button is clicked
     document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
         document.getElementById("passpop").style.display = "none";
     });
@@ -867,8 +951,8 @@ $positionNames = [
         // Hide the popup
         document.getElementById("passpop").style.display = "none";
     });
-    </script>
 
+    </script>
 
 </body>
 
