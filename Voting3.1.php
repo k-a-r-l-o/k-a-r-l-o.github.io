@@ -717,7 +717,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             if (strpos($positionName, 'Senator') !== false && isset($selected_major)) {
                                 $sqlCandidates = "SELECT * FROM candidates WHERE position = '$selected_major $positionName'";
                             } else {
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName' AND major = '$selected_major'";
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
                             }
                             $resultCandidates = $conn->query($sqlCandidates);
 
