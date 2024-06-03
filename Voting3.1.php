@@ -69,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     `ENGLISH_Senator2` = VALUES(`ENGLISH_Senator2`),
     `ENGLISH_Senator3` = VALUES(`ENGLISH_Senator3`),
     `FILIPINO_Senator1` = VALUES(`FILIPINO_Senator1`),
-    `FILIPINO Senator2` = VALUES(`FILIPINO_Senator2`),
-    `FILIPINO Senator3` = VALUES(`FILIPINO_Senator3`),
+    `FILIPINO_Senator2` = VALUES(`FILIPINO_Senator2`),
+    `FILIPINO_Senator3` = VALUES(`FILIPINO_Senator3`),
     Auditor = VALUES(Auditor)";
 
     // Prepare and execute the statement
