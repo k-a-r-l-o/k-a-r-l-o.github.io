@@ -640,7 +640,7 @@ $votes = $_GET; // Assuming 'votes' is one of the parameters in the queryString
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting3.php')">Back</button>
+                    <button onclick="switchHTML('Voting3.1.php')">Back</button>
                     <button onclick="switchHTML1('Voting5.php')">Submit</button>
                 </div>
 
