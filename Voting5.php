@@ -9,33 +9,38 @@ $usep_ID = $_SESSION["usep_ID"];
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote</title>
-  <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U-Vote</title>
+    <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-  <style>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            background-image: url('backgroundVoter.svg');
+            background-size: 76.5vh;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #ffffff;
-        background-image: url('backgroundVoter.svg');
-        background-size: 76.5vh;
-        background-repeat: no-repeat;
-        margin: 0;
-        padding: 0;
-    }
+        /* CSS animation for fading in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
 
-    /* CSS animation for fading in */
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+            to {
+                opacity: 1;
+            }
+        }
 
-    header {
+        header {
             display: grid;
             grid-template-columns: 25% 55% 20%;
             background-color: #2F80ED;
@@ -60,7 +65,7 @@ $usep_ID = $_SESSION["usep_ID"];
             box-sizing: border-box;
         }
 
-        .tracker{
+        .tracker {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -150,150 +155,159 @@ $usep_ID = $_SESSION["usep_ID"];
             font-size: 13px;
         }
 
-    .bodycontainer{
-        display: flex;
-        justify-content: center; /* Center horizontally */
-        align-items: center;
-        width: 100vw;
-        height: 100%;
-        background-color: transparent;
-        overflow: hidden;
-        position: fixed;
-        z-index: 9999;
-        animation: fadeIn 0.3s forwards;
-    }
-    .main{
-        width: auto;
-        height: 80%;
-        display: flex;
-        justify-content: center;
-    }
-    
-    .cont{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: inherit;
-        width: 500px;
-        background-color: white;
-        border-radius: 10px;
-        box-sizing: border-box;
-        box-shadow: 5px 8px 15px  rgba(0, 0, 0, 0.25);
-    }
-
-    h2{
-        margin-top: 0;
-        text-align: center;
-        font-size: 35px;
-    }
-
-    .rec{
-        text-align: center;
-    }
-
-    .center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 60%;
-    }
-
-    button{
-        display: flex;
-        height: 40px;
-        font-size: 20px;
-        font-weight: bold;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: #2F80ED; /* Same background color as the select */
-        color: white;
-        border: none;
-        gap: 10px;
-        border-radius: 5px;
-        padding: 0 20px; /* Adjust padding as needed */
-        cursor: pointer;
-        width: 100%;
-        max-width: 200px;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    
-
-    @media (max-width: 1000px) {
-
-        header{
-            grid-template-columns: 35% 65%;
+        .bodycontainer {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            width: 100vw;
+            height: 100%;
+            background-color: transparent;
+            overflow: hidden;
+            position: fixed;
+            z-index: 9999;
+            animation: fadeIn 0.3s forwards;
         }
 
-        .logoName, .logoName img{
-            scale: 0.9;
+        .main {
+            width: auto;
+            height: 80%;
+            display: flex;
+            justify-content: center;
         }
 
-        header{
-            padding-left: 3%;
-        }
-       
-    .cont{
-        height: 300px;
-        width: 300px;
-        background-color: white;
-        border-radius: 10px;
-        box-sizing: border-box;
-        box-shadow: 5px 8px 15px  rgba(0, 0, 0, 0.25);
-    }
-    h2{
-        margin-top: 0;
-        text-align: center;
-        font-size: 25px;
-    }
-
-
-    button{
-       scale: 0.9;
-    }
-    
-    
-
-    }
-
-    @media (max-height: 800px) {
-
-        .logoName, .logoName img{
-            scale: 0.9;
+        .cont {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: inherit;
+            width: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-sizing: border-box;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.15);
         }
 
-        header{
-            padding-left: 3%;
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            font-size: 35px;
         }
 
-    }
-
-    @media (max-width: 700px) {
-
-        header{
-            grid-template-columns: 1fr;
+        .rec {
+            text-align: center;
         }
 
-        .logoName, .searchspace{
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+
+        button {
+            display: flex;
+            height: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #2F80ED;
+            /* Same background color as the select */
+            color: white;
+            border: none;
+            gap: 10px;
+            border-radius: 5px;
+            padding: 0 20px;
+            /* Adjust padding as needed */
+            cursor: pointer;
             width: 100%;
-            padding: 1.5% 5%;
+            max-width: 200px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .login{
-            scale: 0.8;
+
+
+        @media (max-width: 1000px) {
+
+            header {
+                grid-template-columns: 35% 65%;
+            }
+
+            .logoName,
+            .logoName img {
+                scale: 0.9;
+            }
+
+            header {
+                padding-left: 3%;
+            }
+
+            .cont {
+                height: 300px;
+                width: 300px;
+                background-color: white;
+                border-radius: 10px;
+                box-sizing: border-box;
+                box-shadow: 5px 8px 15px rgba(0, 0, 0, 0.25);
+            }
+
+            h2 {
+                margin-top: 0;
+                text-align: center;
+                font-size: 25px;
+            }
+
+
+            button {
+                scale: 0.9;
+            }
+
+
+
         }
-       button{
-       scale: 0.8;
-       }
-      
 
-    }
+        @media (max-height: 800px) {
 
-   </style>
+            .logoName,
+            .logoName img {
+                scale: 0.9;
+            }
+
+            header {
+                padding-left: 3%;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                grid-template-columns: 1fr;
+            }
+
+            .logoName,
+            .searchspace {
+                width: 100%;
+                padding: 1.5% 5%;
+            }
+
+            .login {
+                scale: 0.8;
+            }
+
+            button {
+                scale: 0.8;
+            }
+
+
+        }
+    </style>
 
 </head>
+
 <body>
     <header>
         <div class="logoName">
@@ -330,18 +344,17 @@ $usep_ID = $_SESSION["usep_ID"];
         </div>
     </header>
 
-    <div class="bodycontainer" >
-      <div class="main">
-        <div class="cont">
-            <h2>Congratulations!</h2>   
-            <p class="rec">Vote Recorded.</p>
-            <img src="finishVote_icon.png" alt="finish" class="center">
-            <button onclick="switchHTML('index.php')">Done</button>
+    <div class="bodycontainer">
+        <div class="main">
+            <div class="cont">
+                <h2>Congratulations!</h2>
+                <p class="rec">Vote Recorded.</p>
+                <img src="finishVote_icon.png" alt="finish" class="center">
+                <button onclick="switchHTML('index.php')">Done</button>
+            </div>
         </div>
     </div>
-</div> 
     <script>
-
         document.addEventListener('keydown', function(event) {
             // Check if Ctrl (or Cmd on Mac), Y, and U keys are pressed
             if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
@@ -376,7 +389,7 @@ $usep_ID = $_SESSION["usep_ID"];
         function switchHTML(file) {
             // Add fade-out animation to the body
             document.body.classList.add('fade-out');
-                
+
             // Wait for the animation to finish, then switch to the new HTML file
             setTimeout(function() {
                 window.location.href = file;
@@ -388,17 +401,30 @@ $usep_ID = $_SESSION["usep_ID"];
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
         });
-
     </script>
-      
+
 
 </body>
+
 </html>
-<?php 
-  session_unset(); // Unset all session variables
-  session_destroy(); // Destroy the session
+<?php
+
+$sqlvote = "UPDATE voters SET voted = 'Voted' WHERE usep_ID = ?";
+$stmtUpdate = $conn->prepare($sqlvote);
+if ($stmtUpdate) {
+    $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
+    $stmtUpdate->execute();
+    $stmtUpdate->close();
+    session_unset();
+    session_destroy();
+} else {
+    echo "Error preparing statement: " . $conn->error;
+    exit();
+}
+
+
+
+
+
+
 ?>
-<!-- Include JavaScript code to clear sessionStorage -->
-<script>
-  sessionStorage.clear();
-</script>
