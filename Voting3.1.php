@@ -42,43 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     'FILIPINO_Senator2' => 'NULL',
     'FILIPINO_Senator3' => 'NULL',
     'Auditor' => '100010001'];
-    if($selected_major =='MATH'){
-        $votes = [
-            'LC_Governor' => '100010001',
-            'Vice_Governor' => '100010001',
-            'Secretary' => '100010001',
-            'Treasurer' => '100010001',
-            'MATH_Senator1' => '100010001',
-            'MATH_Senator2' => '100010001',
-            'MATH_Senator3' => '100010001',
-            'Auditor' => '100010001'
-        ];
-    } else if($selected_major =='ENGLISH'){
-        $votes = [
-            'LC_Governor' => '100010001',
-            'Vice_Governor' => '100010001',
-            'Secretary' => '100010001',
-            'Treasurer' => '100010001',
-            'ENGLISH_Senator1' => '100010001',
-            'ENGLISH_Senator2' => '100010001',
-            'ENGLISH_Senator3' => '100010001',
-            'Auditor' => '100010001'
-        ];
-    }else if($selected_major =='FILIPINO'){
-        $votes = [
-            'LC_Governor' => '100010001',
-            'Vice_Governor' => '100010001',
-            'Secretary' => '100010001',
-            'Treasurer' => '100010001',
-            'FILIPINO_Senator1' => '100010001',
-            'FILIPINO_Senator2' => '100010001',
-            'FILIPINO_Senator3' => '100010001',
-            'Auditor' => '100010001'
-        ];
-    }
-    
-
-
 
     // Process each position from the form submission
     foreach ($votes as $position => &$candidateId) {
