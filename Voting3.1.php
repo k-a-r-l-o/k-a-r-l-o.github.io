@@ -722,7 +722,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
                                     continue;
                                 } else {
-                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName', program = '$program'";
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName' AND program = '$program'";
                                 }
                                 $resultCandidates = $conn->query($sqlCandidates);
                             } else if($selected_major==="ENGLISH"){
@@ -733,7 +733,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
                                     continue;
                                 } else {
-                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName', program = '$program'";
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'";
                                 }
                                 $resultCandidates = $conn->query($sqlCandidates);
                             } else if($selected_major==="FILIPINO"){
@@ -744,7 +744,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 } else if (strpos($positionName, 'MATH Senator') !== false) {
                                     continue;
                                 } else {
-                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName', program = '$program'";
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'";
                                 }
                                 $resultCandidates = $conn->query($sqlCandidates);
                             }
