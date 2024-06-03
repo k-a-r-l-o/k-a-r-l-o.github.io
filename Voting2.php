@@ -613,6 +613,7 @@ $positionNames = [
         align-items: center;
         margin-bottom: 10px;
         height: auto;
+        width: 100%;
     }
 
     .form-group label {
@@ -774,20 +775,20 @@ $positionNames = [
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
-                <form action="Voting3.1.php" method="post">
+                <form action="Voting3.1.php" method="get">
                 <div class="form-group">
-                    <label for="major">Passkey:</label>
+                    <label for="major">Major:</label>
                     <select name="major" id="major" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="MATH">Math</option>
-                            <option value="ENGLISH">Math</option>
-                            <option value="Filipino">Math</option>
+                            <option value="ENGLISH">English</option>
+                            <option value="Filipino">Filipino</option>
                     </select>
                 </div>
                 </form>
                 <br>
                 <button type="button" class="cancel-button">Cancel</button>
-                <button type="submit" class="save-button">Enter</button>
+                <button type="submit" name="enter" class="save-button">Enter</button>
             </div>
         </div>    
     </div>
@@ -850,23 +851,6 @@ $positionNames = [
         document.getElementById("passpop").style.display = "none";
     });
 
-    // Check the entered passkey and open the new page if correct
-    document.querySelector("#passpop .save-button").addEventListener("click", function() {
-        // Retrieve the entered passkey
-        var passkey = document.getElementById("passkey").value;
-
-        // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
-        if (passkey === 'adminni') {
-            // Open the new page in the same window
-            window.open('indexWatcher.php', '_self');
-        } else {
-            // Notify the user about incorrect passkey
-            alert('Incorrect passkey. Please try again.');
-        }
-
-        // Hide the popup
-        document.getElementById("passpop").style.display = "none";
-    });
     </script>
 
 
