@@ -4,6 +4,7 @@ include "DBSessionVoter.php";
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
+$selected_major = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $selected_major = $_GET['major'];
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'Auditor' => '100010001'
     ];
 
-    
+
 
     // Process each position from the form submission
     foreach ($votes as $position => &$candidateId) {
@@ -105,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $queryString = http_build_query($votes);
-        echo "<script>window.location.href = 'Voting4.1.php?$queryString';</script>";
+        echo "<script>window.location.href = 'Voting4.1.php?$queryString&major=$selected_major';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -634,7 +635,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
         }
-
     </style>
 
 </head>
@@ -713,13 +713,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $positionName = htmlspecialchars($positionRow['position_name']);
                             $fieldName = $positionToColumn[$positionName]; // Map to the correct field name
 
-                            // Fetch candidates for the current position
+                            // Fetch candidates for the current position based on major
                             if (strpos($positionName, 'Senator') !== false && isset($selected_major)) {
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%' +'$selected_major'";
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$selected_major $positionName'";
                             } else {
                                 $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName' AND major = '$selected_major'";
                             }
                             $resultCandidates = $conn->query($sqlCandidates);
+
 
 
                             // Start the HTML output for the card
@@ -930,28 +931,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
 
         // Hide the popup when the cancel button is clicked
-    document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
-        document.getElementById("passpop").style.display = "none";
-    });
+        document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
+            document.getElementById("passpop").style.display = "none";
+        });
 
-    // Check the entered passkey and open the new page if correct
-    document.querySelector("#passpop .save-button").addEventListener("click", function() {
-        // Retrieve the entered passkey
-        var passkey = document.getElementById("passkey").value;
+        // Check the entered passkey and open the new page if correct
+        document.querySelector("#passpop .save-button").addEventListener("click", function() {
+            // Retrieve the entered passkey
+            var passkey = document.getElementById("passkey").value;
 
-        // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
-        if (passkey === 'adminni') {
-            // Open the new page in the same window
-            window.open('indexWatcher.php', '_self');
-        } else {
-            // Notify the user about incorrect passkey
-            alert('Incorrect passkey. Please try again.');
-        }
+            // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
+            if (passkey === 'adminni') {
+                // Open the new page in the same window
+                window.open('indexWatcher.php', '_self');
+            } else {
+                // Notify the user about incorrect passkey
+                alert('Incorrect passkey. Please try again.');
+            }
 
-        // Hide the popup
-        document.getElementById("passpop").style.display = "none";
-    });
-
+            // Hide the popup
+            document.getElementById("passpop").style.display = "none";
+        });
     </script>
 
 </body>
