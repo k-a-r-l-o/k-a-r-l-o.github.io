@@ -793,7 +793,7 @@ $positionNames = [
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="MATH">Math</option>
                             <option value="ENGLISH">English</option>
-                            <option value="Filipino">Filipino</option>
+                            <option value="FILIPINO">Filipino</option>
                     </select>
                 </div>
                 <br>
