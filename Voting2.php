@@ -394,6 +394,12 @@ $positionNames = [
             max-width: 715px;
         }
 
+        .buttons {
+            display: grid;
+            height: auto;
+            gap: 10px;
+        }
+
         .button button {
             display: flex;
             height: 40px;
@@ -636,6 +642,10 @@ $positionNames = [
         box-sizing: border-box; 
     }
 
+    .input-form option{
+        color: black;
+    }
+
     .input-form::placeholder {
         color: inherit; 
     }
@@ -786,8 +796,10 @@ $positionNames = [
                     </select>
                 </div>
                 <br>
-                <button type="button" class="cancel-button">Cancel</button>
-                <button type="submit" name="enter" class="save-button">Enter</button>
+                <div class="buttons">
+                    <button type="button" class="cancel-button">Cancel</button>
+                    <button type="submit" name="enter" class="save-button">Enter</button>
+                </div>
                 </form>
             </div>
         </div>    
