@@ -617,7 +617,7 @@ $votes = $_GET; // Assuming 'votes' is one of the parameters in the queryString
                             <?php
                             // Display the votes
                             foreach ($votes as $position => $candidateId) {
-                                if ($candidateId != '100010001') {
+                                if ($candidateId != '') {
                                     // Query to get the candidate name using $candidateId
                                     $sql = "SELECT CONCAT(FName, ' ', LName) AS candidateName FROM candidates WHERE usep_ID = ?";
                                     $stmt = $conn->prepare($sql);
