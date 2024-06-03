@@ -4,9 +4,9 @@ include "DBSessionVoter.php";
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
+$major = $_GET["major"];
 
-$votes = $_GET['votes']; // Assuming 'votes' is one of the parameters in the queryString
-$major = $_GET['major'];
+$votes = $_GET;// Assuming 'votes' is one of the parameters in the queryString
 // Map the position keys to human-readable names if necessary
 
     if($major ==='MATH'){
