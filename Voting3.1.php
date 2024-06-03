@@ -28,7 +28,11 @@ if ($resultID->num_rows > 0) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initialize an array to hold vote values with default abstain values
-    $votes = [];
+    $votes = ['LC_Governor' => '100010001',
+    'Vice_Governor' => '100010001',
+    'Secretary' => '100010001',
+    'Treasurer' => '100010001',
+    'Auditor' => '100010001'];
     if($selected_major ==='MATH'){
         $votes = [
             'LC_Governor' => '100010001',
