@@ -1248,7 +1248,7 @@
 
             if ($conn->query($sqlUserEdit) === TRUE) {
                 // Log the login activity
-                $usepID = $_SESSION["usep_id"];
+                $usepID = $_SESSION["usep_ID"];
                 $logAction = 'edited user';
                 date_default_timezone_set('Asia/Manila');
                 $date = date("Y-m-d");
@@ -1317,7 +1317,7 @@
 
             if ($conn->query($sqlUserDelete) === TRUE) {
                 // Log the login activity
-                $usepID = $_SESSION["usep_id"];
+                $usepID = $_SESSION["usep_ID"];
                 $logAction = 'deleted user';
                 date_default_timezone_set('Asia/Manila');
                 $date = date("Y-m-d");
