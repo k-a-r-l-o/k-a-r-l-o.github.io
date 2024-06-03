@@ -4,7 +4,7 @@ include "DBSessionVoter.php";
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
-$selected_major = "";
+$selected_major = "MATH";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $selected_major = $_GET['major'];
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $queryString = http_build_query($votes);
-        echo "<script>window.location.href = 'Voting4.1.php?$queryString&major=$selected_major';</script>";
+        echo "<script>window.location.href = 'Voting4.1.php?votes=$queryString&major=$selected_major';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
