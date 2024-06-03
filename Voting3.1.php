@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $queryString = http_build_query($votes);
-        echo "<script>window.location.href = 'Voting4.1.php?$queryString;</script>";
+        echo "<script>window.location.href = 'Voting4.php?$queryString';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -726,7 +726,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         while ($positionRow = $resultPositions->fetch_assoc()) {
                             $positionName = htmlspecialchars($positionRow['position_name']);
                             $fieldName = $positionToColumn[$positionName]; // Map to the correct field name
-                            
+                            $resultCandidates ="";
                             // Fetch candidates for the current position
                             if($selected_major==="MATH"){
                                 if (strpos($positionName, 'MATH Senator') !== false) {
