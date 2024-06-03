@@ -1249,7 +1249,7 @@
             if ($conn->query($sqlUserEdit) === TRUE) {
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
-                $logAction = 'edited user';
+                $logAction = 'Edited User';
                 date_default_timezone_set('Asia/Manila');
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
@@ -1314,8 +1314,11 @@
 
             // Insert data into Users table
             $sqlUserDelete = "DELETE FROM users WHERE usep_ID = '$usepID'";
-
+            $sqlDisableFK = "SET FOREIGN_KEY_CHECKS = 0";
+            $conn->query($sqlDisableFK);
             if ($conn->query($sqlUserDelete) === TRUE) {
+                $sqlEnableFK = "SET FOREIGN_KEY_CHECKS = 1";
+                $conn->query($sqlEnableFK);
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
                 $logAction = 'deleted user';
