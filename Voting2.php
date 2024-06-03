@@ -397,6 +397,7 @@ $positionNames = [
         .buttons {
             display: grid;
             height: auto;
+            width: 100%;
             gap: 10px;
         }
 
