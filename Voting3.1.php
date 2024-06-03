@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     'Secretary' => '100010001',
     'Treasurer' => '100010001',
     'Auditor' => '100010001'];
-    if($selected_major ==='MATH'){
+    if($selected_major =='MATH'){
         $votes = [
             'LC_Governor' => '100010001',
             'Vice_Governor' => '100010001',
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'MATH_Senator3' => '100010001',
             'Auditor' => '100010001'
         ];
-    } else if($selected_major ==='ENGLISH'){
+    } else if($selected_major =='ENGLISH'){
         $votes = [
             'LC_Governor' => '100010001',
             'Vice_Governor' => '100010001',
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'ENGLISH_Senator3' => '100010001',
             'Auditor' => '100010001'
         ];
-    }else if($selected_major ==='FILIPINO'){
+    }else if($selected_major =='FILIPINO'){
         $votes = [
             'LC_Governor' => '100010001',
             'Vice_Governor' => '100010001',
