@@ -32,6 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     'Vice_Governor' => '100010001',
     'Secretary' => '100010001',
     'Treasurer' => '100010001',
+    'MATH_Senator1' => '',
+    'MATH_Senator2' => '',
+    'MATH_Senator3' => '',
+    'ENGLISH_Senator1' => '',
+    'ENGLISH_Senator2' => '',
+    'ENGLISH_Senator3' => '',
+    'FILIPINO_Senator1' => '',
+    'FILIPINO_Senator2' => '',
+    'FILIPINO_Senator3' => '',
     'Auditor' => '100010001'];
     if($selected_major =='MATH'){
         $votes = [
