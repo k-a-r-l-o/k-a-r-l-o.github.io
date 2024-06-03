@@ -680,9 +680,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             // Fetch candidates for the current position
                             if (strpos($positionName, 'Senator') !== false) {
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%'";
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%' AND program = '$program'";
                             } else {
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'";
                             }
                             $resultCandidates = $conn->query($sqlCandidates);
 
