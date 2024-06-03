@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Construct the SQL query to insert or update the vote
     $sqlSaveVote = "INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, `MATH Senator1`, `MATH Senator2`, `MATH Senator3`, `ENGLISH Senator1`, `ENGLISH Senator2`, `ENGLISH Senator3`, `FILIPINO Senator1`, `FILIPINO Senator2`, `FILIPINO Senator3`, Auditor)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
     LC_Governor = VALUES(LC_Governor),
     Vice_Governor = VALUES(Vice_Governor),
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Prepare and execute the statement
     $stmt = $conn->prepare($sqlSaveVote);
     $stmt->bind_param(
-        'iiiiiiiii',
+        'iiiiiiiiiiiiiii',
         $usep_ID,
         $votes['LC_Governor'],
         $votes['Vice_Governor'],
