@@ -957,69 +957,69 @@
                         </tr>
                         <?php
                         // Query to retrieve all data from the table
-                        $sql = "SELECT subquery.pname, subquery.position, subquery.votes 
-        FROM (
-            SELECT CONCAT(c_president.FName, ' ', c_president.LName) AS pname, 'President' AS position, COUNT(tv.president) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_president ON tv.president = c_president.usep_id
-            GROUP BY tv.president
-            
-            UNION ALL
-            
-            SELECT CONCAT(c_vice_president_internal.FName, ' ', c_vice_president_internal.LName) AS pname, 'Vice President Internal Affairs' AS position, COUNT(tv.vice_president_internal_affairs) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_vice_president_internal ON tv.vice_president_internal_affairs = c_vice_president_internal.usep_id
-            GROUP BY tv.vice_president_internal_affairs
-            
-            UNION ALL
-            
-            SELECT CONCAT(c_Vice_President_External.FName, ' ', c_Vice_President_External.LName) AS Pname, 'Vice President External Affairs' AS position, COUNT(tv.Vice_President_External_Affairs) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_Vice_President_External ON tv.Vice_President_External_Affairs = c_Vice_President_External.usep_ID
-            GROUP BY tv.Vice_President_External_Affairs
-            
-            UNION ALL
-            
-            SELECT CONCAT(c_General_Secretary.FName, ' ', c_General_Secretary.LName) AS Pname, 'General Secretary' AS position, COUNT(tv.General_Secretary) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_General_Secretary ON tv.General_Secretary = c_General_Secretary.usep_ID
-            GROUP BY tv.General_Secretary
-            
-            UNION ALL
-            
-            SELECT CONCAT(c_General_Treasurer.FName, ' ', c_General_Treasurer.LName) AS Pname, 'General Treasurer' AS position, COUNT(tv.General_Treasurer) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_General_Treasurer ON tv.General_Treasurer = c_General_Treasurer.usep_ID
-            GROUP BY tv.General_Treasurer
-            
-            UNION ALL
-            
-            SELECT CONCAT(c_General_Auditor.FName, ' ', c_General_Auditor.LName) AS Pname, 'General Auditor' AS position, COUNT(tv.General_Auditor) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_General_Auditor ON tv.General_Auditor = c_General_Auditor.usep_ID
-            GROUP BY tv.General_Auditor
-            
-            UNION ALL
-            
-            SELECT CONCAT(c_Public_Information_Officer.FName, ' ', c_Public_Information_Officer.LName) AS Pname, 'Public Information Officer' AS position, COUNT(tv.Public_Information_Officer) AS votes 
-            FROM tsc_votes tv
-            INNER JOIN candidates c_Public_Information_Officer ON tv.Public_Information_Officer = c_Public_Information_Officer.usep_ID
-            GROUP BY tv.Public_Information_Officer
-            
-        ) AS subquery
-        ORDER BY 
-            CASE 
-                WHEN subquery.position = 'President' THEN 1 
-                WHEN subquery.position = 'Vice President Internal Affairs' THEN 2 
-                WHEN subquery.position = 'Vice President External Affairs' THEN 3 
-                WHEN subquery.position = 'General Secretary' THEN 4 
-                WHEN subquery.position = 'General Treasurer' THEN 5 
-                WHEN subquery.position = 'General Auditor' THEN 6 
-                WHEN subquery.position = 'Public Information Officer' THEN 7 
-                ELSE 8 
-            END,
-            subquery.votes DESC, 
-            subquery.Pname ASC";
+                        $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
+                        FROM (
+                            SELECT CONCAT(c_President.FName, ' ', c_President.LName) AS Pname, 'President' AS position, COUNT(tv.President) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_President ON tv.President = c_President.usep_ID
+                            GROUP BY tv.President
+                            
+                            UNION ALL
+                            
+                            SELECT CONCAT(c_Vice_President_Internal.FName, ' ', c_Vice_President_Internal.LName) AS Pname, 'Vice President Internal Affairs' AS position, COUNT(tv.Vice_President_Internal_Affairs) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_Vice_President_Internal ON tv.Vice_President_Internal_Affairs = c_Vice_President_Internal.usep_ID
+                            GROUP BY tv.Vice_President_Internal_Affairs
+                            
+                            UNION ALL
+                            
+                            SELECT CONCAT(c_Vice_President_External.FName, ' ', c_Vice_President_External.LName) AS Pname, 'Vice President External Affairs' AS position, COUNT(tv.Vice_President_External_Affairs) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_Vice_President_External ON tv.Vice_President_External_Affairs = c_Vice_President_External.usep_ID
+                            GROUP BY tv.Vice_President_External_Affairs
+                            
+                            UNION ALL
+                            
+                            SELECT CONCAT(c_General_Secretary.FName, ' ', c_General_Secretary.LName) AS Pname, 'General Secretary' AS position, COUNT(tv.General_Secretary) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_General_Secretary ON tv.General_Secretary = c_General_Secretary.usep_ID
+                            GROUP BY tv.General_Secretary
+                            
+                            UNION ALL
+                            
+                            SELECT CONCAT(c_General_Treasurer.FName, ' ', c_General_Treasurer.LName) AS Pname, 'General Treasurer' AS position, COUNT(tv.General_Treasurer) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_General_Treasurer ON tv.General_Treasurer = c_General_Treasurer.usep_ID
+                            GROUP BY tv.General_Treasurer
+                            
+                            UNION ALL
+                            
+                            SELECT CONCAT(c_General_Auditor.FName, ' ', c_General_Auditor.LName) AS Pname, 'General Auditor' AS position, COUNT(tv.General_Auditor) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_General_Auditor ON tv.General_Auditor = c_General_Auditor.usep_ID
+                            GROUP BY tv.General_Auditor
+                            
+                            UNION ALL
+                            
+                            SELECT CONCAT(c_Public_Information_Officer.FName, ' ', c_Public_Information_Officer.LName) AS Pname, 'Public Information Officer' AS position, COUNT(tv.Public_Information_Officer) AS votes 
+                            FROM tsc_votes tv
+                            INNER JOIN candidates c_Public_Information_Officer ON tv.Public_Information_Officer = c_Public_Information_Officer.usep_ID
+                            GROUP BY tv.Public_Information_Officer
+                            
+                        ) AS subquery
+                        ORDER BY 
+                            CASE 
+                                WHEN subquery.position = 'President' THEN 1 
+                                WHEN subquery.position = 'Vice President Internal Affairs' THEN 2 
+                                WHEN subquery.position = 'Vice President External Affairs' THEN 3 
+                                WHEN subquery.position = 'General Secretary' THEN 4 
+                                WHEN subquery.position = 'General Treasurer' THEN 5 
+                                WHEN subquery.position = 'General Auditor' THEN 6 
+                                WHEN subquery.position = 'Public Information Officer' THEN 7 
+                                ELSE 8 
+                            END,
+                            subquery.votes DESC, 
+                            subquery.Pname ASC";
 
                         $result = $conn->query($sql);
 
