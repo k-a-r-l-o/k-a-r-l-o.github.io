@@ -712,14 +712,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         while ($positionRow = $resultPositions->fetch_assoc()) {
                             $positionName = htmlspecialchars($positionRow['position_name']);
                             $fieldName = $positionToColumn[$positionName]; // Map to the correct field name
-                            // Fetch candidates for the current position based on major
-                            if (strpos($positionName, 'Senator') !== false && isset($selected_major)) {
-                                $major_prefix = strtoupper(substr($selected_major, 0, 3)); // Get the first three letters of the selected major
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$major_prefix $positionName'";
-                            } else {
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                            
+                            // Fetch candidates for the current position
+                            if($selected_major==="MATH"){
+                                if (strpos($positionName, 'Senator') !== false) {
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'MATH Senator%'";
+                                } else {
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                                }
+                                $resultCandidates = $conn->query($sqlCandidates);
+                            } else if($selected_major==="ENGLISH"){
+                                if (strpos($positionName, 'Senator') !== false) {
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'ENGLISH Senator%'";
+                                } else {
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                                }
+                                $resultCandidates = $conn->query($sqlCandidates);
+                            } else if($selected_major==="FILIPINO"){
+                                if (strpos($positionName, 'Senator') !== false) {
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'FILIPINO Senator%'";
+                                } else {
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
+                                }
+                                $resultCandidates = $conn->query($sqlCandidates);
                             }
-                            $resultCandidates = $conn->query($sqlCandidates);
+                            
 
                             // Start the HTML output for the card
                             echo '<div class="card">
