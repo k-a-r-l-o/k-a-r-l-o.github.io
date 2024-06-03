@@ -28,22 +28,42 @@ if ($resultID->num_rows > 0) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initialize an array to hold vote values with default abstain values
-    $votes = [
-        'LC_Governor' => '100010001',
-        'Vice_Governor' => '100010001',
-        'Secretary' => '100010001',
-        'Treasurer' => '100010001',
-        'MATH_Senator1' => '',
-        'MATH_Senator2' => '',
-        'MATH_Senator3' => '',
-        'ENGLISH_Senator1' => '',
-        'ENGLISH_Senator2' => '',
-        'ENGLISH_Senator3' => '',
-        'FILIPINO_Senator1' => '',
-        'FILIPINO_Senator2' => '',
-        'FILIPINO_Senator3' => '',
-        'Auditor' => '100010001'
-    ];
+    $votes = [];
+    if($selected_major ==='MATH'){
+        $votes = [
+            'LC_Governor' => '100010001',
+            'Vice_Governor' => '100010001',
+            'Secretary' => '100010001',
+            'Treasurer' => '100010001',
+            'MATH_Senator1' => '100010001',
+            'MATH_Senator2' => '100010001',
+            'MATH_Senator3' => '100010001',
+            'Auditor' => '100010001'
+        ];
+    } else if($selected_major ==='ENGLISH'){
+        $votes = [
+            'LC_Governor' => '100010001',
+            'Vice_Governor' => '100010001',
+            'Secretary' => '100010001',
+            'Treasurer' => '100010001',
+            'ENGLISH_Senator1' => '100010001',
+            'ENGLISH_Senator2' => '100010001',
+            'ENGLISH_Senator3' => '100010001',
+            'Auditor' => '100010001'
+        ];
+    }else if($selected_major ==='FILIPINO'){
+        $votes = [
+            'LC_Governor' => '100010001',
+            'Vice_Governor' => '100010001',
+            'Secretary' => '100010001',
+            'Treasurer' => '100010001',
+            'FILIPINO_Senator1' => '100010001',
+            'FILIPINO_Senator2' => '100010001',
+            'FILIPINO_Senator3' => '100010001',
+            'Auditor' => '100010001'
+        ];
+    }
+    
 
 
 
