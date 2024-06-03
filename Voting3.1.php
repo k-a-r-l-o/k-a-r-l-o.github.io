@@ -6,7 +6,7 @@ $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $selected_major = $_POST['major'];
+    $selected_major = $_GET['major'];
 }
 
 
@@ -715,7 +715,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             // Fetch candidates for the current position
                             if (strpos($positionName, 'Senator') !== false && isset($selected_major)) {
-                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%' AND major = '$selected_major'";
+                                $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'Senator%' +'$selected_major'";
                             } else {
                                 $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName' AND major = '$selected_major'";
                             }
@@ -750,7 +750,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $counter++;
                                 }
                             } else {
-                                echo 'No candidates found for ' . $positionName . '.';
+                                echo 'No candidates found for ' . $selected_major . ' ' . $positionName . '.';
                             }
 
                             // Close the form and add the candidate image container
