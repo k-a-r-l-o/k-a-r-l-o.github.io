@@ -30,18 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initialize an array to hold vote values with default abstain values
     $votes = [
         'LC_Governor' => '100010001',
-        'Vice_Governor' => '100010001',
+        'Vice_Governor' => '100010001',x
         'Secretary' => '100010001',
         'Treasurer' => '100010001',
-        'MATH Senator1' => 'null',
-        'MATH Senator2' => 'null',
-        'MATH Senator3' => 'null',
-        'ENGLISH Senator1' => 'null',
-        'ENGLISH Senator1' => 'null',
-        'ENGLISH Senator1' => 'null',
-        'FILIPINO Senator1' => 'null',
-        'FILIPINO Senator2' => 'null',
-        'FILIPINO Senator3' => 'null',
+        'MATH_Senator1' => 'null',
+        'MATH_Senator2' => 'null',
+        'MATH_Senator3' => 'null',
+        'ENGLISH_Senator1' => 'null',
+        'ENGLISH_Senator1' => 'null',
+        'ENGLISH_Senator1' => 'null',
+        'FILIPINO_Senator1' => 'null',
+        'FILIPINO_Senator2' => 'null',
+        'FILIPINO_Senator3' => 'null',
         'Auditor' => '100010001'
     ];
 
@@ -55,22 +55,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Construct the SQL query to insert or update the vote
-    $sqlSaveVote = "INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, `MATH Senator1`, `MATH Senator2`, `MATH Senator3`, `ENGLISH Senator1`, `ENGLISH Senator2`, `ENGLISH Senator3`, `FILIPINO Senator1`, `FILIPINO Senator2`, `FILIPINO Senator3`, Auditor)
+    $sqlSaveVote = "INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, `MATH_Senator1`, `MATH_Senator2`, `MATH_Senator3`, `ENGLISH_Senator1`, `ENGLISH_Senator2`, `ENGLISH_Senator3`, `FILIPINO_Senator1`, `FILIPINO_Senator2`, `FILIPINO_Senator3`, Auditor)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
     LC_Governor = VALUES(LC_Governor),
     Vice_Governor = VALUES(Vice_Governor),
     Secretary = VALUES(Secretary),
     Treasurer = VALUES(Treasurer),
-    `MATH Senator1` = VALUES(`MATH Senator1`),
-    `MATH Senator2` = VALUES(`MATH Senator2`),
-    `MATH Senator3` = VALUES(`MATH Senator3`),
-    `ENGLISH Senator1` = VALUES(`ENGLISH Senator1`),
-    `ENGLISH Senator2` = VALUES(`ENGLISH Senator2`),
-    `ENGLISH Senator3` = VALUES(`ENGLISH Senator3`),
-    `FILIPINO Senator1` = VALUES(`FILIPINO Senator1`),
-    `FILIPINO Senator2` = VALUES(`FILIPINO Senator2`),
-    `FILIPINO Senator3` = VALUES(`FILIPINO Senator3`),
+    `MATH_Senator1` = VALUES(`MATH_Senator1`),
+    `MATH_Senator2` = VALUES(`MATH_Senator2`),
+    `MATH_Senator3` = VALUES(`MATH_Senator3`),
+    `ENGLISH_Senator1` = VALUES(`ENGLISH_Senator1`),
+    `ENGLISH_Senator2` = VALUES(`ENGLISH_Senator2`),
+    `ENGLISH_Senator3` = VALUES(`ENGLISH_Senator3`),
+    `FILIPINO_Senator1` = VALUES(`FILIPINO_Senator1`),
+    `FILIPINO Senator2` = VALUES(`FILIPINO_Senator2`),
+    `FILIPINO Senator3` = VALUES(`FILIPINO_Senator3`),
     Auditor = VALUES(Auditor)";
 
     // Prepare and execute the statement
@@ -82,15 +82,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $votes['Vice_Governor'],
         $votes['Secretary'],
         $votes['Treasurer'],
-        $votes['MATH Senator1'],
-        $votes['MATH Senator2'],
-        $votes['MATH Senator3'],
-        $votes['ENGLISH Senator1'],
-        $votes['ENGLISH Senator2'],
-        $votes['ENGLISH Senator3'],
-        $votes['FILIPINO Senator1'],
-        $votes['FILIPINO Senator2'],
-        $votes['FILIPINO Senator3'],
+        $votes['MATH_Senator1'],
+        $votes['MATH_Senator2'],
+        $votes['MATH_Senator3'],
+        $votes['ENGLISH_Senator1'],
+        $votes['ENGLISH_Senator2'],
+        $votes['ENGLISH_Senator3'],
+        $votes['FILIPINO_Senator1'],
+        $votes['FILIPINO_Senator2'],
+        $votes['FILIPINO_Senator3'],
         $votes['Auditor']
     );
 
@@ -686,15 +686,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             'Vice Governor' => 'Vice_Governor',
                             'Secretary' => 'Secretary',
                             'Treasurer' => 'Treasurer',
-                            'MATH Senator1' => 'MATH Senator1',
-                            'MATH Senator2' => 'MATH Senator2',
-                            'MATH Senator3' => 'MATH Senator3',
-                            'ENGLISH Senator1' => 'ENGLISH Senator1',
-                            'ENGLISH Senator2' => 'ENGLISH Senator2',
-                            'ENGLISH Senator3' => 'ENGLISH Senator3',
-                            'FILIPINO Senator1' => 'FILIPINO Senator1',
-                            'FILIPINO Senator2' => 'FILIPINO Senator2',
-                            'FILIPINO Senator3' => 'FILIPINO Senator3',
+                            'MATH Senator1' => 'MATH_Senator1',
+                            'MATH Senator2' => 'MATH_Senator2',
+                            'MATH Senator3' => 'MATH_Senator3',
+                            'ENGLISH Senator1' => 'ENGLISH_Senator1',
+                            'ENGLISH Senator2' => 'ENGLISH_Senator2',
+                            'ENGLISH Senator3' => 'ENGLISH_Senator3',
+                            'FILIPINO Senator1' => 'FILIPINO_Senator1',
+                            'FILIPINO Senator2' => 'FILIPINO_Senator2',
+                            'FILIPINO Senator3' => 'FILIPINO_Senator3',
                             'Auditor' => 'Auditor'
                         ];
 
@@ -706,7 +706,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             // Fetch candidates for the current position
                             if($selected_major==="MATH"){
                                 if (strpos($positionName, 'MATH Senator') !== false) {
-                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'MATH Senator%'";
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'MATH Senator%'AND program = '$program'";
                                 } else if (strpos($positionName, 'ENGLISH Senator') !== false) {
                                     continue;
                                 } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
@@ -717,13 +717,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $resultCandidates = $conn->query($sqlCandidates);
                             } else if($selected_major==="ENGLISH"){
                                 if (strpos($positionName, 'ENGLISH Senator') !== false) {
-                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'ENGLISH Senator%'";
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'ENGLISH Senator%'AND program = '$program'";
                                 } else if (strpos($positionName, 'MATH Senator') !== false) {
                                     continue;
                                 } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
                                     continue;
                                 } else {
-                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'";
+                                    $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'AND program = '$program'";
                                 }
                                 $resultCandidates = $conn->query($sqlCandidates);
                             } else if($selected_major==="FILIPINO"){
