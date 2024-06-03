@@ -1231,7 +1231,7 @@
 
             // Retrieve data from form
             $usepID = $clean_usep_ID;
-            $username = $_POST['Uname3'];
+            $username = $_POST['UName3'];
             $input_password = $_POST['Password3'];
             $hashed_password = password_hash($input_password, PASSWORD_DEFAULT);
             $LName = $_POST['LName3'];
