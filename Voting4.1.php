@@ -4,45 +4,28 @@ include "DBSessionVoter.php";
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
-$major = $_GET["major"];
 
-$votes = $_GET;// Assuming 'votes' is one of the parameters in the queryString
+$votes = $_GET; // Assuming 'votes' is one of the parameters in the queryString
 // Map the position keys to human-readable names if necessary
 
-    if($major ==='MATH'){
-        $positionNames = [
-            'LC_Governor' => 'Governor',
-            'Vice_Governor' => 'Vice Governor',
-            'Secretary' => 'Secretary',
-            'Treasurer' => 'Treasurer',
-            'MATH_Senator1' => 'MATH Senator1',
-            'MATH_Senator2' => 'MATH Senator2',
-            'MATH_Senator3' => 'MATH Senator3',
-            'Auditor' => 'Auditor'
-        ];
-    } else if($major ==='ENGLISH'){
-        $positionNames = [
-            'LC_Governor' => 'Governor',
-            'Vice_Governor' => 'Vice Governor',
-            'Secretary' => 'Secretary',
-            'Treasurer' => 'Treasurer',
-            'ENGLISH_Senator1' => 'ENGLISH Senator1',
-            'ENGLISH_Senator2' => 'ENGLISH Senator2',
-            'ENGLISH_Senator3' => 'ENGLISH Senator3',
-            'Auditor' => 'Auditor'
-        ];
-    } else if($major ==='FILIPINO'){
-        $positionNames = [
-            'LC_Governor' => 'Governor',
-            'Vice_Governor' => 'Vice Governor',
-            'Secretary' => 'Secretary',
-            'Treasurer' => 'Treasurer',
-            'FILIPINO_Senator1' => 'FILIPINO Senator1',
-            'FILIPINO_Senator2' => 'FILIPINO Senator2',
-            'FILIPINO_Senator3' => 'FILIPINO Senator3',
-            'Auditor' => 'Auditor'
-        ];
-    }
+
+    $positionNames = [
+        'LC_Governor' => 'Governor',
+        'Vice_Governor' => 'Vice Governor',
+        'Secretary' => 'Secretary',
+        'Treasurer' => 'Treasurer',
+        'MATH_Senator1' => 'MATH Senator1',
+        'MATH_Senator2' => 'MATH Senator2',
+        'MATH_Senator3' => 'MATH Senator3',
+        'ENGLISH_Senator1' => 'ENGLISH Senator1',
+        'ENGLISH_Senator2' => 'ENGLISH Senator2',
+        'ENGLISH_Senator3' => 'ENGLISH Senator3',
+        'FILIPINO_Senator1' => 'FILIPINO Senator1',
+        'FILIPINO_Senator2' => 'FILIPINO Senator2',
+        'FILIPINO_Senator3' => 'FILIPINO Senator3',
+        'Auditor' => 'Auditor'
+    ];
+
 
 ?>
 
