@@ -627,7 +627,7 @@ $votes = $_GET; // Assuming 'votes' is one of the parameters in the queryString
                                     $stmt->fetch();
                                     $stmt->close();
                                 } else {
-                                    $candidateName = 'Abstain';
+                                    $candidateName = 'N/a';
                                 }
 
                                 echo '<p>   ' . $positionNames[$position] . '</p>';
