@@ -785,10 +785,10 @@ $positionNames = [
                             <option value="Filipino">Filipino</option>
                     </select>
                 </div>
-                </form>
                 <br>
                 <button type="button" class="cancel-button">Cancel</button>
                 <button type="submit" name="enter" class="save-button">Enter</button>
+                </form>
             </div>
         </div>    
     </div>
