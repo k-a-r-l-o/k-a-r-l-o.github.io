@@ -4,6 +4,7 @@ include "DBSessionVoter.php";
 $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
+$selected_major = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $selected_major = $_GET['major'];
