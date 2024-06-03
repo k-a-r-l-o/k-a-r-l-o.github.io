@@ -192,10 +192,6 @@
             background-color: rgb(66, 165, 245, 0.5);
         }
 
-        .selected {
-            background-color: rgb(66, 165, 245, 0.5);
-        }
-
         .buttonContainer .Logoutbutton {
             display: flex;
             height: 60px;
@@ -892,7 +888,7 @@
                     <div><img src="schedule.svg" alt="calendar icon"></div>
                     <div>Voting Schedule</div>
                 </button>
-                <button id="LOGS" title="Logs" class="selected">
+                <button title="Logs" id="selected">
                     <div><img src="log.svg" alt="log icon"></div>
                     <div>Log</div>
                 </button>
