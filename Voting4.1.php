@@ -5,10 +5,10 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
-// Retrieve the votes from the URL parameters
-$votes = $_GET;
-
+$votes = $_GET['votes']; // Assuming 'votes' is one of the parameters in the queryString
+$major = $_GET['major'];
 // Map the position keys to human-readable names if necessary
+
 $positionNames = [
     'LC_Governor' => 'Governor',
     'Vice_Governor' => 'Vice Governor',
