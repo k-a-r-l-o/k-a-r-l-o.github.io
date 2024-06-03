@@ -715,22 +715,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             
                             // Fetch candidates for the current position
                             if($selected_major==="MATH"){
-                                if (strpos($positionName, 'Senator') !== false) {
+                                if (strpos($positionName, 'MATH Senator') !== false) {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'MATH Senator%'";
+                                } else if (strpos($positionName, 'ENGLISH Senator') !== false) {
+                                    continue;
+                                } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
+                                    continue;
                                 } else {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
                                 }
                                 $resultCandidates = $conn->query($sqlCandidates);
                             } else if($selected_major==="ENGLISH"){
-                                if (strpos($positionName, 'Senator') !== false) {
+                                if (strpos($positionName, 'ENGLISH Senator') !== false) {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'ENGLISH Senator%'";
+                                } else if (strpos($positionName, 'MATH Senator') !== false) {
+                                    continue;
+                                } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
+                                    continue;
                                 } else {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
                                 }
                                 $resultCandidates = $conn->query($sqlCandidates);
                             } else if($selected_major==="FILIPINO"){
-                                if (strpos($positionName, 'Senator') !== false) {
+                                if (strpos($positionName, 'FILIPINO Senator') !== false) {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'FILIPINO Senator%'";
+                                } else if (strpos($positionName, 'ENGLISH Senator') !== false) {
+                                    continue;
+                                } else if (strpos($positionName, 'MATH Senator') !== false) {
+                                    continue;
                                 } else {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'";
                                 }
