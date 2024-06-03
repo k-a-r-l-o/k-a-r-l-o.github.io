@@ -55,33 +55,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Construct the SQL query to insert or update the vote
-    $sqlSaveVote = "
-        INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, 
-        MATH Senator1,
-        MATH Senator2,
-        MATH Senator3,
-        ENGLISH Senator1,
-        ENGLISH Senator2,
-        ENGLISH Senator3,
-        FILIPINO Senator1,
-        FILIPINO Senator2,
-        FILIPINO Senator3, Auditor)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE 
-            LC_Governor = VALUES(LC_Governor),
-            Vice_Governor = VALUES(Vice_Governor),
-            Secretary = VALUES(Secretary),
-            Treasurer = VALUES(Treasurer),
-            MATH Senator1 = VALUES(MATH Senator1),
-            MATH Senator2 = VALUES(MATH Senator2),
-            MATH Senator3 = VALUES(MATH Senator3),
-            ENGLISH Senator1 = VALUES(ENGLISH Senator1),
-            ENGLISHSenator2 = VALUES(ENGLISH Senator2),
-            ENGLISH Senator3 = VALUES(ENGLISH Senator3),
-            FILIPINO Senator1 = VALUES(FILIPINO Senator1),
-            FILIPINO Senator2 = VALUES(FILIPINO Senator2),
-            FILIPINO Senator3 = VALUES(FILIPINO Senator3),
-            Auditor = VALUES(Auditor)";
+    $sqlSaveVote = "INSERT INTO $table_name (usep_ID, LC_Governor, Vice_Governor, Secretary, Treasurer, `MATH Senator1`, `MATH Senator2`, `MATH Senator3`, `ENGLISH Senator1`, `ENGLISH Senator2`, `ENGLISH Senator3`, `FILIPINO Senator1`, `FILIPINO Senator2`, `FILIPINO Senator3`, Auditor)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+    LC_Governor = VALUES(LC_Governor),
+    Vice_Governor = VALUES(Vice_Governor),
+    Secretary = VALUES(Secretary),
+    Treasurer = VALUES(Treasurer),
+    `MATH Senator1` = VALUES(`MATH Senator1`),
+    `MATH Senator2` = VALUES(`MATH Senator2`),
+    `MATH Senator3` = VALUES(`MATH Senator3`),
+    `ENGLISH Senator1` = VALUES(`ENGLISH Senator1`),
+    `ENGLISH Senator2` = VALUES(`ENGLISH Senator2`),
+    `ENGLISH Senator3` = VALUES(`ENGLISH Senator3`),
+    `FILIPINO Senator1` = VALUES(`FILIPINO Senator1`),
+    `FILIPINO Senator2` = VALUES(`FILIPINO Senator2`),
+    `FILIPINO Senator3` = VALUES(`FILIPINO Senator3`),
+    Auditor = VALUES(Auditor)";
 
     // Prepare and execute the statement
     $stmt = $conn->prepare($sqlSaveVote);
