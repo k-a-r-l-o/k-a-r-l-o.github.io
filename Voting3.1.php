@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initialize an array to hold vote values with default abstain values
     $votes = [
         'LC_Governor' => '100010001',
-        'Vice_Governor' => '100010001',x
+        'Vice_Governor' => '100010001',
         'Secretary' => '100010001',
         'Treasurer' => '100010001',
         'MATH_Senator1' => 'null',
