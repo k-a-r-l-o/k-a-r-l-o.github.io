@@ -1270,7 +1270,7 @@
 
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
-                $logAction = 'Imported Voter';
+                $logAction = 'Imported Voters';
                 $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, CURRENT_DATE, CURRENT_TIME, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
