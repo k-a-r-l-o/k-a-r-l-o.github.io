@@ -1153,7 +1153,6 @@ if (isset($_GET['council_name'])) {
 if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('RESULTS').style.display = 'none';</script>";
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo "<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
     echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
 } else if ($usertype === 'Admin-Technical') {
     echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
