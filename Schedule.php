@@ -1303,7 +1303,8 @@
 if ($usertype === 'Admin-Front'){
     echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
     echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('SCHEDULE').style.display = 'none';</script>";
+    echo"<script>document.getElementById('addschedule').style.display = 'none';</script>";
+    echo"<script>document.getElementById('clearSchedule').style.display = 'none';</script>";
     echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
 } else if ($usertype === 'Admin-Technical'){
     echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
@@ -1311,6 +1312,8 @@ if ($usertype === 'Admin-Front'){
     echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
     echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+    echo"<script>document.getElementById('addschedule').style.display = 'none';</script>";
+    echo"<script>document.getElementById('clearSchedule').style.display = 'none';</script>";
 }
     
 ?>
