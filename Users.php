@@ -1321,7 +1321,7 @@
                 $conn->query($sqlEnableFK);
                 // Log the login activity
                 $usepID = $_SESSION["usep_ID"];
-                $logAction = 'deleted user';
+                $logAction = 'Deleted User';
                 date_default_timezone_set('Asia/Manila');
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
