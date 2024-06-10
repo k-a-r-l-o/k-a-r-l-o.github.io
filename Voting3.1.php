@@ -703,9 +703,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             if($selected_major==="MATH"){
                                 if (strpos($positionName, 'MATH Senator') !== false) {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'MATH Senator%'AND program = '$program'";
-                                } else if (strpos($positionName, 'ENGLISH Senator') !== false) {
+                                } else if (strpos($positionName, 'Senator') !== false) {
                                     continue;
-                                } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
+                                } else if (strpos($positionName, 'Senator') !== false) {
                                     continue;
                                 } else {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName' AND program = '$program'";
@@ -714,9 +714,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             } else if($selected_major==="ENGLISH"){
                                 if (strpos($positionName, 'ENGLISH Senator') !== false) {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'ENGLISH Senator%'AND program = '$program'";
-                                } else if (strpos($positionName, 'MATH Senator') !== false) {
+                                } else if (strpos($positionName, 'Senator') !== false) {
                                     continue;
-                                } else if (strpos($positionName, 'FILIPINO Senator') !== false) {
+                                } else if (strpos($positionName, 'Senator') !== false) {
                                     continue;
                                 } else {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'AND program = '$program'";
@@ -725,9 +725,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             } else if($selected_major==="FILIPINO"){
                                 if (strpos($positionName, 'FILIPINO Senator') !== false) {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position LIKE 'FILIPINO Senator%'";
-                                } else if (strpos($positionName, 'ENGLISH Senator') !== false) {
+                                } else if (strpos($positionName, 'Senator') !== false) {
                                     continue;
-                                } else if (strpos($positionName, 'MATH Senator') !== false) {
+                                } else if (strpos($positionName, 'Senator') !== false) {
                                     continue;
                                 } else {
                                     $sqlCandidates = "SELECT * FROM candidates WHERE position = '$positionName'AND program = '$program'";
@@ -764,7 +764,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $counter++;
                                 }
                             } else {
-                                echo 'No candidates found for ' . $selected_major . ' ' . $positionName . '.';
+                                echo 'No candidates found for ' . $positionName . '.';
                             }
 
                             // Close the form and add the candidate image container
