@@ -20,10 +20,12 @@ if ($conn->connect_error) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-Vote Login</title>
-  <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="U-Vote: The secure and user-friendly online voting platform exclusively for the Tagum Student Council elections.">
+    <meta name="keywords" content="uvote, usep tagum voting, tsc voting">
+    <title>U-Vote Login</title>
+    <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
