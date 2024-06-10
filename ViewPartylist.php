@@ -855,7 +855,7 @@ if (isset($_GET['prty_ID'])) {
                 <button id="RESULTS" title="Results" onclick="switchHTML('Results.php')"><div><img src="result.svg" alt="result icon"></div><div>Results</div></button>
                 <button id="CANDIDATES" title="Candidates" onclick="switchHTML('Candidate.php')"><div><img src="candidates.svg" alt="candidate icon"></div><div>Candidate</div></button>
                 <button id="VOTERS" title="Voters" onclick="switchHTML('Voters.php')"> <div><img src="voters.svg" alt="voters icon"></div><div>Voters</div></button>
-                <button id="PARTYLIST" title="Partylists" id="selected"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
+                <button title="Partylists" id="selected"><div><img src="partylist.svg" alt="partylist icon"></div><div>Partylist</div></button>
                 <button id="USERS" title="Users" onclick="switchHTML('Users.php')"><div><img src="user.svg" alt="user icon"></div><div>Users</div></button>
                 <button id="COUNCIL" title="Councils" onclick="switchHTML('Council.php')"><div><img src="council.svg" alt="council icon"></div><div>Council</div></button>
                 <button id="SCHEDULE" title="Voting Schedule" onclick="switchHTML('Schedule.php')"><div><img src="schedule.svg" alt="calendar icon"></div><div>Voting Schedule</div></button>
