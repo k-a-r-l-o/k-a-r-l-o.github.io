@@ -648,7 +648,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
                 <form method="post" id="votingForm">
-                    <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
                     <?php
                     // Fetch positions from the positions table for the council_id
                     $sqlPositions = "SELECT position_name FROM positions WHERE council_id = $council_id";
