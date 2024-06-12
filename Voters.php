@@ -1334,10 +1334,6 @@
                         <label for="voted2">Vote Status:</label>
                         <input type="text" id="voted2" class="input-form" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="VotedDT2">Voted on:</label>
-                        <input type="text" id="VotedDT2" class="input-form" readonly>
-                    </div>
                 </form>
                 <br>
                 <button type="button" class="save-button" onclick="closeViewpop()">Back</button>
@@ -1768,8 +1764,34 @@
                             document.getElementById("gender2").value = rowData.gender;
                             document.getElementById("yearlevel2").value = rowData.yearLvl;
                             document.getElementById("program2").value = rowData.program;
-                            document.getElementById("voted2").value = rowData.voted;
-                            document.getElementById("VotedDT2").value = rowData.VotedDT;
+                            // Assuming rowData.VotedDT is a valid Date object, a date string that can be parsed by Date, or null
+                            let date = rowData.VotedDT ? new Date(rowData.VotedDT) : null;
+
+                            // Initialize ondate as an empty string
+                            let ondate = "";
+
+                            if (date) {
+                                // Define an array of month names
+                                let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                                // Extract the individual components of the date
+                                let month = months[date.getMonth()];
+                                let day = date.getDate();
+                                let year = date.getFullYear();
+                                let hours = date.getHours().toString().padStart(2, '0');
+                                let minutes = date.getMinutes().toString().padStart(2, '0');
+                                let seconds = date.getSeconds().toString().padStart(2, '0');
+
+                                // Format the date string
+                                let formattedDate = `${month} ${day}, ${year} ${hours}:${minutes}:${seconds}`;
+
+                                // Assign the formatted date string to ondate
+                                ondate = "on " + formattedDate;
+                            }
+
+                            // Assign the combined string to the value of the HTML element
+                            document.getElementById("voted2").value = rowData.voted + " " + ondate;
+
                             // Show the popup
                             var popup = document.getElementById("viewpop");
                             popup.style.display = "flex";
