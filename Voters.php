@@ -1571,7 +1571,7 @@
                 if ($result->num_rows > 0) {
                     // Council name exists for the given program
                     $row = $result->fetch_assoc();
-                    $council_name = $row['council_name'];
+                    $council_name = strtolower($row['council_name']);
 
                     // Delete vote records from the specific council votes table
                     $sqlVoteDelete2 = "DELETE FROM " . $council_name . "_votes WHERE usep_ID = '$usepID'";
