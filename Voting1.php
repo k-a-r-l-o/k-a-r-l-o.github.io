@@ -637,7 +637,6 @@ $usep_ID = $_SESSION["usep_ID"];
                 ?>
 
                 <form method="post" id="votingForm">
-                    <input type="hidden" name="usep_ID" value="<?php echo htmlspecialchars($userId); ?>">
                     <?php
                     // Fetch positions from the positions table for council_ID = 8
                     $sqlPositions = "SELECT position_name FROM positions WHERE council_id = 8";
