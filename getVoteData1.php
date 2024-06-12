@@ -38,6 +38,11 @@ $resultVotes6 = $conn->query("SELECT COUNT(*) as voteCount6 FROM ftvetts_votes")
 $rowVotes6 = $resultVotes6->fetch_assoc();
 $voteCount6 = $rowVotes6['voteCount6'];
 
+// Query to get the count of votes
+$resultVotes7 = $conn->query("SELECT COUNT(*) as voteCount7 FROM tsc_votes");
+$rowVotes7 = $resultVotes7->fetch_assoc();
+$voteCount7 = $rowVotes7['voteCount7'];
+
 // Return the data as JSON
 echo json_encode([
     'voteCount' => $voteCount,
@@ -46,8 +51,8 @@ echo json_encode([
     'voteCount3' => $voteCount3,
     'voteCount4' => $voteCount4,
     'voteCount5' => $voteCount5,
-    'voteCount6' => $voteCount6
+    'voteCount6' => $voteCount6,
+    'voteCount7' => $voteCount7
 ]);
 
 $conn->close();
-?>
