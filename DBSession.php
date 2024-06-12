@@ -20,9 +20,9 @@ session_start();
 
 // If user is logged in, update last heartbeat
 if (isset($_SESSION['usep_ID'])) {
-    $userId = $_SESSION['usep_ID'];
+    $usepID = $_SESSION['usep_ID'];
     $stmt = $conn->prepare("UPDATE users SET last_heartbeat = NOW(), logged_out = 0 WHERE usep_ID = ?");
-    $stmt->bind_param("i", $userId);
+    $stmt->bind_param("i", $usepID);
     $stmt->execute();
     $stmt->close();
 }
@@ -67,7 +67,7 @@ if (isset($_POST['logout'])) {
     $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sqlInsertLog);
     if ($stmt) {
-        $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
         $stmt->execute();
         $stmt->close();
     } else {
@@ -85,4 +85,3 @@ if (isset($_POST['logout'])) {
     header("Location: indexAdmin.php");
     exit();
 }
-?>
