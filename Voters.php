@@ -1,18 +1,18 @@
 <?php
-    include "DBSession.php";
+include "DBSession.php";
 
-    $usertype = $_SESSION['usertype'];
-    $username = $_SESSION['username'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
 
-    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $usertype);
-    $stmt->execute();
-    $stmt->bind_result($FName, $LName);
-    $stmt->fetch();
-    $stmt->close();
-    $firstLetterFirstName = substr($FName, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+$sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usertype);
+$stmt->execute();
+$stmt->bind_result($FName, $LName);
+$stmt->fetch();
+$stmt->close();
+$firstLetterFirstName = substr($FName, 0, 1);
+$firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -501,7 +501,7 @@
             overflow-x: auto;
         }
 
-        
+
 
         table {
             width: 100%;
@@ -823,7 +823,9 @@
         }
 
         @media (max-width: 1000px) {
-            #editpop, #popup,
+
+            #editpop,
+            #popup,
             #viewpop {
                 height: 80vh;
             }
@@ -841,47 +843,52 @@
 
         }
 
-        .accounttag{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        width: 100%;
-        border-radius: 10px;
-        background-color: rgba(150, 191, 245, 0.25);
-        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
-        box-sizing: border-box;
-        padding: 25px 0px 25px 0px;
-    }
-
-    .username1, .username, .usertype {
-        color: white;
-        margin: 0;
-    }
-
-    .username1{
-        display: none;
-    }
-
-    .usertype {
-        font-weight: lighter;
-    }
-
-    @media (max-width: 1000px) {
-        .username, .usertype{
-          font-size: 0px;
-        }
-        .accounttag{
-            height: auto;
-            padding: 15px 0px 15px 0px;
+        .accounttag {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(150, 191, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            padding: 25px 0px 25px 0px;
         }
 
-        .username1{
-            display: block;
+        .username1,
+        .username,
+        .usertype {
+            color: white;
+            margin: 0;
         }
 
-    }
+        .username1 {
+            display: none;
+        }
+
+        .usertype {
+            font-weight: lighter;
+        }
+
+        @media (max-width: 1000px) {
+
+            .username,
+            .usertype {
+                font-size: 0px;
+            }
+
+            .accounttag {
+                height: auto;
+                padding: 15px 0px 15px 0px;
+            }
+
+            .username1 {
+                display: block;
+            }
+
+        }
     </style>
 
     <script>
@@ -903,7 +910,6 @@
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
-        
     </script>
 </head>
 
@@ -923,9 +929,9 @@
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
-                <h3 class="usertype"><?php echo $usertype?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $FName . " " . $LName ?></h2>
+                <h3 class="usertype"><?php echo $usertype ?></h3>
             </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
@@ -988,52 +994,52 @@
             </div>
             <div class="tableandnav">
                 <div class="tablecontainer">
-                <table id="Results">
-                    <tr class="trheader">
-                        <th class="thfirst">USEP ID</th>
-                        <th>NAME</th>
-                        <th>YEAR LEVEL</th>
-                        <th>PROGRAM</th>
-                        <th class="thlast"></th>
-                    </tr>
-                    <?php
-                    // Query to retrieve all data from the Voters table
-                    $sql = "SELECT * FROM voters";
-                    $result = $conn->query($sql);
+                    <table id="Results">
+                        <tr class="trheader">
+                            <th class="thfirst">USEP ID</th>
+                            <th>NAME</th>
+                            <th>YEAR LEVEL</th>
+                            <th>PROGRAM</th>
+                            <th class="thlast"></th>
+                        </tr>
+                        <?php
+                        // Query to retrieve all data from the Voters table
+                        $sql = "SELECT * FROM voters";
+                        $result = $conn->query($sql);
 
-                    // Check if there are any rows returned
-                    if ($result->num_rows > 0) {
-                        // Output data of each row
-                        while ($row = $result->fetch_assoc()) {
-                            // Assuming $row["usep_ID"] contains the ID like 202200294
-                            $usep_ID = $row["usep_ID"];
+                        // Check if there are any rows returned
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                                // Assuming $row["usep_ID"] contains the ID like 202200294
+                                $usep_ID = $row["usep_ID"];
 
-                            // Extract the year part
-                            $year = substr($usep_ID, 0, 4);
+                                // Extract the year part
+                                $year = substr($usep_ID, 0, 4);
 
-                            // Extract the remaining part and zero-pad it to 5 digits
-                            $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
+                                // Extract the remaining part and zero-pad it to 5 digits
+                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
 
-                            // Combine the parts with a dash
-                            $formatted_usep_ID = $year . '-' . $numeric_part;
-                    ?>
-                            <tr>
-                                <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
-                                <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
-                                <td><?php echo $row["yearLvl"] ?></td>
-                                <td><?php echo $row["program"] ?></td>
-                                <td class="tdlast">
-                                    <!-- Pass row data to viewpop() function -->
-                                    <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                    <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
-                                    <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
-                                </td>
-                            </tr>
-                    <?php
+                                // Combine the parts with a dash
+                                $formatted_usep_ID = $year . '-' . $numeric_part;
+                        ?>
+                                <tr>
+                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
+                                    <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
+                                    <td><?php echo $row["yearLvl"] ?></td>
+                                    <td><?php echo $row["program"] ?></td>
+                                    <td class="tdlast">
+                                        <!-- Pass row data to viewpop() function -->
+                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
+                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
+                                        <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
+                                    </td>
+                                </tr>
+                        <?php
+                            }
                         }
-                    }
-                    ?>
-                </table>
+                        ?>
+                    </table>
                 </div>
                 <div class="navTable">
                     <div class="prevcontainer">
@@ -1067,7 +1073,7 @@
                     </div>
                     <div class="form-group">
                         <label for="LName">Last Name:</label>
-                        <input type="text" id="LName1" name="LName" class="input-form"  required>
+                        <input type="text" id="LName1" name="LName" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
@@ -1101,7 +1107,7 @@
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
                                 // Fetch each row and create an option element
-                                while($row = $result->fetch_assoc()) {
+                                while ($row = $result->fetch_assoc()) {
                                     echo '<option value="' . $row['Program'] . '">' . $row['Program'] . "</option>";
                                 }
                             } else {
@@ -1173,7 +1179,7 @@
                     $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
-                        $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                         $stmt->execute();
                         $stmt->close();
                     } else {
@@ -1392,7 +1398,7 @@
                             // Check if the query returned any results
                             if ($result->num_rows > 0) {
                                 // Fetch each row and create an option element
-                                while($row = $result->fetch_assoc()) {
+                                while ($row = $result->fetch_assoc()) {
                                     echo '<option value="' . $row['Program'] . '">' . $row['Program'] . "</option>";
                                 }
                             } else {
@@ -1428,7 +1434,7 @@
             $usepID = $clean_usep_ID;
             $email = $_POST['Email3'];
             $lname = $_POST['LName3'];
-            $fname = $_POST['FName3']; 
+            $fname = $_POST['FName3'];
             $gender = $_POST['gender3'];
             $yearlvl = $_POST['yearlevel3'];
             $Program = $_POST['program3'];
@@ -1446,7 +1452,7 @@
                 $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
-                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                    $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                     $stmt->execute();
                     $stmt->close();
                 } else {
@@ -1529,7 +1535,7 @@
                     $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
-                        $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                         $stmt->execute();
                         $stmt->close();
                     } else {
@@ -1542,7 +1548,7 @@
                     echo "<script>alert('Error: " .   $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
                     echo "<script>window.location.href = 'Voters.php';</script>";
                 }
-            } else{
+            } else {
                 $program = $_POST["program4"];
                 $input_usep_ID = $_POST["usepID4"];
 
@@ -1663,7 +1669,7 @@
                 }
             }
 
-            if(input===""){
+            if (input === "") {
                 navigateRows(-1);
             }
         }
@@ -1778,12 +1784,14 @@
                                 let month = months[date.getMonth()];
                                 let day = date.getDate();
                                 let year = date.getFullYear();
-                                let hours = date.getHours().toString().padStart(2, '0');
+                                let hours = date.getHours();
+                                let am_pm = hours >= 12 ? "pm" : "am"; // Determine AM or PM
+                                hours = (hours % 12) || 12; // Convert 24-hour format to 12-hour format
                                 let minutes = date.getMinutes().toString().padStart(2, '0');
                                 let seconds = date.getSeconds().toString().padStart(2, '0');
 
                                 // Format the date string
-                                let formattedDate = `${month} ${day}, ${year} ${hours}:${minutes}:${seconds}`;
+                                let formattedDate = `${month} ${day}, ${year} ${hours}:${minutes}:${seconds} ${am_pm}`;
 
                                 // Assign the formatted date string to ondate
                                 ondate = "on " + formattedDate;
@@ -1791,6 +1799,7 @@
 
                             // Assign the combined string to the value of the HTML element
                             document.getElementById("voted2").value = rowData.voted + " " + ondate;
+
 
                             // Show the popup
                             var popup = document.getElementById("viewpop");
@@ -1944,23 +1953,22 @@
                 credentials: 'same-origin'
             });
         }, 300000); // 300000 ms = 5 minutes
-
     </script>
 </body>
 
 </html>
-<?php 
+<?php
 
-if ($usertype === 'Admin-Front'){
-    echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
-} else if ($usertype === 'Admin-Technical'){
-    echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
-    echo"<script>document.getElementById('VOTERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
-    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+if ($usertype === 'Admin-Front') {
+    echo "<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
 }
-    
+
 ?>
