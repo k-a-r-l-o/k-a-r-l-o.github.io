@@ -944,8 +944,8 @@ $firstLetterLastName = substr($LName, 0, 1);
             // Initial data fetch
             updateChartData1();
 
-            // Update data every 10 seconds
-            setInterval(updateChartData1, 10000);
+            // Update data every 1 seconds
+            setInterval(updateChartData1, 1000);
 
             // Configuration options for the first pie chart
             var options = {
@@ -995,10 +995,9 @@ $firstLetterLastName = substr($LName, 0, 1);
             // Initial data fetch
             updateChartData();
 
-            // Update data every 10 seconds
-            setInterval(updateChartData, 10000);
+            // Update data every 1 seconds
+            setInterval(updateChartData, 1000);
 
-            // Configuration options for the second pie chart
             // Configuration options for the second pie chart
             var options2 = {
                 responsive: true,
@@ -1101,6 +1100,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         display: false
                     }
                 },
+                indexAxis: 'y', // Rotate the chart to display horizontally
                 scales: {
                     x: {
                         ticks: {
@@ -1120,6 +1120,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     }
                 }
             };
+
 
             function updateBarData() {
                 fetch('getVoteData1.php')
@@ -1153,8 +1154,8 @@ $firstLetterLastName = substr($LName, 0, 1);
             // Initial data fetch
             updateBarData();
 
-            // Update data every 10 seconds
-            setInterval(updateBarData, 10000);
+            // Update data every 1 second
+            setInterval(updateBarData, 1000);
 
             var myBarChart = createOrUpdateBarChart('myBarChart', barChartData, chartOptions);
 
