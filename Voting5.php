@@ -158,12 +158,9 @@ $usep_ID = $_SESSION["usep_ID"];
         .bodycontainer {
             display: flex;
             justify-content: center;
-            /* Center horizontally */
-            align-items: center;
             width: 100vw;
-            height: 100%;
+            height: 100vh;
             background-color: transparent;
-            overflow: hidden;
             position: fixed;
             z-index: 9999;
             animation: fadeIn 0.3s forwards;
@@ -408,11 +405,16 @@ $usep_ID = $_SESSION["usep_ID"];
 
 </html>
 <?php
+date_default_timezone_set('Asia/Manila');
+$date = date("Y-m-d");
+$time = date("H:i:s");
+$datetime = $date . ' ' . $time;
 
-$sqlvote = "UPDATE voters SET voted = 'Voted' WHERE usep_ID = ?";
+$sqlvote = "UPDATE voters SET voted = 'Voted', VotedDT = ? WHERE usep_ID = ?";
 $stmtUpdate = $conn->prepare($sqlvote);
+
 if ($stmtUpdate) {
-    $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
+    $stmtUpdate->bind_param("si", $datetime, $_SESSION["usep_ID"]);
     $stmtUpdate->execute();
     $stmtUpdate->close();
     session_unset();
@@ -421,10 +423,5 @@ if ($stmtUpdate) {
     echo "Error preparing statement: " . $conn->error;
     exit();
 }
-
-
-
-
-
 
 ?>
