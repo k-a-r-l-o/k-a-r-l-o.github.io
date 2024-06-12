@@ -1334,6 +1334,10 @@
                         <label for="voted2">Vote Status:</label>
                         <input type="text" id="voted2" class="input-form" readonly>
                     </div>
+                    <div class="form-group">
+                        <label for="VotedDT2">Voted on:</label>
+                        <input type="text" id="VotedDT2" class="input-form" readonly>
+                    </div>
                 </form>
                 <br>
                 <button type="button" class="save-button" onclick="closeViewpop()">Back</button>
@@ -1506,7 +1510,7 @@
         if (isset($_POST['delete'])) {
 
             $Voted = $_POST["voted4"];
-            if ($Voted !== 'Voted') {
+            if ($Voted == 'Not Voted') {
                 // Get the user input
                 $input_usep_ID = $_POST["usepID4"];
 
@@ -1765,7 +1769,7 @@
                             document.getElementById("yearlevel2").value = rowData.yearLvl;
                             document.getElementById("program2").value = rowData.program;
                             document.getElementById("voted2").value = rowData.voted;
-
+                            document.getElementById("VotedDT2").value = rowData.VotedDT;
                             // Show the popup
                             var popup = document.getElementById("viewpop");
                             popup.style.display = "flex";
