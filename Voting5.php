@@ -29,6 +29,10 @@ $usep_ID = $_SESSION["usep_ID"];
             padding: 0;
         }
 
+        img {
+            -webkit-user-drag: none;
+        }
+
         /* CSS animation for fading in */
         @keyframes fadeIn {
             from {
@@ -166,11 +170,14 @@ $usep_ID = $_SESSION["usep_ID"];
             animation: fadeIn 0.3s forwards;
         }
 
-        .main {
-            width: auto;
-            height: 80%;
+        .content {
+            width: 100%;
             display: flex;
+            flex-direction: column;
+            padding: 2%;
+            overflow: auto;
             justify-content: center;
+            align-items: center;
         }
 
         .cont {
@@ -178,29 +185,34 @@ $usep_ID = $_SESSION["usep_ID"];
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: inherit;
-            width: 500px;
+            padding: 30px 70px;
+            height: max-content;
+            width: max-content;
             background-color: white;
             border-radius: 10px;
             box-sizing: border-box;
             box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.15);
+            gap: 5%;
         }
 
         h2 {
-            margin-top: 0;
+            margin: 0;
             text-align: center;
             font-size: 35px;
         }
 
         .rec {
+            margin: 0;
+            font-weight: 500;
             text-align: center;
+            font-size: 20px;
         }
 
         .center {
             display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 60%;
+            width: 100%;
         }
 
         button {
@@ -225,7 +237,35 @@ $usep_ID = $_SESSION["usep_ID"];
             justify-content: center;
         }
 
+        button:hover {
+            background-color: #2F80ED;
+        }
 
+        /*all scrollbar design*/
+        /* Width and Height of scrollbar */
+        ::-webkit-scrollbar {
+            background: transparent;
+            width: 7px;
+            height: 0px;
+            border-radius: 10px;
+        }
+
+        /* Track (background of the scrollbar) */
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Handle (thumb) of the scrollbar */
+        ::-webkit-scrollbar-thumb {
+            background: #28579E;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2F80ED;
+            border-radius: 5px;
+        }
 
         @media (max-width: 1000px) {
 
@@ -234,7 +274,8 @@ $usep_ID = $_SESSION["usep_ID"];
             }
 
             .logoName,
-            .logoName img {
+            .logoName img,
+            .cont {
                 scale: 0.9;
             }
 
@@ -242,41 +283,28 @@ $usep_ID = $_SESSION["usep_ID"];
                 padding-left: 3%;
             }
 
-            .cont {
-                height: 300px;
-                width: 300px;
-                background-color: white;
-                border-radius: 10px;
-                box-sizing: border-box;
-                box-shadow: 5px 8px 15px rgba(0, 0, 0, 0.25);
+            .step-name {
+                font-size: 10px;
             }
 
-            h2 {
-                margin-top: 0;
-                text-align: center;
-                font-size: 25px;
+            .stepper-item .step-counter {
+                width: 15px;
+                height: 15px;
             }
-
-
-            button {
-                scale: 0.9;
-            }
-
-
 
         }
 
         @media (max-height: 800px) {
 
             .logoName,
-            .logoName img {
+            .logoName img,
+            .cont {
                 scale: 0.9;
             }
 
             header {
                 padding-left: 3%;
             }
-
         }
 
         @media (max-width: 700px) {
@@ -285,22 +313,32 @@ $usep_ID = $_SESSION["usep_ID"];
                 grid-template-columns: 1fr;
             }
 
-            .logoName,
-            .searchspace {
+            .logoName {
                 width: 100%;
                 padding: 1.5% 5%;
             }
 
-            .login {
-                scale: 0.8;
+            .step-name {
+                font-size: 8px;
             }
 
-            button {
-                scale: 0.8;
+            .stepper-item .step-counter {
+                width: 13px;
+                height: 13px;
             }
 
+            .cont {
+                scale: 0.8;
+            }
 
         }
+
+        @media (max-width: 500px) {
+            .cont {
+                scale: 0.7;
+            }
+        }
+
     </style>
 
 </head>
@@ -342,7 +380,7 @@ $usep_ID = $_SESSION["usep_ID"];
     </header>
 
     <div class="bodycontainer">
-        <div class="main">
+        <div class="content">
             <div class="cont">
                 <h2>Congratulations!</h2>
                 <p class="rec">Vote Recorded.</p>
@@ -367,8 +405,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
         function setHeight() {
             var headerHeight = document.querySelector('header').offsetHeight;
-            document.querySelector('.imagecontainer').style.height = `calc(100vh - ${headerHeight}px)`;
-            document.querySelector('.logincontainer').style.height = `calc(100vh - ${headerHeight}px)`;
+            document.querySelector('.content').style.height = `calc(100vh - ${headerHeight}px - 10%)`;
         }
 
         window.addEventListener('load', setHeight);
@@ -405,6 +442,7 @@ $usep_ID = $_SESSION["usep_ID"];
 
 </html>
 <?php
+
 date_default_timezone_set('Asia/Manila');
 $date = date("Y-m-d");
 $time = date("H:i:s");
