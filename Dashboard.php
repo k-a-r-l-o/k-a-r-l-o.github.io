@@ -1069,7 +1069,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             var barChartData = {
                 labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETTS', 'TSC'],
                 datasets: [{
-                    label: 'Vote Count',
+                    label: 'Percentage',
                     data: [0, 0, 0, 0, 0, 0, 0, 0],
                     backgroundColor: [
                         '#D8031C',
