@@ -267,6 +267,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             table,
             .content button,
+            .contenthead select,
             h2 {
                 scale: 0.9;
             }
@@ -363,6 +364,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             .content button,
             h2,
+            .contenthead select,
             .yellowBG {
                 scale: 0.8;
             }
@@ -412,7 +414,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         .content {
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: 1fr 5fr;
+            grid-template-rows: .5fr .5fr 5fr;
             background-color: #222E50;
             width: auto;
             color: white;
@@ -613,6 +615,41 @@ $firstLetterLastName = substr($LName, 0, 1);
             /* Firefox */
             appearance: none;
             /* All other browsers */
+        }
+
+        select:focus {
+            outline: none;
+        }
+
+        .contenthead select {
+            height: 40px;
+            width: 100%;
+            max-width: 200px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #F6C90E;
+            color: #222E50;
+            border-radius: 5px;
+            border: none;
+            padding: 5px 40px 5px 20px;
+            /* Increased padding to accommodate the larger dropdown symbol */
+            cursor: pointer;
+            background-image: url('arrow-down.png');
+            /* Replace 'path_to_your_arrow_image.png' with the path to your custom dropdown symbol */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            /* Adjusted position of the dropdown symbol */
+            /* Hide the default dropdown arrow */
+            -webkit-appearance: none;
+            /* Safari and Chrome */
+            -moz-appearance: none;
+            /* Firefox */
+            appearance: none;
+            /* All other browsers */
+        }
+
+        p {
+            font-size: 20px;
         }
 
         .content button {
@@ -995,6 +1032,18 @@ $firstLetterLastName = substr($LName, 0, 1);
                 <div class="dropdown">
                     <button id="importbutton"><img src="plus.png" alt="plus icon">Import</button>
                     <button id="add"><img src="plus.png" alt="plus icon">Add new</button>
+                </div>
+            </div>
+            <div class="contenthead">
+                <div class="titlecontainer">
+
+                </div>
+                <div class="dropdown">
+                    <select name="Status" id="Status" onchange="filterVoters()">
+                        <option value="ALL">All Voters</option>
+                        <option value="VOTED">Voted</option>
+                        <option value="NOT">Not Yet Voted</option>
+                    </select>
                 </div>
             </div>
             <div class="tableandnav">
@@ -1931,6 +1980,19 @@ $firstLetterLastName = substr($LName, 0, 1);
                 // If not valid, remove the invalid characters
                 input.value = value.slice(0, -1);
             }
+        }
+
+        function filterVoters() {
+            var status = document.getElementById("Status").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "filter_voters.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    document.getElementById("Results").innerHTML = this.responseText;
+                }
+            };
+            xhr.send("status=" + status);
         }
 
 
