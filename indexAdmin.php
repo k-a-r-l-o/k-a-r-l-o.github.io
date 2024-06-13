@@ -14,6 +14,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+if (isset($_SESSION['username']) && isset($_SESSION['usertype']) && isset($_SESSION['usep_ID'])) {
+    // If session variables are not set, redirect to the login page
+    header("Location: Dashboard.php");
+}
+
 // If form is submitted
 if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user"])) {
     $input_username = $_POST["username"];
