@@ -1049,6 +1049,8 @@ $firstLetterLastName = substr($LName, 0, 1);
             // Initial data fetch
             updateDash();
 
+            setInterval(updateDash, 1000);
+
             // Update data every 10 seconds
             setInterval(() => {
                 isPercentage = !isPercentage; // Toggle between percentage and vote count
