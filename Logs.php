@@ -1,18 +1,18 @@
 <?php
-    include "DBSession.php";
+include "DBSession.php";
 
-    $usertype = $_SESSION['usertype'];
-    $username = $_SESSION['username'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
 
-    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $usertype);
-    $stmt->execute();
-    $stmt->bind_result($FName, $LName);
-    $stmt->fetch();
-    $stmt->close();
-    $firstLetterFirstName = substr($FName, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+$sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usertype);
+$stmt->execute();
+$stmt->bind_result($FName, $LName);
+$stmt->fetch();
+$stmt->close();
+$firstLetterFirstName = substr($FName, 0, 1);
+$firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -187,9 +187,14 @@
             white-space: nowrap;
         }
 
-        #selected,
-        .buttonContainer button:hover {
+        #selected {
             background-color: rgb(66, 165, 245, 0.5);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .buttonContainer button:hover {
+            background-color: rgb(66, 165, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
         }
 
         .buttonContainer .Logoutbutton {
@@ -769,47 +774,52 @@
 
         }
 
-        .accounttag{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        width: 100%;
-        border-radius: 10px;
-        background-color: rgba(150, 191, 245, 0.25);
-        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
-        box-sizing: border-box;
-        padding: 25px 0px 25px 0px;
-    }
-
-    .username1, .username, .usertype {
-        color: white;
-        margin: 0;
-    }
-
-    .username1{
-        display: none;
-    }
-
-    .usertype {
-        font-weight: lighter;
-    }
-
-    @media (max-width: 1000px) {
-        .username, .usertype{
-          font-size: 0px;
-        }
-        .accounttag{
-            height: auto;
-            padding: 15px 0px 15px 0px;
+        .accounttag {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(150, 191, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            padding: 25px 0px 25px 0px;
         }
 
-        .username1{
-            display: block;
+        .username1,
+        .username,
+        .usertype {
+            color: white;
+            margin: 0;
         }
 
-    }
+        .username1 {
+            display: none;
+        }
+
+        .usertype {
+            font-weight: lighter;
+        }
+
+        @media (max-width: 1000px) {
+
+            .username,
+            .usertype {
+                font-size: 0px;
+            }
+
+            .accounttag {
+                height: auto;
+                padding: 15px 0px 15px 0px;
+            }
+
+            .username1 {
+                display: block;
+            }
+
+        }
     </style>
 
     <script>
@@ -831,7 +841,6 @@
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
-
     </script>
 </head>
 
@@ -851,9 +860,9 @@
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
-                <h3 class="usertype"><?php echo $usertype?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $FName . " " . $LName ?></h2>
+                <h3 class="usertype"><?php echo $usertype ?></h3>
             </div>
             <div class="buttonContainer">
                 <button title="Dashboard" onclick="switchHTML('Dashboard.php')">
@@ -925,7 +934,7 @@
                         LEFT JOIN users u 
                         ON a.usep_ID = u.usep_ID
                         ORDER BY a.logs_date DESC, a.logs_time DESC";
-                         $result = $conn->query($sql);
+                        $result = $conn->query($sql);
 
                         // Check if there are any rows returned
                         if ($result->num_rows > 0) {
@@ -1028,7 +1037,7 @@
                 }
             }
 
-            if(input===""){
+            if (input === "") {
                 navigateRows(-1);
             }
         }
@@ -1097,24 +1106,23 @@
                 credentials: 'same-origin'
             });
         }, 300000); // 300000 ms = 5 minutes
-
     </script>
 </body>
 
 </html>
 
-<?php 
+<?php
 
-if ($usertype === 'Admin-Front'){
-    echo"<script>document.getElementById('RESULTS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('LOGS').style.display = 'none';</script>";
-} else if ($usertype === 'Admin-Technical'){
-    echo"<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
-    echo"<script>document.getElementById('VOTERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
-    echo"<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo"<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+if ($usertype === 'Admin-Front') {
+    echo "<script>document.getElementById('RESULTS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
+} else if ($usertype === 'Admin-Technical') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
 }
-    
+
 ?>

@@ -188,9 +188,14 @@ $firstLetterLastName = substr($LName, 0, 1);
             white-space: nowrap;
         }
 
-        #selected,
-        .buttonContainer button:hover {
+        #selected {
             background-color: rgb(66, 165, 245, 0.5);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .buttonContainer button:hover {
+            background-color: rgb(66, 165, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
         }
 
         .buttonContainer .Logoutbutton {
