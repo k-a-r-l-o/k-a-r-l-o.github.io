@@ -1,18 +1,18 @@
 <?php
-    include "DBSession.php";
+include "DBSession.php";
 
-    $usertype = $_SESSION['usertype'];
-    $username = $_SESSION['username'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
 
-    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $usertype);
-    $stmt->execute();
-    $stmt->bind_result($FName, $LName);
-    $stmt->fetch();
-    $stmt->close();
-    $firstLetterFirstName = substr($FName, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+$sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usertype);
+$stmt->execute();
+$stmt->bind_result($FName, $LName);
+$stmt->fetch();
+$stmt->close();
+$firstLetterFirstName = substr($FName, 0, 1);
+$firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -886,9 +886,9 @@
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
-                <h3 class="usertype"><?php echo $usertype?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $FName . " " . $LName ?></h2>
+                <h3 class="usertype"><?php echo $usertype ?></h3>
             </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
@@ -1149,7 +1149,7 @@
                 }
             }
 
-            if(input===""){
+            if (input === "") {
                 navigateRows(-1);
             }
         }
@@ -1294,7 +1294,9 @@
             }
 
             // Log the export activity
-            $.post('log_export.php', { council: filenameInput }, function(response) {
+            $.post('log_export.php', {
+                council: filenameInput
+            }, function(response) {
                 var parsedResponse = JSON.parse(response);
                 if (parsedResponse.status !== "success") {
                     console.error("Logging export activity failed: " + parsedResponse.message);
