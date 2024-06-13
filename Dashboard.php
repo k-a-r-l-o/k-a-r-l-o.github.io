@@ -838,7 +838,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             <div class="dashboards">
                 <div class="perprogramcontainer">
                     <div class="resulttitle">
-                        <h3>NO. OF VOTES PER COUNCIL</h3>
+                        <h3>NO. OF VOTE PER COUNCIL</h3>
                     </div>
                     <div class="piecontainer">
                         <canvas id="myPieChart"></canvas>
@@ -846,7 +846,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                 </div>
                 <div class="allvoterscontainer">
                     <div class="resulttitle">
-                        <h3>OVERALL NO. OF VOTES</h3>
+                        <h3>OVERALL NO. OF VOTE</h3>
                     </div>
                     <div class="piecontainer">
                         <canvas id="myPieChart2"></canvas>
@@ -856,10 +856,20 @@ $firstLetterLastName = substr($LName, 0, 1);
             <div class="dashboards">
                 <div class="perprogramcontainer">
                     <div class="resulttitle">
-                        <h3>PERCENTAGE PER COUNCIL</h3>
+                        <h3>PERCENTAGE OF VOTE PER COUNCIL</h3>
                     </div>
                     <div class="piecontainer">
                         <canvas id="myBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboards">
+                <div class="perprogramcontainer">
+                    <div class="resulttitle">
+                        <h3>NO. OF VOTER PER COUNCIL</h3>
+                    </div>
+                    <div class="piecontainer">
+                        <canvas id="myBarChart2"></canvas>
                     </div>
                 </div>
             </div>
@@ -1165,6 +1175,101 @@ $firstLetterLastName = substr($LName, 0, 1);
             setInterval(updateBarData, 1000);
 
             var myBarChart = createOrUpdateBarChart('myBarChart', barChartData, chartOptions);
+
+            var barChartData2 = {
+                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETTS', 'TSC'],
+                datasets: [{
+                    label: 'No. of Voter',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: [
+                        '#D8031C',
+                        '#F6C90E',
+                        '#090088',
+                        '#E76615',
+                        '#009D23',
+                        '#9F00A3',
+                        '#008AC6',
+                        '#70FF00'
+                    ],
+                    borderWidth: 0
+                }]
+            };
+
+            var chartOptions2 = {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 40,
+                        right: 40,
+                        top: 40,
+                        bottom: 40
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                indexAxis: 'y', // Rotate the chart to display horizontally
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white', // Set the x-axis labels to white
+                            precision: 0
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Set the x-axis grid lines to a light white
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white' // Set the y-axis labels to white
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Set the y-axis grid lines to a light white
+                        }
+                    }
+                }
+            };
+
+
+            function updateBarData2() {
+                fetch('getVoteData1.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Extract voter counts for each program from the received data
+                        const voterCounts = data.voterCounts;
+
+                        // Compute percentages for each program's vote count
+                        const percentages = [
+                            voterCounts.BSABE,
+                            voterCounts.BEEd,
+                            voterCounts.BECEd,
+                            voterCounts.BSNEd,
+                            voterCounts.BSEd,
+                            voterCounts.BSIT,
+                            voterCounts.BTVTEd,
+                            voterCounts.ALL
+                        ];
+
+                        // Update chart data with percentages
+                        barChartData2.datasets[0].data = percentages;
+
+                        // Update the bar chart
+                        myBarChart2.update();
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+
+
+            // Initial data fetch
+            updateBarData2();
+
+            // Update data every 1 second
+            setInterval(updateBarData2, 1000);
+
+            var myBarChart2 = createOrUpdateBarChart('myBarChart2', barChartData2, chartOptions2);
 
 
             /*log out*/
