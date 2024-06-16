@@ -1301,7 +1301,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     data: [], // Will be filled with voter counts
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
+                    borderWidth: 2,
                     fill: true
                 }]
             };
@@ -1321,7 +1321,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         max: endTime,
                         time: {
                             unit: 'day', // Initial unit
-                            tooltipFormat: 'PPpp' // Display date and time in tooltip
+                            tooltipFormat: 'PPp' // Display date and time in tooltip
                         },
                         title: {
                             display: true,
