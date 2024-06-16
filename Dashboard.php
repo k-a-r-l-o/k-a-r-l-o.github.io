@@ -1346,6 +1346,23 @@ $firstLetterLastName = substr($LName, 0, 1);
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const date = new Date(context.parsed.x);
+                                const formattedDate = date.toLocaleString('en-US', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                    hour12: true
+                                });
+                                return `${formattedDate}: ${context.parsed.y} votes`;
+                            }
+                        }
                     }
                 }
             };
