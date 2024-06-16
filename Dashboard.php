@@ -1308,8 +1308,8 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             // Get the current time
             var now = new Date();
-            var startTime = new Date(now.getTime() - 2 * 60 * 60 * 1000); // 2 hours before
-            var endTime = new Date(now.getTime() + 2 * 60 * 60 * 1000); // 2 hours after
+            var startTime = new Date(now.getTime() - 4 * 60 * 60 * 1000); // 4 hours before
+            var endTime = new Date(now.getTime() + 0 * 60 * 60 * 1000); // 0 hours after
 
             var chartOptions = {
                 responsive: true,
