@@ -43,7 +43,7 @@ if ($result->num_rows > 0) {
 } else {
     echo '<tr>';
     echo '<td class="tdfirst"></td>';
-    echo '<td colspan="3">No voters found</td>';
+    echo '<td colspan="3">No Voters found.</td>';
     echo '<td class="tdlast"></td>';
     echo '</tr>';
 }
