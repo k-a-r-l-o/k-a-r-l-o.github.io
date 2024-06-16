@@ -462,7 +462,6 @@ $firstLetterLastName = substr($LName, 0, 1);
             color: white;
             justify-content: center;
             align-items: center;
-            gap: 20px;
             margin: 10px 0px;
         }
 
@@ -478,6 +477,32 @@ $firstLetterLastName = substr($LName, 0, 1);
             width: 100%;
             justify-content: right;
             align-items: center;
+        }
+
+        .pageIndicator {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .pageIndicator span {
+            margin: 0 5px;
+            padding: 10px 15px;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            border-radius: 5px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pageIndicator span:hover {
+            background-color: rgb(66, 165, 245, 0.25);
+        }
+
+        .pageIndicator .active {
+            background-color: rgb(66, 165, 245, 0.5);
+            color: white;
         }
 
         .bottomcontent {
@@ -1049,6 +1074,9 @@ $firstLetterLastName = substr($LName, 0, 1);
                     <div class="prevcontainer">
                         <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
                     </div>
+                    <div class="pageIndicator" id="pageNumbers">
+                        <!-- Page numbers will be dynamically generated here -->
+                    </div>
                     <div class="nextcontainer">
                         <button id="nextButton" onclick="navigateRows(1)">Next</button>
                     </div>
@@ -1155,7 +1183,6 @@ $firstLetterLastName = substr($LName, 0, 1);
         }
 
 
-        // JavaScript code for navigation
         var currentPage = 0;
         var rowsPerPage = 10; // Change this value as needed
 
@@ -1176,6 +1203,46 @@ $firstLetterLastName = substr($LName, 0, 1);
             for (var i = startIndex; i < endIndex; i++) {
                 rows[i].style.display = '';
             }
+
+            // Update the page numbers
+            updatePageNumbers(page);
+
+            // Update the current page indicator
+            document.getElementById('currentPage').innerText = page + 1;
+        }
+
+        function updatePageNumbers(currentPage) {
+            var table = document.getElementById('Results');
+            var totalRows = table.rows.length - 1; // Exclude header row
+            var totalPages = Math.ceil(totalRows / rowsPerPage);
+            var pageNumbersContainer = document.getElementById('pageNumbers');
+
+            // Clear existing page numbers
+            pageNumbersContainer.innerHTML = '';
+
+            // Generate page numbers dynamically
+            for (var i = 0; i < totalPages; i++) {
+                var pageNumber = document.createElement('span');
+                pageNumber.innerText = i + 1;
+                pageNumber.onclick = (function(page) {
+                    return function() {
+                        currentPage = page;
+                        showPage(page);
+                    };
+                })(i);
+
+                if (i === currentPage) {
+                    pageNumber.classList.add('active');
+                }
+
+                pageNumbersContainer.appendChild(pageNumber);
+            }
+
+            // Disable the Previous button if on the first page
+            document.getElementById('prevButton').disabled = currentPage === 0;
+
+            // Disable the Next button if on the last page
+            document.getElementById('nextButton').disabled = currentPage === totalPages - 1;
         }
 
         function navigateRows(direction) {
@@ -1191,7 +1258,6 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
 
             showPage(currentPage);
-
         }
 
         // Show the initial page
@@ -1213,46 +1279,6 @@ $firstLetterLastName = substr($LName, 0, 1);
                     showPage(currentPage); // Call the pagination function after updating results
                 });
             });
-
-            var currentPage = 0;
-            var rowsPerPage = 10; // Change this value as needed
-
-            function showPage(page) {
-                var table = document.getElementById('Results');
-                var rows = table.rows;
-
-                // Calculate the start and end indices of the rows to display
-                var startIndex = page * rowsPerPage + 1; // Skip header row
-                var endIndex = Math.min(startIndex + rowsPerPage, rows.length);
-
-                // Hide all rows
-                for (var i = 1; i < rows.length; i++) {
-                    rows[i].style.display = 'none';
-                }
-
-                // Show rows for the current page
-                for (var i = startIndex; i < endIndex; i++) {
-                    rows[i].style.display = '';
-                }
-            }
-
-            function navigateRows(direction) {
-                currentPage += direction;
-                var table = document.getElementById('Results');
-                var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
-
-                // Check if currentPage is within bounds
-                if (currentPage < 0) {
-                    currentPage = 0;
-                } else if (currentPage >= maxPage) {
-                    currentPage = maxPage - 1;
-                }
-
-                showPage(currentPage);
-
-
-
-            }
         });
 
         function exportAllDataToExcel() {
