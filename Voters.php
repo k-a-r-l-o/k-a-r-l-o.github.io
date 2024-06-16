@@ -1091,6 +1091,12 @@ $firstLetterLastName = substr($LName, 0, 1);
                                 </tr>
                         <?php
                             }
+                        } else {
+                            echo '<tr>';
+                            echo '<td class="tdfirst"></td>';
+                            echo '<td colspan="3">No Voters found.</td>';
+                            echo '<td class="tdlast"></td>';
+                            echo '</tr>';
                         }
                         ?>
                     </table>
