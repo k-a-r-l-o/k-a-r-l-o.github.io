@@ -1284,7 +1284,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             var myBarChart2 = createOrUpdateBarChart('myBarChart2', barChartData2, chartOptions2);
 
 
-            // Function to create or update line chart
+            // Create or update line chart
             function createOrUpdateLineChart(chartId, chartData, chartOptions) {
                 var ctx = document.getElementById(chartId).getContext('2d');
                 return new Chart(ctx, {
@@ -1313,12 +1313,12 @@ $firstLetterLastName = substr($LName, 0, 1);
                     x: {
                         type: 'time',
                         time: {
-                            unit: 'hour', // Set to hour
-                            tooltipFormat: 'PPpp' // Display date and time in tooltip
+                            unit: 'day', // Initial unit, this will change dynamically
+                            tooltipFormat: 'PP' // Display date in tooltip
                         },
                         title: {
                             display: true,
-                            text: 'Date and Time',
+                            text: 'Date',
                             color: 'white'
                         },
                         ticks: {
@@ -1347,31 +1347,55 @@ $firstLetterLastName = substr($LName, 0, 1);
                     legend: {
                         display: false
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const date = new Date(context.parsed.x);
-                                const formattedDate = date.toLocaleString('en-US', {
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit',
-                                    hour12: true
-                                });
-                                return `${formattedDate}: ${context.parsed.y} votes`;
-                            }
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x'
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'x',
+                            onZoom: ({
+                                chart
+                            }) => handleZoom(chart)
                         }
                     }
                 }
             };
 
-            function updateLineData() {
-                fetch('getVotersVoteTime.php')
+            function handleZoom(chart) {
+                const start = chart.scales.x.min;
+                const end = chart.scales.x.max;
+                const duration = end - start;
+
+                let timeUnit;
+                if (duration <= 1000 * 60 * 60 * 24) { // 1 day or less
+                    timeUnit = 'minute';
+                    chart.options.scales.x.time.displayFormats = {
+                        minute: 'MMM dd, HH:mm'
+                    };
+                } else if (duration <= 1000 * 60 * 60 * 24 * 30) { // 1 month or less
+                    timeUnit = 'hour';
+                    chart.options.scales.x.time.displayFormats = {
+                        hour: 'MMM dd, HH:mm'
+                    };
+                } else {
+                    timeUnit = 'day';
+                    chart.options.scales.x.time.displayFormats = {
+                        day: 'MMM dd'
+                    };
+                }
+
+                chart.options.scales.x.time.unit = timeUnit;
+
+                fetch('getVotersVoteTime.php?start=' + start + '&end=' + end + '&unit=' + timeUnit)
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data); // Check the fetched data
                         // Extract dates and voter counts from the received data
                         const dates = data.map(entry => entry.date);
                         const voterCounts = data.map(entry => entry.count);
@@ -1381,7 +1405,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         lineChartData.datasets[0].data = voterCounts;
 
                         // Update the line chart
-                        myLineChart.update();
+                        chart.update();
                     })
                     .catch(error => console.error('Error fetching data:', error));
             }
@@ -1389,10 +1413,8 @@ $firstLetterLastName = substr($LName, 0, 1);
             var myLineChart = createOrUpdateLineChart('myLineChart', lineChartData, chartOptions);
 
             // Initial data fetch
-            updateLineData();
+            handleZoom(myLineChart);
 
-            // Update data periodically (e.g., every 1 minute)
-            setInterval(updateLineData, 60000);
 
             /*log out*/
             document.getElementById("logout").addEventListener("click", function() {
