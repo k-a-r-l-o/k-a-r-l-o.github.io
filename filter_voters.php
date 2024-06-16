@@ -41,7 +41,11 @@ if ($result->num_rows > 0) {
         echo '</tr>';
     }
 } else {
-    echo '<tr><td colspan="5">No voters found</td></tr>';
+    echo '<tr>';
+    echo '<td class="tdfirst"></td>';
+    echo '<td colspan="3">No voters found</td>';
+    echo '<td class="tdlast"></td>';
+    echo '</tr>';
 }
 
 $conn->close();
