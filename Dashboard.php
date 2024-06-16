@@ -25,6 +25,8 @@ $firstLetterLastName = substr($LName, 0, 1);
     <title>U-Vote Admin | Dashboard</title>
     <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -873,6 +875,16 @@ $firstLetterLastName = substr($LName, 0, 1);
                     </div>
                 </div>
             </div>
+            <div class="dashboards">
+                <div class="perprogramcontainer">
+                    <div class="resulttitle">
+                        <h3>VOTE TURNOUT</h3>
+                    </div>
+                    <div class="piecontainer">
+                        <canvas id="myLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="logoutpop" class="popup">
             <div class="head">
@@ -1271,6 +1283,99 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             var myBarChart2 = createOrUpdateBarChart('myBarChart2', barChartData2, chartOptions2);
 
+
+            // Function to create or update line chart
+            function createOrUpdateLineChart(chartId, chartData, chartOptions) {
+                var ctx = document.getElementById(chartId).getContext('2d');
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: chartOptions
+                });
+            }
+
+            var lineChartData = {
+                labels: [], // Will be filled with dates
+                datasets: [{
+                    label: 'Number of Votes',
+                    data: [], // Will be filled with voter counts
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: true
+                }]
+            };
+
+            var chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'hour', // Set to hour
+                            tooltipFormat: 'PPpp' // Display date and time in tooltip
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date and Time',
+                            color: 'white'
+                        },
+                        ticks: {
+                            color: 'white' // Set x-axis labels color
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Set x-axis grid lines color
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Votes',
+                            color: 'white'
+                        },
+                        ticks: {
+                            color: 'white', // Set y-axis labels color
+                            precision: 0
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Set y-axis grid lines color
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            };
+
+            function updateLineData() {
+                fetch('getVotersVoteTime.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Check the fetched data
+                        // Extract dates and voter counts from the received data
+                        const dates = data.map(entry => entry.date);
+                        const voterCounts = data.map(entry => entry.count);
+
+                        // Update chart data
+                        lineChartData.labels = dates;
+                        lineChartData.datasets[0].data = voterCounts;
+
+                        // Update the line chart
+                        myLineChart.update();
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+
+            var myLineChart = createOrUpdateLineChart('myLineChart', lineChartData, chartOptions);
+
+            // Initial data fetch
+            updateLineData();
+
+            // Update data periodically (e.g., every 1 minute)
+            setInterval(updateLineData, 60000);
 
             /*log out*/
             document.getElementById("logout").addEventListener("click", function() {
