@@ -459,24 +459,40 @@ $firstLetterLastName = substr($LName, 0, 1);
             width: 100%;
             height: auto;
             color: white;
-            justify-content: center;
+            justify-content: right;
             align-items: center;
-            gap: 20px;
             margin: 10px 0px;
         }
 
-        .prevcontainer {
+        .pageIndicator {
             display: flex;
-            width: 100%;
-            justify-content: left;
+            max-width: 100%;
+            height: 70px;
             align-items: center;
+            margin: 0 10px;
+            padding: 0 10px;
+            overflow-y: auto;
         }
 
-        .nextcontainer {
-            display: flex;
-            width: 100%;
-            justify-content: right;
-            align-items: center;
+        .pageIndicator span {
+            margin: 0 5px;
+            padding: 10px 15px;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            border-radius: 5px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pageIndicator span:hover {
+            background-color: rgb(66, 165, 245, 0.25);
+        }
+
+        .pageIndicator .active {
+            background-color: rgb(66, 165, 245, 0.5);
+            padding: 10px 25px;
+            color: white;
         }
 
         .tablecontainer {
@@ -959,7 +975,10 @@ $firstLetterLastName = substr($LName, 0, 1);
                 </div>
                 <div class="navTable">
                     <div class="prevcontainer">
-                        <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
+                        <button id="prevButton" onclick="navigateRows(-1)">Prev</button>
+                    </div>
+                    <div class="pageIndicator" id="pageNumbers">
+                        <!-- Page numbers will be dynamically generated here -->
                     </div>
                     <div class="nextcontainer">
                         <button id="nextButton" onclick="navigateRows(1)">Next</button>
@@ -1038,7 +1057,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
 
             if (input === "") {
-                navigateRows(-1);
+                showPage(0);
             }
         }
 
@@ -1063,9 +1082,55 @@ $firstLetterLastName = substr($LName, 0, 1);
             for (var i = startIndex; i < endIndex; i++) {
                 rows[i].style.display = '';
             }
+
+            // Update the page numbers
+            updatePageNumbers(page);
+
+        }
+
+        function updatePageNumbers(currentPage) {
+            var table = document.getElementById('Results');
+            var totalRows = table.rows.length - 1; // Exclude header row
+            var totalPages = Math.ceil(totalRows / rowsPerPage);
+            var pageNumbersContainer = document.getElementById('pageNumbers');
+
+            // Clear existing page numbers
+            pageNumbersContainer.innerHTML = '';
+
+            // Generate page numbers dynamically
+            for (var i = 0; i < totalPages; i++) {
+                var pageNumber = document.createElement('span');
+                pageNumber.innerText = i + 1;
+                pageNumber.onclick = (function(page) {
+                    return function() {
+                        currentPage = page;
+                        showPage(page);
+                    };
+                })(i);
+
+                if (i === currentPage) {
+                    pageNumber.classList.add('active');
+                }
+
+                pageNumbersContainer.appendChild(pageNumber);
+            }
+
+            var searchin = document.getElementById('searchInput');
+            searchin.value = '';
+
+            // Disable the Previous button if on the first page
+            document.getElementById('prevButton').disabled = currentPage === 0;
+
+            // Disable the Next button if on the last page
+            document.getElementById('nextButton').disabled = currentPage === totalPages - 1;
         }
 
         function navigateRows(direction) {
+
+            var searchin = document.getElementById('searchInput');
+            searchin.value = '';
+            searchTable();
+
             currentPage += direction;
             var table = document.getElementById('Results');
             var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);

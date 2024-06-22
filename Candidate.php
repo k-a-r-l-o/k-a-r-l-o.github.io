@@ -1,18 +1,18 @@
 <?php
-    include "DBSession.php";
+include "DBSession.php";
 
-    $usertype = $_SESSION['usertype'];
-    $username = $_SESSION['username'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
 
-    $sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $usertype);
-    $stmt->execute();
-    $stmt->bind_result($FName, $LName);
-    $stmt->fetch();
-    $stmt->close();
-    $firstLetterFirstName = substr($FName, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+$sql = "SELECT FName, LName FROM users WHERE username = ? AND usertype = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usertype);
+$stmt->execute();
+$stmt->bind_result($FName, $LName);
+$stmt->fetch();
+$stmt->close();
+$firstLetterFirstName = substr($FName, 0, 1);
+$firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -454,24 +454,40 @@
             width: 100%;
             height: auto;
             color: white;
-            justify-content: center;
+            justify-content: right;
             align-items: center;
-            gap: 20px;
             margin: 10px 0px;
         }
 
-        .prevcontainer {
+        .pageIndicator {
             display: flex;
-            width: 100%;
-            justify-content: left;
+            max-width: 100%;
+            height: 70px;
             align-items: center;
+            margin: 0 10px;
+            padding: 0 10px;
+            overflow-y: auto;
         }
 
-        .nextcontainer {
-            display: flex;
-            width: 100%;
-            justify-content: right;
-            align-items: center;
+        .pageIndicator span {
+            margin: 0 5px;
+            padding: 10px 15px;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            border-radius: 5px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pageIndicator span:hover {
+            background-color: rgb(66, 165, 245, 0.25);
+        }
+
+        .pageIndicator .active {
+            background-color: rgb(66, 165, 245, 0.5);
+            padding: 10px 25px;
+            color: white;
         }
 
         .tablecontainer {
@@ -818,53 +834,59 @@
                 transform: translate(0, 0);
             }
 
-            #deletepop, #logoutpop{
+            #deletepop,
+            #logoutpop {
                 width: 100vw;
             }
 
         }
 
-        .accounttag{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        width: 100%;
-        border-radius: 10px;
-        background-color: rgba(150, 191, 245, 0.25);
-        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
-        box-sizing: border-box;
-        padding: 25px 0px 25px 0px;
-    }
-
-    .username1, .username, .usertype {
-        color: white;
-        margin: 0;
-    }
-
-    .username1{
-        display: none;
-    }
-
-    .usertype {
-        font-weight: lighter;
-    }
-
-    @media (max-width: 1000px) {
-        .username, .usertype{
-          font-size: 0px;
-        }
-        .accounttag{
-            height: auto;
-            padding: 15px 0px 15px 0px;
+        .accounttag {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(150, 191, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            padding: 25px 0px 25px 0px;
         }
 
-        .username1{
-            display: block;
+        .username1,
+        .username,
+        .usertype {
+            color: white;
+            margin: 0;
         }
 
-    }
+        .username1 {
+            display: none;
+        }
+
+        .usertype {
+            font-weight: lighter;
+        }
+
+        @media (max-width: 1000px) {
+
+            .username,
+            .usertype {
+                font-size: 0px;
+            }
+
+            .accounttag {
+                height: auto;
+                padding: 15px 0px 15px 0px;
+            }
+
+            .username1 {
+                display: block;
+            }
+
+        }
     </style>
 
     <script>
@@ -886,7 +908,6 @@
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
-        
     </script>
 </head>
 
@@ -906,9 +927,9 @@
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
-                <h3 class="usertype"><?php echo $usertype?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $FName . " " . $LName ?></h2>
+                <h3 class="usertype"><?php echo $usertype ?></h3>
             </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
@@ -1024,7 +1045,10 @@
                 </div>
                 <div class="navTable">
                     <div class="prevcontainer">
-                        <button id="prevButton" onclick="navigateRows(-1)">Previous</button>
+                        <button id="prevButton" onclick="navigateRows(-1)">Prev</button>
+                    </div>
+                    <div class="pageIndicator" id="pageNumbers">
+                        <!-- Page numbers will be dynamically generated here -->
                     </div>
                     <div class="nextcontainer">
                         <button id="nextButton" onclick="navigateRows(1)">Next</button>
@@ -1240,7 +1264,7 @@
                             $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                             $stmt = $conn->prepare($sqlInsertLog);
                             if ($stmt) {
-                                $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                                $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                                 $stmt->execute();
                                 $stmt->close();
                             } else {
@@ -1413,7 +1437,7 @@
                     <div class="form-group">
                         <label for="position">Position:</label>
                         <select id="position3" name="position3" class="input-form">
-                           
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -1449,7 +1473,7 @@
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['edit'])) {
-          
+
 
             // Get the user input
             $input_usep_ID = $_POST["usepID3"];
@@ -1552,7 +1576,7 @@
                 $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
-                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                    $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                     $stmt->execute();
                     $stmt->close();
                 } else {
@@ -1564,7 +1588,6 @@
             } else {
                 echo "<script>alert('Error: " . $sqlCandidateUpdate . "<br>" . $conn->error . "');</script>";
             }
-
         }
     }
     ?>
@@ -1631,13 +1654,13 @@
                     $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
-                        $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                         $stmt->execute();
                         $stmt->close();
                     } else {
                         echo "Error preparing statement: " . $conn->error;
                         exit();
-                    }       
+                    }
                     echo "<script>alert('Record deleted successfully');</script>";
                     echo "<script>window.location.href = 'Candidate.php';</script>";
                 } else {
@@ -1715,7 +1738,7 @@
             xhr.send();
         });
 
-           /// edit dropdown council
+        /// edit dropdown council
         document.getElementById('Council3').addEventListener('change', function() {
             var selectedCouncil = this.value;
             var positionSelect = document.getElementById('position3');
@@ -1822,7 +1845,7 @@
         });
 
         /*edit pop up*/
-        function editpop(usepID,council) {
+        function editpop(usepID, council) {
             // AJAX request to PHP script to retrieve voter data based on usepID
             getpos(council);
             var xhttp = new XMLHttpRequest();
@@ -1954,11 +1977,11 @@
                 }
             }
 
-            if(input===""){
-                navigateRows(-1);
+            if (input === "") {
+                showPage(0);
             }
         }
-        
+
         // Get the table element
         var table = document.getElementById('Results');
 
@@ -1971,7 +1994,6 @@
         // Replace the content of the <h2> element with the row count
         rowNumberElement.textContent = rowCount - 1;
 
-        // JavaScript code for navigation
         var currentPage = 0;
         var rowsPerPage = 10; // Change this value as needed
 
@@ -1992,9 +2014,55 @@
             for (var i = startIndex; i < endIndex; i++) {
                 rows[i].style.display = '';
             }
+
+            // Update the page numbers
+            updatePageNumbers(page);
+
+        }
+
+        function updatePageNumbers(currentPage) {
+            var table = document.getElementById('Results');
+            var totalRows = table.rows.length - 1; // Exclude header row
+            var totalPages = Math.ceil(totalRows / rowsPerPage);
+            var pageNumbersContainer = document.getElementById('pageNumbers');
+
+            // Clear existing page numbers
+            pageNumbersContainer.innerHTML = '';
+
+            // Generate page numbers dynamically
+            for (var i = 0; i < totalPages; i++) {
+                var pageNumber = document.createElement('span');
+                pageNumber.innerText = i + 1;
+                pageNumber.onclick = (function(page) {
+                    return function() {
+                        currentPage = page;
+                        showPage(page);
+                    };
+                })(i);
+
+                if (i === currentPage) {
+                    pageNumber.classList.add('active');
+                }
+
+                pageNumbersContainer.appendChild(pageNumber);
+            }
+
+            var searchin = document.getElementById('searchInput');
+            searchin.value = '';
+
+            // Disable the Previous button if on the first page
+            document.getElementById('prevButton').disabled = currentPage === 0;
+
+            // Disable the Next button if on the last page
+            document.getElementById('nextButton').disabled = currentPage === totalPages - 1;
         }
 
         function navigateRows(direction) {
+
+            var searchin = document.getElementById('searchInput');
+            searchin.value = '';
+            searchTable();
+
             currentPage += direction;
             var table = document.getElementById('Results');
             var maxPage = Math.ceil((table.rows.length - 1) / rowsPerPage);
@@ -2068,7 +2136,6 @@
                 credentials: 'same-origin'
             });
         }, 300000); // 300000 ms = 5 minutes
-
     </script>
 </body>
 
