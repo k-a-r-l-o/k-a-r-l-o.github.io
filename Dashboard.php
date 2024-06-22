@@ -1308,8 +1308,8 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             // Get the current time
             var now = new Date();
-            var startTime = new Date(now.getTime() - 4 * 60 * 60 * 1000); // 4 hours before
-            var endTime = new Date(now.getTime() + 0 * 60 * 60 * 1000); // 0 hours after
+            var startTime = new Date(now.getTime() - 3 * 60 * 60 * 1000); // 4 hours before
+            var endTime = new Date(now.getTime() + 1 * 60 * 60 * 1000); // 0 hours after
 
             var chartOptions = {
                 responsive: true,
@@ -1325,7 +1325,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         },
                         title: {
                             display: true,
-                            text: 'Date',
+                            text: 'Date/Time(Hours)',
                             color: 'white'
                         },
                         ticks: {
@@ -1338,7 +1338,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     y: {
                         title: {
                             display: true,
-                            text: 'Number of Votes',
+                            text: 'Total Number of Votes',
                             color: 'white'
                         },
                         ticks: {
@@ -1387,12 +1387,13 @@ $firstLetterLastName = substr($LName, 0, 1);
                 if (duration <= 1000 * 60 * 60 * 24) { // 1 day or less
                     timeUnit = 'hour';
                     chart.options.scales.x.time.unit = 'hour';
+                    chart.options.plugins.title.text = 'Time (Hours)';
                 } else {
                     timeUnit = 'day';
                     chart.options.scales.x.time.unit = 'day';
                 }
 
-                fetch('getVotersVoteTime.php?start=' + start + '&end=' + end + '&unit=' + timeUnit)
+                fetch('getVotersVoteTime.php?&unit=' + timeUnit)
                     .then(response => response.json())
                     .then(data => {
                         const dates = data.map(entry => entry.date);
