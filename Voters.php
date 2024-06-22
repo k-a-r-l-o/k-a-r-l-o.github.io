@@ -1798,8 +1798,6 @@ $firstLetterLastName = substr($LName, 0, 1);
             // Update the page numbers
             updatePageNumbers(page);
 
-            // Update the current page indicator
-            document.getElementById('currentPage').innerText = page + 1;
         }
 
         function updatePageNumbers(currentPage) {
