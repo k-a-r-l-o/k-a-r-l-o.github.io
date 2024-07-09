@@ -338,7 +338,6 @@ $usep_ID = $_SESSION["usep_ID"];
                 scale: 0.7;
             }
         }
-
     </style>
 
 </head>
