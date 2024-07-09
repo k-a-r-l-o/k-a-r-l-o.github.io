@@ -426,6 +426,7 @@ $conn->close();
                     <div class="forgap">
                         <select name="user" id="usertype" required>
                             <option value="" disabled selected hidden>User Type</option>
+                            <option value="Watcher">Watcher</option>
                             <option value="Admin-Front">Admin-Front</option>
                             <option value="Admin-Technical">Admin-Technical</option>
                             <option value="Chairperson">Chairperson</option>

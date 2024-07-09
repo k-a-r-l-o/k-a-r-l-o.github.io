@@ -908,7 +908,7 @@
         <div class="searchspace">
             <div class="searchicon">
                 <img src="search.png" alt="search icon">
-                <input type="text" id="searchInput" placeholder="Search" alt="Search" onchange="searchTable()">
+                <input type="text" id="searchInput" placeholder="Search" alt="Search" onkeyup="searchTable()">
             </div>
         </div>
     </header>
@@ -1799,6 +1799,13 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+} else if ($usertype === 'Watcher') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
 }
 
 ?>

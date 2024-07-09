@@ -895,7 +895,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         <div class="searchspace">
             <div class="searchicon">
                 <img src="search.png" alt="search icon">
-                <input type="text" id="searchInput" placeholder="Search" alt="Search" onchange="searchTable()">
+                <input type="text" id="searchInput" placeholder="Search" alt="Search" onkeyup="searchTable()">
             </div>
         </div>
     </header>
@@ -953,7 +953,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         <div class="content">
             <div class="contenthead">
                 <div>
-                    <h2>Results</h2>
+                    <h2 id="titleresult">Results</h2>
                 </div>
                 <div class="dropdown">
                     <select name="council" id="Council">
@@ -1365,6 +1365,25 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+} else if ($usertype === 'Watcher') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('Council').style.display = 'none';</script>";
+    echo "<script>document.getElementById('export').style.display = 'none';</script>";
+    echo "<script>
+        $(document).ready(function() {
+            var selectElement = $('#Council');
+            selectElement.val('$username');
+            selectElement.change(); // Trigger the change event
+
+            // Update the title dynamically
+            $('#titleresult').text('$username Partial/Unofficial Result');
+        });
+        </script>";
 }
 
 ?>

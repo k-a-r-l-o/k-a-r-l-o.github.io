@@ -1380,6 +1380,15 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
     echo "<script>document.getElementById('addschedule').style.display = 'none';</script>";
     echo "<script>document.getElementById('clearSchedule').style.display = 'none';</script>";
+} else if ($usertype === 'Watcher') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+    echo "<script>document.getElementById('addschedule').style.display = 'none';</script>";
+    echo "<script>document.getElementById('clearSchedule').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
 }
 
 ?>

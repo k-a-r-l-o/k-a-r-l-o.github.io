@@ -14,10 +14,10 @@ if ($status == 'VOTED') {
 }
 echo '<tr class="trheader">';
 echo '<th class="thfirst">USEP ID</th>';
-echo ' <th>NAME</th>';
+echo '<th>NAME</th>';
 echo '<th>YEAR LEVEL</th>';
 echo '<th>PROGRAM</th>';
-echo '<th class="thlast"></th>';
+echo '<th class="thlast"> </th>';
 echo '</tr>';
 
 $result = $conn->query($sql);

@@ -978,7 +978,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         <div class="searchspace">
             <div class="searchicon">
                 <img src="search.png" alt="search icon">
-                <input type="text" id="searchInput" placeholder="Search" alt="Search" onchange="searchTable()">
+                <input type="text" id="searchInput" placeholder="Search" alt="Search" onkeyup="searchTable()">
             </div>
         </div>
     </header>
@@ -1040,7 +1040,12 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <h2>Total Voters</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="rowNumbershow">0</h2>
+                        <?php
+                        $resultVotes = $conn->query("SELECT COUNT(*) as totvot FROM voters");
+                        $rowVotes = $resultVotes->fetch_assoc();
+                        $totvot = $rowVotes['totvot'];
+                        ?>
+                        <h2 id="rowNumbershow"><?php echo $totvot ?></h2>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -1070,49 +1075,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             <th>PROGRAM</th>
                             <th class="thlast"></th>
                         </tr>
-                        <?php
-                        // Query to retrieve all data from the Voters table
-                        $sql = "SELECT * FROM voters";
-                        $result = $conn->query($sql);
-
-                        // Check if there are any rows returned
-                        if ($result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-                                // Assuming $row["usep_ID"] contains the ID like 202200294
-                                $usep_ID = $row["usep_ID"];
-
-                                // Extract the year part
-                                $year = substr($usep_ID, 0, 4);
-
-                                // Extract the remaining part and zero-pad it to 5 digits
-                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
-
-                                // Combine the parts with a dash
-                                $formatted_usep_ID = $year . '-' . $numeric_part;
-                        ?>
-                                <tr>
-                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
-                                    <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
-                                    <td><?php echo $row["yearLvl"] ?></td>
-                                    <td><?php echo $row["program"] ?></td>
-                                    <td class="tdlast">
-                                        <!-- Pass row data to viewpop() function -->
-                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop(<?php echo $row['usep_ID']; ?>)" src="edit.png" alt="edit icon">
-                                        <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        } else {
-                            echo '<tr>';
-                            echo '<td class="tdfirst"></td>';
-                            echo '<td colspan="3">No Voters found.</td>';
-                            echo '<td class="tdlast"></td>';
-                            echo '</tr>';
-                        }
-                        ?>
+                        <!-- initialized below by filter voters -->
                     </table>
                 </div>
                 <div class="navTable">
@@ -1751,18 +1714,6 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
         }
 
-        // Get the table element
-        var table = document.getElementById('Results');
-
-        // Get the number of rows in the table
-        var rowCount = table.rows.length;
-
-        // Get the <h2> element where you want to display the row count
-        var rowNumberElement = document.getElementById('rowNumbershow');
-
-        // Replace the content of the <h2> element with the row count
-        rowNumberElement.textContent = rowCount - 1;
-
         var currentPage = 0;
         var rowsPerPage = 10; // Change this value as needed
 
@@ -2062,8 +2013,10 @@ $firstLetterLastName = substr($LName, 0, 1);
                 }
             };
             xhr.send("status=" + status);
+
         }
 
+        filterVoters();
 
         document.querySelector("#deletepop .cancel-button").addEventListener("click", function() {
             document.getElementById("deletepop").style.display = "none";
@@ -2105,6 +2058,13 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+} else if ($usertype === 'Watcher') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
 }
 
 ?>
