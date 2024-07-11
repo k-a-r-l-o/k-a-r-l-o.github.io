@@ -552,7 +552,8 @@ $positionNames = [
             .positiontitle h3,
             h2,
             button,
-            p {
+            p,
+            .card {
                 scale: 0.8;
             }
 
