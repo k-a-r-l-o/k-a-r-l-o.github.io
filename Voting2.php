@@ -560,8 +560,8 @@ $positionNames = [
                 padding-bottom: 15%;
             }
 
-            .pos {
-                font-size: small;
+            .cardcontainer {
+                overflow: auto;
             }
 
         }
