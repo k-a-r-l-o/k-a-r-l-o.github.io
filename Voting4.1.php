@@ -562,6 +562,10 @@ $votes = $_GET; // Assuming 'votes' is one of the parameters in the queryString
                 padding-bottom: 15%;
             }
 
+            .cardcontent {
+                overflow: auto;
+            }
+
         }
     </style>
 
