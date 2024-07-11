@@ -964,7 +964,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <option value="OFSET">OFSET</option>
                         <option value="AFSET">AFSET</option>
                         <option value="SITS">SITS</option>
-                        <option value="FTVETTS">FTVETTS</option>
+                        <option value="FTVETS">FTVETS</option>
                     </select>
                 </div>
             </div>

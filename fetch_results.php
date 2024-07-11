@@ -532,60 +532,60 @@ switch ($council) {
         break;
 
 
-        case 'FTVETTS':
+        case 'FTVETS':
             $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
             FROM (
                 SELECT CONCAT(c_LC_Governor.FName, ' ', c_LC_Governor.LName) AS Pname, 'LC Governor' AS position, COUNT(tv.LC_Governor) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_LC_Governor ON tv.LC_Governor = c_LC_Governor.usep_ID
                 GROUP BY tv.LC_Governor
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Vice_Governor.FName, ' ', c_Vice_Governor.LName) AS Pname, 'Vice Governor' AS position, COUNT(tv.Vice_Governor) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Vice_Governor ON tv.Vice_Governor = c_Vice_Governor.usep_ID
                 GROUP BY tv.Vice_Governor
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Secretary.FName, ' ', c_Secretary.LName) AS Pname, 'Secretary' AS position, COUNT(tv.Secretary) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Secretary ON tv.Secretary = c_Secretary.usep_ID
                 GROUP BY tv.Secretary
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Treasurer.FName, ' ', c_Treasurer.LName) AS Pname, 'Treasurer' AS position, COUNT(tv.Treasurer) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Treasurer ON tv.Treasurer = c_Treasurer.usep_ID
                 GROUP BY tv.Treasurer
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Senator1.FName, ' ', c_Senator1.LName) AS Pname, 'Senator1' AS position, COUNT(tv.Senator1) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Senator1 ON tv.Senator1 = c_Senator1.usep_ID
                 GROUP BY tv.Senator1
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Senator2.FName, ' ', c_Senator2.LName) AS Pname, 'Senator2' AS position, COUNT(tv.Senator2) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Senator2 ON tv.Senator2 = c_Senator2.usep_ID
                 GROUP BY tv.Senator2
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Senator3.FName, ' ', c_Senator3.LName) AS Pname, 'Senator3' AS position, COUNT(tv.Senator3) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Senator3 ON tv.Senator3 = c_Senator3.usep_ID
                 GROUP BY tv.Senator3
                 
                 UNION ALL
                 
                 SELECT CONCAT(c_Auditor.FName, ' ', c_Auditor.LName) AS Pname, 'Auditor' AS position, COUNT(tv.Auditor) AS votes 
-                FROM ftvetts_votes tv
+                FROM ftvets_votes tv
                 INNER JOIN candidates c_Auditor ON tv.Auditor = c_Auditor.usep_ID
                 GROUP BY tv.Auditor
                 

@@ -107,7 +107,7 @@ $sqlCnlInsert = "INSERT IGNORE INTO List_Councils (council_ID, council_name, pro
     ('4', 'OFSET', 'BSNED', '2'),
     ('5', 'AFSET', 'BSED', '2'),
     ('6', 'SITS', 'BSIT', '2'),
-    ('7', 'FTVETTS', 'BTVTED', '2'),
+    ('7', 'FTVETS', 'BTVTED', '2'),
     ('8', 'TSC', 'ALL PROGRAMS', '1');";
 
 if ($conn->query($sqlCnlInsert) === TRUE) {
@@ -286,7 +286,7 @@ if ($conn->query($sql_TSC) === TRUE) {
     echo "Error inserting table into 'TSC' table: " . $conn->error . "<br>";
 }
 
-$sql_FTVETTS = "CREATE TABLE IF NOT EXISTS FTVETTS_VOTES (
+$sql_FTVETS = "CREATE TABLE IF NOT EXISTS FTVETS_VOTES (
     usep_ID INT,
     LC_Governor INT NOT NULL,
     Vice_Governor INT NOT NULL,
@@ -308,10 +308,10 @@ $sql_FTVETTS = "CREATE TABLE IF NOT EXISTS FTVETTS_VOTES (
     FOREIGN KEY (usep_ID) REFERENCES Voters (usep_ID)
 )";
 
-if ($conn->query($sql_FTVETTS) === TRUE) {
-    echo "Table inserted into 'FTVETTS' table successfully<br>";
+if ($conn->query($sql_FTVETS) === TRUE) {
+    echo "Table inserted into 'FTVETS' table successfully<br>";
 } else {
-    echo "Error inserting table into 'FTVETTS' table: " . $conn->error . "<br>";
+    echo "Error inserting table into 'FTVETS' table: " . $conn->error . "<br>";
 }
 
 $sql_AECES = "CREATE TABLE IF NOT EXISTS AECES_VOTES (
@@ -557,14 +557,14 @@ $insertPos = "INSERT IGNORE INTO Positions (id, council_id, council_name, positi
     (53,6, 'SITS', 'Senator3', 1),
     (54,6, 'SITS', 'Auditor', 1),
 
-    (55,7, 'FTVETTS', 'Governor', 1),
-    (56,7, 'FTVETTS', 'Vice Governor', 1),
-    (57,7, 'FTVETTS', 'Secretary', 1),
-    (58,7, 'FTVETTS', 'Treasurer', 1),
-    (59,7, 'FTVETTS', 'Senator1', 1),
-    (60,7, 'FTVETTS', 'Senator2', 1),
-    (61,7, 'FTVETTS', 'Senator3', 1),
-    (62,7, 'FTVETTS', 'Auditor', 1),
+    (55,7, 'FTVETS', 'Governor', 1),
+    (56,7, 'FTVETS', 'Vice Governor', 1),
+    (57,7, 'FTVETS', 'Secretary', 1),
+    (58,7, 'FTVETS', 'Treasurer', 1),
+    (59,7, 'FTVETS', 'Senator1', 1),
+    (60,7, 'FTVETS', 'Senator2', 1),
+    (61,7, 'FTVETS', 'Senator3', 1),
+    (62,7, 'FTVETS', 'Auditor', 1),
 
     (63,8, 'TSC', 'President', 1),
     (64,8, 'TSC', 'Vice President for Internal Affairs', 1),

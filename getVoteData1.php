@@ -28,7 +28,7 @@ $resultVotes5 = $conn->query("SELECT COUNT(*) as voteCount5 FROM sits_votes");
 $rowVotes5 = $resultVotes5->fetch_assoc();
 $voteCount5 = $rowVotes5['voteCount5'];
 
-$resultVotes6 = $conn->query("SELECT COUNT(*) as voteCount6 FROM ftvetts_votes");
+$resultVotes6 = $conn->query("SELECT COUNT(*) as voteCount6 FROM ftvets_votes");
 $rowVotes6 = $resultVotes6->fetch_assoc();
 $voteCount6 = $rowVotes6['voteCount6'];
 
