@@ -552,8 +552,7 @@ $positionNames = [
             .positiontitle h3,
             h2,
             button,
-            p,
-            .card {
+            p {
                 scale: 0.8;
             }
 
@@ -561,142 +560,149 @@ $positionNames = [
                 padding-bottom: 15%;
             }
 
+            .pos {
+                scale: 0.7;
+            }
+
         }
 
         /*pop up*/
-    .popup {
-        color: white;
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #222E50;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-        height: auto;
-        width: 60vh;
-        border-radius: 5px;
-        z-index: 9999;
-    }
-
-    #logoutpop, #deletepop{
-        height: auto;
-    }
-
-
-
-    .head {
-        background: linear-gradient(to bottom, #28579E, #222E50);
-        width: 100%;
-        height: 6vh;
-        border-radius: 5px 5px 0 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .popup-content {
-        flex: 1;
-        overflow: auto;
-        padding: 5%;
-        box-sizing: border-box;
-    }
-
-    #logoutpop .popup-content, #deletepop .popup-content{
-        overflow: hidden;
-    }
-
-    .popup-content-inner {
-        display: grid;
-        height: auto;
-        gap: 10px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px;
-        height: auto;
-        width: 100%;
-    }
-
-    .form-group label {
-        text-align: left;
-        width: 100%;
-        margin-bottom: 10px;
-        font-size: 15px;
-    }
-
-    .input-form{
-        width: 100%;
-        height: 40px;
-        padding: 1% 1%;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        color: white;
-        background-color: rgba(150, 191, 245, 0.5); 
-        outline: none;
-        box-sizing: border-box; 
-    }
-
-    .input-form option{
-        color: black;
-    }
-
-    .input-form::placeholder {
-        color: inherit; 
-    }
-
-    .popup-content .cancel-button, .popup-content .save-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40PX;
-        width: 100%;
-        font-size: large;
-        font-weight: lighter;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .popup-content .cancel-button {
-        background-color: #ffffff;
-        color: #090074;
-    }
-
-    .popup-content .save-button {
-        background-color: #4361EE;
-        color: white;
-    }
-
-    .cancel-button:hover {
-        color: white;
-        background-color: #F34235;
-    }
-
-    .save-button:hover {
-        background-color: #7790ff;
-    }
-
-    @media (max-width: 1000px) {
-      .popup{
-          height: auto;
-      }
-
-    }
-
-    @media (max-width: 500px) {
-      .popup{
-            width: 100vw;
+        .popup {
+            color: white;
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222E50;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+            height: auto;
+            width: 60vh;
+            border-radius: 5px;
+            z-index: 9999;
         }
 
-    }
+        #logoutpop,
+        #deletepop {
+            height: auto;
+        }
+
+
+
+        .head {
+            background: linear-gradient(to bottom, #28579E, #222E50);
+            width: 100%;
+            height: 6vh;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup-content {
+            flex: 1;
+            overflow: auto;
+            padding: 5%;
+            box-sizing: border-box;
+        }
+
+        #logoutpop .popup-content,
+        #deletepop .popup-content {
+            overflow: hidden;
+        }
+
+        .popup-content-inner {
+            display: grid;
+            height: auto;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+            height: auto;
+            width: 100%;
+        }
+
+        .form-group label {
+            text-align: left;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .input-form {
+            width: 100%;
+            height: 40px;
+            padding: 1% 1%;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            color: white;
+            background-color: rgba(150, 191, 245, 0.5);
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .input-form option {
+            color: black;
+        }
+
+        .input-form::placeholder {
+            color: inherit;
+        }
+
+        .popup-content .cancel-button,
+        .popup-content .save-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40PX;
+            width: 100%;
+            font-size: large;
+            font-weight: lighter;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup-content .cancel-button {
+            background-color: #ffffff;
+            color: #090074;
+        }
+
+        .popup-content .save-button {
+            background-color: #4361EE;
+            color: white;
+        }
+
+        .cancel-button:hover {
+            color: white;
+            background-color: #F34235;
+        }
+
+        .save-button:hover {
+            background-color: #7790ff;
+        }
+
+        @media (max-width: 1000px) {
+            .popup {
+                height: auto;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+            .popup {
+                width: 100vw;
+            }
+
+        }
     </style>
 
 </head>
@@ -783,28 +789,28 @@ $positionNames = [
     </div>
     <div class="popup" id="passpop">
         <div class="head">
-          <h3>CHOOSE YOUR MAJOR</h3>
+            <h3>CHOOSE YOUR MAJOR</h3>
         </div>
         <div class="popup-content">
             <div class="popup-content-inner">
                 <form action="Voting3.1.php" method="get">
-                <div class="form-group">
-                    <label for="major">Major:</label>
-                    <select name="major" id="major" class="input-form" required>
+                    <div class="form-group">
+                        <label for="major">Major:</label>
+                        <select name="major" id="major" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="MATH">Math</option>
                             <option value="ENGLISH">English</option>
                             <option value="FILIPINO">Filipino</option>
-                    </select>
-                </div>
-                <br>
-                <div class="buttons">
-                    <button type="button" class="cancel-button">Cancel</button>
-                    <button type="submit" name="enter" class="save-button">Enter</button>
-                </div>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="buttons">
+                        <button type="button" class="cancel-button">Cancel</button>
+                        <button type="submit" name="enter" class="save-button">Enter</button>
+                    </div>
                 </form>
             </div>
-        </div>    
+        </div>
     </div>
 
     <script>
@@ -840,9 +846,9 @@ $positionNames = [
 
         function switchHTML1(file) {
             var program = <?php echo json_encode($_SESSION["program"]); ?>;
-            if(program==='BSEd'){
+            if (program === 'BSEd') {
                 document.getElementById('passpop').style.display = 'flex';
-            }else{
+            } else {
                 // Add fade-out animation to the body
                 document.body.classList.add('fade-out');
                 sessionStorage.clear();
@@ -860,11 +866,10 @@ $positionNames = [
             document.body.classList.add('fade-in');
         });
 
-              // Hide the popup when the cancel button is clicked
-    document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
-        document.getElementById("passpop").style.display = "none";
-    });
-
+        // Hide the popup when the cancel button is clicked
+        document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
+            document.getElementById("passpop").style.display = "none";
+        });
     </script>
 
 
