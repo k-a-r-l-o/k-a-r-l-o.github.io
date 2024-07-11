@@ -561,7 +561,7 @@ $positionNames = [
             }
 
             .pos {
-                scale: 0.7;
+                font-size: small;
             }
 
         }
