@@ -1,4 +1,89 @@
 usep_ID,Email,LName,FName,gender,YearLvl,program
-202200295,john.doe@example.com,Doe,John,Male,2nd Year,BSIT
-202200296,jane.smith@example.com,Smith,Jane,Female,3rd Year,BSIT
-2022-00001,mishill00001@usep.edu.ph,Cempron,Mishill,Female,4th Year,BSIT
+2022-00168,jcqnacin00168@usep.edu.ph,Nacin,Jayvin,Female,2nd Year,BSNEd
+2021-00123,mjhbarinan00123@usep.edu.ph,Bariñan ,Mary Jancine ,Female,3rd Year,BSEd
+2022-00367,reyuag00367@usep.edu.ph,Yuag,Romayeth,Female,3rd Year,BSEd
+2023-00213,mirevilla00213@usep.edu.ph,Revilla,Marco Alejandro ,Male,1st Year,BSEd
+2022-00071,d-jose00071@usep.edu.ph,Jose,Dave,Male,2nd Year,BSEd
+2021-00224,rmercampo00224@usep.edu.ph ,Mercampo,Rhunafe,Female,3rd Year,BSEd
+2020-00017,jcomamao@usep.edu.ph,Comamao ,Julius ,Male,2nd Year,BSEd
+2021-00432,rjsavancena00432@usep.edu.ph,Avanceña,Rhea Jeanette,Female,3rd Year,BSEd
+2022-00270,emdciudad00270@usep.edu.ph,Ciudad,Ereyl Mie,Female,2nd Year,BSEd
+2021-00349,zmdgarillos00349@usep.edu.ph,Garillos ,Zscharina May,Female,3rd Year,BSEd
+2021-00291,rllseiton00219@usep.edu.ph,Seiton,Rex,Male,4th Year,BSEd
+2022-00108,sacawitin00108@usep.edu.ph,Awitin,Shane Aurey,Female,2nd Year,BSEd
+2022-00521,ssesabio00521@usep.edu.ph,Sabio,Shield Shammah,Male,2nd Year,BSEd
+2022-00164,blvmalimbasao00164@usep.edu.ph,Malimbasao ,Bea Lyca,Female,2nd Year,BSEd
+2023-00332,vbcabualan00332@usep.edu.ph,Cabualan,Valerie,Female,1st Year,BECEd
+2021-00184,gmcabale00184@usep.edu.ph,Cabale,Glydel,Female,3rd Year,BSEd
+2023-00432,jzozobrado00432@usep.edu.ph,Zozobrado,John Carlo,Male,1st Year,BSEd
+2022-00460,rsmandigal00460@usep.edu.ph,Mandigal,Remuel,Male,1st Year,BTVTEd
+2021-00419,naanabesa00419@usep.edu.ph,Añabesa,Neil,Male,3rd Year,BSEd
+2021-00175,hjgcostillas00175@usep.edu.ph,Costillas ,Hanna Jane ,Female,4th Year,BSEd
+2023-00094,saagan00094@usep.edu.ph,Agan,Shekina Grace,Female,1st Year,BTVTEd
+2023-00293,jjbalunos00293@usep.edu.ph,Balunos ,Jhon Kieneth ,Male,2nd Year,BTVTEd
+2023-00006,ddtiongson00006@usep.edu.ph,Tiongson,Dave,Male,2nd Year,BSIT
+2021-00401,hgvsucnaan00401@usep.edu.ph,Sucnaan,Honey Girl,Female,3rd Year,BSEd
+2023-00520,knalo00520@usep.edu.ph,Alo,Kirsten,Female,1st Year,BTVTEd
+2021-00426,fl-lagunsad00426@usep.edu.ph,Lagunsad ,Fred Leo ,Male,3rd Year,BSEd
+2022-00165,jgdgumilan00165@usep.edu.ph,Gumilan ,Julianne Grace,Female,2nd Year,BEEd
+2021-00397,jfppamonag00397@usep.edu.ph,Pamonag,Jina Flor,Female,3rd Year,BSEd
+2022-00544,jmbgono02454@usep.edu.ph,Gono,Jaylyka Mae,Female,3rd Year,BSEd
+2021-00134,Arcbantayan00134@usep.edu.ph,Bantayan,Axl Ross ,Male,3rd Year,BSEd
+2022-00361,bealindajao00361@usep.edu.ph,Alindajao,Bea,Female,2nd Year,BTVTEd
+2023-00648,rvlanonuevo00648@usep.edu.ph,Añonuevo,Raul Vincent,Male,1st Year,BSIT
+2023-00194,ffdominguez00194@usep.edu.ph,Dominguez,Ferlyn ,Female,1st Year,BTVTEd
+2021-00138,ypazur00138@usep.edu.ph,Azur ,Yssa,Female,3rd Year,BSABE
+2023-00365,jdgeral00365@usep.edu.ph,Geral,"Jerphy, Jr.",Male,2nd Year,BTVTEd
+2023-00179,rccanteviros00179@usep.edu.ph,Canteviros ,Rudelyn Jean ,Female,2nd Year,BSEd
+2023-00063 ,spdante00063@usep.edu.ph ,Dante,Shylynjoy ,Female,2nd Year,BTVTEd
+2023-00062,rlcaponpon00062@usep.edu.ph,Caponpon,Rusty Lionel ,Male,1st Year,BTVTEd
+2023-00293,jjbalunos00293@usep.edu.ph,Balunos,Jhon Kieneth ,Male,1st Year,BTVTEd
+2023-00286,shprotacio00286@usep.edu.ph,Protacio,Shiena Mae ,Female,1st Year,BEEd
+2022-00129,rmbmanglicmot00129@usep.edu.ph,Manglicmot ,Roxette Meo,Female,2nd Year,BTVTEd
+2022-00536,dgogicar00536@usep.edu.ph,Gicar,Divine Grace,Female,2nd Year,BTVTEd
+2023-00507,ecmangal00507@usep.edu.ph,Mangal,Edrian,Male,1st Year,BSABE
+2023-00230,mesomambot00230@usep.edu.ph,Somambot,Mikaela Faith ,Female,1st Year,BSEd
+2023-00216,kmisrael00216@usep.edu.ph,Israel,Kristine Claire,Female,1st Year,BSEd
+2021-00398,jcnperucho00398@usep.edu.ph,Perucho,Jairah Carmel,Female,3rd Year,BSEd
+2022-00306,arenasaprencisshyla@gmail.com,Arenasa,Prencis Shyla,Female,2nd Year,BTVTEd
+2021-00318,ggcagang00318@usep.edu.ph,Cagang,Glyndell,Female,2nd Year,BTVTEd
+2023-00173,lmcanete00173@usep.edu.ph,Cañete,Lou Winskie,Female,1st Year,BTVTEd
+2022-00319,jkredelacruz00319@usep.edu.ph,Dela Cruz,John Ken Rech ,Male,2nd Year,BTVTEd
+2023-00019,edcabudlan00019@usep.edu.ph,Cabudlan ,Estrella ,Female,1st Year,BTVTEd
+2022-00073,cl-villarante00073@usep.edu.ph,Villarante,Chriscelle Lou,Female,2nd Year,BTVTEd
+2022-00264,avsubrecarey00264@usep.edu.ph,Subrecarey ,Angelito,Male,1st Year,BTVTEd
+2023-00439,rfbatalon00439@usep.edu.ph ,Batalon ,Ralph Cyrelle ,Male,2nd Year,BSEd
+2023-00197,nllapis00197@usep.edu.ph,Lapis,Nick Vincent ,Male,1st Year,BSEd
+2023-00311,sbmatuguina00311@usep.edu.ph,Matuguina,Sarah Kaye,Female,2nd Year,BSEd
+2023-00439,rfbatalon00439@usep.edu.ph ,Batalon ,Ralph Cyrelle ,Male,1st Year,BSEd
+2023-00312,mtpalomata00312@usep.edu.ph,Palomata,May Lorenz ,Female,1st Year,BSEd
+2023-00207,rmrakiin00207@usep.edu.ph,Rakiin,Raihannah ,Female,1st Year,BSEd
+2023-00202,cberedia00202@usep.edu.ph,Eredia ,Chariz ,Female,1st Year,BSEd
+2022-00436,Jmrsarque00436@usep.edu.ph,Sarque,Jusel Marie,Female,2nd Year,BTVTEd
+2023-00238,mfbetalac00238@usep.edu.ph,Betalac,Melissa Jessa Mae,Female,2nd Year,BSNEd
+2023-00344,rugayruth04@gmail.com,Rugay,Ruth,Female,1st Year,BTVTEd
+2023-00016,gabelsonda00016@usep.edu.ph,Belsonda,Gwyneth,Female,1st Year,BTVTEd
+2023-00034,jdmahinay00034@usep.edu.ph,Mahinay,Jesse Boy,Male,1st Year,BTVTEd
+2022-00316,jvbangquiao00316@usep.edu.ph,Bangquiao ,Jean,Female,2nd Year,BTVTEd
+2023-00333,jasur00333@usep.edu.ph,Asur,Jojanie ,Female,1st Year,BSEd
+2023-00334,jjanoba00334@usep.edu.ph,Anoba,Jovy,Female,1st Year,BTVTEd
+2023-00188,fbregalado00188@usep.edu.ph,Regalado,Feithyl Joy,Female,1st Year,BTVTEd
+2023-00239,dbalejandro00239@usep.edu.ph,Alejandro,Daisy Rey,Female,1st Year,BSEd
+2023-00238,mfbetalac00238@usep.edu.ph,Betalac,Melissa Jessa Mae,Female,2nd Year,BSNEd
+2023-00287,jmolidan00287@usep.edu.ph,Olidan,Juliana,Female,2nd Year,BSEd
+2023-00332,vbcabualan00332@usep.edu.ph,Cabualan,Valerie,Female,1st Year,BECEd
+2023-00244,pbserna00244@usep.edu.ph,Serna,Princess Nica ,Female,1st Year,BSEd
+2023-00308,msbustamante00308@usep.edu.ph,Bustamante,Mae,Female,2nd Year,BSEd
+2022-00258,dtpelostratos00258@usep.edu.ph,Pelostratos,Demple,Female,2nd Year,BECEd
+2023-00246,kjastilla00246@usep.edu.ph,Astilla,Kyla Marie,Female,1st Year,BSEd
+2022-00147,mvmedida00147@usep.edu.ph,Medida,Mikyla,Female,2nd Year,BECEd
+2023-00346,algeneta00346@usep.edu.ph,Geneta,Ashley ,Female,2nd Year,BTVTEd
+2023-00185,ffarroyo00185@usep.edu.ph ,Arroyo,Ferlmarie,Female,1st Year,BTVTEd
+2023-00196,etlloren00196@usep.edu.ph,Lloren,Erry,Male,1st Year,BSEd
+2023-00123,jhbutihin00123@usep.edu.ph,Butihin,Joana Charisse,Female,1st Year,BSEd
+2023-00438,farado00438@usep.edu.ph,Arado,Fhreichlyn Kate,Female,1st Year,BSEd
+2023-00467,ghmosqueda00467@usep.edu.ph,Mosqueda, Grace ,Female,1st Year,BTVTEd
+2023-00247,qpmabangyat00247@usep.edu.ph,Mabangyat,Queenie Pearl,Female,1st Year,BSEd
+2022-00081,slparamio00081@usep.edu.ph,Paramio,Sheryne,Female,2nd Year,BSEd
+2023-00019,edcabudlan00019@usep.edu.ph,Cabudlan ,Estrella,Female,2nd Year,BTVTEd
+2023-00106,abbermeo00106@usep.edu.ph,Bermeo,Almario Joel,Male,1st Year,BSEd
