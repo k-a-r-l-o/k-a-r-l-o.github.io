@@ -710,10 +710,11 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             $input_username = trim($_POST["username"]);
             $input_password = trim($_POST["password"]);
 
+            $cleanUsepID = str_replace('-', '', $input_password);
             // Prepare SQL statement to retrieve user from database
             $sql = "SELECT * FROM voters WHERE Email = ? AND usep_ID = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ss", $input_username, $input_password);
+            $stmt->bind_param("ss", $input_username, $cleanUsepID);
             $stmt->execute();
             $result = $stmt->get_result();
 
