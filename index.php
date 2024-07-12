@@ -711,9 +711,9 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             $input_password = trim($_POST["password"]);
 
             // Prepare SQL statement to retrieve user from database
-            $sql = "SELECT * FROM voters WHERE Email = ?";
+            $sql = "SELECT * FROM voters WHERE Email = ? AND usep_ID = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("s", $input_username);
+            $stmt->bind_param("ss", $input_username, $input_password);
             $stmt->execute();
             $result = $stmt->get_result();
 
