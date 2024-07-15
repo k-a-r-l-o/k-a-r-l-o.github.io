@@ -414,24 +414,24 @@ switch ($council) {
             
             UNION ALL
             
-            SELECT CONCAT(c_Senator1.FName, ' ', c_Senator1.LName) AS Pname, 'Senator1' AS position, COUNT(tv.Senator1) AS votes 
+            SELECT CONCAT(c_Math_Senator1.FName, ' ', c_Math_Senator1.LName) AS Pname, 'Senator1' AS position, COUNT(tv.Math_Senator1) AS votes 
             FROM afset_votes tv
-            INNER JOIN candidates c_Senator1 ON tv.Senator1 = c_Senator1.usep_ID
-            GROUP BY tv.Senator1
+            INNER JOIN candidates c_Senator1 ON tv.Math_Senator1 = c_Math_Senator1.usep_ID
+            GROUP BY tv.Math_Senator1
             
             UNION ALL
             
-            SELECT CONCAT(c_Senator2.FName, ' ', c_Senator2.LName) AS Pname, 'Senator2' AS position, COUNT(tv.Senator2) AS votes 
+            SELECT CONCAT(c_Math_Senator2.FName, ' ', c_Math_Senator2.LName) AS Pname, 'Senator2' AS position, COUNT(tv.Math_Senator2) AS votes 
             FROM afset_votes tv
-            INNER JOIN candidates c_Senator2 ON tv.Senator2 = c_Senator2.usep_ID
-            GROUP BY tv.Senator2
+            INNER JOIN candidates c_Senator2 ON tv.Math_Senator2 = c_Math_Senator2.usep_ID
+            GROUP BY tv.Math_Senator2
             
             UNION ALL
             
-            SELECT CONCAT(c_Senator3.FName, ' ', c_Senator3.LName) AS Pname, 'Senator3' AS position, COUNT(tv.Senator3) AS votes 
+            SELECT CONCAT(c_Math_Senator3.FName, ' ', c_Math_Senator3.LName) AS Pname, 'Senator3' AS position, COUNT(tv.Math_Senator3) AS votes 
             FROM afset_votes tv
-            INNER JOIN candidates c_Senator3 ON tv.Senator3 = c_Senator3.usep_ID
-            GROUP BY tv.Senator3
+            INNER JOIN candidates c_Senator1 ON tv.Math_Senator3 = c_Math_Senator3.usep_ID
+            GROUP BY tv.Math_Senator3
             
             UNION ALL
             
@@ -447,9 +447,9 @@ switch ($council) {
                 WHEN subquery.position = 'Vice Governor' THEN 2 
                 WHEN subquery.position = 'Secretary' THEN 3 
                 WHEN subquery.position = 'Treasurer' THEN 4 
-                WHEN subquery.position = 'Senator1' THEN 5 
-                WHEN subquery.position = 'Senator2' THEN 6 
-                WHEN subquery.position = 'Senator3' THEN 7 
+                WHEN subquery.position = 'Math Senator1' THEN 5 
+                WHEN subquery.position = 'Math Senator2' THEN 6 
+                WHEN subquery.position = 'Math Senator3' THEN 7 
                 WHEN subquery.position = 'Auditor' THEN 8 
                 ELSE 9 
             END,
