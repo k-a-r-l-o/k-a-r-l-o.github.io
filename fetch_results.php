@@ -430,7 +430,7 @@ switch ($council) {
             
             SELECT CONCAT(c_MATH_Senator3.FName, ' ', c_MATH_Senator3.LName) AS Pname, 'MATH_Senator3' AS position, COUNT(tv.MATH_Senator3) AS votes 
             FROM afset_votes tv
-            INNER JOIN candidates c_MATH_Senator1 ON tv.MATH_Senator3 = c_MATH_Senator3.usep_ID
+            INNER JOIN candidates c_MATH_Senator3 ON tv.MATH_Senator3 = c_MATH_Senator3.usep_ID
             GROUP BY tv.MATH_Senator3
             
             UNION ALL
