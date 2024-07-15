@@ -159,6 +159,7 @@ switch ($council) {
             END,
             subquery.votes DESC, 
             subquery.Pname ASC";
+        break;
 
     case 'OFEE':
         $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
@@ -532,8 +533,8 @@ switch ($council) {
         break;
 
 
-        case 'FTVETS':
-            $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
+    case 'FTVETS':
+        $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
             FROM (
                 SELECT CONCAT(c_LC_Governor.FName, ' ', c_LC_Governor.LName) AS Pname, 'LC Governor' AS position, COUNT(tv.LC_Governor) AS votes 
                 FROM ftvets_votes tv
@@ -604,11 +605,11 @@ switch ($council) {
                 END,
                 subquery.votes DESC, 
                 subquery.Pname ASC";
-            break;
-        
+        break;
+
 
     default:
-    
+
         exit;
 }
 
