@@ -26,10 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'Vice_Governor' => '100010001',
         'Secretary' => '100010001',
         'Treasurer' => '100010001',
+        'Auditor' => '100010001',
         'Senator1' => '100010001',
         'Senator2' => '100010001',
-        'Senator3' => '100010001',
-        'Auditor' => '100010001'
+        'Senator3' => '100010001'
+
     ];
 
     // Process each position from the form submission
@@ -48,10 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Vice_Governor = VALUES(Vice_Governor),
             Secretary = VALUES(Secretary),
             Treasurer = VALUES(Treasurer),
+            Auditor = VALUES(Auditor),
             Senator1 = VALUES(Senator1),
             Senator2 = VALUES(Senator2),
-            Senator3 = VALUES(Senator3),
-            Auditor = VALUES(Auditor)";
+            Senator3 = VALUES(Senator3)";
+
 
     // Prepare and execute the statement
     $stmt = $conn->prepare($sqlSaveVote);
@@ -62,10 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $votes['Vice_Governor'],
         $votes['Secretary'],
         $votes['Treasurer'],
+        $votes['Auditor'],
         $votes['Senator1'],
         $votes['Senator2'],
-        $votes['Senator3'],
-        $votes['Auditor']
+        $votes['Senator3']
+
     );
 
     if ($stmt->execute()) {
@@ -599,7 +602,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
         }
-
     </style>
 
 </head>
@@ -660,16 +662,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             'Vice Governor' => 'Vice_Governor',
                             'Secretary' => 'Secretary',
                             'Treasurer' => 'Treasurer',
+                            'Auditor' => 'Auditor',
                             'Senator1' => 'Senator1',
                             'Senator2' => 'Senator2',
-                            'Senator3' => 'Senator3',
-                            'Senator4' => 'Senator4',
-                            'Senator5' => 'Senator5',
-                            'Senator6' => 'Senator6',
-                            'Senator7' => 'Senator7',
-                            'Senator8' => 'Senator8',
-                            'Senator9' => 'Senator9',
-                            'Auditor' => 'Auditor'
+                            'Senator3' => 'Senator3'
+
                         ];
 
                         // Loop through each position
@@ -892,29 +889,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Set the cookie with the selected candidate value
             setCookie("selectedCandidate", selectedCandidate, 1); // Set cookie to expire in 1 day
         });
-
-        // Hide the popup when the cancel button is clicked
-    document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
-        document.getElementById("passpop").style.display = "none";
-    });
-
-    // Check the entered passkey and open the new page if correct
-    document.querySelector("#passpop .save-button").addEventListener("click", function() {
-        // Retrieve the entered passkey
-        var passkey = document.getElementById("passkey").value;
-
-        // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
-        if (passkey === 'adminni') {
-            // Open the new page in the same window
-            window.open('indexWatcher.php', '_self');
-        } else {
-            // Notify the user about incorrect passkey
-            alert('Incorrect passkey. Please try again.');
-        }
-
-        // Hide the popup
-        document.getElementById("passpop").style.display = "none";
-    });
 
     </script>
 

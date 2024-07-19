@@ -1067,26 +1067,26 @@ $firstLetterLastName = substr($LName, 0, 1);
                     <div class="form-group">
                         <label for="profile">Profile Photo:</label>
                         <div class="upload-btn">
-                            <input type="file" id="profile-photo" name="prof" accept=".jpg, .jpeg, .png" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file">
+                            <input type="file" id="profile-photo" name="prof" accept=".jpg, .jpeg, .png" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file" required>
                             <span>Upload Photo</span>
                         </div>
                         <img id="preview" src="#" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
                     </div>
                     <div class="form-group">
                         <label for="usepID">USeP ID:</label>
-                        <input type="text" id="usepID" name="usepID" class="input-form" maxlength="10" onchange="validateUsepID(this)">
+                        <input type="text" id="usepID" name="usepID" class="input-form" maxlength="10" onchange="validateUsepID(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="FirstName">First Name:</label>
-                        <input type="text" id="Fname" name="Fname" class="input-form">
+                        <input type="text" id="Fname" name="Fname" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="LastName">Last Name:</label>
-                        <input type="text" id="Lname" name="Lname" class="input-form">
+                        <input type="text" id="Lname" name="Lname" class="input-form" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <select id="gender" name="gender" class="input-form">
+                        <select id="gender" name="gender" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -1094,7 +1094,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     </div>
                     <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
-                        <select id="yearlevel" name="yearlevel" class="input-form">
+                        <select id="yearlevel" name="yearlevel" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="2nd Year">2nd Year</option>
                             <option value="3rd Year">3rd Year</option>
@@ -1103,7 +1103,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     </div>
                     <div class="form-group">
                         <label for="program">Program:</label>
-                        <select id="program" name="program" class="input-form">
+                        <select id="program" name="program" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
 
@@ -1128,7 +1128,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     </div>
                     <div class="form-group">
                         <label for="Council">Council:</label>
-                        <select id="Council" name="council" class="input-form">
+                        <select id="Council" name="council" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs
@@ -1152,13 +1152,13 @@ $firstLetterLastName = substr($LName, 0, 1);
                     </div>
                     <div class="form-group">
                         <label for="position">Position:</label>
-                        <select id="position" name="position" class="input-form">
+                        <select id="position" name="position" class="input-form" required>
                             <option value="" disabled selected hidden>Select Council First</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="partyList">Party List:</label>
-                        <select id="partyList" name="partylist" class="input-form">
+                        <select id="partyList" name="partylist" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
                             // Query to fetch programs

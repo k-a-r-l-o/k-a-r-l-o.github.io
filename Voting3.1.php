@@ -942,28 +942,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             setCookie("selectedCandidate", selectedCandidate, 1); // Set cookie to expire in 1 day
         });
 
-        // Hide the popup when the cancel button is clicked
-        document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
-            document.getElementById("passpop").style.display = "none";
-        });
-
-        // Check the entered passkey and open the new page if correct
-        document.querySelector("#passpop .save-button").addEventListener("click", function() {
-            // Retrieve the entered passkey
-            var passkey = document.getElementById("passkey").value;
-
-            // Check if the passkey is correct (you need to replace 'YOUR_PASSKEY' with the actual passkey)
-            if (passkey === 'adminni') {
-                // Open the new page in the same window
-                window.open('indexWatcher.php', '_self');
-            } else {
-                // Notify the user about incorrect passkey
-                alert('Incorrect passkey. Please try again.');
-            }
-
-            // Hide the popup
-            document.getElementById("passpop").style.display = "none";
-        });
     </script>
 
 </body>
