@@ -978,7 +978,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         <div class="searchspace">
             <div class="searchicon">
                 <img src="search.png" alt="search icon">
-                <input type="text" id="searchInput" placeholder="Search" alt="Search" onkeyup="searchTable()">
+                <input type="text" id="searchInput" placeholder="Search" alt="Search" onchange="searchTable()">
             </div>
         </div>
     </header>
