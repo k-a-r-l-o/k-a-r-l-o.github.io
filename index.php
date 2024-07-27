@@ -738,12 +738,28 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                         $_SESSION["program"] = $row["program"];
                         $_SESSION["usep_ID"] = $row["usep_ID"];
 
-                        echo '<script>';
-                        echo 'console.log("Redirecting to Voting1.php...");';
-                        echo 'window.location.href = "Voting1.php";'; // Redirect to the voting page
-                        echo '</script>';
+                        date_default_timezone_set('Asia/Manila');
+                        $date = date("Y-m-d");
+                        $time = date("H:i:s");
+                        $datetime = $date . ' ' . $time;
+
+                        $sqlvote = "UPDATE voters SET voted = 'Voting', VotedDT = ? WHERE usep_ID = ?";
+                        $stmtUpdate = $conn->prepare($sqlvote);
+
+                        if ($stmtUpdate) {
+                            $stmtUpdate->bind_param("si", $datetime, $_SESSION["usep_ID"]);
+                            $stmtUpdate->execute();
+                            $stmtUpdate->close();
+                            echo '<script>';
+                            echo 'console.log("Redirecting to Voting1.php...");';
+                            echo 'window.location.href = "Voting1.php";'; // Redirect to the voting page
+                            echo '</script>';
+                        } else {
+                            echo "Error preparing statement: " . $conn->error;
+                            exit();
+                        }
                         exit();
-                    } else {
+                    } else if ("Voted" === $row["voted"]) {
                         // User has already voted
                         echo "<script>
                             Swal.fire({
@@ -758,6 +774,28 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                             });
                         </script>";
                         exit(); // Stop further execution
+                    } else if ("Voting" === $row["voted"]) {
+                        // User has already logged in
+                        if ($input_username == $_SESSION["username"]) {
+                            echo '<script>';
+                            echo 'console.log("Redirecting to Voting1.php...");';
+                            echo 'window.location.href = "Voting1.php";'; // Redirect to the voting page
+                            echo '</script>';
+                        } else {
+                            echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'You have logged in on another device.',
+                                text: 'Please continue voting on that device or contact TSC-ComElec if it is not you.',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.close();
+                                }
+                            });
+                        </script>";
+                            exit(); // Stop further execution
+                        }
                     }
                 } else {
                     // Password is incorrect

@@ -5,25 +5,39 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
+$sqlID = "SELECT council_id, council_name, cFullName FROM list_councils WHERE program = '$program'";
+$resultID = $conn->query($sqlID);
+
+if ($resultID->num_rows > 0) {
+    $row = $resultID->fetch_assoc();
+    $council_id = $row['council_id'];
+    $council_name = $row['council_name'];
+    $council_name1 = strtolower($row['council_name']);
+    $cFullName = $row['cFullName'];
+    $table_name = $conn->real_escape_string($council_name1 . "_votes");
+} else {
+    echo "No council found for the given program.";
+    exit();
+}
+
+// Fetch positions from the positions table for the council_id
+$sqlPositions = "SELECT position_name, position_slot FROM positions WHERE council_id = $council_id";
+$resultPositions = $conn->query($sqlPositions);
+
 // Retrieve the votes from the URL parameters
 $votes = $_GET;
 
 // Map the position keys to human-readable names if necessary
 $positionNames = [
-    'LC_Governor' => 'Governor',
-    'Vice_Governor' => 'Vice Governor',
-    'Secretary' => 'Secretary',
-    'Treasurer' => 'Treasurer',
-    'Senator1' => 'Senator1',
-    'Senator2' => 'Senator2',
-    'Senator3' => 'Senator3',
-    'Senator4' => 'Senator4',
-    'Senator5' => 'Senator5',
-    'Senator6' => 'Senator6',
-    'Senator7' => 'Senator7',
-    'Senator8' => 'Senator8',
-    'Senator9' => 'Senator9',
-    'Auditor' => 'Auditor'
+    'SITS_Governor' => 'Governor',
+    'SITS_Vice_Governor' => 'Vice Governor',
+    'SITS_Secretary' => 'Secretary',
+    'SITS_Treasurer' => 'Treasurer',
+    'SITS_Auditor' => 'Auditor',
+    'SITS_Senator1' => 'Senator',
+    'SITS_Senator2' => 'Senator',
+    'SITS_Senator3' => 'Senator'
+
 ];
 ?>
 
@@ -279,7 +293,7 @@ $positionNames = [
             font-size: 24px;
             font-weight: 400;
             margin: 0;
-            text-transform: uppercase;
+            text-align: center;
         }
 
         .cardcontent {
@@ -294,105 +308,6 @@ $positionNames = [
             justify-content: center;
             flex-direction: column;
         }
-
-        input[type="radio"] {
-            margin-bottom: 20px;
-            width: 20px;
-            height: 20px;
-        }
-
-        .candidateimage {
-            display: flex;
-            justify-content: right;
-            align-items: center;
-            width: 100%;
-        }
-
-        .candidateimage img {
-            height: auto;
-            width: auto;
-            max-width: 250px;
-            max-height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .candidateinfocontent {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .candidateinfocontent {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .candidateinfocontent label {
-            display: flex;
-            align-items: center;
-        }
-
-        .candidateinfocontent input[type="radio"] {
-            margin-top: 18px;
-            margin-right: 10px;
-        }
-
-        .candidateinfocontent p {
-            font-size: 20px;
-        }
-
-        .candidateinfocontent label {
-            display: flex;
-            align-items: center;
-            color: #000000;
-            /* Color of the candidate name */
-            margin-bottom: 5px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .candidateinfocontent input[type="radio"] {
-            margin-right: 10px;
-            /* Hide the default radio button */
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            /* Define the size of the custom radio button */
-            width: 20px;
-            height: 20px;
-            /* Style the border and background */
-            border: none;
-            /* Border color */
-            border-radius: 50%;
-            /* Makes it circular */
-            background-color: #fff;
-            /* Background color */
-            /* Position the radio button relative to the label */
-            position: relative;
-            /* Center the custom radio button */
-            display: inline-block;
-            vertical-align: middle;
-            cursor: pointer;
-            /* Show cursor on hover */
-        }
-
-        /* Style the custom radio button when checked */
-        .candidateinfocontent input[type="radio"]:checked::after {
-            content: "";
-            /* Position the dot inside the circle */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            /* Define the size and appearance of the dot */
-            width: 20.5px;
-            height: 20.5px;
-            border-radius: 50%;
-            background-color: #FCCB06;
-            /* Color of the dot when checked */
-        }
-
 
         .button {
             width: 100%;
@@ -463,6 +378,10 @@ $positionNames = [
             font-size: 20px;
             font-weight: 500;
             text-transform: uppercase;
+        }
+
+        .CanName {
+            color: #222E50;
         }
 
         @media (max-width: 1000px) {
@@ -565,6 +484,11 @@ $positionNames = [
             }
 
         }
+
+        .swal2-container {
+            z-index: 9999;
+            /* Ensure this value is higher than any other z-index on your page */
+        }
     </style>
 
 </head>
@@ -611,7 +535,7 @@ $positionNames = [
 
                 <div class="card">
                     <div class="positiontitle">
-                        <h3>LC SUMMARY</h3>
+                        <h3><?php echo htmlspecialchars($cFullName); ?>(<?php echo htmlspecialchars($council_name); ?>) Summary</h3>
                     </div>
                     <div class="cardcontent">
 
@@ -632,8 +556,8 @@ $positionNames = [
                                     $candidateName = 'Abstain';
                                 }
 
-                                echo '<p>   ' . $positionNames[$position] . '</p>';
-                                echo '<p class="c">  ' . htmlspecialchars($candidateName) . '</p>';
+                                echo '<p>  ' . $positionNames[$position] . '</p>';
+                                echo '<p class="CanName">  ' . htmlspecialchars($candidateName) . '</p>';
                             }
                             ?>
                         </div>
@@ -642,14 +566,14 @@ $positionNames = [
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting3.php')">Back</button>
+                    <button onclick="back()">Edit</button>
                     <button onclick="switchHTML1('Voting5.php')">Submit</button>
                 </div>
 
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
         var headerHeight;
 
@@ -671,25 +595,30 @@ $positionNames = [
         window.addEventListener('resize', setPaddingTop);
 
         // JavaScript code to switch HTML files with animation
-        function switchHTML(file) {
-            // Add fade-out animation to the body
-            document.body.classList.add('fade-out');
-
-            // Wait for the animation to finish, then switch to the new HTML file
-            setTimeout(function() {
-                window.location.href = file;
-            }, 500); // Delay should match the animation duration
+        function back() {
+            window.history.back();
         }
 
         function switchHTML1(file) {
-            // Add fade-out animation to the body
-            document.body.classList.add('fade-out');
-            sessionStorage.clear();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Confirm"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Add fade-out animation to the body
+                    document.body.classList.add('fade-out');
 
-            // Wait for the animation to finish, then switch to the new HTML file
-            setTimeout(function() {
-                window.location.href = file;
-            }, 500); // Delay should match the animation duration
+                    // Wait for the animation to finish, then switch to the new HTML file
+                    setTimeout(function() {
+                        window.location.href = file;
+                    }, 500); // Delay should match the animation duration
+                }
+            });
         }
 
         // Add a listener for animation end to remove the fade-out class and add the fade-in class

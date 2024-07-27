@@ -2,21 +2,40 @@
 include "DBSessionVoter.php";
 
 $username = $_SESSION["username"];
-$program = $_SESSION["program"];
+$program = "ALL PROGRAMS";
 $usep_ID = $_SESSION["usep_ID"];
+
+$sqlID = "SELECT council_id, council_name, cFullName FROM list_councils WHERE program = '$program'";
+$resultID = $conn->query($sqlID);
+
+if ($resultID->num_rows > 0) {
+    $row = $resultID->fetch_assoc();
+    $council_id = $row['council_id'];
+    $council_name = $row['council_name'];
+    $council_name1 = strtolower($row['council_name']);
+    $cFullName = $row['cFullName'];
+    $table_name = $conn->real_escape_string($council_name1 . "_votes");
+} else {
+    echo "No council found for the given program.";
+    exit();
+}
+
+// Fetch positions from the positions table for the council_id
+$sqlPositions = "SELECT position_name, position_slot FROM positions WHERE council_id = $council_id";
+$resultPositions = $conn->query($sqlPositions);
 
 // Retrieve the votes from the URL parameters
 $votes = $_GET;
 
 // Map the position keys to human-readable names if necessary
 $positionNames = [
-    'President' => 'President',
-    'Vice_President_Internal_Affairs' => 'Vice President Internal Affairs',
-    'Vice_President_External_Affairs' => 'Vice President External Affairs',
-    'General_Secretary' => 'General Secretary',
-    'General_Treasurer' => 'General Treasurer',
-    'General_Auditor' => 'General Auditor',
-    'Public_Information_Officer' => 'Public Information Officer'
+    'TSC_President' => 'President',
+    'TSC_Vice_President_for_Internal_Affairs' => 'Vice President for Internal Affairs',
+    'TSC_Vice_President_for_External_Affairs' => 'Vice President for External Affairs',
+    'TSC_General_Secretary' => 'General Secretary',
+    'TSC_General_Treasurer' => 'General Treasurer',
+    'TSC_General_Auditor' => 'General Auditor',
+    'TSC_Public_Information_Officer' => 'Public Information Officer'
 ];
 ?>
 
@@ -272,7 +291,7 @@ $positionNames = [
             font-size: 24px;
             font-weight: 400;
             margin: 0;
-            text-transform: uppercase;
+            text-align: center;
         }
 
         .cardcontent {
@@ -288,117 +307,11 @@ $positionNames = [
             flex-direction: column;
         }
 
-        input[type="radio"] {
-            margin-bottom: 20px;
-            width: 20px;
-            height: 20px;
-        }
-
-        .candidateimage {
-            display: flex;
-            justify-content: right;
-            align-items: center;
-            width: 100%;
-        }
-
-        .candidateimage img {
-            height: auto;
-            width: auto;
-            max-width: 250px;
-            max-height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .candidateinfocontent {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .candidateinfocontent {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .candidateinfocontent label {
-            display: flex;
-            align-items: center;
-        }
-
-        .candidateinfocontent input[type="radio"] {
-            margin-top: 18px;
-            margin-right: 10px;
-        }
-
-        .candidateinfocontent p {
-            font-size: 20px;
-        }
-
-        .candidateinfocontent label {
-            display: flex;
-            align-items: center;
-            color: #000000;
-            /* Color of the candidate name */
-            margin-bottom: 5px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .candidateinfocontent input[type="radio"] {
-            margin-right: 10px;
-            /* Hide the default radio button */
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            /* Define the size of the custom radio button */
-            width: 20px;
-            height: 20px;
-            /* Style the border and background */
-            border: none;
-            /* Border color */
-            border-radius: 50%;
-            /* Makes it circular */
-            background-color: #fff;
-            /* Background color */
-            /* Position the radio button relative to the label */
-            position: relative;
-            /* Center the custom radio button */
-            display: inline-block;
-            vertical-align: middle;
-            cursor: pointer;
-            /* Show cursor on hover */
-        }
-
-        /* Style the custom radio button when checked */
-        .candidateinfocontent input[type="radio"]:checked::after {
-            content: "";
-            /* Position the dot inside the circle */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            /* Define the size and appearance of the dot */
-            width: 20.5px;
-            height: 20.5px;
-            border-radius: 50%;
-            background-color: #FCCB06;
-            /* Color of the dot when checked */
-        }
-
-
         .button {
             width: 100%;
             display: flex;
             justify-content: space-between;
             max-width: 715px;
-        }
-
-        .buttons {
-            display: grid;
-            height: auto;
-            width: 100%;
-            gap: 10px;
         }
 
         .button button {
@@ -463,6 +376,10 @@ $positionNames = [
             font-size: 20px;
             font-weight: 500;
             text-transform: uppercase;
+        }
+
+        .CanName {
+            color: #222E50;
         }
 
         @media (max-width: 1000px) {
@@ -566,142 +483,9 @@ $positionNames = [
 
         }
 
-        /*pop up*/
-        .popup {
-            color: white;
-            display: none;
-            flex-direction: column;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #222E50;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-            height: auto;
-            width: 60vh;
-            border-radius: 5px;
+        .swal2-container {
             z-index: 9999;
-        }
-
-        #logoutpop,
-        #deletepop {
-            height: auto;
-        }
-
-
-
-        .head {
-            background: linear-gradient(to bottom, #28579E, #222E50);
-            width: 100%;
-            height: 6vh;
-            border-radius: 5px 5px 0 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .popup-content {
-            flex: 1;
-            overflow: auto;
-            padding: 5%;
-            box-sizing: border-box;
-        }
-
-        #logoutpop .popup-content,
-        #deletepop .popup-content {
-            overflow: hidden;
-        }
-
-        .popup-content-inner {
-            display: grid;
-            height: auto;
-            gap: 10px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 10px;
-            height: auto;
-            width: 100%;
-        }
-
-        .form-group label {
-            text-align: left;
-            width: 100%;
-            margin-bottom: 10px;
-            font-size: 15px;
-        }
-
-        .input-form {
-            width: 100%;
-            height: 40px;
-            padding: 1% 1%;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            color: white;
-            background-color: rgba(150, 191, 245, 0.5);
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .input-form option {
-            color: black;
-        }
-
-        .input-form::placeholder {
-            color: inherit;
-        }
-
-        .popup-content .cancel-button,
-        .popup-content .save-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 40PX;
-            width: 100%;
-            font-size: large;
-            font-weight: lighter;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .popup-content .cancel-button {
-            background-color: #ffffff;
-            color: #090074;
-        }
-
-        .popup-content .save-button {
-            background-color: #4361EE;
-            color: white;
-        }
-
-        .cancel-button:hover {
-            color: white;
-            background-color: #F34235;
-        }
-
-        .save-button:hover {
-            background-color: #7790ff;
-        }
-
-        @media (max-width: 1000px) {
-            .popup {
-                height: auto;
-            }
-
-        }
-
-        @media (max-width: 500px) {
-            .popup {
-                width: 100vw;
-            }
-
+            /* Ensure this value is higher than any other z-index on your page */
         }
     </style>
 
@@ -749,7 +533,7 @@ $positionNames = [
 
                 <div class="card">
                     <div class="positiontitle">
-                        <h3>SC SUMMARY</h3>
+                        <h3><?php echo htmlspecialchars($cFullName); ?>(<?php echo htmlspecialchars($council_name); ?>) Summary</h3>
                     </div>
                     <div class="cardcontent">
 
@@ -770,8 +554,8 @@ $positionNames = [
                                     $candidateName = 'Abstain';
                                 }
 
-                                echo '<p>   ' . $positionNames[$position] . '</p>';
-                                echo '<p class="c">  ' . htmlspecialchars($candidateName) . '</p>';
+                                echo '<p>  ' . $positionNames[$position] . '</p>';
+                                echo '<p class="CanName">  ' . htmlspecialchars($candidateName) . '</p>';
                             }
                             ?>
                         </div>
@@ -780,39 +564,14 @@ $positionNames = [
                 </div>
 
                 <div class="button">
-                    <button onclick="switchHTML('Voting1.php')">Back</button>
-                    <button onclick="switchHTML1('Voting3.php')">Submit</button>
+                    <button onclick="back()">Edit</button>
+                    <button onclick="switchHTML('Voting3.php')">Submit</button>
                 </div>
 
             </div>
         </div>
     </div>
-    <div class="popup" id="passpop">
-        <div class="head">
-            <h3>CHOOSE YOUR MAJOR</h3>
-        </div>
-        <div class="popup-content">
-            <div class="popup-content-inner">
-                <form action="Voting3.1.php" method="get">
-                    <div class="form-group">
-                        <label for="major">Major:</label>
-                        <select name="major" id="major" class="input-form" required>
-                            <option value="" disabled selected hidden>Select here</option>
-                            <option value="MATH">Math</option>
-                            <option value="ENGLISH">English</option>
-                            <option value="FILIPINO">Filipino</option>
-                        </select>
-                    </div>
-                    <br>
-                    <div class="buttons">
-                        <button type="button" class="cancel-button">Cancel</button>
-                        <button type="submit" name="enter" class="save-button">Enter</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
         var headerHeight;
 
@@ -834,41 +593,36 @@ $positionNames = [
         window.addEventListener('resize', setPaddingTop);
 
         // JavaScript code to switch HTML files with animation
-        function switchHTML(file) {
-            // Add fade-out animation to the body
-            document.body.classList.add('fade-out');
-
-            // Wait for the animation to finish, then switch to the new HTML file
-            setTimeout(function() {
-                window.location.href = file;
-            }, 500); // Delay should match the animation duration
+        function back() {
+            window.history.back();
         }
 
-        function switchHTML1(file) {
-            var program = <?php echo json_encode($_SESSION["program"]); ?>;
-            if (program === 'BSEd') {
-                document.getElementById('passpop').style.display = 'flex';
-            } else {
-                // Add fade-out animation to the body
-                document.body.classList.add('fade-out');
-                sessionStorage.clear();
+        function switchHTML(file) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Confirm"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Add fade-out animation to the body
+                    document.body.classList.add('fade-out');
 
-                // Wait for the animation to finish, then switch to the new HTML file
-                setTimeout(function() {
-                    window.location.href = file;
-                }, 500); // Delay should match the animation duration
-            }
+                    // Wait for the animation to finish, then switch to the new HTML file
+                    setTimeout(function() {
+                        window.location.href = file;
+                    }, 500); // Delay should match the animation duration
+                }
+            });
         }
 
         // Add a listener for animation end to remove the fade-out class and add the fade-in class
         document.body.addEventListener('animationend', function() {
             document.body.classList.remove('fade-out');
             document.body.classList.add('fade-in');
-        });
-
-        // Hide the popup when the cancel button is clicked
-        document.querySelector("#passpop .cancel-button").addEventListener("click", function() {
-            document.getElementById("passpop").style.display = "none";
         });
     </script>
 

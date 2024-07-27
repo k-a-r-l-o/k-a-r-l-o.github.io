@@ -454,6 +454,7 @@ if ($stmtUpdate) {
     $stmtUpdate->bind_param("si", $datetime, $_SESSION["usep_ID"]);
     $stmtUpdate->execute();
     $stmtUpdate->close();
+    echo "<script>localStorage.removeItem('alertShown')</script>";
     session_unset();
     session_destroy();
 } else {
