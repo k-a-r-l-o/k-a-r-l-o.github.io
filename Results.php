@@ -957,14 +957,14 @@ $firstLetterLastName = substr($LName, 0, 1);
                 </div>
                 <div class="dropdown">
                     <select name="council" id="Council">
-                        <option value="TSC">TSC</option>
-                        <option value="SABES">SABES</option>
-                        <option value="OFEE">OFEE</option>
-                        <option value="AECES">AECES</option>
-                        <option value="OFSET">OFSET</option>
-                        <option value="AFSET">AFSET</option>
-                        <option value="SITS">SITS</option>
-                        <option value="FTVETS">FTVETS</option>
+                        <option value="8">TSC</option>
+                        <option value="1">SABES</option>
+                        <option value="2">OFEE</option>
+                        <option value="3">AECES</option>
+                        <option value="4">OFSET</option>
+                        <option value="5">AFSET</option>
+                        <option value="6">SITS</option>
+                        <option value="7">FTVETS</option>
                     </select>
                 </div>
             </div>
@@ -977,88 +977,84 @@ $firstLetterLastName = substr($LName, 0, 1);
                             <th class='thlast'>NO. OF VOTES</th>
                         </tr>
                         <?php
-                        // Query to retrieve all data from the table
-                        $sql = "SELECT subquery.Pname, subquery.position, subquery.votes 
-                        FROM (
-                            SELECT CONCAT(c_President.FName, ' ', c_President.LName) AS Pname, 'President' AS position, COUNT(tv.President) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_President ON tv.President = c_President.usep_ID
-                            GROUP BY tv.President
-                            
-                            UNION ALL
-                            
-                            SELECT CONCAT(c_Vice_President_Internal.FName, ' ', c_Vice_President_Internal.LName) AS Pname, 'Vice President Internal Affairs' AS position, COUNT(tv.Vice_President_Internal_Affairs) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_Vice_President_Internal ON tv.Vice_President_Internal_Affairs = c_Vice_President_Internal.usep_ID
-                            GROUP BY tv.Vice_President_Internal_Affairs
-                            
-                            UNION ALL
-                            
-                            SELECT CONCAT(c_Vice_President_External.FName, ' ', c_Vice_President_External.LName) AS Pname, 'Vice President External Affairs' AS position, COUNT(tv.Vice_President_External_Affairs) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_Vice_President_External ON tv.Vice_President_External_Affairs = c_Vice_President_External.usep_ID
-                            GROUP BY tv.Vice_President_External_Affairs
-                            
-                            UNION ALL
-                            
-                            SELECT CONCAT(c_General_Secretary.FName, ' ', c_General_Secretary.LName) AS Pname, 'General Secretary' AS position, COUNT(tv.General_Secretary) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_General_Secretary ON tv.General_Secretary = c_General_Secretary.usep_ID
-                            GROUP BY tv.General_Secretary
-                            
-                            UNION ALL
-                            
-                            SELECT CONCAT(c_General_Treasurer.FName, ' ', c_General_Treasurer.LName) AS Pname, 'General Treasurer' AS position, COUNT(tv.General_Treasurer) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_General_Treasurer ON tv.General_Treasurer = c_General_Treasurer.usep_ID
-                            GROUP BY tv.General_Treasurer
-                            
-                            UNION ALL
-                            
-                            SELECT CONCAT(c_General_Auditor.FName, ' ', c_General_Auditor.LName) AS Pname, 'General Auditor' AS position, COUNT(tv.General_Auditor) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_General_Auditor ON tv.General_Auditor = c_General_Auditor.usep_ID
-                            GROUP BY tv.General_Auditor
-                            
-                            UNION ALL
-                            
-                            SELECT CONCAT(c_Public_Information_Officer.FName, ' ', c_Public_Information_Officer.LName) AS Pname, 'Public Information Officer' AS position, COUNT(tv.Public_Information_Officer) AS votes 
-                            FROM tsc_votes tv
-                            INNER JOIN candidates c_Public_Information_Officer ON tv.Public_Information_Officer = c_Public_Information_Officer.usep_ID
-                            GROUP BY tv.Public_Information_Officer
-                            
-                        ) AS subquery
-                        ORDER BY 
-                            CASE 
-                                WHEN subquery.position = 'President' THEN 1 
-                                WHEN subquery.position = 'Vice President Internal Affairs' THEN 2 
-                                WHEN subquery.position = 'Vice President External Affairs' THEN 3 
-                                WHEN subquery.position = 'General Secretary' THEN 4 
-                                WHEN subquery.position = 'General Treasurer' THEN 5 
-                                WHEN subquery.position = 'General Auditor' THEN 6 
-                                WHEN subquery.position = 'Public Information Officer' THEN 7 
-                                ELSE 8 
-                            END,
-                            subquery.votes DESC, 
-                            subquery.Pname ASC";
+                        $council_id = 8; // Example council_id, set dynamically based on your context
+                        $sqlPositions = "
+                            SELECT p.position_name, p.position_slot, p.council_name 
+                            FROM positions p 
+                            WHERE p.council_id = $council_id";
+                        $resultPositions = $conn->query($sqlPositions);
+
+                        $positions = [];
+                        $council_name = ''; // Initialize council_name variable
+                        while ($row = $resultPositions->fetch_assoc()) {
+                            $positions[] = $row;
+                            $council_name = $row['council_name']; // Get council_name from the result
+                        }
+
+                        $council_name_lower = strtolower($council_name);
+                        $votes_table = $council_name_lower . '_votes';
+
+                        $subqueries = [];
+                        $orderCases = [];
+                        $counter = 1;
+
+                        foreach ($positions as $position) {
+                            $position_name = $position['position_name'];
+                            $position_slot = $position['position_slot'];
+                            $formattedPosition = str_replace(' ', '_', $position_name);
+
+                            if ($position_slot > 1) {
+                                for ($i = 1; $i <= $position_slot; $i++) {
+                                    $column = $council_name . '_' . $formattedPosition . $i;
+                                    $subqueries[] = "
+                                        SELECT CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
+                                        FROM $votes_table tv
+                                        INNER JOIN candidates c ON tv.$column = c.usep_ID
+                                        GROUP BY tv.$column";
+                                }
+                            } else {
+                                $column = $council_name . '_' . $formattedPosition;
+                                $subqueries[] = "
+                                    SELECT CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
+                                    FROM $votes_table tv
+                                    INNER JOIN candidates c ON tv.$column = c.usep_ID
+                                    GROUP BY tv.$column";
+                            }
+
+                            $orderCases[] = "WHEN subquery.position = '$position_name' THEN $counter";
+                            $counter++;
+                        }
+
+                        $sql = "SELECT subquery.Pname, subquery.position, SUM(subquery.votes) AS votes 
+                            FROM (" . implode(" UNION ALL ", $subqueries) . ") AS subquery
+                            GROUP BY subquery.Pname, subquery.position
+                            ORDER BY 
+                                CASE 
+                                    " . implode(" ", $orderCases) . " 
+                                    ELSE $counter 
+                                END,
+                                votes DESC, 
+                                Pname ASC";
 
                         $result = $conn->query($sql);
 
                         $allData = [];
                         if ($result->num_rows > 0) {
-                            // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 $allData[] = $row;
                         ?>
                                 <tr>
-                                    <td class='tdfirst'><?php echo $row["Pname"] ?></td>
-                                    <td><?php echo $row["position"] ?></td>
-                                    <td class='tdlast'><?php echo $row["votes"] ?></td>
+                                    <td class='tdfirst'><?php echo htmlspecialchars($row["Pname"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["position"]); ?></td>
+                                    <td class='tdlast'><?php echo htmlspecialchars($row["votes"]); ?></td>
                                 </tr>
                         <?php
                             }
                         }
+
+                        $conn->close();
                         ?>
+
                     </table>
                 </div>
                 <div class="navTable">
