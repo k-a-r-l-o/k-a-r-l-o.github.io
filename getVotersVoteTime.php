@@ -10,7 +10,7 @@ $interval = $unit === 'hour' ? '1 HOUR' : '1 DAY';
 
 $sql = "SELECT DATE_FORMAT(DATE_ADD(VotedDT, INTERVAL 1 $unit), '$dateFormat') as date, COUNT(*) as count 
         FROM voters 
-        WHERE VotedDT IS NOT NULL 
+        WHERE voted = 'Voted' 
         GROUP BY DATE_FORMAT(DATE_ADD(VotedDT, INTERVAL 1 $unit), '$dateFormat')
         ORDER BY VotedDT";
 $result = $conn->query($sql);
