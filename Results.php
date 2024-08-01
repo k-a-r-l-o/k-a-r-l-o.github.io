@@ -515,7 +515,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
         table {
             width: 100%;
-            min-width: 600px;
+            min-width: 1000px;
             height: auto;
             border-spacing: 0 7px;
         }
@@ -545,7 +545,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
         td {
             background-color: rgba(150, 191, 245, 0.25);
-            height: 63px;
+            height: 160px;
             text-align: center;
             align-items: center;
         }
@@ -597,6 +597,11 @@ $firstLetterLastName = substr($LName, 0, 1);
 
         .trheadergap {
             height: 8px;
+        }
+
+        .candPic {
+            height: 150px;
+            border-radius: 5px;
         }
 
         select {
@@ -972,7 +977,9 @@ $firstLetterLastName = substr($LName, 0, 1);
                 <div class="tablecontainer">
                     <table id="Results">
                         <tr class='trheader'>
-                            <th class='thfirst'>NAME</th>
+                            <th class='thfirst'>USeP ID</th>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
                             <th>POSITION</th>
                             <th class='thlast'>NO. OF VOTES</th>
                         </tr>
@@ -1007,7 +1014,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                                 for ($i = 1; $i <= $position_slot; $i++) {
                                     $column = $council_name . '_' . $formattedPosition . $i;
                                     $subqueries[] = "
-                                        SELECT CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
+                                        SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
                                         FROM $votes_table tv
                                         INNER JOIN candidates c ON tv.$column = c.usep_ID
                                         GROUP BY tv.$column";
@@ -1015,7 +1022,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             } else {
                                 $column = $council_name . '_' . $formattedPosition;
                                 $subqueries[] = "
-                                    SELECT CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
+                                    SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
                                     FROM $votes_table tv
                                     INNER JOIN candidates c ON tv.$column = c.usep_ID
                                     GROUP BY tv.$column";
@@ -1025,7 +1032,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             $counter++;
                         }
 
-                        $sql = "SELECT subquery.Pname, subquery.position, SUM(subquery.votes) AS votes 
+                        $sql = "SELECT subquery.UID, subquery.pic, subquery.Pname, subquery.position, SUM(subquery.votes) AS votes 
                             FROM (" . implode(" UNION ALL ", $subqueries) . ") AS subquery
                             GROUP BY subquery.Pname, subquery.position
                             ORDER BY 
@@ -1044,7 +1051,9 @@ $firstLetterLastName = substr($LName, 0, 1);
                                 $allData[] = $row;
                         ?>
                                 <tr>
-                                    <td class='tdfirst'><?php echo htmlspecialchars($row["Pname"]); ?></td>
+                                    <td class='tdfirst'><?php echo htmlspecialchars($row["UID"]); ?></td>
+                                    <td><img class="candPic" src="<?php echo htmlspecialchars($row["pic"] ? $row["pic"] : 'uploads/default.png'); ?>" alt="Candidate Pic"></td>
+                                    <td><?php echo htmlspecialchars($row["Pname"]); ?></td>
                                     <td><?php echo htmlspecialchars($row["position"]); ?></td>
                                     <td class='tdlast'><?php echo htmlspecialchars($row["votes"]); ?></td>
                                 </tr>
@@ -1275,15 +1284,32 @@ $firstLetterLastName = substr($LName, 0, 1);
         });
 
         function exportAllDataToExcel() {
-            var tableHTML = '<table><thead><tr><th>NAME</th><th>POSITION</th><th>NO. OF VOTES</th></tr></thead><tbody>';
+            var tableHTML = `
+        <table style="border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 8px;">USeP ID</th>
+                    <th style="border: 1px solid black; padding: 8px;">NAME</th>
+                    <th style="border: 1px solid black; padding: 8px;">POSITION</th>
+                    <th style="border: 1px solid black; padding: 8px;">NO. OF VOTES</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
             allData.forEach(function(row) {
-                tableHTML += '<tr>';
-                tableHTML += '<td>' + row.Pname + '</td>';
-                tableHTML += '<td>' + row.position + '</td>';
-                tableHTML += '<td>' + row.votes + '</td>';
-                tableHTML += '</tr>';
+                tableHTML += `
+            <tr>
+                <td style="border: 1px solid black; padding: 8px; text-align: center;">${row.UID}</td>
+                <td style="border: 1px solid black; padding: 8px; text-align: center;">${row.Pname}</td>
+                <td style="border: 1px solid black; padding: 8px; text-align: center;">${row.position}</td>
+                <td style="border: 1px solid black; padding: 8px; text-align: center;">${row.votes}</td>
+            </tr>
+        `;
             });
-            tableHTML += '</tbody></table>';
+            tableHTML += `
+            </tbody>
+        </table>
+    `;
 
             var downloadLink;
             var dataType = 'application/vnd.ms-excel';
@@ -1293,7 +1319,8 @@ $firstLetterLastName = substr($LName, 0, 1);
             var date = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1).toString().padStart(2, '0') + "-" + currentDate.getDate().toString().padStart(2, '0');
             var time = currentDate.getHours().toString().padStart(2, '0') + "-" + currentDate.getMinutes().toString().padStart(2, '0') + "-" + currentDate.getSeconds().toString().padStart(2, '0');
 
-            var filenameInput = document.getElementById("Council").value;
+            const councilDropdown = document.getElementById('Council');
+            var filenameInput = councilDropdown.options[councilDropdown.selectedIndex].text;
             var filename = filenameInput ? filenameInput + ' results ' + date + ' ' + time + '.xls' : 'tableData ' + date + ' ' + time + '.xls';
 
             downloadLink = document.createElement("a");
@@ -1306,7 +1333,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                 navigator.msSaveOrOpenBlob(blob, filename);
                 document.getElementById("exportpop").style.display = "flex";
             } else {
-                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
                 downloadLink.download = filename;
                 downloadLink.click();
                 document.getElementById("exportpop").style.display = "flex";
