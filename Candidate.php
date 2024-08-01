@@ -889,6 +889,8 @@ $firstLetterLastName = substr($LName, 0, 1);
         }
     </style>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         var headerHeight;
 
@@ -1211,8 +1213,9 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                 // Handle file upload
                 $target = "uploads/";
-                // Construct the file name based on the user's first name, last name, and USeP ID
-                $fileName =  $input_usep_ID . "-" .  $fname . $lname . ".jpeg";
+                $clean_fname = str_replace(' ', '_', $fname);
+                $clean_lname = str_replace(' ', '_', $lname);
+                $fileName = $clean_usep_ID . "-" . $clean_fname . "_" . $clean_lname . ".jpeg";
                 $targetFile = $target . $fileName;
                 $upload_Done = 1;
                 $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -1222,71 +1225,103 @@ $firstLetterLastName = substr($LName, 0, 1);
                 if ($check !== false) {
                     $upload_Done = 1;
                 } else {
-                    echo "<script>alert('File is not an image.');</script>";
+                    echo "<script>Swal.fire('Error', 'File is not an image.', 'error');</script>";
                     $upload_Done = 0;
                 }
 
                 // Check if file already exists
                 if (file_exists($targetFile)) {
-                    echo "<script>alert('Sorry, file already exists.');</script>";
+                    echo "<script>Swal.fire('Error', 'Sorry, file already exists.', 'error');</script>";
                     $upload_Done = 0;
                 }
 
                 // Check file size
                 if ($_FILES["prof"]["size"] > 2000000) {
-                    echo "<script>alert('Sorry, your file is too large.');</script>";
+                    echo "<script>Swal.fire('Error', 'Sorry, your file is too large.', 'error');</script>";
                     $upload_Done = 0;
                 }
 
                 // Allow certain file formats
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-                    echo "<script>alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');</script>";
+                if ($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif") {
+                    echo "<script>Swal.fire('Error', 'Sorry, only JPG, JPEG, PNG & GIF files are allowed.', 'error');</script>";
                     $upload_Done = 0;
                 }
 
                 // Check if $upload_Done is set to 0 by an error
                 if ($upload_Done == 0) {
-                    echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                    echo "<script>Swal.fire('Error', 'Sorry, your file was not uploaded.', 'error');</script>";
                 } else {
-                    // Move uploaded file to target directory
-                    if (move_uploaded_file($_FILES["prof"]["tmp_name"], $targetFile)) {
-                        // Insert data into Candidates table including the uploaded photo path
-                        $sqlCandidateInsert = "INSERT INTO candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, prty_ID ) 
-                    VALUES ('$usepID', '$targetFile', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$council', '$position', '$partylist')";
+                    // Resize and crop the image to 1x1 aspect ratio and 1080x1080 pixels if necessary
+                    $sourceImage = $_FILES["prof"]["tmp_name"];
+                    list($width, $height) = getimagesize($sourceImage);
 
-                        if ($conn->query($sqlCandidateInsert) === TRUE) {
-                            // Log the login activity
-                            $usepID = $_SESSION["usep_ID"];
-                            $logAction = 'Added Candidate';
-                            date_default_timezone_set('Asia/Manila');
-                            $date = date("Y-m-d");
-                            $time = date("H:i:s");
-                            $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
-                            $stmt = $conn->prepare($sqlInsertLog);
-                            if ($stmt) {
-                                $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
-                                $stmt->execute();
-                                $stmt->close();
-                            } else {
-                                echo "Error preparing statement: " . $conn->error;
-                                exit();
-                            }
-                            echo "<script>alert('New record created successfully');</script>";
-                            echo "<script>window.location.href = 'Candidate.php';</script>";
+                    // If the image is not already 1080x1080, resize and crop it
+                    if ($width != 1080 || $height != 1080) {
+                        $newSize = min($width, $height); // The size of the smallest side
+                        $srcX = ($width - $newSize) / 2;
+                        $srcY = ($height - $newSize) / 2;
+
+                        $image_p = imagecreatetruecolor(1080, 1080);
+                        $image = null;
+
+                        switch ($imageFileType) {
+                            case 'jpg':
+                            case 'jpeg':
+                                $image = imagecreatefromjpeg($sourceImage);
+                                break;
+                            case 'png':
+                                $image = imagecreatefrompng($sourceImage);
+                                break;
+                            case 'gif':
+                                $image = imagecreatefromgif($sourceImage);
+                                break;
+                        }
+
+                        if ($image) {
+                            imagecopyresampled($image_p, $image, 0, 0, $srcX, $srcY, 1080, 1080, $newSize, $newSize);
+                            imagejpeg($image_p, $targetFile, 100); // Save the cropped and resized image as JPEG
                         } else {
-                            echo "<script>alert('Error: " . $sqlCandidateInsert . "<br>" . $conn->error . "');</script>";
+                            echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
                         }
                     } else {
-                        echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+                        // If the image is already 1080x1080, move it directly to the target directory
+                        if (!move_uploaded_file($_FILES["prof"]["tmp_name"], $targetFile)) {
+                            echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                        }
+                    }
+
+                    // Insert data into Candidates table including the uploaded photo path
+                    $sqlCandidateInsert = "INSERT INTO candidates (usep_ID, candPic, LName, FName, gender, yearLvl, program, council, position, prty_ID ) 
+                    VALUES ('$usepID', '$targetFile', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$council', '$position', '$partylist')";
+
+                    if ($conn->query($sqlCandidateInsert) === TRUE) {
+                        // Log the login activity
+                        $usepID = $_SESSION["usep_ID"];
+                        $logAction = 'Added Candidate';
+                        date_default_timezone_set('Asia/Manila');
+                        $date = date("Y-m-d");
+                        $time = date("H:i:s");
+                        $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
+                        $stmt = $conn->prepare($sqlInsertLog);
+                        if ($stmt) {
+                            $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
+                            $stmt->execute();
+                            $stmt->close();
+                        } else {
+                            echo "Error preparing statement: " . $conn->error;
+                            exit();
+                        }
+                        echo "<script>Swal.fire('Success', 'New record created successfully.', 'success').then(() => { window.location.href = 'Candidate.php'; });</script>";
+                    } else {
+                        echo "<script>Swal.fire('Error', 'Error: " . $sqlCandidateInsert . "<br>" . $conn->error . "', 'error');</script>";
                     }
                 }
             } else {
-                echo "<script>alert('Please select a profile photo to upload.');</script>";
+                echo "<script>Swal.fire('Error', 'Please select a profile photo to upload.', 'error');</script>";
             }
         }
     }
     ?>
-
 
     <div class="popup" id="viewpop">
         <div class="head">
@@ -1473,12 +1508,10 @@ $firstLetterLastName = substr($LName, 0, 1);
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['edit'])) {
-
-
             // Get the user input
             $input_usep_ID = $_POST["usepID3"];
-            // Remove any dashes from the input
             $clean_usep_ID = str_replace('-', '', $input_usep_ID);
+
             // Retrieve data from form
             $usepID = $clean_usep_ID;
             $lname = $_POST['Lname3'];
@@ -1495,41 +1528,6 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             // Check if a new file has been uploaded
             if (isset($_FILES['prof3']) && $_FILES['prof3']['error'] == 0) {
-                // Handle file upload
-                $target = "uploads/";
-                // Construct the file name based on the user's first name, last name, and USeP ID
-                $fileName =  $input_usep_ID . "-" .  $fname . $lname . ".jpeg";
-                $targetFile = $target . $fileName;
-                $upload_Done = 1;
-                $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-
-                // Check if image file is an actual image
-                $check = getimagesize($_FILES["prof3"]["tmp_name"]);
-                if ($check !== false) {
-                    $upload_Done = 1;
-                } else {
-                    echo "<script>alert('File is not an image.');</script>";
-                    $upload_Done = 0;
-                }
-
-                // Check if file already exists
-                if (file_exists($targetFile)) {
-                    echo "<script>alert('Sorry, file already exists.');</script>";
-                    $upload_Done = 0;
-                }
-
-                // Check file size
-                if ($_FILES["prof3"]["size"] > 2000000) {
-                    echo "<script>alert('Sorry, your file is too large.');</script>";
-                    $upload_Done = 0;
-                }
-
-                // Allow certain file formats
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-                    echo "<script>alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');</script>";
-                    $upload_Done = 0;
-                }
-
                 // Retrieve the photo file path from the database
                 $sqlGetPhoto = "SELECT candPic FROM candidates WHERE usep_ID = '$usepID'";
                 $result = $conn->query($sqlGetPhoto);
@@ -1538,31 +1536,110 @@ $firstLetterLastName = substr($LName, 0, 1);
                     $row = $result->fetch_assoc();
                     $photoPath = $row['candPic'];
 
-                    // Delete the photo file from the server
+                    // Delete the existing photo file from the server, if it exists
                     if (file_exists($photoPath)) {
-                        unlink($photoPath);
+                        if (!unlink($photoPath)) {
+                            echo "<script>Swal.fire('Error', 'Error deleting existing photo.', 'error');</script>";
+                        }
                     }
                 }
 
-                // Check if $upload_Done is set to 0 by an error
-                if ($upload_Done == 0) {
-                    echo "<script>alert('Sorry, your file was not uploaded.');</script>";
-                } else {
-                    // Move uploaded file to target directory
-                    if (move_uploaded_file($_FILES["prof3"]["tmp_name"], $targetFile)) {
-                        $updatePhoto = true;
+                // Handle file upload
+                $target = "uploads/";
+                $clean_fname = str_replace(' ', '_', $fname);
+                $clean_lname = str_replace(' ', '_', $lname);
+                $fileName = $clean_usep_ID . "-" . $clean_fname . "_" . $clean_lname . ".jpeg";
+                $targetFile = $target . $fileName;
+                $uploadDone = 1;
+                $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+                // Check if the file is an actual image
+                $check = getimagesize($_FILES["prof3"]["tmp_name"]);
+                if ($check === false) {
+                    echo "<script>Swal.fire('Error', 'File is not an image.', 'error');</script>";
+                    $uploadDone = 0;
+                }
+
+                // Check if the file already exists
+                if (file_exists($targetFile)) {
+                    echo "<script>Swal.fire('Error', 'Sorry, file already exists.', 'error');</script>";
+                    $uploadDone = 0;
+                }
+
+                // Check file size
+                if ($_FILES["prof3"]["size"] > 2000000) {
+                    echo "<script>Swal.fire('Error', 'Sorry, your file is too large.', 'error');</script>";
+                    $uploadDone = 0;
+                }
+
+                // Allow only certain file formats
+                if ($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif") {
+                    echo "<script>Swal.fire('Error', 'Sorry, only JPG, JPEG, PNG & GIF files are allowed.', 'error');</script>";
+                    $uploadDone = 0;
+                }
+
+                // Check if everything is okay for upload
+                if ($uploadDone == 1) {
+                    // Resize and crop the image to 1080x1080 if necessary
+                    $sourceImage = $_FILES["prof3"]["tmp_name"];
+                    list($width, $height) = getimagesize($sourceImage);
+
+                    if ($width != 1080 || $height != 1080) {
+                        $newWidth = 1080;
+                        $newHeight = 1080;
+
+                        // Calculate cropping coordinates and size
+                        if ($width > $height) {
+                            $cropSize = $height;
+                            $srcX = ($width - $cropSize) / 2;
+                            $srcY = 0;
+                        } else {
+                            $cropSize = $width;
+                            $srcX = 0;
+                            $srcY = ($height - $cropSize) / 2;
+                        }
+
+                        $image_p = imagecreatetruecolor($newWidth, $newHeight);
+                        $image = null;
+
+                        switch ($imageFileType) {
+                            case 'jpg':
+                            case 'jpeg':
+                                $image = imagecreatefromjpeg($sourceImage);
+                                break;
+                            case 'png':
+                                $image = imagecreatefrompng($sourceImage);
+                                break;
+                            case 'gif':
+                                $image = imagecreatefromgif($sourceImage);
+                                break;
+                        }
+
+                        if ($image) {
+                            imagecopyresampled($image_p, $image, 0, 0, $srcX, $srcY, $newWidth, $newHeight, $cropSize, $cropSize);
+                            imagejpeg($image_p, $targetFile, 100); // Save the cropped and resized image as JPEG
+
+                            $updatePhoto = true;
+                        } else {
+                            echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                        }
                     } else {
-                        echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+                        // If the image is already 1080x1080, move it directly to the target directory
+                        if (move_uploaded_file($_FILES["prof3"]["tmp_name"], $targetFile)) {
+                            $updatePhoto = true;
+                        } else {
+                            echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                        }
                     }
                 }
             }
 
             // Update data in Candidates table
             if ($updatePhoto) {
-                // Update with new photo and usep_ID
-                $sqlCandidateUpdate = "UPDATE candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID  = '$partylist' WHERE usep_ID = '$usepID'";
+                // Update with new photo
+                $sqlCandidateUpdate = "UPDATE candidates SET candPic = '$targetFile', usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID = '$partylist' WHERE usep_ID = '$usepID'";
             } else {
-                // Update without changing photo and include usep_ID
+                // Update without changing photo
                 $sqlCandidateUpdate = "UPDATE candidates SET usep_ID = '$usepID', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$program', council = '$council', position = '$position', prty_ID = '$partylist' WHERE usep_ID = '$usepID'";
             }
 
@@ -1583,17 +1660,13 @@ $firstLetterLastName = substr($LName, 0, 1);
                     echo "Error preparing statement: " . $conn->error;
                     exit();
                 }
-                echo "<script>alert('Record updated successfully');</script>";
-                echo "<script>window.location.href = 'Candidate.php';</script>";
+                echo "<script>Swal.fire('Success', 'Record updated successfully.', 'success').then(() => { window.location.href = 'Candidate.php'; });</script>";
             } else {
-                echo "<script>alert('Error: " . $sqlCandidateUpdate . "<br>" . $conn->error . "');</script>";
+                echo "<script>Swal.fire('Error', 'Error: " . $sqlCandidateUpdate . "<br>" . $conn->error . "', 'error');</script>";
             }
         }
     }
     ?>
-
-
-
 
 
 
@@ -1661,13 +1734,12 @@ $firstLetterLastName = substr($LName, 0, 1);
                         echo "Error preparing statement: " . $conn->error;
                         exit();
                     }
-                    echo "<script>alert('Record deleted successfully');</script>";
-                    echo "<script>window.location.href = 'Candidate.php';</script>";
+                    echo "<script>Swal.fire('Success', 'Record deleted successfully.', 'success').then(() => { window.location.href = 'Candidate.php'; });</script>";
                 } else {
-                    echo "<script>alert('Error deleting record: " . $conn->error . "');</script>";
+                    echo "<script>Swal.fire('Error', 'Error deleting record: " . $conn->error . "', 'error');</script>";
                 }
             } else {
-                echo "<script>alert('Record not found');</script>";
+                echo "<script>Swal.fire('Error', 'Record not found.', 'error');</script>";
             }
         }
     }
@@ -1778,11 +1850,10 @@ $firstLetterLastName = substr($LName, 0, 1);
         }
 
 
-        /*view pop up*/
-        function viewpop(usepID) {
+        async function viewpop(usepID) {
             // AJAX request to PHP script to retrieve voter data based on usepID
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = async function() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
                         try {
@@ -1791,7 +1862,16 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                             var formattedUsepID = formatUsepID(rowData.usep_ID);
 
-                            document.getElementById("preview2").src = rowData.candPic || 'DefaultProfile.png';
+                            const imageSrc = rowData.candPic || 'default.png';
+                            try {
+                                const image = await loadImage(imageSrc);
+                                const croppedImageSrc = cropToSquare(image);
+                                document.getElementById("preview2").src = croppedImageSrc;
+                                document.getElementById("preview2").style.display = 'block';
+                            } catch (error) {
+                                console.error('Error loading image:', error);
+                            }
+
                             document.getElementById("usepID2").value = formattedUsepID;
                             document.getElementById("fullName2").value = rowData.FName + " " + rowData.LName;
                             document.getElementById("gender2").value = rowData.gender;
@@ -1844,12 +1924,11 @@ $firstLetterLastName = substr($LName, 0, 1);
             document.getElementById("viewpop").style.display = "none";
         });
 
-        /*edit pop up*/
-        function editpop(usepID, council) {
+        async function editpop(usepID, council) {
             // AJAX request to PHP script to retrieve voter data based on usepID
             getpos(council);
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = async function() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
                         try {
@@ -1858,8 +1937,16 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                             var formattedUsepID = formatUsepID(rowData.usep_ID);
 
-                            document.getElementById("preview3").src = rowData.candPic || 'DefaultProfile.png';
-                            document.getElementById("preview3").style.display = 'block';
+                            const imageSrc = rowData.candPic || 'default.png';
+                            try {
+                                const image = await loadImage(imageSrc);
+                                const croppedImageSrc = cropToSquare(image);
+                                document.getElementById("preview3").src = croppedImageSrc;
+                                document.getElementById("preview3").style.display = 'block';
+                            } catch (error) {
+                                console.error('Error loading image:', error);
+                            }
+
                             document.getElementById("usepID3").value = formattedUsepID;
                             document.getElementById("Fname3").value = rowData.FName;
                             document.getElementById("Lname3").value = rowData.LName;
@@ -1869,7 +1956,6 @@ $firstLetterLastName = substr($LName, 0, 1);
                             document.getElementById("Council3").value = rowData.council;
                             document.getElementById("position3").value = rowData.position;
                             document.getElementById("partyList3").value = rowData.prty_ID;
-
 
                             // Show the popup
                             var popup = document.getElementById("editpop");
@@ -1884,7 +1970,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             };
             xhttp.open("GET", "get_cand_data.php?usepID=" + usepID, true);
             xhttp.send();
-        };
+        }
 
         document.querySelector("#editpop .cancel-button").addEventListener("click", function() {
             document.getElementById("editpop").style.display = "none";
@@ -1923,22 +2009,55 @@ $firstLetterLastName = substr($LName, 0, 1);
             document.getElementById("deletepop").style.display = "none";
         });
 
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
+
+        function cropToSquare(image) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const size = Math.min(image.width, image.height);
+            const xOffset = (image.width - size) / 2;
+            const yOffset = (image.height - size) / 2;
+
+            canvas.width = size;
+            canvas.height = size;
+
+            ctx.drawImage(image, xOffset, yOffset, size, size, 0, 0, size, size);
+
+            return canvas.toDataURL();
+        }
+
         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function() {
-                var output = document.getElementById('preview');
-                output.src = reader.result;
-                output.style.display = 'block';
+                var img = new Image();
+                img.onload = function() {
+                    var output = document.getElementById('preview');
+                    output.src = cropToSquare(img);
+                    output.style.display = 'block';
+                }
+                img.src = reader.result;
             }
             reader.readAsDataURL(event.target.files[0]);
         }
-        // edit preview
+
         function preview3Image(event) {
             var reader = new FileReader();
             reader.onload = function() {
-                var output = document.getElementById('preview3');
-                output.src = reader.result;
-                output.style.display = 'block';
+                var img = new Image();
+                img.onload = function() {
+                    var output = document.getElementById('preview3');
+                    output.src = cropToSquare(img);
+                    output.style.display = 'block';
+                }
+                img.src = reader.result;
             }
             reader.readAsDataURL(event.target.files[0]);
         }
