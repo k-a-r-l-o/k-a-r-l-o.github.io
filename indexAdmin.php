@@ -18,77 +18,6 @@ if (isset($_SESSION['username']) && isset($_SESSION['usertype']) && isset($_SESS
     // If session variables are not set, redirect to the login page
     header("Location: Dashboard.php");
 }
-
-// If form is submitted
-if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user"])) {
-    $input_username = $_POST["username"];
-    $input_password = $_POST["password"];
-    $input_usertype = $_POST["user"];
-
-    // Prepare SQL statement to retrieve user from database
-    $sql = "SELECT * FROM users WHERE username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $input_username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        // User exists, fetch details
-        $row = $result->fetch_assoc();
-        if (password_verify($input_password, $row["userpass"]) && $input_usertype === $row["usertype"]) {
-            // Password is correct and usertype matches, set session variables
-            $_SESSION["username"] = $input_username;
-            $_SESSION["usertype"] = $input_usertype;
-            $_SESSION["usep_ID"] = $row["usep_ID"];
-
-            // Update user status to 'Active' and set logged_out to 0 using a prepared statement
-            $sqlUserEdit = "UPDATE users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
-            $stmtUpdate = $conn->prepare($sqlUserEdit);
-            if ($stmtUpdate) {
-                $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
-                $stmtUpdate->execute();
-                $stmtUpdate->close();
-            } else {
-                echo "Error preparing statement: " . $conn->error;
-                exit();
-            }
-
-            // Log the login activity
-            $usepID = $_SESSION["usep_ID"];
-            $logAction = 'Logged in';
-            date_default_timezone_set('Asia/Manila');
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sqlInsertLog);
-            if ($stmt) {
-                $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
-                $stmt->execute();
-                $stmt->close();
-            } else {
-                echo "Error preparing statement: " . $conn->error;
-                exit();
-            }
-
-            // Redirect to the dashboard
-            header("Location: Dashboard.php");
-            exit();
-        } else {
-            // Password or usertype is incorrect
-            echo "<script>alert('Invalid credentials. Please try again.');</script>";
-            echo "<script>window.location.href = 'indexAdmin.php';</script>";
-            exit(); // Stop further execution
-        }
-    } else {
-        // User does not exist
-        echo "<script>alert('User not found. Please try again.');</script>";
-        echo "<script>window.location.href = 'indexAdmin.php';</script>";
-        exit(); // Stop further execution
-    }
-}
-
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -102,6 +31,12 @@ $conn->close();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -520,3 +455,92 @@ $conn->close();
 </body>
 
 </html>
+<?php
+// If form is submitted
+if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["user"])) {
+    $input_username = $_POST["username"];
+    $input_password = $_POST["password"];
+    $input_usertype = $_POST["user"];
+
+    // Prepare SQL statement to retrieve user from database
+    $sql = "SELECT * FROM users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $input_username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // User exists, fetch details
+        $row = $result->fetch_assoc();
+        if (password_verify($input_password, $row["userpass"]) && $input_usertype === $row["usertype"]) {
+            // Password is correct and usertype matches, set session variables
+            $_SESSION["username"] = $input_username;
+            $_SESSION["usertype"] = $input_usertype;
+            $_SESSION["usep_ID"] = $row["usep_ID"];
+
+            // Update user status to 'Active' and set logged_out to 0 using a prepared statement
+            $sqlUserEdit = "UPDATE users SET User_status = 'Active', logged_out = 0 WHERE usep_ID = ?";
+            $stmtUpdate = $conn->prepare($sqlUserEdit);
+            if ($stmtUpdate) {
+                $stmtUpdate->bind_param("i", $_SESSION["usep_ID"]);
+                $stmtUpdate->execute();
+                $stmtUpdate->close();
+            } else {
+                echo "<script>Swal.fire('Error', 'Error preparing statement: " . $conn->error . "', 'error');</script>";
+                exit();
+            }
+
+            // Log the login activity
+            $usepID = $_SESSION["usep_ID"];
+            $logAction = 'Logged in';
+            date_default_timezone_set('Asia/Manila');
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sqlInsertLog);
+            if ($stmt) {
+                $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                echo "<script>Swal.fire('Error', 'Error preparing statement: " . $conn->error . "', 'error');</script>";
+                exit();
+            }
+
+            // Display loading SweetAlert and redirect to the dashboard
+            echo "<script>
+                Swal.fire({
+                    title: 'Loading',
+                    text: 'Please wait.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                setTimeout(() => {
+                    window.location.href = 'Dashboard.php';
+                }, 1500); // Adjust time as needed
+            </script>";
+            exit();
+        } else {
+            // Password or usertype is incorrect
+            echo "<script>
+                Swal.fire('Invalid credentials', 'Invalid credentials. Please try again.', 'error').then(function() {
+                    window.location.href = 'indexAdmin.php';
+                });
+            </script>";
+            exit(); // Stop further execution
+        }
+    } else {
+        // User does not exist
+        echo "<script>
+            Swal.fire('User not found', 'User not found. Please try again.', 'error').then(function() {
+                window.location.href = 'indexAdmin.php';
+            });
+        </script>";
+        exit(); // Stop further execution
+    }
+}
+
+$conn->close();
+?>
