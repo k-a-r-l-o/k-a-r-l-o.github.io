@@ -750,10 +750,21 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                             $stmtUpdate->bind_param("si", $datetime, $_SESSION["usep_ID"]);
                             $stmtUpdate->execute();
                             $stmtUpdate->close();
-                            echo '<script>';
-                            echo 'console.log("Redirecting to Voting1.php...");';
-                            echo 'window.location.href = "Voting1.php";'; // Redirect to the voting page
-                            echo '</script>';
+                            // Display loading SweetAlert and redirect to the dashboard
+                            echo "<script>
+                                Swal.fire({
+                                    title: 'Loading',
+                                    text: 'Please wait.',
+                                    allowOutsideClick: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+                                setTimeout(() => {
+                                    window.location.href = 'Voting1.php';
+                                }, 1500); // Adjust time as needed
+                            </script>";
+                            exit();
                         } else {
                             echo "Error preparing statement: " . $conn->error;
                             exit();
