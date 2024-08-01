@@ -48,7 +48,7 @@ foreach ($positions as $position) {
         for ($i = 1; $i <= $position_slot; $i++) {
             $column = $council_name_lower . '_' . $formattedPosition . $i;
             $subqueries[] = "
-                SELECT CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
+                SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
                 FROM $votes_table tv
                 INNER JOIN candidates c ON tv.$column = c.usep_ID
                 GROUP BY tv.$column";
@@ -56,7 +56,7 @@ foreach ($positions as $position) {
     } else {
         $column = $council_name_lower . '_' . $formattedPosition;
         $subqueries[] = "
-            SELECT CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
+            SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
             FROM $votes_table tv
             INNER JOIN candidates c ON tv.$column = c.usep_ID
             GROUP BY tv.$column";
@@ -66,7 +66,7 @@ foreach ($positions as $position) {
     $counter++;
 }
 
-$sql = "SELECT subquery.Pname, subquery.position, SUM(subquery.votes) AS votes 
+$sql = "SELECT subquery.UID, subquery.pic, subquery.Pname, subquery.position, SUM(subquery.votes) AS votes 
     FROM (" . implode(" UNION ALL ", $subqueries) . ") AS subquery
     GROUP BY subquery.Pname, subquery.position
     ORDER BY 
@@ -83,7 +83,9 @@ $result = $conn->query($sql);
 $output = "
 <div class='tablecontainer'>
     <tr class='trheader'>
-        <th class='thfirst'>NAME</th>
+        <th class='thfirst'>USeP ID</th>
+        <th>IMAGE</th>
+        <th>NAME</th>
         <th>POSITION</th>
         <th class='thlast'>NO. OF VOTES</th>
     </tr>
@@ -95,7 +97,9 @@ while ($row = $result->fetch_assoc()) {
     $allData[] = $row;
     $output .= "
     <tr>
-        <td class='tdfirst'>" . htmlspecialchars($row['Pname']) . "</td>
+        <td class='tdfirst'>" . htmlspecialchars($row['UID']) . "</td>
+        <td><img class='candPic' src=" . htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png') . " alt='Candidate Pic'></td>
+        <td>" . htmlspecialchars($row['Pname']) . "</td>
         <td>" . htmlspecialchars($row['position']) . "</td>
         <td class='tdlast'>" . htmlspecialchars($row['votes']) . "</td>
     </tr>";
