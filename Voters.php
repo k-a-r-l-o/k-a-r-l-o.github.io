@@ -1356,7 +1356,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <label for="usepID2">USeP ID:</label>
                         <input type="text" id="usepID2" class="input-form" readonly>
                     </div>
-                    <div class="form-group2">
+                    <div class="form-group">
                         <label for="Email">Email:</label>
                         <input type="email" id="Email2" name="Email2" class="input-form" readonly>
                     </div>
@@ -1368,7 +1368,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <label for="gender2">Gender:</label>
                         <input id="gender2" class="input-form" readonly>
                     </div>
-                    <div class="form-group2">
+                    <div class="form-group">
                         <label for="yearLevel">Year Level:</label>
                         <input id="yearlevel2" class="input-form" readonly>
                     </div>
