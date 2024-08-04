@@ -1052,10 +1052,11 @@ $firstLetterLastName = substr($LName, 0, 1);
                             while ($row = $result->fetch_assoc()) {
                                 $allData[] = $row;
                                 $pic = htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png');
+                                $picPath = file_exists($pic) ? htmlspecialchars($pic) : 'uploads/default.png';
                         ?>
                                 <tr>
                                     <td class='tdfirst'><?php echo htmlspecialchars($row["UID"]); ?></td>
-                                    <td><img class="candPic" src="<?php echo $pic; ?>" alt="Candidate Pic"></td>
+                                    <td><img class="candPic" src="<?php echo $picPath; ?>" alt="Candidate Pic"></td>
                                     <td><?php echo htmlspecialchars($row["Pname"]); ?></td>
                                     <td><?php echo htmlspecialchars($row["position"]); ?></td>
                                     <td class='tdlast'><?php echo htmlspecialchars($row["votes"]); ?></td>
