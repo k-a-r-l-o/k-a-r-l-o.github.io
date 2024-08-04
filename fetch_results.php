@@ -98,10 +98,11 @@ $allData = [];
 while ($row = $result->fetch_assoc()) {
     $allData[] = $row;
     $pic = htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png');
+    $picPath = file_exists($pic) ? htmlspecialchars($pic) : 'uploads/default.png';
     $output .= "
     <tr>
         <td class='tdfirst'>" . htmlspecialchars($row['UID']) . "</td>
-        <td><img class='candPic' src='$pic' alt='Candidate Pic'></td>
+        <td><img class='candPic' src='$picPath' alt='Candidate Pic'></td>
         <td>" . htmlspecialchars($row['Pname']) . "</td>
         <td>" . htmlspecialchars($row['position']) . "</td>
         <td class='tdlast'>" . htmlspecialchars($row['votes']) . "</td>
