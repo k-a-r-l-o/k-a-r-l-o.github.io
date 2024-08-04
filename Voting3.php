@@ -735,7 +735,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </label>
                                     </div>
                                     <div class="candidateimage">
-                                        <img id="<?php echo str_replace(' ', '_', $positionName) . 'CandidateImage' . $i; ?>" src="uploads/Abstain.png" alt="Candidate Pic">
+                                        <img id="<?php echo str_replace(' ', '_', $positionName) . 'CandidateImage' . $i; ?>" src="uploads/100010001-Abstain.png" alt="Candidate Pic">
                                     </div>
                                 <?php endfor; ?>
                             </div>
