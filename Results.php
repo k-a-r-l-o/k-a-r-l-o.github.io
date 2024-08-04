@@ -1012,20 +1012,22 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                             if ($position_slot > 1) {
                                 for ($i = 1; $i <= $position_slot; $i++) {
-                                    $column = $council_name . '_' . $formattedPosition . $i;
+                                    $column = $council_name_lower . '_' . $formattedPosition . $i;
                                     $subqueries[] = "
-                                        SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
-                                        FROM $votes_table tv
-                                        INNER JOIN candidates c ON tv.$column = c.usep_ID
-                                        GROUP BY tv.$column";
+                                        SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COALESCE(COUNT(tv.$column), 0) AS votes 
+                                        FROM candidates c
+                                        LEFT JOIN $votes_table tv ON tv.$column = c.usep_ID
+                                        WHERE c.position = '$position_name' OR c.LName = 'Abstain'
+                                        GROUP BY c.usep_ID, c.candPic, c.FName, c.LName, c.position";
                                 }
                             } else {
-                                $column = $council_name . '_' . $formattedPosition;
+                                $column = $council_name_lower . '_' . $formattedPosition;
                                 $subqueries[] = "
-                                    SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COUNT(tv.$column) AS votes 
-                                    FROM $votes_table tv
-                                    INNER JOIN candidates c ON tv.$column = c.usep_ID
-                                    GROUP BY tv.$column";
+                                    SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COALESCE(COUNT(tv.$column), 0) AS votes 
+                                    FROM candidates c
+                                    LEFT JOIN $votes_table tv ON tv.$column = c.usep_ID
+                                    WHERE c.position = '$position_name' OR c.LName = 'Abstain'
+                                    GROUP BY c.usep_ID, c.candPic, c.FName, c.LName, c.position";
                             }
 
                             $orderCases[] = "WHEN subquery.position = '$position_name' THEN $counter";
@@ -1034,7 +1036,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                         $sql = "SELECT subquery.UID, subquery.pic, subquery.Pname, subquery.position, SUM(subquery.votes) AS votes 
                             FROM (" . implode(" UNION ALL ", $subqueries) . ") AS subquery
-                            GROUP BY subquery.Pname, subquery.position
+                            GROUP BY subquery.UID, subquery.pic, subquery.Pname, subquery.position
                             ORDER BY 
                                 CASE 
                                     " . implode(" ", $orderCases) . " 
