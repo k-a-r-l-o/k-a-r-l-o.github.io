@@ -97,10 +97,11 @@ $allData = [];
 // Fetch the results and build the table rows
 while ($row = $result->fetch_assoc()) {
     $allData[] = $row;
+    $pic = htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png');
     $output .= "
     <tr>
         <td class='tdfirst'>" . htmlspecialchars($row['UID']) . "</td>
-        <td><img class='candPic' src='" . htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png') . "' alt='Candidate Pic'></td>
+        <td><img class='candPic' src='$pic' alt='Candidate Pic'></td>
         <td>" . htmlspecialchars($row['Pname']) . "</td>
         <td>" . htmlspecialchars($row['position']) . "</td>
         <td class='tdlast'>" . htmlspecialchars($row['votes']) . "</td>
