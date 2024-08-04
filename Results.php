@@ -1051,10 +1051,11 @@ $firstLetterLastName = substr($LName, 0, 1);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 $allData[] = $row;
+                                $pic = htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png');
                         ?>
                                 <tr>
                                     <td class='tdfirst'><?php echo htmlspecialchars($row["UID"]); ?></td>
-                                    <td><img class="candPic" src="<?php echo htmlspecialchars($row["pic"] ? $row["pic"] : 'uploads/default.png'); ?>" alt="Candidate Pic"></td>
+                                    <td><img class="candPic" src="<?php echo $pic; ?>" alt="Candidate Pic"></td>
                                     <td><?php echo htmlspecialchars($row["Pname"]); ?></td>
                                     <td><?php echo htmlspecialchars($row["position"]); ?></td>
                                     <td class='tdlast'><?php echo htmlspecialchars($row["votes"]); ?></td>
