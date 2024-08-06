@@ -889,6 +889,47 @@ $firstLetterLastName = substr($LName, 0, 1);
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Retrieve the selected council from sessionStorage
+            const selectedCouncil = sessionStorage.getItem('selectedCouncil');
+            if (selectedCouncil) {
+                document.getElementById('Council').value = selectedCouncil;
+                fetchResults(selectedCouncil);
+            }
+
+            // Save the selected council to sessionStorage when it changes
+            document.getElementById('Council').addEventListener('change', function() {
+                const councilValue = this.value;
+                sessionStorage.setItem('selectedCouncil', councilValue);
+                fetchResults(councilValue);
+            });
+
+            // Function to fetch and update results
+            function fetchResults(council) {
+                $.post('fetch_results.php', {
+                    council: council
+                }, function(response) {
+                    var parsedResponse = JSON.parse(response);
+                    allData = parsedResponse.allData; // Update allData with the new data
+
+                    // Update the #Results element with the HTML table rows
+                    $('#Results').html(parsedResponse.output);
+
+                    currentPage = 0; // Reset to the first page
+                    showPage(currentPage); // Call the pagination function after updating results
+                });
+            }
+
+            // jQuery equivalent to document ready
+            $(document).ready(function() {
+                $('#Council').change(function() {
+                    var selectedCouncil = $(this).val();
+                    fetchResults(selectedCouncil);
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
