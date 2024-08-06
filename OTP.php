@@ -509,8 +509,45 @@ $usep_ID = $_SESSION["usep_ID"];
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        function startCountdown() {
+            const sendOtpButton = document.getElementById('sendOtpButton');
+            let endTime = localStorage.getItem('otpEndTime');
+
+            if (endTime) {
+                endTime = parseInt(endTime, 10);
+                const now = Date.now();
+                const remainingTime = Math.max(0, endTime - now);
+
+                if (remainingTime > 0) {
+                    // Countdown is active
+                    const countdownInterval = setInterval(function() {
+                        const now = Date.now();
+                        const timeLeft = Math.max(0, endTime - now);
+
+                        if (timeLeft > 0) {
+                            sendOtpButton.innerHTML = `${Math.ceil(timeLeft / 1000)} s`;
+                        } else {
+                            clearInterval(countdownInterval);
+                            sendOtpButton.innerHTML = 'Send OTP';
+                            sendOtpButton.disabled = false;
+                            sendOtpButton.classList.remove('disabled-button');
+                            localStorage.removeItem('otpEndTime');
+                        }
+                    }, 1000);
+
+                    sendOtpButton.disabled = true;
+                    sendOtpButton.classList.add('disabled-button');
+                    return;
+                }
+            }
+
+            sendOtpButton.disabled = false;
+            sendOtpButton.innerHTML = 'Send OTP';
+            sendOtpButton.classList.remove('disabled-button');
+        }
+
         document.getElementById('sendOtpButton').addEventListener('click', function() {
-            var sendOtpButton = document.getElementById('sendOtpButton');
+            const sendOtpButton = document.getElementById('sendOtpButton');
 
             // Add loading animation, disable the button, and change color
             sendOtpButton.disabled = true;
@@ -536,19 +573,13 @@ $usep_ID = $_SESSION["usep_ID"];
                             confirmButtonText: 'OK'
                         });
 
-                        // Start countdown timer
-                        var countdown = 50;
-                        var countdownInterval = setInterval(function() {
-                            if (countdown > 0) {
-                                sendOtpButton.innerHTML = `${countdown} s`;
-                                countdown--;
-                            } else {
-                                clearInterval(countdownInterval);
-                                sendOtpButton.innerHTML = 'Send OTP';
-                                sendOtpButton.disabled = false;
-                                sendOtpButton.classList.remove('disabled-button');
-                            }
-                        }, 1000);
+                        // Set countdown end time in local storage
+                        const countdownDuration = 120 * 1000; // 50 seconds in milliseconds
+                        const endTime = Date.now() + countdownDuration;
+                        localStorage.setItem('otpEndTime', endTime);
+
+                        startCountdown(); // Start countdown
+
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -573,6 +604,9 @@ $usep_ID = $_SESSION["usep_ID"];
                     sendOtpButton.classList.remove('disabled-button');
                 });
         });
+
+        // Initialize countdown on page load
+        startCountdown();
 
         document.getElementById('otpForm').addEventListener('submit', function(event) {
             event.preventDefault();
