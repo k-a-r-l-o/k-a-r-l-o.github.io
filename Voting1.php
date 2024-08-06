@@ -1,9 +1,27 @@
 <?php
 include "DBSessionVoter.php";
+include "SessionOTP.php";
 
 $username = $_SESSION["username"];
 $program = 'ALL PROGRAMS';
 $usep_ID = $_SESSION["usep_ID"];
+
+date_default_timezone_set('Asia/Manila');
+$date = date("Y-m-d");
+$time = date("H:i:s");
+$datetime = $date . ' ' . $time;
+
+$sqlvote = "UPDATE voters SET voted = 'Voting', VotedDT = ? WHERE usep_ID = ?";
+$stmtUpdate = $conn->prepare($sqlvote);
+
+if ($stmtUpdate) {
+    $stmtUpdate->bind_param("si", $datetime, $_SESSION["usep_ID"]);
+    $stmtUpdate->execute();
+    $stmtUpdate->close();
+} else {
+    echo "Error preparing statement: " . $conn->error;
+    exit();
+}
 
 $sql = "SELECT FName FROM voters WHERE usep_ID = ?";
 $stmt = $conn->prepare($sql);

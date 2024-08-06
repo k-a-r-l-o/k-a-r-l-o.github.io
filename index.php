@@ -732,7 +732,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                 $formatted_usep_ID = $year . '-' . $numeric_part;
 
                 if ($input_password === $formatted_usep_ID) {
-                    if ("Not Voted" === $row["voted"]) {
+                    if ("Not Voted" === $row["voted"] || "Verifying" === $row["voted"]) {
                         // Password and voted status are correct, set session and redirect
                         $_SESSION["username"] = $input_username;
                         $_SESSION["program"] = $row["program"];
@@ -743,7 +743,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                         $time = date("H:i:s");
                         $datetime = $date . ' ' . $time;
 
-                        $sqlvote = "UPDATE voters SET voted = 'Voting', VotedDT = ? WHERE usep_ID = ?";
+                        $sqlvote = "UPDATE voters SET voted = 'Verifying', VotedDT = ? WHERE usep_ID = ?";
                         $stmtUpdate = $conn->prepare($sqlvote);
 
                         if ($stmtUpdate) {
@@ -761,7 +761,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                                     }
                                 });
                                 setTimeout(() => {
-                                    window.location.href = 'Voting1.php';
+                                    window.location.href = 'OTP.php';
                                 }, 1500); // Adjust time as needed
                             </script>";
                             exit();
