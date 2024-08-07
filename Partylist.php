@@ -25,6 +25,10 @@ $firstLetterLastName = substr($LName, 0, 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-Vote Admin | Partylist</title>
     <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -1132,14 +1136,9 @@ $firstLetterLastName = substr($LName, 0, 1);
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (isset($_POST['edit'])) {
-
-
-
-
             // Retrieve data from form
             $party_id = $_POST['pID2'];
             $partylist = $_POST['pName2'];
-
 
             // Insert data into Users table
             $sqlPartylistEdit = "UPDATE list_partylist SET name_partylist = '$partylist' WHERE prty_ID = '$party_id'";
@@ -1171,7 +1170,6 @@ $firstLetterLastName = substr($LName, 0, 1);
     }
     ?>
 
-
     <div id="deletepop" class="popup">
         <div class="head">
             <h3>DELETE PARTYLIST</h3>
@@ -1198,8 +1196,6 @@ $firstLetterLastName = substr($LName, 0, 1);
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (isset($_POST['delete'])) {
-
-
 
             // Retrieve data from form
             $partyID = $_POST['pID3'];
@@ -1340,7 +1336,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
 
             var searchin = document.getElementById('searchInput');
-            searchin.value = '';
+
 
             // Disable the Previous button if on the first page
             document.getElementById('prevButton').disabled = currentPage === 0;
@@ -1352,7 +1348,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         function navigateRows(direction) {
 
             var searchin = document.getElementById('searchInput');
-            searchin.value = '';
+
             searchTable();
 
             currentPage += direction;
@@ -1368,8 +1364,6 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             showPage(currentPage);
 
-            // Update the row number display
-            document.getElementById('rowNumber').textContent = currentPage * rowsPerPage;
         }
 
         // Show the initial page
@@ -1377,7 +1371,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
         /*add pop up*/
         document.getElementById("add").addEventListener("click", function() {
-            document.getElementById("popup").style.display = "flex";
+            document.getElementById("popup").style.display = "block";
         });
 
         document.querySelector(".cancel-button").addEventListener("click", function() {
@@ -1395,13 +1389,9 @@ $firstLetterLastName = substr($LName, 0, 1);
                             var rowData = JSON.parse(this.responseText);
                             console.log(rowData); // Log the response for debugging
 
-
-                            // Fill input fields with voter data
                             var prtyIDField = document.getElementById("pID2");
                             prtyIDField.value = rowData.prty_ID;
                             prtyIDField.readOnly = true; // Make the field read-only
-
-                            // Fill input fields with voter data
 
                             document.getElementById("pName2").value = rowData.name_partylist;
 
