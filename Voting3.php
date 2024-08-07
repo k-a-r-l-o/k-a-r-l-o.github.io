@@ -14,6 +14,16 @@ $stmt->bind_result($voter_name);
 $stmt->fetch();
 $stmt->close();
 
+$sqlmajor = "SELECT major FROM voters WHERE usep_ID = ?";
+$stmt = $conn->prepare($sqlmajor);
+$stmt->bind_param("i", $usep_ID);
+$stmt->execute();
+$stmt->bind_result($major);
+$stmt->fetch();
+$stmt->close();
+
+$MAJOR = strtoupper($major);
+
 $sqlID = "SELECT council_id, council_name, cFullName FROM list_councils WHERE program = '$program'";
 $resultID = $conn->query($sqlID);
 
@@ -44,9 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $positions = [];
 
     while ($rowPosition = $resultPositions->fetch_assoc()) {
-        $positionName = htmlspecialchars($rowPosition['position_name']);
-        $positionName = str_replace(' ', '_', $positionName);
+        $positionName1 = htmlspecialchars($rowPosition['position_name']);
+        $positionName = str_replace(' ', '_', $positionName1);
         $positionSlot = (int)$rowPosition['position_slot'];
+
+        if (stripos($positionName1, 'Senator') !== false) {
+            if ($MAJOR !== 'NONE' || $MAJOR !== null) {
+                if (($MAJOR . ' Senator') !== $positionName1) {
+                    continue;
+                }
+            }
+        }
 
         $positions[$positionName] = $positionSlot;
 
@@ -697,12 +715,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php while ($rowPosition = $resultPositions->fetch_assoc()) : ?>
                         <?php
                         $positionName = htmlspecialchars($rowPosition['position_name']);
-                        $positionSlot = (int)$rowPosition['position_slot'];  // Get the slot for the position
-                        $sqlCandidates = "
-                        SELECT c.*, p.name_partylist 
-                        FROM candidates c 
-                        LEFT JOIN list_partylist p ON c.prty_ID = p.prty_ID 
-                        WHERE c.position = '$positionName' AND c.program = '$program'";
+                        $positionSlot = (int)$rowPosition['position_slot'];
+
+                        if (stripos($positionName, 'Senator') !== false) {
+                            if ($MAJOR !== 'NONE' || $MAJOR !== null) {
+                                if (($MAJOR . ' Senator') !== $positionName) {
+                                    continue;
+                                } else {
+                                    $sqlCandidates = "
+                                    SELECT c.*, p.name_partylist 
+                                    FROM candidates c 
+                                    LEFT JOIN list_partylist p ON c.prty_ID = p.prty_ID 
+                                    WHERE c.position = '$positionName' AND c.council = '$council_name'";
+                                }
+                            } else {
+                                $sqlCandidates = "
+                                SELECT c.*, p.name_partylist 
+                                FROM candidates c 
+                                LEFT JOIN list_partylist p ON c.prty_ID = p.prty_ID 
+                                WHERE c.position = '$positionName' AND c.council = '$council_name'";
+                            }
+                        } else {
+                            $sqlCandidates = "
+                            SELECT c.*, p.name_partylist 
+                            FROM candidates c 
+                            LEFT JOIN list_partylist p ON c.prty_ID = p.prty_ID 
+                            WHERE c.position = '$positionName' AND c.council = '$council_name'";
+                        }
+
                         $resultCandidates = $conn->query($sqlCandidates);
                         ?>
                         <div class="card" data-position="<?php echo $positionName; ?>" data-slot="<?php echo $positionSlot; ?>">

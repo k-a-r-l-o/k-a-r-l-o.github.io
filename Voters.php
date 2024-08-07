@@ -1253,6 +1253,16 @@ $firstLetterLastName = substr($LName, 0, 1);
                             ?>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="major">Major:</label>
+                        <select id="major" name="major" class="input-form" required>
+                            <option value="" disabled selected hidden>Select here</option>
+                            <option value="English">English</option>
+                            <option value="Filipino">Filipino</option>
+                            <option value="Math">Math</option>
+                            <option value="None">None of the Above</option>
+                        </select>
+                    </div>
                     <br>
                     <div class="buttons">
                         <button type="button" class="cancel-button">Cancel</button>
@@ -1298,11 +1308,12 @@ $firstLetterLastName = substr($LName, 0, 1);
                 $gender = $_POST['gender'];
                 $yearlvl = $_POST['YearLvl'];
                 $Program = $_POST['program'];
+                $major = $_POST['major'];
                 $voted = 'Not Voted';
 
                 // Insert data into Users table
-                $sqlVoterInsert = "INSERT INTO voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted ) 
-                                VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl','$Program' ,'$voted')";
+                $sqlVoterInsert = "INSERT INTO voters (usep_ID, Email, LName, FName, gender, yearLvl, program, major, voted ) 
+                                VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl','$Program' ,'$major' ,'$voted')";
 
                 if ($conn->query($sqlVoterInsert) === TRUE) {
                     // Log the login activity
@@ -1388,6 +1399,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     $gender = mysqli_real_escape_string($conn, $column[4]);
                     $yearlvl = mysqli_real_escape_string($conn, $column[5]);
                     $program = mysqli_real_escape_string($conn, $column[6]);
+                    $major = mysqli_real_escape_string($conn, $column[7]);
                     $voted = 'Not Voted';
 
                     // Check if voter already exists
@@ -1396,8 +1408,8 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                     if ($result->num_rows == 0) {
                         // Insert data into Voters table
-                        $sqlVoterInsert = "INSERT INTO voters (usep_ID, Email, LName, FName, gender, yearLvl, program, voted) 
-                                        VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl', '$program', '$voted')";
+                        $sqlVoterInsert = "INSERT INTO voters (usep_ID, Email, LName, FName, gender, yearLvl, program, major, voted ) 
+                                VALUES ('$usepID', '$email', '$lname', '$fname', '$gender', '$yearlvl', '$program' ,'$major' ,'$voted')";
 
                         if ($conn->query($sqlVoterInsert) === TRUE) {
                             echo "New record created successfully for $usepID<br>";
@@ -1472,6 +1484,10 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <input id="program2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
+                        <label for="major2">Major:</label>
+                        <input id="major2" class="input-form" readonly>
+                    </div>
+                    <div class="form-group">
                         <label for="voted2">Vote Status:</label>
                         <input type="text" id="voted2" class="input-form" readonly>
                     </div>
@@ -1544,6 +1560,15 @@ $firstLetterLastName = substr($LName, 0, 1);
                             ?>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="major3">Major:</label>
+                        <select id="major3" name="major3" class="input-form" required>
+                            <option value="English">English</option>
+                            <option value="Filipino">Filipino</option>
+                            <option value="Math">Math</option>
+                            <option value="None">None of the Above</option>
+                        </select>
+                    </div>
             </div>
             <br>
             <div class="buttons">
@@ -1573,9 +1598,10 @@ $firstLetterLastName = substr($LName, 0, 1);
             $gender = $_POST['gender3'];
             $yearlvl = $_POST['yearlevel3'];
             $Program = $_POST['program3'];
+            $major = $_POST['major3'];
 
             // Insert data into Users table
-            $sqlVoterEdit = "UPDATE voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program' WHERE usep_ID = '$usepID'";
+            $sqlVoterEdit = "UPDATE voters SET Email = '$email', LName = '$lname', FName = '$fname', gender = '$gender', yearLvl = '$yearlvl', program = '$Program', major = '$major' WHERE usep_ID = '$usepID'";
 
             if ($conn->query($sqlVoterEdit) === TRUE) {
                 // Log the login activity
@@ -1937,6 +1963,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             document.getElementById("gender2").value = rowData.gender;
                             document.getElementById("yearlevel2").value = rowData.yearLvl;
                             document.getElementById("program2").value = rowData.program;
+                            document.getElementById("major2").value = rowData.major;
                             // Assuming rowData.VotedDT is a valid Date object, a date string that can be parsed by Date, or null
                             let date = rowData.VotedDT ? new Date(rowData.VotedDT) : null;
 
@@ -2010,6 +2037,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             document.getElementById("gender3").value = rowData.gender;
                             document.getElementById("yearlevel3").value = rowData.yearLvl;
                             document.getElementById("program3").value = rowData.program;
+                            document.getElementById("major3").value = rowData.major;
 
                             // Show the popup
                             var popup = document.getElementById("editpop");

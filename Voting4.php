@@ -6,6 +6,16 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
+$sqlmajor = "SELECT major FROM voters WHERE usep_ID = ?";
+$stmt = $conn->prepare($sqlmajor);
+$stmt->bind_param("i", $usep_ID);
+$stmt->execute();
+$stmt->bind_result($major);
+$stmt->fetch();
+$stmt->close();
+
+$MAJOR = strtoupper($major);
+
 $sqlID = "SELECT council_id, council_name, cFullName FROM list_councils WHERE program = '$program'";
 $resultID = $conn->query($sqlID);
 
@@ -25,21 +35,42 @@ if ($resultID->num_rows > 0) {
 $sqlPositions = "SELECT position_name, position_slot FROM positions WHERE council_id = $council_id";
 $resultPositions = $conn->query($sqlPositions);
 
-// Retrieve the votes from the URL parameters
+// Initialize the positionNames array
+$positionNames = [];
+
+if ($resultPositions->num_rows > 0) {
+    while ($row = $resultPositions->fetch_assoc()) {
+        $position_name = $row['position_name'];
+        $position_slot = $row['position_slot'];
+
+        if (stripos($position_name, 'Senator') !== false) {
+            if ($MAJOR !== 'NONE' || $MAJOR !== null) {
+                if (($MAJOR . ' Senator') !== $position_name) {
+                    continue;
+                }
+            }
+        }
+
+        // Replace spaces with underscores in the position name
+        $position_key_base = $council_name . '_' . str_replace(' ', '_', $position_name);
+
+        // If position_slot is 1, add the position name directly
+        if ($position_slot == 1) {
+            $positionNames[$position_key_base] = $position_name;
+        } else {
+            // If position_slot is greater than 1, add the position name with a numeric suffix
+            for ($i = 1; $i <= $position_slot; $i++) {
+                $position_key = $position_key_base . $i;
+                $positionNames[$position_key] = $position_name;
+            }
+        }
+    }
+} else {
+    echo "No positions found for the given council.";
+    exit();
+}
+
 $votes = $_GET;
-
-// Map the position keys to human-readable names if necessary
-$positionNames = [
-    'SITS_Governor' => 'Governor',
-    'SITS_Vice_Governor' => 'Vice Governor',
-    'SITS_Secretary' => 'Secretary',
-    'SITS_Treasurer' => 'Treasurer',
-    'SITS_Auditor' => 'Auditor',
-    'SITS_Senator1' => 'Senator',
-    'SITS_Senator2' => 'Senator',
-    'SITS_Senator3' => 'Senator'
-
-];
 ?>
 
 <!DOCTYPE html>
