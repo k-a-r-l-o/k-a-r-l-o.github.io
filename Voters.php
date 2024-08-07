@@ -1122,9 +1122,12 @@ $firstLetterLastName = substr($LName, 0, 1);
                 </div>
                 <div class="dropdown">
                     <select name="Status" id="Status" onchange="filterVoters()">
-                        <option value="ALL">All Voters</option>
-                        <option value="VOTED">Voted</option>
-                        <option value="NOT">Not Yet Voted</option>
+                        <option value="">All Voters</option>
+                        <option value="Not Voted">Not Yet Voted</option>
+                        <option value="Verifying">OTP Verifying</option>
+                        <option value="Voting">Voting</option>
+                        <option value="Voted">Voted</option>
+
                     </select>
                     <select id="Tyear" name="Tyear">
                         <option value="">All Year Level</option>

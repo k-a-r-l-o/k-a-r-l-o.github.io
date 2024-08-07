@@ -9,11 +9,8 @@ $year = $_POST['year'];
 // Build the base SQL query
 $sql = "SELECT * FROM voters WHERE 1=1";
 
-// Append conditions based on the selected filters
-if ($status == 'VOTED') {
-    $sql .= " AND voted = 'Voted'";
-} else if ($status == 'NOT') {
-    $sql .= " AND voted = 'Not Voted'";
+if (!empty($status)) {
+    $sql .= " AND voted = '" . $conn->real_escape_string($status) . "'";
 }
 
 if (!empty($program)) {
