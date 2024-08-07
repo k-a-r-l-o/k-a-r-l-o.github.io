@@ -21,15 +21,15 @@ if (!empty($year)) {
     $sql .= " AND yearLvl = '" . $conn->real_escape_string($year) . "'";
 }
 
+$result = $conn->query($sql);
+
 echo '<tr class="trheader">';
 echo '<th class="thfirst">USEP ID</th>';
 echo '<th>NAME</th>';
 echo '<th>YEAR LEVEL</th>';
 echo '<th>PROGRAM</th>';
-echo '<th class="thlast"> </th>';
+echo '<th class="thlast">NO. OF VOTER: ' . $result->num_rows . ' </th>';
 echo '</tr>';
-
-$result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
