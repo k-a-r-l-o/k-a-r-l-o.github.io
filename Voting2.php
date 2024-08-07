@@ -25,19 +25,34 @@ if ($resultID->num_rows > 0) {
 $sqlPositions = "SELECT position_name, position_slot FROM positions WHERE council_id = $council_id";
 $resultPositions = $conn->query($sqlPositions);
 
-// Retrieve the votes from the URL parameters
-$votes = $_GET;
+// Initialize the positionNames array
+$positionNames = [];
 
-// Map the position keys to human-readable names if necessary
-$positionNames = [
-    'TSC_President' => 'President',
-    'TSC_Vice_President_for_Internal_Affairs' => 'Vice President for Internal Affairs',
-    'TSC_Vice_President_for_External_Affairs' => 'Vice President for External Affairs',
-    'TSC_General_Secretary' => 'General Secretary',
-    'TSC_General_Treasurer' => 'General Treasurer',
-    'TSC_General_Auditor' => 'General Auditor',
-    'TSC_Public_Information_Officer' => 'Public Information Officer'
-];
+if ($resultPositions->num_rows > 0) {
+    while ($row = $resultPositions->fetch_assoc()) {
+        $position_name = $row['position_name'];
+        $position_slot = $row['position_slot'];
+
+        // Replace spaces with underscores in the position name
+        $position_key_base = $council_name . '_' . str_replace(' ', '_', $position_name);
+
+        // If position_slot is 1, add the position name directly
+        if ($position_slot == 1) {
+            $positionNames[$position_key_base] = $position_name;
+        } else {
+            // If position_slot is greater than 1, add the position name with a numeric suffix
+            for ($i = 1; $i <= $position_slot; $i++) {
+                $position_key = $position_key_base . $i;
+                $positionNames[$position_key] = $position_name;
+            }
+        }
+    }
+} else {
+    echo "No positions found for the given council.";
+    exit();
+}
+
+$votes = $_GET;
 ?>
 
 <!DOCTYPE html>
