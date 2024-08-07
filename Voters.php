@@ -968,11 +968,11 @@ $firstLetterLastName = substr($LName, 0, 1);
         window.addEventListener('resize', setPaddingTop);
     </script>
     <script>
-        // Save the selected value to session storage and reload the page
-        function saveSelectionAndReload(selectId) {
+        // Save the selected value to session storage and apply the filter
+        function saveSelectionAndFilter(selectId) {
             const selectElement = document.getElementById(selectId);
             sessionStorage.setItem(selectId + "Selected", selectElement.value);
-            location.reload(); // Reload the page to apply the filter
+            filterVoters(); // Apply the filter without reloading the page
         }
 
         // Load the selected value from session storage
@@ -1001,24 +1001,24 @@ $firstLetterLastName = substr($LName, 0, 1);
             xhr.send("status=" + status + "&program=" + program + "&year=" + year);
         }
 
-        // Event listener to save the selection and reload the page when it changes
+        // Event listener to save the selection and apply the filter when it changes
         document.addEventListener("DOMContentLoaded", function() {
             // For Status select
             const statusSelect = document.getElementById("Status");
             statusSelect.addEventListener("change", function() {
-                saveSelectionAndReload("Status");
+                saveSelectionAndFilter("Status");
             });
 
             // For Tprogram select
             const tprogramSelect = document.getElementById("Tprogram");
             tprogramSelect.addEventListener("change", function() {
-                saveSelectionAndReload("Tprogram");
+                saveSelectionAndFilter("Tprogram");
             });
 
             // For Tyear select
             const tyearSelect = document.getElementById("Tyear");
             tyearSelect.addEventListener("change", function() {
-                saveSelectionAndReload("Tyear");
+                saveSelectionAndFilter("Tyear");
             });
 
             // Load the selections and apply the filter when the page loads
@@ -1121,7 +1121,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                     </div>
                 </div>
                 <div class="dropdown">
-                    <select name="Status" id="Status" onchange="filterVoters()">
+                    <select name="Status" id="Status">
                         <option value="">All Voters</option>
                         <option value="Not Voted">Not Yet Voted</option>
                         <option value="Verifying">OTP Verifying</option>
