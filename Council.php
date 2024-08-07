@@ -1134,7 +1134,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
 
             var searchin = document.getElementById('searchInput');
-            searchin.value = '';
+
 
             // Disable the Previous button if on the first page
             document.getElementById('prevButton').disabled = currentPage === 0;
@@ -1146,7 +1146,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         function navigateRows(direction) {
 
             var searchin = document.getElementById('searchInput');
-            searchin.value = '';
+
             searchTable();
 
             currentPage += direction;
