@@ -1,18 +1,18 @@
 <?php
-    include "DBSession.php";
+include "DBSession.php";
 
-    $usertype = $_SESSION['usertype'];
-    $username = $_SESSION['username'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
 
-    $sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $usertype);
-    $stmt->execute();
-    $stmt->bind_result($FName, $LName);
-    $stmt->fetch();
-    $stmt->close();
-    $firstLetterFirstName = substr($FName, 0, 1);
-    $firstLetterLastName = substr($LName, 0, 1);
+$sql = "SELECT fname, lname FROM users WHERE username = ? AND usertype = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usertype);
+$stmt->execute();
+$stmt->bind_result($FName, $LName);
+$stmt->fetch();
+$stmt->close();
+$firstLetterFirstName = substr($FName, 0, 1);
+$firstLetterLastName = substr($LName, 0, 1);
 
 ?>
 
@@ -647,8 +647,10 @@
             z-index: 9999;
         }
 
-        #logoutpop, #editpop,
-        #deletepop, #viewpop {
+        #logoutpop,
+        #editpop,
+        #deletepop,
+        #viewpop {
             height: auto;
         }
 
@@ -833,47 +835,52 @@
 
         }
 
-        .accounttag{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        width: 100%;
-        border-radius: 10px;
-        background-color: rgba(150, 191, 245, 0.25);
-        box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
-        box-sizing: border-box;
-        padding: 25px 0px 25px 0px;
-    }
-
-    .username1, .username, .usertype {
-        color: white;
-        margin: 0;
-    }
-
-    .username1{
-        display: none;
-    }
-
-    .usertype {
-        font-weight: lighter;
-    }
-
-    @media (max-width: 1000px) {
-        .username, .usertype{
-          font-size: 0px;
-        }
-        .accounttag{
-            height: auto;
-            padding: 15px 0px 15px 0px;
+        .accounttag {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(150, 191, 245, 0.25);
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            padding: 25px 0px 25px 0px;
         }
 
-        .username1{
-            display: block;
+        .username1,
+        .username,
+        .usertype {
+            color: white;
+            margin: 0;
         }
 
-    }
+        .username1 {
+            display: none;
+        }
+
+        .usertype {
+            font-weight: lighter;
+        }
+
+        @media (max-width: 1000px) {
+
+            .username,
+            .usertype {
+                font-size: 0px;
+            }
+
+            .accounttag {
+                height: auto;
+                padding: 15px 0px 15px 0px;
+            }
+
+            .username1 {
+                display: block;
+            }
+
+        }
     </style>
 
     <script>
@@ -895,7 +902,6 @@
 
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
-
     </script>
 </head>
 
@@ -915,9 +921,9 @@
     <div class="bodycontainer">
         <div class="menu">
             <div class="accounttag">
-                <h2 class="username1"><?php echo $firstLetterFirstName . "" .$firstLetterLastName ?></h2>
-                <h2 class="username"><?php echo $FName. " " .$LName?></h2>
-                <h3 class="usertype"><?php echo $usertype?></h3>
+                <h2 class="username1"><?php echo $firstLetterFirstName . "" . $firstLetterLastName ?></h2>
+                <h2 class="username"><?php echo $FName . " " . $LName ?></h2>
+                <h3 class="usertype"><?php echo $usertype ?></h3>
             </div>
             <div class="buttonContainer">
                 <button onclick="switchHTML('Dashboard.php')">
@@ -997,21 +1003,21 @@
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
 
-                            // Assuming $row["usep_ID"] contains the ID like 202200294
-                            $usep_ID = $row["usep_ID"];
+                                // Assuming $row["usep_ID"] contains the ID like 202200294
+                                $usep_ID = $row["usep_ID"];
 
-                            if ($row["usep_ID"] == 1) {
-                                $formatted_usep_ID = "1";
-                            } else {
-                                // Extract the year part
-                                $year = substr($usep_ID, 0, 4);
+                                if (1 <= $row["usep_ID"] || $row["usep_ID"] <= 10) {
+                                    $formatted_usep_ID = $row["usep_ID"];
+                                } else {
+                                    // Extract the year part
+                                    $year = substr($usep_ID, 0, 4);
 
-                                // Extract the remaining part and zero-pad it to 5 digits
-                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
+                                    // Extract the remaining part and zero-pad it to 5 digits
+                                    $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
 
-                                // Combine the parts with a dash
-                                $formatted_usep_ID = $year . '-' . $numeric_part;
-                            }
+                                    // Combine the parts with a dash
+                                    $formatted_usep_ID = $year . '-' . $numeric_part;
+                                }
                         ?>
                                 <tr>
                                     <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
@@ -1145,7 +1151,7 @@
                     $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sqlInsertLog);
                     if ($stmt) {
-                        $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                         $stmt->execute();
                         $stmt->close();
                     } else {
@@ -1264,9 +1270,9 @@
 
             // Insert data into Users table
             $sqlUserEdit = "";
-            if($usepID!=1){
+            if ($usepID != 1) {
                 $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', FName = '$FName', LName = '$LName' ,usertype  = '$usertype' WHERE usep_ID = '$usepID'";
-            }else{
+            } else {
                 $sqlUserEdit = "UPDATE users SET username = '$username', userpass = '$hashed_password', FName = '$FName', LName = '$LName' WHERE usep_ID = '$usepID'";
             }
 
@@ -1280,7 +1286,7 @@
                 $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
-                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                    $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                     $stmt->execute();
                     $stmt->close();
                 } else {
@@ -1352,7 +1358,7 @@
                 $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsertLog);
                 if ($stmt) {
-                    $stmt->bind_param("ssss", $usepID,$date,$time, $logAction);
+                    $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
                     $stmt->execute();
                     $stmt->close();
                 } else {
@@ -1439,7 +1445,7 @@
                 }
             }
 
-            if(input===""){
+            if (input === "") {
                 showPage(0);
             }
         }
@@ -1782,7 +1788,6 @@
                 credentials: 'same-origin'
             });
         }, 300000); // 300000 ms = 5 minutes
-
     </script>
 </body>
 
