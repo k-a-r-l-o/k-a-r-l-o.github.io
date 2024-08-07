@@ -969,23 +969,25 @@ $firstLetterLastName = substr($LName, 0, 1);
     </script>
     <script>
         // Save the selected value to session storage and reload the page
-        function saveSelectionAndReload() {
-            const statusSelect = document.getElementById("Status");
-            sessionStorage.setItem("selectedStatus", statusSelect.value);
+        function saveSelectionAndReload(selectId) {
+            const selectElement = document.getElementById(selectId);
+            sessionStorage.setItem(selectId + "Selected", selectElement.value);
             location.reload(); // Reload the page to apply the filter
         }
 
         // Load the selected value from session storage
-        function loadSelection() {
-            const savedStatus = sessionStorage.getItem("selectedStatus");
-            if (savedStatus) {
-                document.getElementById("Status").value = savedStatus;
+        function loadSelection(selectId) {
+            const savedValue = sessionStorage.getItem(selectId + "Selected");
+            if (savedValue) {
+                document.getElementById(selectId).value = savedValue;
             }
         }
 
         // Filter voters function
         function filterVoters() {
             var status = document.getElementById("Status").value;
+            var program = document.getElementById("Tprogram").value;
+            var year = document.getElementById("Tyear").value;
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "filter_voters.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -996,16 +998,33 @@ $firstLetterLastName = substr($LName, 0, 1);
                     showPage(currentPage); // Call the pagination function after updating results
                 }
             };
-            xhr.send("status=" + status);
+            xhr.send("status=" + status + "&program=" + program + "&year=" + year);
         }
 
         // Event listener to save the selection and reload the page when it changes
         document.addEventListener("DOMContentLoaded", function() {
+            // For Status select
             const statusSelect = document.getElementById("Status");
-            statusSelect.addEventListener("change", saveSelectionAndReload);
+            statusSelect.addEventListener("change", function() {
+                saveSelectionAndReload("Status");
+            });
 
-            // Load the selection and apply the filter when the page loads
-            loadSelection();
+            // For Tprogram select
+            const tprogramSelect = document.getElementById("Tprogram");
+            tprogramSelect.addEventListener("change", function() {
+                saveSelectionAndReload("Tprogram");
+            });
+
+            // For Tyear select
+            const tyearSelect = document.getElementById("Tyear");
+            tyearSelect.addEventListener("change", function() {
+                saveSelectionAndReload("Tyear");
+            });
+
+            // Load the selections and apply the filter when the page loads
+            loadSelection("Status");
+            loadSelection("Tprogram");
+            loadSelection("Tyear");
             filterVoters();
         });
     </script>
@@ -1097,13 +1116,44 @@ $firstLetterLastName = substr($LName, 0, 1);
             </div>
             <div class="contenthead">
                 <div class="titlecontainer">
-
+                    <div>
+                        <h3>Sort by:</h3>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <select name="Status" id="Status" onchange="filterVoters()">
                         <option value="ALL">All Voters</option>
                         <option value="VOTED">Voted</option>
                         <option value="NOT">Not Yet Voted</option>
+                    </select>
+                    <select id="Tyear" name="Tyear">
+                        <option value="">All Year Level</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="5th Year">5th Year</option>
+                    </select>
+                    <select id="Tprogram" name="Tprogram">
+                        <option value="">All Program</option>
+                        <?php
+
+                        // Query to fetch programs
+                        $query1 = "SELECT * FROM programs";
+                        $result = $conn->query($query1);
+
+                        // Check if the query returned any results
+                        if ($result->num_rows > 0) {
+                            // Fetch each row and create an option element
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['Program'] . '">' . $row['Program'] . "</option>";
+                            }
+                        } else {
+                            // No programs found
+                            echo '<option value="">No programs available</option>';
+                        }
+
+                        ?>
                     </select>
                 </div>
             </div>

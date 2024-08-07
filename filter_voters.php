@@ -1,17 +1,29 @@
 <?php
 include "DBSession.php";
 
-// Get the status from the POST request
+// Get the filters from the POST request
 $status = $_POST['status'];
+$program = $_POST['program'];
+$year = $_POST['year'];
 
-// Build the SQL query based on the selected status
+// Build the base SQL query
+$sql = "SELECT * FROM voters WHERE 1=1";
+
+// Append conditions based on the selected filters
 if ($status == 'VOTED') {
-    $sql = "SELECT * FROM voters WHERE voted = 'Voted'";
+    $sql .= " AND voted = 'Voted'";
 } else if ($status == 'NOT') {
-    $sql = "SELECT * FROM voters WHERE voted = 'Not Voted'";
-} else {
-    $sql = "SELECT * FROM voters";
+    $sql .= " AND voted = 'Not Voted'";
 }
+
+if (!empty($program)) {
+    $sql .= " AND program = '" . $conn->real_escape_string($program) . "'";
+}
+
+if (!empty($year)) {
+    $sql .= " AND yearLvl = '" . $conn->real_escape_string($year) . "'";
+}
+
 echo '<tr class="trheader">';
 echo '<th class="thfirst">USEP ID</th>';
 echo '<th>NAME</th>';
