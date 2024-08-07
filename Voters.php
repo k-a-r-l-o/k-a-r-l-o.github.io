@@ -967,6 +967,48 @@ $firstLetterLastName = substr($LName, 0, 1);
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
     </script>
+    <script>
+        // Save the selected value to session storage and reload the page
+        function saveSelectionAndReload() {
+            const statusSelect = document.getElementById("Status");
+            sessionStorage.setItem("selectedStatus", statusSelect.value);
+            location.reload(); // Reload the page to apply the filter
+        }
+
+        // Load the selected value from session storage
+        function loadSelection() {
+            const savedStatus = sessionStorage.getItem("selectedStatus");
+            if (savedStatus) {
+                document.getElementById("Status").value = savedStatus;
+            }
+        }
+
+        // Filter voters function
+        function filterVoters() {
+            var status = document.getElementById("Status").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "filter_voters.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    document.getElementById("Results").innerHTML = this.responseText;
+                    currentPage = 0; // Reset to the first page
+                    showPage(currentPage); // Call the pagination function after updating results
+                }
+            };
+            xhr.send("status=" + status);
+        }
+
+        // Event listener to save the selection and reload the page when it changes
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusSelect = document.getElementById("Status");
+            statusSelect.addEventListener("change", saveSelectionAndReload);
+
+            // Load the selection and apply the filter when the page loads
+            loadSelection();
+            filterVoters();
+        });
+    </script>
 </head>
 
 <body>
@@ -1999,24 +2041,6 @@ $firstLetterLastName = substr($LName, 0, 1);
                 input.value = value.slice(0, -1);
             }
         }
-
-        function filterVoters() {
-            var status = document.getElementById("Status").value;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "filter_voters.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                    document.getElementById("Results").innerHTML = this.responseText;
-                    currentPage = 0; // Reset to the first page
-                    showPage(currentPage); // Call the pagination function after updating results
-                }
-            };
-            xhr.send("status=" + status);
-
-        }
-
-        filterVoters();
 
         document.querySelector("#deletepop .cancel-button").addEventListener("click", function() {
             document.getElementById("deletepop").style.display = "none";
