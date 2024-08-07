@@ -24,6 +24,8 @@ $firstLetterLastName = substr($LName, 0, 1);
     <title>U-Vote Admin | Voting Schedule</title>
     <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -457,7 +459,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             padding: 0 20px;
             cursor: pointer;
             width: 100%;
-            max-width: 400px;
+            max-width: 200px;
             align-items: center;
             justify-content: center;
             background-color: #F34235;
@@ -698,7 +700,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             display: flex;
             width: 100%;
             height: auto;
-            justify-content: center;
+            justify-content: right;
             gap: 10px;
         }
 
@@ -1040,42 +1042,9 @@ $firstLetterLastName = substr($LName, 0, 1);
                 </div>
             </div>
             <div class="buttons1">
-                <form method="post">
-                    <button id="clearSchedule" name="clear">Clear schedule</button>
-                </form>
+                <button id="clearSchedule">Clear schedule</button>
+                <input type="hidden" id="username" value="<?php echo $_SESSION['username']; ?>">
             </div>
-            <?php
-            // Check if form is submitted
-            if (isset($_POST['clear'])) {
-                // SQL statement to truncate the table
-                $sqlClear = "TRUNCATE TABLE voting_schedule";
-
-                // Execute the statement and check if the truncation was successful
-                if ($conn->query($sqlClear) === TRUE) {
-                    // Log the login activity
-                    $usepID = $_SESSION["usep_ID"];
-                    $logAction = 'Cleared Schedule';
-                    date_default_timezone_set('Asia/Manila');
-                    $date = date("Y-m-d");
-                    $time = date("H:i:s");
-                    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
-                    $stmt = $conn->prepare($sqlInsertLog);
-                    if ($stmt) {
-                        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
-                        $stmt->execute();
-                        $stmt->close();
-                    } else {
-                        echo "Error preparing statement: " . $conn->error;
-                        exit();
-                    }
-                    echo "<script>alert('Voting schedule cleared successfully');</script>";
-                    echo "<script>window.location.href = 'Schedule.php';</script>";
-                } else {
-                    echo "<script>alert('Error clearing voting schedule: " . $conn->error . "');</script>";
-                    echo "<script>window.location.href = 'Schedule.php';</script>";
-                }
-            }
-            ?>
         </div>
     </div>
     <div class="popup" id="popup">
@@ -1190,6 +1159,83 @@ $firstLetterLastName = substr($LName, 0, 1);
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('clearSchedule').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, clear it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Enter Password',
+                        input: 'password',
+                        inputLabel: 'Password',
+                        inputPlaceholder: 'Enter your password',
+                        inputAttributes: {
+                            maxlength: 100,
+                            autocapitalize: 'off',
+                            autocorrect: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Submit'
+                    }).then((passwordResult) => {
+                        if (passwordResult.isConfirmed) {
+                            // Get the username from a hidden field or another source
+                            const username = document.getElementById('username').value;
+
+                            // Send AJAX request to clear schedule
+                            fetch('clear_schedule.php', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        username: username,
+                                        password: passwordResult.value
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        Swal.fire({
+                                            title: 'Success!',
+                                            text: data.message,
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        }).then(() => {
+                                            window.location.href = 'Schedule.php';
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: data.message,
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An unexpected error occurred.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
     <script>
         // JavaScript code to switch HTML files with animation
         function switchHTML(file) {
