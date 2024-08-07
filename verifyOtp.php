@@ -28,25 +28,51 @@ if (!$data) {
     exit;
 }
 
+// Ensure usep_ID is set in session
+if (!isset($_SESSION["usep_ID"])) {
+    echo json_encode(['success' => false, 'message' => 'Session expired.']);
+    exit;
+}
+
 $enteredOtp = $data['otp'];
-$usep_ID = $_SESSION["usep_ID"]; // Assuming usep_ID is stored in session
+$usep_ID = $_SESSION["usep_ID"];
 
 // Fetch the correct OTP from the database
 $correctOtp = '';
 $stmt = $conn->prepare("SELECT VPassword FROM voters WHERE usep_ID = ?");
-$stmt->bind_param("i", $usep_ID);
-$stmt->execute();
-$stmt->bind_result($correctOtp);
-$stmt->fetch();
-$stmt->close();
+if ($stmt) {
+    $stmt->bind_param("i", $usep_ID);
+    $stmt->execute();
+    $stmt->bind_result($correctOtp);
+    $stmt->fetch();
+    $stmt->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Database error: Unable to prepare statement.']);
+    exit;
+}
 
 // Check if the entered OTP matches the correct OTP
 $response = array();
 if ($enteredOtp === $correctOtp) {
-    $response['success'] = true;
-    $_SESSION["otp"] = $correctOtp;
+    $stmt = $conn->prepare("UPDATE voters SET VPassword = NULL WHERE usep_ID = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $usep_ID);
+        $stmt->execute();
+        if ($stmt->affected_rows > 0) {
+            $response['success'] = true;
+            $_SESSION["otp"] = $correctOtp;
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'No rows updated. Please check the usep_ID.';
+        }
+        $stmt->close();
+    } else {
+        $response['success'] = false;
+        $response['message'] = 'Database error: Unable to prepare statement.';
+    }
 } else {
     $response['success'] = false;
+    $response['message'] = 'Invalid OTP.';
 }
 
 echo json_encode($response);
