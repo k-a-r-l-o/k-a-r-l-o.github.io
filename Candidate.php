@@ -24,6 +24,7 @@ $firstLetterLastName = substr($LName, 0, 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-Vote Admin | Candidates</title>
     <link rel="icon" type="image/x-icon" href="U-Vote Logo.svg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
