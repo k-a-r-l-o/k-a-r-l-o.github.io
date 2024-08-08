@@ -717,9 +717,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $positionName = htmlspecialchars($rowPosition['position_name']);
                         $positionSlot = (int)$rowPosition['position_slot'];
 
-                        if (stripos($positionName, 'Senator') !== false) {
-                            if ($MAJOR !== 'NONE' || $MAJOR !== null) {
-                                if (($MAJOR . ' Senator') !== $positionName) {
+                        if (stripos($positionName, 'Senator') != false) {
+                            if ($MAJOR != 'NONE' || $MAJOR != null) {
+                                if (($MAJOR . ' Senator') != $positionName) {
                                     continue;
                                 } else {
                                     $sqlCandidates = "
