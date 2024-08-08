@@ -43,9 +43,9 @@ if ($resultPositions->num_rows > 0) {
         $position_name = $row['position_name'];
         $position_slot = $row['position_slot'];
 
-        if (stripos($position_name, 'Senator') !== false) {
-            if ($MAJOR !== 'NONE' || $MAJOR !== null) {
-                if (($MAJOR . ' Senator') !== $position_name) {
+        if (stripos($position_name, 'Senator') != false) {
+            if ($MAJOR != 'NONE' || $MAJOR != null) {
+                if (($MAJOR . ' Senator') != $position_name) {
                     continue;
                 }
             }
