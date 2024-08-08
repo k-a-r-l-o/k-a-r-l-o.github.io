@@ -58,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $positionName = str_replace(' ', '_', $positionName1);
         $positionSlot = (int)$rowPosition['position_slot'];
 
-        if (stripos($positionName1, 'Senator') !== false) {
-            if ($MAJOR !== 'NONE' || $MAJOR !== null) {
-                if (($MAJOR . ' Senator') !== $positionName1) {
+        if (stripos($positionName1, 'Senator') != false) {
+            if ($MAJOR != 'NONE' || $MAJOR != null) {
+                if (($MAJOR . ' Senator') != $positionName1) {
                     continue;
                 }
             }
