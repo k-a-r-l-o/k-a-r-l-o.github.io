@@ -2282,4 +2282,47 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
 }
 
+// Set the desired timezone
+date_default_timezone_set('Asia/Manila');
+
+// Get the current date and time in the specified timezone
+$currentDateTime = date('Y-m-d H:i:s');
+
+// Proceed with your existing code to check the voting schedule
+// Query to retrieve the voting schedule
+$sql1 = "SELECT * FROM voting_schedule";
+$result1 = $conn->query($sql1);
+
+if ($result1->num_rows > 0) {
+    // There should be only one row in the result, assuming there's only one voting schedule
+    $row = $result1->fetch_assoc();
+
+    // Combine start date and time
+    $startDateTime = $row["startDate"] . ' ' . $row["startTime"];
+    // Combine end date and time
+    $endDateTime = $row["endDate"] . ' ' . $row["endTime"];
+
+    // Check if the current date and time fall within the range
+    if ($currentDateTime >= $startDateTime && $currentDateTime <= $endDateTime) {
+        // Current date and time are within the range
+        echo "<script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Voting in Progress',
+                text: 'Candidates cannot be modified during the voting period.',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'Schedule.php';
+                }
+            });
+        </script>";
+        exit(); // Stop further execution
+    } else {
+        // Current date and time are not within the range
+        // Proceed with the login process
+    }
+}
+
+
 ?>
