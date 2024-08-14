@@ -1673,7 +1673,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         if (isset($_POST['delete'])) {
 
             $Voted = $_POST["voted4"];
-            if ($Voted == 'Not Voted') {
+            if ($Voted == 'Not Voted' || $Voted == 'Verifying') {
                 // Get the user input
                 $input_usep_ID = $_POST["usepID4"];
 
@@ -1748,7 +1748,23 @@ $firstLetterLastName = substr($LName, 0, 1);
                 // Delete the voter record from the Voters table
                 $sqlVoterDelete = "DELETE FROM voters WHERE usep_ID = '$usepID'";
                 if ($conn->query($sqlVoterDelete) === TRUE) {
-                    echo "<script>alert('Record deleted successfully');</script>";
+                    // Log the login activity
+                    $usepID = $_SESSION["usep_ID"];
+                    $logAction = 'Deleted Voter';
+                    date_default_timezone_set('Asia/Manila');
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s");
+                    $sqlInsertLog = "INSERT INTO activity_logs (usep_ID, logs_date, logs_time, logs_action) VALUES (?, ?, ?, ?)";
+                    $stmt = $conn->prepare($sqlInsertLog);
+                    if ($stmt) {
+                        $stmt->bind_param("ssss", $usepID, $date, $time, $logAction);
+                        $stmt->execute();
+                        $stmt->close();
+                    } else {
+                        echo "Error preparing statement: " . $conn->error;
+                        exit();
+                    }
+                    echo "<script>alert('Record Deleted successfully');</script>";
                     echo "<script>window.location.href = 'Voters.php';</script>";
                 } else {
                     echo "<script>alert('Error: " . $sqlVoterDelete . "<br>" . $conn->error . "');</script>";
