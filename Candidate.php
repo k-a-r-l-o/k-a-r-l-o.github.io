@@ -1068,7 +1068,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             <div class="popup-content-inner">
                 <form method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="profile">Profile Photo:</label>
+                        <label for="profile-photo">Profile Photo:</label>
                         <div class="upload-btn">
                             <input type="file" id="profile-photo" name="prof" accept=".jpg, .jpeg, .png" onchange="previewImage(event)" placeholder="Upload Photo" class="input-file" required>
                             <span>Upload Photo</span>
@@ -1080,11 +1080,11 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <input type="text" id="usepID" name="usepID" class="input-form" maxlength="10" onchange="validateUsepID(this)" required>
                     </div>
                     <div class="form-group">
-                        <label for="FirstName">First Name:</label>
+                        <label for="Fname">First Name:</label>
                         <input type="text" id="Fname" name="Fname" class="input-form" required>
                     </div>
                     <div class="form-group">
-                        <label for="LastName">Last Name:</label>
+                        <label for="Lname">Last Name:</label>
                         <input type="text" id="Lname" name="Lname" class="input-form" required>
                     </div>
                     <div class="form-group">
@@ -1096,7 +1096,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="yearLevel">Year Level:</label>
+                        <label for="yearlevel">Year Level:</label>
                         <select id="yearlevel" name="yearlevel" class="input-form" required>
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="2nd Year">2nd Year</option>
@@ -1332,39 +1332,39 @@ $firstLetterLastName = substr($LName, 0, 1);
             <div class="popup-content-inner">
                 <form>
                     <div class="form-group">
-                        <label for="profile">Profile Photo:</label>
+                        <label>Profile Photo:</label>
                         <img id="preview2" src="#" alt="Preview" style="display: flex; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
                     </div>
                     <div class="form-group">
-                        <label for="usepID">USeP ID:</label>
+                        <label for="usepID2">USeP ID:</label>
                         <input type="text" id="usepID2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="fullName">Full Name:</label>
+                        <label for="fullName2">Full Name:</label>
                         <input type="text" id="fullName2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="gender">Gender:</label>
+                        <label for="gender2">Gender:</label>
                         <input id="gender2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="yearLevel">Year Level:</label>
+                        <label for="yearlevel2">Year Level:</label>
                         <input id="yearlevel2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="program">Program:</label>
+                        <label for="program2">Program:</label>
                         <input id="program2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="Council">Council:</label>
+                        <label for="Council2">Council:</label>
                         <input id="Council2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="position">Position:</label>
+                        <label for="position2">Position:</label>
                         <input id="position2" class="input-form" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="partyList">Party List:</label>
+                        <label for="partyList2">Party List:</label>
                         <input id="partyList2" name="partylist2" class="input-form" readonly>
                     </div>
                 </form>
@@ -1386,34 +1386,34 @@ $firstLetterLastName = substr($LName, 0, 1);
             <div class="popup-content-inner">
                 <form method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="profile">Profile Photo:</label>
+                        <label for="profile-photo3">Profile Photo:</label>
                         <div class="upload-btn">
                             <input type="file" id="profile-photo3" name="prof3" accept=".jpg, .jpeg, .png" onchange="preview3Image(event)" placeholder="Upload Photo" class="input-file">
                             <span>Upload Photo</span>
                         </div>
-                        <img id="preview3" src="#" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
+                        <img id="preview3" src="" alt="Preview" style="display: none; max-width: 50%; max-height: 50%; border-radius: 10px; margin-top: 10px;">
                     </div>
                     <div class="form-group">
-                        <label for="usepID">USeP ID(readonly):</label>
+                        <label for="usepID3">USeP ID(readonly):</label>
                         <input type="text" id="usepID3" name="usepID3" class="input-form" readonly onchange="validateUsepID(this)">
                     </div>
                     <div class="form-group">
-                        <label for="FirstName">First Name:</label>
+                        <label for="Fname3">First Name:</label>
                         <input type="text" id="Fname3" name="Fname3" class="input-form">
                     </div>
                     <div class="form-group">
-                        <label for="LastName">Last Name:</label>
+                        <label for="Lname3">Last Name:</label>
                         <input type="text" id="Lname3" name="Lname3" class="input-form">
                     </div>
                     <div class="form-group">
-                        <label for="gender">Gender:</label>
+                        <label for="gender3">Gender:</label>
                         <select id="gender3" name="gender3" class="input-form">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="yearLevel">Year Level:</label>
+                        <label for="yearlevel3">Year Level:</label>
                         <select id="yearlevel3" name="yearlevel3" class="input-form">
                             <option value="" disabled selected hidden>Select here</option>
                             <option value="2nd Year">2nd Year</option>
@@ -1422,7 +1422,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="program">Program:</label>
+                        <label for="program3">Program:</label>
                         <select id="program3" name="program3" class="input-form">
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
@@ -1447,7 +1447,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Council">Council:</label>
+                        <label for="Council3">Council:</label>
                         <select id="Council3" name="Council3" class="input-form">
                             <option value="" disabled selected hidden>Select here</option>
                             <?php
@@ -1471,13 +1471,13 @@ $firstLetterLastName = substr($LName, 0, 1);
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="position">Position:</label>
+                        <label for="position3">Position:</label>
                         <select id="position3" name="position3" class="input-form">
 
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="partyList">Party List:</label>
+                        <label for="partyList3">Party List:</label>
                         <select id="partyList3" name="partyList3" class="input-form">
                             <?php
                             // Query to fetch programs
@@ -1559,77 +1559,73 @@ $firstLetterLastName = substr($LName, 0, 1);
                 if ($check === false) {
                     echo "<script>Swal.fire('Error', 'File is not an image.', 'error');</script>";
                     $uploadDone = 0;
-                }
-
-                // Check if the file already exists
-                if (file_exists($targetFile)) {
-                    echo "<script>Swal.fire('Error', 'Sorry, file already exists.', 'error');</script>";
-                    $uploadDone = 0;
-                }
-
-                // Check file size
-                if ($_FILES["prof3"]["size"] > 2000000) {
-                    echo "<script>Swal.fire('Error', 'Sorry, your file is too large.', 'error');</script>";
-                    $uploadDone = 0;
-                }
-
-                // Allow only certain file formats
-                if ($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif") {
-                    echo "<script>Swal.fire('Error', 'Sorry, only JPG, JPEG, PNG & GIF files are allowed.', 'error');</script>";
-                    $uploadDone = 0;
-                }
-
-                // Check if everything is okay for upload
-                if ($uploadDone == 1) {
-                    // Resize and crop the image to 1080x1080 if necessary
-                    $sourceImage = $_FILES["prof3"]["tmp_name"];
-                    list($width, $height) = getimagesize($sourceImage);
-
-                    if ($width != 1080 || $height != 1080) {
-                        $newWidth = 1080;
-                        $newHeight = 1080;
-
-                        // Calculate cropping coordinates and size
-                        if ($width > $height) {
-                            $cropSize = $height;
-                            $srcX = ($width - $cropSize) / 2;
-                            $srcY = 0;
-                        } else {
-                            $cropSize = $width;
-                            $srcX = 0;
-                            $srcY = ($height - $cropSize) / 2;
-                        }
-
-                        $image_p = imagecreatetruecolor($newWidth, $newHeight);
-                        $image = null;
-
-                        switch ($imageFileType) {
-                            case 'jpg':
-                            case 'jpeg':
-                                $image = imagecreatefromjpeg($sourceImage);
-                                break;
-                            case 'png':
-                                $image = imagecreatefrompng($sourceImage);
-                                break;
-                            case 'gif':
-                                $image = imagecreatefromgif($sourceImage);
-                                break;
-                        }
-
-                        if ($image) {
-                            imagecopyresampled($image_p, $image, 0, 0, $srcX, $srcY, $newWidth, $newHeight, $cropSize, $cropSize);
-                            imagejpeg($image_p, $targetFile, 100); // Save the cropped and resized image as JPEG
-
-                            $updatePhoto = true;
-                        } else {
-                            echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
-                        }
+                } else {
+                    // Check if the file already exists
+                    if (file_exists($targetFile)) {
+                        echo "<script>Swal.fire('Error', 'Sorry, file already exists.', 'error');</script>";
+                        $uploadDone = 0;
                     } else {
-                        // If the image is already 1080x1080, move it directly to the target directory
-                        if (move_uploaded_file($_FILES["prof3"]["tmp_name"], $targetFile)) {
-                            $updatePhoto = true;
+                        // Check file size
+                        if ($_FILES["prof3"]["size"] > 2000000) {
+                            echo "<script>Swal.fire('Error', 'Sorry, your file is too large.', 'error');</script>";
+                            $uploadDone = 0;
                         } else {
-                            echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                            // Check if everything is okay for upload
+                            if ($uploadDone == 1) {
+                                // Resize and crop the image to 1080x1080 if necessary
+                                $sourceImage = $_FILES["prof3"]["tmp_name"];
+                                list($width, $height) = getimagesize($sourceImage);
+
+                                if ($width != 1080 || $height != 1080) {
+                                    $newWidth = 1080;
+                                    $newHeight = 1080;
+
+                                    // Calculate cropping coordinates and size
+                                    if ($width > $height) {
+                                        $cropSize = $height;
+                                        $srcX = ($width - $cropSize) / 2;
+                                        $srcY = 0;
+                                    } else {
+                                        $cropSize = $width;
+                                        $srcX = 0;
+                                        $srcY = ($height - $cropSize) / 2;
+                                    }
+
+                                    $image_p = imagecreatetruecolor($newWidth, $newHeight);
+                                    $image = null;
+
+                                    switch ($imageFileType) {
+                                        case 'jpg':
+                                        case 'jpeg':
+                                            $image = imagecreatefromjpeg($sourceImage);
+                                            break;
+                                        case 'png':
+                                            $image = imagecreatefrompng($sourceImage);
+                                            break;
+                                        case 'gif':
+                                            $image = imagecreatefromgif($sourceImage);
+                                            break;
+                                    }
+
+                                    if ($image) {
+                                        imagecopyresampled($image_p, $image, 0, 0, $srcX, $srcY, $newWidth, $newHeight, $cropSize, $cropSize);
+                                        imagejpeg($image_p, $targetFile, 100); // Save the cropped and resized image as JPEG
+
+                                        $updatePhoto = true;
+                                    } else {
+                                        echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                                    }
+                                } else {
+                                    // If the image is already 1080x1080, move it directly to the target directory
+                                    if (move_uploaded_file($_FILES["prof3"]["tmp_name"], $targetFile)) {
+                                        $updatePhoto = true;
+                                    } else {
+                                        echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                                    }
+                                }
+                            } else {
+                                echo "<script>Swal.fire('Error', 'Sorry, there was an error processing your file.', 'error');</script>";
+                            }
                         }
                     }
                 }
@@ -1921,9 +1917,17 @@ $firstLetterLastName = substr($LName, 0, 1);
         }
 
 
-        document.querySelector("#viewpop .save-button").addEventListener("click", function() {
+        function closeViewpop() {
             document.getElementById("viewpop").style.display = "none";
-        });
+            document.getElementById("preview2").src = "#";
+            document.getElementById("usepID2").value = '';
+            document.getElementById("fullName2").value = '';
+            document.getElementById("gender2").value = '';
+            document.getElementById("yearlevel2").value = '';
+            document.getElementById("program2").value = '';
+            document.getElementById("Council2").value = '';
+            document.getElementById("position2").value = '';
+        }
 
         async function editpop(usepID, council) {
             // AJAX request to PHP script to retrieve voter data based on usepID
