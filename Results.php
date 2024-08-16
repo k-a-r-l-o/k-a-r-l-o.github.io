@@ -1106,7 +1106,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             }
                         }
 
-                        $conn->close();
+
                         ?>
 
                     </table>
@@ -1434,6 +1434,21 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
 } else if ($usertype === 'Watcher') {
+    $username = strtoupper($username);
+    // Prepare SQL statement to prevent SQL injection
+    $sqlID = "SELECT council_id FROM list_councils WHERE council_name = ?";
+    $stmt = $conn->prepare($sqlID);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $resultID = $stmt->get_result();
+
+    if ($resultID->num_rows > 0) {
+        $row = $resultID->fetch_assoc();
+        $council_id = $row['council_id'];
+    } else {
+        echo "No council found for the given program.";
+        exit();
+    }
     echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
     echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
@@ -1445,7 +1460,7 @@ if ($usertype === 'Admin-Front') {
     echo "<script>
         $(document).ready(function() {
             var selectElement = $('#Council');
-            selectElement.val('$username');
+            selectElement.val('$council_id');
             selectElement.change(); // Trigger the change event
 
             // Update the title dynamically
