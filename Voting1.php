@@ -6,6 +6,23 @@ $username = $_SESSION["username"];
 $program = 'ALL PROGRAMS';
 $usep_ID = $_SESSION["usep_ID"];
 
+// Prepare SQL statement to retrieve user from database
+$sql = "SELECT * FROM voters WHERE Email = ? AND usep_ID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usep_ID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    session_start();
+    session_unset();
+    session_destroy();
+
+    // Redirect to index page or login page after session destruction
+    header("Location: index.php");
+    exit();
+}
+
 date_default_timezone_set('Asia/Manila');
 $date = date("Y-m-d");
 $time = date("H:i:s");
@@ -96,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Construct the SQL query dynamically
     $columns = implode(", ", array_keys($votes));
     $placeholders = implode(", ", array_fill(0, count($votes), '?'));
-    $updates = implode(", ", array_map(fn ($col) => "$col = VALUES($col)", array_keys($votes)));
+    $updates = implode(", ", array_map(fn($col) => "$col = VALUES($col)", array_keys($votes)));
 
     $sqlSaveVote = "
     INSERT INTO $table_name (usep_ID, $columns)

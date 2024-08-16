@@ -6,6 +6,23 @@ $username = $_SESSION["username"];
 $program = $_SESSION["program"];
 $usep_ID = $_SESSION["usep_ID"];
 
+// Prepare SQL statement to retrieve user from database
+$sql = "SELECT * FROM voters WHERE Email = ? AND usep_ID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usep_ID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    session_start();
+    session_unset();
+    session_destroy();
+
+    // Redirect to index page or login page after session destruction
+    header("Location: index.php");
+    exit();
+}
+
 $sqlmajor = "SELECT major FROM voters WHERE usep_ID = ?";
 $stmt = $conn->prepare($sqlmajor);
 $stmt->bind_param("i", $usep_ID);

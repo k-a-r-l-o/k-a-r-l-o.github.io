@@ -6,6 +6,23 @@ $username = $_SESSION["username"];
 $program = "ALL PROGRAMS";
 $usep_ID = $_SESSION["usep_ID"];
 
+// Prepare SQL statement to retrieve user from database
+$sql = "SELECT * FROM voters WHERE Email = ? AND usep_ID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $usep_ID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    session_start();
+    session_unset();
+    session_destroy();
+
+    // Redirect to index page or login page after session destruction
+    header("Location: index.php");
+    exit();
+}
+
 $sqlID = "SELECT council_id, council_name, cFullName FROM list_councils WHERE program = '$program'";
 $resultID = $conn->query($sqlID);
 
