@@ -1440,7 +1440,6 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
     echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
-    echo "<script>document.getElementById('Council').style.display = 'none';</script>";
     echo "<script>document.getElementById('export').style.display = 'none';</script>";
     $username = strtoupper($username);
     // Prepare SQL statement to prevent SQL injection
@@ -1457,6 +1456,7 @@ if ($usertype === 'Admin-Front') {
         echo "No council found for the given program.";
         exit();
     }
+    echo "<script>document.getElementById('Council').style.display = 'none';</script>";
     echo "<script>
         $(document).ready(function() {
             var selectElement = $('#Council');
