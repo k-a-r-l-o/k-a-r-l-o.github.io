@@ -1434,6 +1434,14 @@ if ($usertype === 'Admin-Front') {
     echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
     echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
 } else if ($usertype === 'Watcher') {
+    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
+    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
+    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
+    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
+    echo "<script>document.getElementById('Council').style.display = 'none';</script>";
+    echo "<script>document.getElementById('export').style.display = 'none';</script>";
     $username = strtoupper($username);
     // Prepare SQL statement to prevent SQL injection
     $sqlID = "SELECT council_id FROM list_councils WHERE council_name = ?";
@@ -1449,14 +1457,6 @@ if ($usertype === 'Admin-Front') {
         echo "No council found for the given program.";
         exit();
     }
-    echo "<script>document.getElementById('CANDIDATES').style.display = 'none';</script>";
-    echo "<script>document.getElementById('VOTERS').style.display = 'none';</script>";
-    echo "<script>document.getElementById('PARTYLIST').style.display = 'none';</script>";
-    echo "<script>document.getElementById('USERS').style.display = 'none';</script>";
-    echo "<script>document.getElementById('COUNCIL').style.display = 'none';</script>";
-    echo "<script>document.getElementById('LOGS').style.display = 'none';</script>";
-    echo "<script>document.getElementById('Council').style.display = 'none';</script>";
-    echo "<script>document.getElementById('export').style.display = 'none';</script>";
     echo "<script>
         $(document).ready(function() {
             var selectElement = $('#Council');
