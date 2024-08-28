@@ -36,6 +36,10 @@ $resultVotes7 = $conn->query("SELECT COUNT(*) as voteCount7 FROM tsc_votes");
 $rowVotes7 = $resultVotes7->fetch_assoc();
 $voteCount7 = $rowVotes7['voteCount7'];
 
+$resultVotes8 = $conn->query("SELECT COUNT(*) as voteCount8 FROM sm_votes");
+$rowVotes8 = $resultVotes7->fetch_assoc();
+$voteCount8 = $rowVotes7['voteCount8'];
+
 // Fetch voter counts for each program
 $programs = [
     'BSABE',
@@ -45,7 +49,8 @@ $programs = [
     'BSEd',
     'BSIT',
     'BTVTEd',
-    'ALL'
+    'ALL',
+    'SOM'
 ];
 
 $voterCounts = [];
@@ -70,6 +75,7 @@ echo json_encode([
     'voteCount5' => $voteCount5,
     'voteCount6' => $voteCount6,
     'voteCount7' => $voteCount7,
+    'voteCount8' => $voteCount8,
     'voterCounts' => $voterCounts
 ]);
 
