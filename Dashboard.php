@@ -930,9 +930,9 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             // Sample data for the first pie chart
             var data = {
-                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETS'],
+                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETS', 'SM'],
                 datasets: [{
-                    data: [0, 0, 0, 0, 0, 0, 0],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0],
                     backgroundColor: [
                         '#D8031C',
                         '#F6C90E',
@@ -940,7 +940,8 @@ $firstLetterLastName = substr($LName, 0, 1);
                         '#E76615',
                         '#009D23',
                         '#9F00A3',
-                        '#008AC6'
+                        '#008AC6',
+                        '#FF69B4'
                     ],
                     hoverOffset: 4,
                     borderWidth: 0,
@@ -962,6 +963,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         myPieChart.data.datasets[0].data[4] = data.voteCount4;
                         myPieChart.data.datasets[0].data[5] = data.voteCount5;
                         myPieChart.data.datasets[0].data[6] = data.voteCount6;
+                        myPieChart.data.datasets[0].data[7] = data.voteCount8;
                         myPieChart.update();
 
                     })
@@ -1095,10 +1097,10 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
 
             var barChartData = {
-                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETS', 'TSC'],
+                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETS', 'TSC', 'SOM'],
                 datasets: [{
                     label: 'Percentage',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     backgroundColor: [
                         '#D8031C',
                         '#F6C90E',
@@ -1107,7 +1109,8 @@ $firstLetterLastName = substr($LName, 0, 1);
                         '#009D23',
                         '#9F00A3',
                         '#008AC6',
-                        '#70FF00'
+                        '#70FF00',
+                        '#FF69B4'
                     ],
                     borderWidth: 0
                 }]
@@ -1190,10 +1193,10 @@ $firstLetterLastName = substr($LName, 0, 1);
             var myBarChart = createOrUpdateBarChart('myBarChart', barChartData, chartOptions);
 
             var barChartData2 = {
-                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETS', 'TSC'],
+                labels: ['SABES', 'OFEE', 'AECES', 'OFSET', 'AFSET', 'SITS', 'FTVETS', 'TSC', 'SOM'],
                 datasets: [{
                     label: 'No. of Voter',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     backgroundColor: [
                         '#D8031C',
                         '#F6C90E',
@@ -1202,7 +1205,8 @@ $firstLetterLastName = substr($LName, 0, 1);
                         '#009D23',
                         '#9F00A3',
                         '#008AC6',
-                        '#70FF00'
+                        '#70FF00',
+                        '#FF69B4'
                     ],
                     borderWidth: 0
                 }]
@@ -1263,7 +1267,8 @@ $firstLetterLastName = substr($LName, 0, 1);
                             voterCounts.BSEd,
                             voterCounts.BSIT,
                             voterCounts.BTVTEd,
-                            voterCounts.ALL
+                            voterCounts.ALL,
+                            voterCounts.SOM
                         ];
 
                         // Update chart data with percentages
