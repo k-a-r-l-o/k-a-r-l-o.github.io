@@ -787,7 +787,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
         function showAlertOnce() {
-            if (localStorage.getItem('alertShown')) {
+            if (!localStorage.getItem('alertShown')) {
                 Swal.fire({
                     title: 'Welcome <?php echo htmlspecialchars($voter_name); ?>!',
                     html: `<div style="text-align: left;">
