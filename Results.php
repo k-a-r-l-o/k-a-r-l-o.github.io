@@ -1011,6 +1011,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <option value="5">AFSET</option>
                         <option value="6">SITS</option>
                         <option value="7">FTVETS</option>
+                        <option value="9">SM</option>
                     </select>
                 </div>
             </div>
