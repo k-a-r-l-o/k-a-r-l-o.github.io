@@ -1167,7 +1167,8 @@ $firstLetterLastName = substr($LName, 0, 1);
                             (data.voteCount4 / voterCounts.BSEd) * 100,
                             (data.voteCount5 / voterCounts.BSIT) * 100,
                             (data.voteCount6 / voterCounts.BTVTEd) * 100,
-                            (data.voteCount7 / voterCounts.ALL) * 100
+                            (data.voteCount7 / voterCounts.ALL) * 100,
+                            (data.voteCount8 / voterCounts.SOM) * 100
                         ];
 
                         // Update chart data with percentages
