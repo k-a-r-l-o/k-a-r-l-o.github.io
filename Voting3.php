@@ -801,7 +801,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php endwhile; ?>
                     <div class="button">
                         <div></div>
-                        <button type="submit" name="next">Next</button>
+                        <button type="submit" name="next">Submit</button>
                     </div>
                 </form>
             </div>
@@ -814,19 +814,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 Swal.fire({
                     title: 'Welcome <?php echo htmlspecialchars($voter_name); ?>!',
                     html: `<div style="text-align: left;">
-                            <ol>
-                                <li>Please select your preferred candidates for each position.</li>
-                                <li>If you wish to abstain, select the "Abstain" option.</li>
-                                <li>For each position, a selection is required; if you fail to select, it will automatically count as an abstention.</li>
-                                <li>Unselect the current candidate before choosing a new one.</li>
-                                <li>Once you have made your selections, click the "Next" button to proceed.</li>
-                            </ol>
-                        </div>`,
+                <ol>
+                    <li>Please select your preferred candidates for each position.</li>
+                    <li>If you wish to abstain, select the "Abstain" option.</li>
+                    <li>For each position, a selection is required; if you fail to select, it will automatically count as an abstention.</li>
+                    <li>Deselect the current candidate if you prefer to choose a new one.</li>
+                    <li>Once you have made your selections, click the "Submit" button to proceed.</li>
+                </ol>
+            </div>`,
                     imageUrl: "smile.png",
                     imageWidth: 100,
                     imageHeight: 100,
                     imageAlt: "Smile",
-                    confirmButtonText: 'Got it!',
+                    confirmButtonText: 'Got it! (20)',
+                    allowOutsideClick: false, // Prevent closing by clicking outside
+                    didOpen: () => {
+                        const confirmButton = Swal.getConfirmButton();
+                        confirmButton.disabled = true; // Disable the button initially
+
+                        let countdown = 20;
+                        const countdownInterval = setInterval(() => {
+                            countdown -= 1;
+                            confirmButton.innerText = `Got it! (${countdown})`;
+
+                            if (countdown <= 0) {
+                                clearInterval(countdownInterval); // Stop the countdown
+                                confirmButton.disabled = false; // Enable the button
+                                confirmButton.innerText = 'Got it!';
+                            }
+                        }, 1000); // Update every second
+                    },
                 }).then(() => {
                     // Set a flag in localStorage after showing the alert
                     localStorage.setItem('alertShown', 'true');

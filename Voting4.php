@@ -616,7 +616,7 @@ $votes = $_GET;
 
                 <div class="button">
                     <button onclick="back()">Edit</button>
-                    <button onclick="switchHTML1('Voting5.php')">Submit</button>
+                    <button onclick="switchHTML1('Voting5.php')">Confirm</button>
                 </div>
 
             </div>
