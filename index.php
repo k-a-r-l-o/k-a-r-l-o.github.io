@@ -737,6 +737,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                         $_SESSION["username"] = $input_username;
                         $_SESSION["program"] = $row["program"];
                         $_SESSION["usep_ID"] = $row["usep_ID"];
+                        $_SESSION["yearLvl"] = $row["yearLvl"];
 
                         date_default_timezone_set('Asia/Manila');
                         $date = date("Y-m-d");

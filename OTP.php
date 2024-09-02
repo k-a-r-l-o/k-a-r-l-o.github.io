@@ -3,6 +3,7 @@ include "DBSessionVoter.php";
 
 $username = $_SESSION["username"];
 $usep_ID = $_SESSION["usep_ID"];
+$program = $_SESSION["program"];
 ?>
 
 <!DOCTYPE html>
@@ -634,7 +635,13 @@ $usep_ID = $_SESSION["usep_ID"];
                             }
                         });
                         setTimeout(() => {
-                            window.location.href = 'Voting1.php';
+                            const program = '<?php echo $program; ?>'; // Embed PHP session value in JavaScript
+
+                            if (program === 'SOM') {
+                                window.location.href = 'SOM.php'; // Redirect if program is SOM
+                            } else {
+                                window.location.href = 'Voting1.php'; // Default redirection
+                            }
                         }, 1500);
                     } else {
                         Swal.fire({

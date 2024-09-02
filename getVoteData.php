@@ -3,18 +3,18 @@
 
 include 'DBSession.php';
 
-// Query to get the count of votes
+// Query to get the count of votes of tsc_votes
 $resultVotes = $conn->query("SELECT COUNT(*) as voteCount FROM tsc_votes");
 $rowVotes = $resultVotes->fetch_assoc();
 $voteCount = $rowVotes['voteCount'];
 
-// Query to get the count of candidates
-$resultCandidates = $conn->query("SELECT COUNT(*) as votersCount FROM voters");
+// Query to get the count of voter of tsc
+$resultCandidates = $conn->query("SELECT COUNT(*) as votersCount FROM voters WHERE program != 'SOM'");
 $rowCandidates = $resultCandidates->fetch_assoc();
 $votersCount = $rowCandidates['votersCount'];
 
 // Assuming you have a table for total voters
-$resultVoters = $conn->query("SELECT COUNT(*) as voterCount FROM voters");
+$resultVoters = $conn->query("SELECT COUNT(*) as voterCount FROM voters WHERE program != 'SOM'");
 $rowVoters = $resultVoters->fetch_assoc();
 $voterCount = $rowVoters['voterCount'];
 
@@ -29,4 +29,3 @@ echo json_encode([
 ]);
 
 $conn->close();
-?>

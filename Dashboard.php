@@ -848,7 +848,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                 </div>
                 <div class="allvoterscontainer">
                     <div class="resulttitle">
-                        <h3>OVERALL NO. OF VOTE</h3>
+                        <h3>TSC NO. OF VOTE</h3>
                     </div>
                     <div class="piecontainer">
                         <canvas id="myPieChart2"></canvas>

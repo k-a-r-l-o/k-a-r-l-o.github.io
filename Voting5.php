@@ -463,4 +463,19 @@ if ($stmtUpdate) {
     exit();
 }
 
+if ($program == "SOM") {
+    echo '<style>
+            .stepper-wrapper .stepper-item:nth-child(1),
+            .stepper-wrapper .stepper-item:nth-child(2),
+            .stepper-item::before {
+                display: none;
+            }
+          </style>';
+
+    // Modify the step names dynamically
+    echo '<script>
+            document.querySelector(".stepper-wrapper .stepper-item:nth-child(3) .step-name").textContent = "Voting";
+            document.querySelector(".stepper-wrapper .stepper-item:nth-child(4) .step-name").textContent = "Summary";
+          </script>';
+}
 ?>
