@@ -254,6 +254,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
             table,
             .content button,
+            .contenthead select,
             h2 {
                 scale: 0.9;
             }
@@ -308,6 +309,11 @@ $firstLetterLastName = substr($LName, 0, 1);
                 background-size: contain;
             }
 
+            .dropdown {
+                flex-direction: column;
+                justify-self: right;
+            }
+
         }
 
 
@@ -349,6 +355,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             }
 
             .content button,
+            .contenthead select,
             h2,
             .yellowBG {
                 scale: 0.8;
