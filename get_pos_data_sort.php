@@ -32,6 +32,7 @@ if ($selected_council == '') {
         echo "<option value=''>No Positions Available</option>";
     }
 } else {
+    echo "<option value=''>All Positions </option>";
     // Query to fetch positions based on the selected council
     $sql = "SELECT council_name, position_name FROM positions WHERE council_name = '$selected_council'";
     $result = $conn->query($sql);

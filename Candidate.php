@@ -393,7 +393,7 @@ $firstLetterLastName = substr($LName, 0, 1);
         .content {
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: 1fr 5fr;
+            grid-template-rows: .5fr .5fr 5fr;
             background-color: #222E50;
             width: auto;
             color: white;
@@ -443,6 +443,7 @@ $firstLetterLastName = substr($LName, 0, 1);
             display: flex;
             justify-content: right;
             align-items: center;
+            gap: 5%;
         }
 
         .tableandnav {
@@ -602,6 +603,41 @@ $firstLetterLastName = substr($LName, 0, 1);
             /* Firefox */
             appearance: none;
             /* All other browsers */
+        }
+
+        .contenthead select {
+            height: 40px;
+            width: 100%;
+            max-width: 200px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #F6C90E;
+            color: #222E50;
+            border-radius: 5px;
+            border: none;
+            padding: 5px 40px 5px 20px;
+            /* Increased padding to accommodate the larger dropdown symbol */
+            cursor: pointer;
+            background-image: url('arrow-down.png');
+            /* Replace 'path_to_your_arrow_image.png' with the path to your custom dropdown symbol */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            /* Adjusted position of the dropdown symbol */
+            /* Hide the default dropdown arrow */
+            -webkit-appearance: none;
+            /* Safari and Chrome */
+            -moz-appearance: none;
+            /* Firefox */
+            appearance: none;
+            /* All other browsers */
+        }
+
+        select:focus {
+            outline: none;
+        }
+
+        p {
+            font-size: 20px;
         }
 
         .content button {
@@ -912,6 +948,78 @@ $firstLetterLastName = substr($LName, 0, 1);
         window.addEventListener('load', setPaddingTop);
         window.addEventListener('resize', setPaddingTop);
     </script>
+    <script>
+        function saveSelectionAndFilter(selectId) {
+            const selectElement = document.getElementById(selectId);
+            sessionStorage.setItem(selectId + "Selected", selectElement.value);
+            filterCandidates(); // Apply the filter without reloading the page
+        }
+
+        function loadSelection(selectId) {
+            const savedValue = sessionStorage.getItem(selectId + "Selected");
+            if (savedValue) {
+                document.getElementById(selectId).value = savedValue;
+            }
+        }
+
+        function reloadPosition() {
+            var selectedCouncil = document.getElementById("Tcouncil").value;
+            var positionSelect = document.getElementById('Tposition');
+
+            // Clear previous options
+            positionSelect.innerHTML = '';
+
+            // Fetch positions from PHP script using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_pos_data_sort.php?council=' + encodeURIComponent(selectedCouncil), true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    positionSelect.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+
+        function filterCandidates() {
+            var program = document.getElementById("Tprogram").value;
+            var council = document.getElementById("Tcouncil").value;
+            var position = document.getElementById("Tposition").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "sort_cand.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    document.getElementById("Results").innerHTML = this.responseText;
+                    currentPage = 0; // Reset to the first page
+                    showPage(currentPage); // Call the pagination function after updating results
+                }
+            };
+            xhr.send("Tprogram=" + program + "&Tcouncil=" + council + "&Tposition=" + position);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadSelection("Tprogram");
+            loadSelection("Tcouncil");
+            reloadPosition();
+            loadSelection("Tposition");
+            filterCandidates();
+
+            document.getElementById("Tprogram").addEventListener("change", function() {
+                saveSelectionAndFilter("Tprogram");
+            });
+
+            document.getElementById("Tcouncil").addEventListener("change", function() {
+                saveSelectionAndFilter("Tcouncil");
+            });
+
+            document.getElementById("Tposition").addEventListener("change", function() {
+                saveSelectionAndFilter("Tposition");
+            });
+        });
+    </script>
+
 </head>
 
 <body>
@@ -985,11 +1093,69 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <h2>Total Candidates</h2>
                     </div>
                     <div class="yellowBG">
-                        <h2 id="rowNumbershow">0</h2>
+                        <?php
+                        $resultcan = $conn->query("SELECT COUNT(*) as totcan FROM candidates");
+                        $rowcan = $resultcan->fetch_assoc();
+                        $totcan = $rowcan['totcan'];
+                        ?>
+                        <h2><?php echo $totcan ?></h2>
                     </div>
                 </div>
                 <div class="dropdown">
                     <button id="addcandidate"><img src="plus.png" alt="plus icon">Add new</button>
+                </div>
+            </div>
+            <div class="contenthead">
+                <div class="titlecontainer">
+                    <div>
+                        <h3>Sort by:</h3>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <select id="Tprogram" name="Tprogram">
+                        <option value="">All Programs</option>
+                        <?php
+                        $query1 = "SELECT * FROM programs";
+                        $result = $conn->query($query1);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['Program'] . '">' . $row['Program'] . "</option>";
+                            }
+                        } else {
+                            echo '<option value="">No programs available</option>';
+                        }
+                        ?>
+                    </select>
+
+                    <select id="Tcouncil" name="Tcouncil">
+                        <option value="">All Councils</option>
+                        <?php
+                        $query1 = "SELECT * FROM list_councils";
+                        $result = $conn->query($query1);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['council_name'] . '">' . $row['council_name'] . "</option>";
+                            }
+                        } else {
+                            echo '<option value="">No council available</option>';
+                        }
+                        ?>
+                    </select>
+
+                    <select id="Tposition" name="Tposition">
+                        <option value="">All Positions</option>
+                        <?php
+                        $sql = "SELECT DISTINCT(position_name) FROM positions";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['position_name'] . "'>" . $row['position_name'] . "</option>";
+                            }
+                        } else {
+                            echo "<option value=''>No Positions Available</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="tableandnav">
@@ -1002,48 +1168,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                             <th>COUNCIL</th>
                             <th class="thlast"></th>
                         </tr>
-                        <?php
-                        // Query to retrieve all data from the Users table
-                        $sql = "SELECT * FROM candidates";
-                        $result = $conn->query($sql);
-
-                        // Check if there are any rows returned
-                        if ($result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-
-                                // Assuming $row["usep_ID"] contains the ID like 202200294
-                                $usep_ID = $row["usep_ID"];
-
-                                // Skip displaying the entry with usep_ID equal to 100010001
-                                if ($usep_ID == '100010001') {
-                                    continue;
-                                }
-
-                                // Extract the year part
-                                $year = substr($usep_ID, 0, 4);
-
-                                // Extract the remaining part and zero-pad it to 5 digits
-                                $numeric_part = str_pad(substr($usep_ID, 4), 5, "0", STR_PAD_LEFT);
-
-                                // Combine the parts with a dash
-                                $formatted_usep_ID = $year . '-' . $numeric_part;
-                        ?>
-                                <tr>
-                                    <td class="tdfirst"><?php echo $formatted_usep_ID; ?></td>
-                                    <td><?php echo $row["FName"] . " " . $row["LName"] ?></td>
-                                    <td><?php echo $row["position"] ?></td>
-                                    <td><?php echo $row["council"] ?></td>
-                                    <td class="tdlast">
-                                        <img onclick="viewpop(<?php echo $row['usep_ID']; ?>)" src="view.png" alt="view icon">
-                                        <img onclick="editpop('<?php echo $row['usep_ID']; ?>','<?php echo $row['council']; ?>')" src="edit.png" alt="edit icon">
-                                        <img onclick="deletepop(<?php echo $row['usep_ID']; ?>)" src="delete.png" alt="delete icon">
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        }
-                        ?>
+                        <!-- initialized below by sort cand -->
                     </table>
                 </div>
                 <div class="navTable">
@@ -1833,6 +1958,25 @@ $firstLetterLastName = substr($LName, 0, 1);
             xhr.send();
         });
 
+        document.getElementById('Tcouncil').addEventListener('change', function() {
+            var selectedCouncil = this.value;
+            var positionSelect = document.getElementById('Tposition');
+
+            // Clear previous options
+            positionSelect.innerHTML = '';
+
+            // Fetch positions from PHP script using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_pos_data_sort.php?council=' + encodeURIComponent(selectedCouncil), true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    positionSelect.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        });
+
         function getpos(council) {
             var selectedCouncil = council;
             var positionSelect = document.getElementById('position3');
@@ -2117,12 +2261,6 @@ $firstLetterLastName = substr($LName, 0, 1);
 
         // Get the number of rows in the table
         var rowCount = table.rows.length;
-
-        // Get the <h2> element where you want to display the row count
-        var rowNumberElement = document.getElementById('rowNumbershow');
-
-        // Replace the content of the <h2> element with the row count
-        rowNumberElement.textContent = rowCount - 1;
 
         var currentPage = 0;
         var rowsPerPage = 10; // Change this value as needed

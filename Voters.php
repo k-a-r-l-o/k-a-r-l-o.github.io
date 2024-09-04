@@ -1106,7 +1106,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         $rowVotes = $resultVotes->fetch_assoc();
                         $totvot = $rowVotes['totvot'];
                         ?>
-                        <h2 id="rowNumbershow"><?php echo $totvot ?></h2>
+                        <h2><?php echo $totvot ?></h2>
                     </div>
                 </div>
                 <div class="dropdown">
