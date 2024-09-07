@@ -63,7 +63,7 @@ if ($result->num_rows > 0) {
 <?php
     }
 } else {
-    echo "<tr><td colspan='5'>No candidates found.</td></tr>";
+    echo "<tr>class='tdfirst'></td><td colspan='3'>No candidates found.</td><td class='tdlast'></td></tr>";
 }
 
 ?>
