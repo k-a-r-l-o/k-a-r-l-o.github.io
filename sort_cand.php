@@ -62,6 +62,8 @@ if ($result->num_rows > 0) {
         </tr>
 <?php
     }
+} else if ($result->num_rows = 1) {
+    echo "<tr><td class='tdfirst'></td><td colspan='3'>No candidates found.</td><td class='tdlast'></td></tr>";
 } else {
     echo "<tr><td class='tdfirst'></td><td colspan='3'>No candidates found.</td><td class='tdlast'></td></tr>";
 }
