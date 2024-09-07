@@ -95,11 +95,12 @@ $output = "
 
 $allData = [];
 // Fetch the results and build the table rows
-while ($row = $result->fetch_assoc()) {
-    $allData[] = $row;
-    $pic = htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png');
-    $picPath = file_exists($pic) ? htmlspecialchars($pic) : 'uploads/default.png';
-    $output .= "
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $allData[] = $row;
+        $pic = htmlspecialchars($row['pic'] ? $row['pic'] : 'uploads/default.png');
+        $picPath = file_exists($pic) ? htmlspecialchars($pic) : 'uploads/default.png';
+        $output .= "
     <tr>
         <td class='tdfirst'>" . htmlspecialchars($row['UID']) . "</td>
         <td><img class='candPic' src='$picPath' alt='Candidate Pic'></td>
@@ -107,8 +108,10 @@ while ($row = $result->fetch_assoc()) {
         <td>" . htmlspecialchars($row['position']) . "</td>
         <td class='tdlast'>" . htmlspecialchars($row['votes']) . "</td>
     </tr>";
+    }
+} else {
+    echo "<tr><td class='tdfirst'></td><td colspan='3'>No candidates yet.</td><td class='tdlast'></td></tr>";
 }
-
 // Close the connection
 $conn->close();
 

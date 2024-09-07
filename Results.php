@@ -1106,7 +1106,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                         <?php
                             }
                         } else {
-                            echo "<tr><class='tdfirst'></td><td colspan='3'>No candidates yet.</td><td class='tdlast'></td></tr>";
+                            echo "<tr><td class='tdfirst'></td><td colspan='3'>No candidates yet.</td><td class='tdlast'></td></tr>";
                         }
 
 
