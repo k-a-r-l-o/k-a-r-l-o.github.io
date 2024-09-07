@@ -28,7 +28,7 @@ echo '<th class="thlast">NO. OF VOTER: ' . $result->num_rows . ' </th>';
 echo '</tr>';
 
 // Check if there are any rows returned
-if ($result->num_rows > 0) {
+if ($result->num_rows > 1) {
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
 
@@ -62,8 +62,6 @@ if ($result->num_rows > 0) {
         </tr>
 <?php
     }
-} else if ($result->num_rows = 1) {
-    echo "<tr><td class='tdfirst'></td><td colspan='3'>No candidates found.</td><td class='tdlast'></td></tr>";
 } else {
     echo "<tr><td class='tdfirst'></td><td colspan='3'>No candidates found.</td><td class='tdlast'></td></tr>";
 }
