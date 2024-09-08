@@ -1059,7 +1059,7 @@ $firstLetterLastName = substr($LName, 0, 1);
                                         SELECT c.usep_ID AS UID, c.candPic AS pic, CONCAT(c.FName, ' ', c.LName) AS Pname, '$position_name' AS position, COALESCE(COUNT(tv.$column), 0) AS votes 
                                         FROM candidates c
                                         LEFT JOIN $votes_table tv ON tv.$column = c.usep_ID
-                                        WHERE c.position = '$position_name' OR c.LName = 'Abstain'
+                                        WHERE (c.position = '$position_name' OR c.LName = 'Abstain') AND (c.council = '$council_name' OR c.council = 'ALL')
                                         GROUP BY c.usep_ID, c.candPic, c.FName, c.LName, c.position";
                                 }
                             } else {
