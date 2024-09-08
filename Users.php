@@ -1632,7 +1632,7 @@ $firstLetterLastName = substr($LName, 0, 1);
 
                         // Hide the usertype div if usep_ID is 1
                         var userTypeDiv = document.querySelector(".form-group:has(#User3)");
-                        if (rowData.usep_ID == 1) {
+                        if (rowData.usep_ID < 10) {
                             userTypeDiv.style.display = "none";
                         } else {
                             userTypeDiv.style.display = "block";
