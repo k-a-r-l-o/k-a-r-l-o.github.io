@@ -75,9 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $positionName = str_replace(' ', '_', $positionName1);
         $positionSlot = (int)$rowPosition['position_slot'];
 
-        if (stripos($positionName1, 'Senator') != false) {
+        if (stripos($positionName1, 'Legislator') != false) {
             if ($MAJOR != 'NONE' || $MAJOR != null) {
-                if (($MAJOR . ' Senator') != $positionName1) {
+                if (($MAJOR . ' Legislator') != $positionName1) {
                     continue;
                 }
             }
@@ -734,9 +734,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $positionName = htmlspecialchars($rowPosition['position_name']);
                         $positionSlot = (int)$rowPosition['position_slot'];
 
-                        if (stripos($positionName, 'Senator') != false) {
+                        if (stripos($positionName, 'Legislator') != false) {
                             if ($MAJOR != 'NONE' || $MAJOR != null) {
-                                if (($MAJOR . ' Senator') != $positionName) {
+                                if (($MAJOR . ' Legislator') != $positionName) {
                                     continue;
                                 } else {
                                     $sqlCandidates = "
