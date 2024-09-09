@@ -18,7 +18,7 @@ function sendOtpEmail($email, $otp)
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'tsccomelec@usep.edu.ph';
-        $mail->Password = 'yhli ebrp gdbv lqet';
+        $mail->Password = 'vtfp dnsl faok rizp';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
