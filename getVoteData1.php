@@ -57,7 +57,7 @@ $voterCounts = [];
 
 foreach ($programs as $program) {
     if ($program === 'ALL') {
-        $resultVoters = $conn->query("SELECT COUNT(*) as voterCount FROM voters");
+        $resultVoters = $conn->query("SELECT COUNT(*) as voterCount FROM voters WHERE program != 'SOM'");
     } else {
         $resultVoters = $conn->query("SELECT COUNT(*) as voterCount FROM voters WHERE program = '$program'");
     }
